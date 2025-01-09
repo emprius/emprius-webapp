@@ -11,7 +11,7 @@ export const useUploadImage = () =>
 export const useTools = (filters?: SearchFilters) =>
   useQuery({
     queryKey: ['tools', filters],
-    queryFn: () => api.tools.getAll(filters),
+    queryFn: () => api.tools.getUserTools(filters),
   })
 
 export const useTool = (id: string) =>

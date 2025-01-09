@@ -2,14 +2,14 @@ import { Box, SimpleGrid, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '~src/features/auth/context/AuthContext'
+import { useUserTools } from '~src/features/user/userQueries'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { ToolCard } from '../../../features/tools/components/ToolCard'
-import { useUserTools } from '../../../hooks/queries'
 
 export const UserTools = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { data: tools, isLoading } = useUserTools(user.id)
+  const { data: tools, isLoading } = useUserTools()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')

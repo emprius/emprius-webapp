@@ -65,7 +65,7 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getAll: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool[]>>('/tools', { params })),
+  getUserTools: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool[]>>('/tools', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>
     apiRequest(
@@ -92,7 +92,9 @@ export const tools = {
 
 // Bookings endpoints
 export const bookings = {
-  getAll: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings')),
+  // getAll: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings')),
+  getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
+  getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (toolId: string, data: { startDate: string; endDate: string }) =>
     apiRequest(api.post<ApiResponse<Booking>>(`/tools/${toolId}/bookings`, data)),
