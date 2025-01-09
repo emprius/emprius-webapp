@@ -1,12 +1,17 @@
 import { Box, Container, Image, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import { LoadingSpinner } from '~components/shared'
 import { useAuth } from '../context/AuthContext'
 
 export const AuthLayout = () => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const contentBgColor = useColorModeValue('white', 'gray.800')
+
+  if (isLoading) {
+    return <LoadingSpinner fullScreen />
+  }
 
   if (isAuthenticated) {
     // todo(konv1): use route constants

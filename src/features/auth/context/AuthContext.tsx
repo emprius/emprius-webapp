@@ -54,7 +54,7 @@ const useAuthProvider = () => {
   //   },
   // })
 
-  const { data: user } = useCurrentUser({
+  const { data: user, isLoading: isLoadingUser } = useCurrentUser({
     enabled: !!bearer,
   })
 
@@ -66,9 +66,11 @@ const useAuthProvider = () => {
   }
 
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
+  const isLoading = useMemo(() => !!bearer && isLoadingUser, [bearer])
 
   return {
     isAuthenticated,
+    isLoading,
     login,
     register,
     logout,
