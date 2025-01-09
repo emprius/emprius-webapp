@@ -1,39 +1,40 @@
-import React from 'react'
 import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Stack, Text, useToast } from '@chakra-ui/react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLogin } from '../../hooks/queries'
-import { useAuth } from './context/AuthContext'
-import type { LoginForm } from '../../types'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { AUTH_FORM } from '~constants'
+import { ILoginParams } from '~src/features/auth/context/authQueries'
+import { useAuth } from './context/AuthContext'
 
 export const LoginPage = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const toast = useToast()
-  const { login: authLogin } = useAuth()
-  const login = useLogin()
+  const navigate = useNavigate()
+
+  const {
+    login: { mutateAsync, isError, error },
+  } = useAuth()
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginForm>()
+  } = useForm<ILoginParams>()
 
-  const onSubmit = async (data: LoginForm) => {
-    try {
-      const response = await login.mutateAsync(data)
-      authLogin(response.data.data.accessToken, response.data.data)
-      navigate('/', { replace: true })
-    } catch (error) {
-      console.error('Login failed:', error)
-      toast({
-        title: t('auth.loginError'),
-        status: 'error',
-        duration: 3000,
+  const onSubmit = async (data: ILoginParams) => {
+    await mutateAsync(data)
+      // todo(konv1): use route constants
+      .then(() => navigate('/'))
+      .catch((error) => {
+        toast({
+          title: t('auth.loginError'),
+          status: 'error',
+          duration: 3000,
+        })
+        console.error('Login failed:', error)
       })
-    }
   }
 
   return (
@@ -81,6 +82,7 @@ export const LoginPage = () => {
           <Button type='submit' size='lg' isLoading={isSubmitting} loadingText={t('common.loading')}>
             {t('auth.login')}
           </Button>
+          <FormSubmitMessage isError={isError} error={error} />
         </Stack>
       </Box>
     </Stack>

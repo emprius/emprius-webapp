@@ -1,95 +1,77 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import { STORAGE_KEYS } from '../../../constants';
-import type { UserProfile } from '../../../types';
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { LoginResponse, useLogin, useRegister } from '~src/features/auth/context/authQueries'
+import { STORAGE_KEYS } from '../../../constants'
+import type { UserProfile } from '../../../types'
 
-interface AuthContextType {
-  user: UserProfile | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (token: string, user: UserProfile) => void;
-  logout: () => void;
-  updateUser: (user: UserProfile) => void;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<ReturnType<typeof useAuthProvider> | undefined>(undefined)
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth must be used within an AuthProvider')
   }
-  return context;
-};
+  return context
+}
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserProfile | null>(() => {
-    const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
-    setIsLoading(false);
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const auth = useAuthProvider()
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
+}
 
-  const navigate = useNavigate();
-  const toast = useToast();
-  const { t } = useTranslation();
+const useAuthProvider = () => {
+  const queryClient = useQueryClient()
+  const [bearer, setBearer] = useState<string | null>(localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN))
 
-  const login = useCallback((token: string, userData: UserProfile) => {
-    setIsLoading(true);
-    try {
-      localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
-      setUser(userData);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const login = useLogin({
+    onSuccess: (data) => {
+      storeLogin(data)
+    },
+  })
 
-  const logout = useCallback(() => {
-    setIsLoading(true);
-    try {
-      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.USER);
-      setUser(null);
-      navigate('/login');
-      toast({
-        title: t('auth.logoutSuccess'),
-        status: 'success',
-        duration: 3000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [navigate, toast, t]);
+  const register = useRegister({
+    onSuccess: (data) => {
+      storeLogin(data)
+    },
+  })
 
-  const updateUser = useCallback((userData: UserProfile) => {
-    setIsLoading(true);
-    try {
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
-      setUser(userData);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const storeLogin = useCallback(({ token, expirity }: LoginResponse) => {
+    setBearer(token)
+    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token)
+    localStorage.setItem(STORAGE_KEYS.EXPIRITY, expirity)
+  }, [])
 
-  const value = {
-    user,
-    isAuthenticated: !!user,
-    isLoading,
+  const updateUserMutation = useMutation({
+    mutationFn: async (userData: UserProfile) => {
+      return userData
+    },
+    onSuccess: (userData) => {
+      queryClient.setQueryData(['user'], userData)
+    },
+  })
+
+  const logout = () => {
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
+    localStorage.removeItem(STORAGE_KEYS.EXPIRITY)
+    setBearer(null)
+    queryClient.setQueryData(['user'], null)
+  }
+
+  const updateUser = (userData: UserProfile) => {
+    updateUserMutation.mutate(userData)
+  }
+
+  const isAuthenticated = useMemo(() => !!bearer, [bearer])
+
+  return {
+    isAuthenticated,
     login,
+    register,
     logout,
     updateUser,
-  };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  }
+}

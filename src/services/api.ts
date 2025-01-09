@@ -1,17 +1,23 @@
-import axios, { AxiosError } from 'axios'
-import { STORAGE_KEYS } from '../constants'
-import type {
-  ApiError,
-  ApiResponse,
-  AuthTokens,
-  Booking,
-  LoginForm,
-  PaginatedResponse,
-  RegisterForm,
-  SearchFilters,
-  Tool,
-  UserProfile,
-} from '../types'
+import axios, {AxiosError, AxiosResponse} from 'axios'
+import {ILoginParams, IRegisterParams} from '~src/features/auth'
+import {LoginResponse} from '~src/features/auth/context/authQueries'
+import {STORAGE_KEYS} from '../constants'
+import type {Booking, SearchFilters, Tool, UserProfile} from '../types'
+
+// Exception to throw when an API return 401
+export class UnauthorizedError extends Error {
+  constructor(message?: string) {
+    super(message ? message : 'user not authorized')
+  }
+}
+
+export interface ApiResponse<T> {
+  data?: T
+  header: {
+    success: boolean
+    message: string
+  }
+}
 
 const api = axios.create({
   baseURL: import.meta.env.API_URL || 'http://localhost:3000/api',
@@ -31,74 +37,95 @@ api.interceptors.request.use((config) => {
 
 // Response interceptor to handle errors
 api.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError<ApiError>) => {
+  (response: AxiosResponse<ApiResponse<any>>) => response,
+  async (error: AxiosError<ApiResponse<any>>) => {
     // Handle 401 Unauthorized errors
     if (error.response?.status === 401) {
-      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
-      window.location.href = '/login'
+      throw new UnauthorizedError(error?.message)
     }
-    return Promise.reject(error)
+    throw error
   }
 )
 
+async function apiRequest<T>(promise: Promise<AxiosResponse<ApiResponse<T>>>): Promise<T> {
+  const { data } = await promise
+  if (data?.header?.success) {
+    return data.data
+  }
+  throw new Error(data?.header?.message || 'API success is not true')
+}
+
 // Auth endpoints
 export const auth = {
-  login: (data: LoginForm) => api.post<ApiResponse<AuthTokens>>('/login', data),
-  register: (data: RegisterForm) => api.post<ApiResponse<AuthTokens>>('/register', data),
-  getCurrentUser: () => api.get<ApiResponse<UserProfile>>('/profile'),
+  login: (data: ILoginParams) => apiRequest(api.post<ApiResponse<LoginResponse>>('/login', data)),
+  register: (data: IRegisterParams) => apiRequest(api.post<ApiResponse<LoginResponse>>('/register', data)),
+  getCurrentUser: () => apiRequest(api.get<ApiResponse<UserProfile>>('/profile')),
 }
 
 // Tools endpoints
 export const tools = {
-  getAll: (params?: SearchFilters) => api.get<PaginatedResponse<Tool>>('/tools', { params }),
-  getById: (id: string) => api.get<ApiResponse<Tool>>(`/tools/${id}`),
+  getAll: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool>>('/tools', { params })),
+  getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: FormData) =>
-    api.post<ApiResponse<Tool>>('/tools', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }),
+    apiRequest(
+      api.post<ApiResponse<Tool>>('/tools', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    ),
   update: (id: string, data: FormData) =>
-    api.put<ApiResponse<Tool>>(`/tools/${id}`, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }),
-  delete: (id: string) => api.delete<ApiResponse<void>>(`/tools/${id}`),
+    apiRequest(
+      api.put<ApiResponse<Tool>>(`/tools/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    ),
+  delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
 }
 
 // Bookings endpoints
 export const bookings = {
-  getAll: () => api.get<PaginatedResponse<Booking>>('/bookings'),
-  getById: (id: string) => api.get<ApiResponse<Booking>>(`/bookings/${id}`),
+  getAll: () => apiRequest(api.get<ApiResponse<Booking>>('/bookings')),
+  getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (toolId: string, data: { startDate: string; endDate: string }) =>
-    api.post<ApiResponse<Booking>>(`/tools/${toolId}/bookings`, data),
+    apiRequest(api.post<ApiResponse<Booking>>(`/tools/${toolId}/bookings`, data)),
   updateStatus: (id: string, status: Booking['status']) =>
-    api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { status }),
-  cancel: (id: string) => api.delete<ApiResponse<void>>(`/bookings/${id}`),
+    apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { status })),
+  cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),
 }
 
 // Ratings endpoints
 export const ratings = {
   create: (toolId: string, bookingId: string, data: { rating: number; comment: string }) =>
-    api.post<ApiResponse<void>>(`/tools/${toolId}/bookings/${bookingId}/ratings`, data),
+    apiRequest(api.post<ApiResponse<void>>(`/tools/${toolId}/bookings/${bookingId}/ratings`, data)),
   getByTool: (toolId: string) =>
-    api.get<PaginatedResponse<{ rating: number; comment: string; user: UserProfile }>>(`/tools/${toolId}/ratings`),
+    apiRequest(
+      api.get<
+        ApiResponse<{
+          rating: number
+          comment: string
+          user: UserProfile
+        }>
+      >(`/tools/${toolId}/ratings`)
+    ),
   getByUser: (userId: string) =>
-    api.get<PaginatedResponse<{ rating: number; comment: string; tool: Tool }>>(`/users/${userId}/ratings`),
+    apiRequest(api.get<ApiResponse<{ rating: number; comment: string; tool: Tool }>>(`/users/${userId}/ratings`)),
 }
 
 // Users endpoints
 export const users = {
   updateProfile: (data: FormData) =>
-    api.post<ApiResponse<UserProfile>>('/profile', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }),
-  getTools: (userId: string) => api.get<PaginatedResponse<Tool>>(`/users/${userId}/tools`),
-  getBookings: (userId: string) => api.get<PaginatedResponse<Booking>>(`/users/${userId}/bookings`),
+    apiRequest(
+      api.post<ApiResponse<UserProfile>>('/profile', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    ),
+  getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool>>(`/users/${userId}/tools`)),
+  getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking>>(`/users/${userId}/bookings`)),
 }
 
 export default {

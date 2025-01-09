@@ -8,8 +8,9 @@ export const AUTH_FORM = {
  * Local storage keys
  */
 export const STORAGE_KEYS = {
-  AUTH_TOKEN: 'emprius_auth_token',
-  USER: 'emprius_user',
+  AUTH_TOKEN: 'auth_token',
+  EXPIRITY: 'auth_expirity',
+  USER: 'user_profile',
   LANGUAGE: 'emprius_language',
   THEME: 'emprius_theme',
 } as const

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Button,
@@ -12,60 +11,48 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useRegister } from '../../hooks/queries'
-import { useAuth } from './context/AuthContext'
-import { RegisterForm } from '../../types'
-import api from '../../services/api'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { AUTH_FORM } from '~constants'
+import { IRegisterParams } from '~src/features/auth/context/authQueries'
+import { useAuth } from './context/AuthContext'
 
 export const RegisterPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const toast = useToast()
-  const { login } = useAuth()
-  const register = useRegister()
+  const {
+    register: { mutateAsync, error, isError },
+  } = useAuth()
 
   const {
     register: registerField,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterForm>({
+  } = useForm<IRegisterParams>({
     mode: 'onChange',
   })
 
   const password = watch('password')
 
-  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
-    try {
-      const registerResponse = await register.mutateAsync(data)
-      const { accessToken } = registerResponse.data.data
-
-      // Get user profile after successful registration
-      const userResponse = await api.auth.getCurrentUser()
-      const { data: userData } = userResponse.data
-
-      login(accessToken, userData)
-      toast({
-        title: t('auth.registerSuccess'),
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+  const onSubmit: SubmitHandler<IRegisterParams> = async (data) => {
+    await mutateAsync(data)
+      // todo(konv1): use route constants
+      .then(() => navigate('/'))
+      .catch((error) => {
+        console.error('Registration failed:', error)
+        toast({
+          title: t('auth.registerError'),
+          description: t('auth.tryAgain'),
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
       })
-      navigate('/', { replace: true })
-    } catch (error) {
-      console.error('Registration failed:', error)
-      toast({
-        title: t('auth.registerError'),
-        description: t('auth.tryAgain'),
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
   }
 
   return (
@@ -161,6 +148,7 @@ export const RegisterPage = () => {
           >
             {t('auth.register')}
           </Button>
+          <FormSubmitMessage isError={isError} error={error} />
         </Stack>
       </Box>
     </Stack>

@@ -1,0 +1,33 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.yarn*
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/dist
+
+# misc
+.DS_Store
+.env*
+!.env.example
+.vscode
+.idea
+
+# we use yarn here
+package-lock.json
+
+# logs
+*-debug.log*
+*-error.log*
+
+# old translation files
+*_old.json
+
+# Local Netlify folder
+.netlify
