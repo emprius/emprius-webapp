@@ -46,12 +46,9 @@ export const Navbar = () => {
           <Link
             as={RouterLink}
             to='/'
-            fontSize='2xl'
-            fontWeight='bold'
-            color='primary.500'
             _hover={{ textDecoration: 'none' }}
           >
-            Emprius
+            <Box as="img" src="/assets/logos/logo.png" alt="Emprius" h="40px" />
           </Link>
 
           <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>

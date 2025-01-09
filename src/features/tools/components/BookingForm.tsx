@@ -35,7 +35,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
   const onSubmit = async (data: BookingFormData) => {
     try {
       await createBooking.mutateAsync({
-        toolId: tool.id,
+        toolId: tool.id.toString(),
         data: {
           startDate: data.startDate,
           endDate: data.endDate,
@@ -60,9 +60,14 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
     }
   };
 
-  const availability = tool.availability;
-  const minDate = new Date(availability.start);
-  const maxDate = new Date(availability.end);
+  // Get today's date for minDate since there's no availability in the Tool model
+  const minDate = new Date();
+  // Set maxDate to 6 months from now as a reasonable default
+  const maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 6);
+
+  // If tool has reservedDates, we could use that to disable specific dates
+  // but it's currently typed as any | null in the Tool model
 
   return (
     <Box
@@ -86,8 +91,18 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
 
         <Stack spacing={2}>
           <Text fontSize="sm" color="gray.600">
-            {t('tools.pricePerDay')}: {tool.price}€
+            {t('tools.pricePerDay')}: {tool.cost}€
           </Text>
+          {tool.mayBeFree && (
+            <Text fontSize="sm" color="blue.500">
+              {t('tools.mayBeFreeNote')}
+            </Text>
+          )}
+          {tool.askWithFee && (
+            <Text fontSize="sm" color="purple.500">
+              {t('tools.askWithFeeNote')}
+            </Text>
+          )}
         </Stack>
 
         <Button
@@ -95,7 +110,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
           colorScheme="primary"
           size="lg"
           isLoading={createBooking.isPending}
-          isDisabled={tool.status !== 'available'}
+          isDisabled={!tool.isAvailable}
         >
           {t('bookings.book')}
         </Button>

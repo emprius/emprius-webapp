@@ -8,7 +8,6 @@ import {
   Heading,
   Text,
   Badge,
-  Avatar,
   Link,
   Image,
   useColorModeValue,
@@ -52,13 +51,15 @@ export const ToolDetailPage = () => {
               borderRadius="lg"
               overflow="hidden"
             >
-              <Image
-                src={tool.images[0]}
-                alt={tool.name}
-                height="400px"
-                width="100%"
-                objectFit="cover"
-              />
+              {tool.images.length > 0 && (
+                <Image
+                  src={`/api/images/${tool.images[0].hash}`}
+                  alt={tool.title}
+                  height="400px"
+                  width="100%"
+                  objectFit="cover"
+                />
+              )}
 
               <Stack p={6} spacing={6}>
                 <Stack spacing={4}>
@@ -67,79 +68,91 @@ export const ToolDetailPage = () => {
                     align="center"
                     justify="space-between"
                   >
-                    <Heading size="lg">{tool.name}</Heading>
+                    <Heading size="lg">{tool.title}</Heading>
                     <Badge
-                      colorScheme={tool.status === 'available' ? 'green' : 'gray'}
+                      colorScheme={tool.isAvailable ? 'green' : 'gray'}
                       px={2}
                       py={1}
                       borderRadius="full"
                     >
-                      {t(`tools.status.${tool.status}`)}
+                      {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                     </Badge>
                   </Stack>
 
                   <Text color="primary.500" fontSize="2xl" fontWeight="bold">
-                    {tool.price}€/day
+                    {tool.cost}€/day
                   </Text>
 
                   <Text color="gray.600">{tool.description}</Text>
-                </Stack>
 
-                <Stack spacing={4}>
-                  <Stack direction="row" align="center" color="gray.600">
-                    <FiMapPin />
-                    <Text>{tool.location.address}</Text>
+                  <Stack direction="row" spacing={2}>
+                    {tool.mayBeFree && (
+                      <Badge colorScheme="blue">
+                        {t('tools.mayBeFree')}
+                      </Badge>
+                    )}
+                    {tool.askWithFee && (
+                      <Badge colorScheme="purple">
+                        {t('tools.askWithFee')}
+                      </Badge>
+                    )}
                   </Stack>
 
-                  <Stack direction="row" align="center" spacing={4}>
-                    <Stack direction="row" align="center" spacing={2}>
-                      <Avatar
-                        size="sm"
-                        name={tool.owner.name}
-                        src={tool.owner.avatar}
-                      />
-                      <Link
-                        as={RouterLink}
-                        to={`/users/${tool.owner.id}`}
-                        fontWeight="medium"
-                        _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                      >
-                        {tool.owner.name}
-                      </Link>
+                  <Stack spacing={4}>
+                    <Stack direction="row" align="center" color="gray.600">
+                      <FiMapPin />
+                      <Text>
+                        {t('tools.coordinates', {
+                          lat: String(tool.location.latitude),
+                          lng: String(tool.location.longitude)
+                        })}
+                      </Text>
                     </Stack>
+
                     <Stack direction="row" align="center" color="orange.400">
                       <FiStar />
-                      <Text>{tool.owner.rating.toFixed(1)}</Text>
+                      <Text>{tool.rating.toFixed(1)}</Text>
+                    </Stack>
+
+                    <Stack spacing={2}>
+                      <Text color="gray.600">
+                        {t('tools.estimatedValue')}: {tool.estimatedValue}€
+                      </Text>
+                      <Text color="gray.600">
+                        {t('tools.dimensions')}: {tool.height}cm x {tool.weight}kg
+                      </Text>
                     </Stack>
                   </Stack>
                 </Stack>
               </Stack>
             </Box>
 
-            <Box
-              bg={bgColor}
-              borderWidth={1}
-              borderColor={borderColor}
-              borderRadius="lg"
-              overflow="hidden"
-            >
-              <Stack p={6} spacing={4}>
-                <Heading size="md">{t('tools.images')}</Heading>
-                <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={4}>
-                  {tool.images.map((image, index) => (
-                    <Image
-                      key={index}
-                      src={image}
-                      alt={`${tool.name} - ${index + 1}`}
-                      height="200px"
-                      width="100%"
-                      objectFit="cover"
-                      borderRadius="md"
-                    />
-                  ))}
-                </Grid>
-              </Stack>
-            </Box>
+            {tool.images.length > 0 && (
+              <Box
+                bg={bgColor}
+                borderWidth={1}
+                borderColor={borderColor}
+                borderRadius="lg"
+                overflow="hidden"
+              >
+                <Stack p={6} spacing={4}>
+                  <Heading size="md">{t('tools.images')}</Heading>
+                  <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={4}>
+                    {tool.images.map((image, index) => (
+                      <Image
+                        key={image.hash}
+                        src={`/api/images/${image.hash}`}
+                        alt={`${tool.title} - ${image.name}`}
+                        height="200px"
+                        width="100%"
+                        objectFit="cover"
+                        borderRadius="md"
+                      />
+                    ))}
+                  </Grid>
+                </Stack>
+              </Box>
+            )}
 
             <Box
               bg={bgColor}
@@ -163,7 +176,7 @@ export const ToolDetailPage = () => {
         <GridItem>
           <Stack spacing={4} position="sticky" top="20px">
             {isAuthenticated ? (
-              tool.status === 'available' ? (
+              tool.isAvailable ? (
                 <BookingForm tool={tool} />
               ) : (
                 <Box
