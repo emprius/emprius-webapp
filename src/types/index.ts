@@ -10,31 +10,36 @@ export interface UserProfile {
   updatedAt: string
 }
 
-export interface Tool {
-  id: string
+export interface Image {
+  hash: string
   name: string
+}
+
+export interface ImageContent extends Image {
+  content: string
+}
+
+export interface Tool {
+  id: number
+  title: string
   description: string
-  price: number
-  images: string[]
-  category: string
-  status: 'available' | 'unavailable' | 'booked'
+  isAvailable: boolean
+  mayBeFree: boolean
+  askWithFee: boolean
+  cost: number
+  userId: string
+  images: Image[]
+  transportOptions: any | null // todo(konv1) Replace `any` with the actual type if known
+  toolCategory: number
   location: {
-    address: string
-    lat: number
-    lng: number
+    latitude: number
+    longitude: number
   }
-  owner: {
-    id: string
-    name: string
-    avatar?: string
-    rating: number
-  }
-  availability: {
-    start: string
-    end: string
-  }
-  createdAt: string
-  updatedAt: string
+  rating: number
+  estimatedValue: number
+  height: number
+  weight: number
+  reservedDates: any | null // todo(konv1) Replace `any` with the actual type if known
 }
 
 export interface Booking {

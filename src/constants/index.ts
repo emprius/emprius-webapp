@@ -112,3 +112,10 @@ export const QUERY_KEYS = {
   BOOKINGS: ['bookings'],
   BOOKING: (id: string) => ['booking', id],
 } as const
+
+/**
+ * Asset paths
+ */
+export const ASSETS = {
+  TOOL_FALLBACK: '/assets/tools/tool-fallback.svg',
+} as const

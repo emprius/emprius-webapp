@@ -70,7 +70,7 @@ export const useCreateRating = () =>
       bookingId,
       data,
     }: {
-      toolId: string
+      toolId: number
       bookingId: string
       data: { rating: number; comment: string }
     }) => api.ratings.create(toolId, bookingId, data),

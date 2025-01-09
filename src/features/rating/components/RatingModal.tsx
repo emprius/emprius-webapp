@@ -1,45 +1,40 @@
-import React from 'react';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
   FormControl,
   FormLabel,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Textarea,
-  VStack,
   useToast,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { RatingStars } from './RatingStars';
-import { useCreateRating } from '../../../hooks/queries';
+  VStack,
+} from '@chakra-ui/react'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useCreateRating } from '../../../hooks/queries'
+import { RatingStars } from './RatingStars'
 
 interface RatingModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  toolId: string;
-  bookingId: string;
+  isOpen: boolean
+  onClose: () => void
+  toolId: number
+  bookingId: string
 }
 
 interface RatingFormData {
-  rating: number;
-  comment: string;
+  rating: number
+  comment: string
 }
 
-export const RatingModal = ({
-  isOpen,
-  onClose,
-  toolId,
-  bookingId,
-}: RatingModalProps) => {
-  const { t } = useTranslation();
-  const toast = useToast();
-  const createRating = useCreateRating();
+export const RatingModal = ({ isOpen, onClose, toolId, bookingId }: RatingModalProps) => {
+  const { t } = useTranslation()
+  const toast = useToast()
+  const createRating = useCreateRating()
 
   const {
     register,
@@ -51,11 +46,11 @@ export const RatingModal = ({
       rating: 0,
       comment: '',
     },
-  });
+  })
 
   const handleRatingChange = (rating: number) => {
-    setValue('rating', rating);
-  };
+    setValue('rating', rating)
+  }
 
   const onSubmit = async (data: RatingFormData) => {
     try {
@@ -66,25 +61,25 @@ export const RatingModal = ({
           rating: data.rating,
           comment: data.comment,
         },
-      });
+      })
 
       toast({
         title: t('rating.success'),
         status: 'success',
         duration: 3000,
-      });
+      })
 
-      onClose();
+      onClose()
     } catch (error) {
-      console.error('Failed to submit rating:', error);
+      console.error('Failed to submit rating:', error)
       toast({
         title: t('rating.error'),
         description: t('rating.tryAgain'),
         status: 'error',
         duration: 5000,
-      });
+      })
     }
-  };
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -98,12 +93,7 @@ export const RatingModal = ({
             <VStack spacing={6}>
               <FormControl isRequired>
                 <FormLabel>{t('rating.stars')}</FormLabel>
-                <RatingStars
-                  rating={0}
-                  isInteractive
-                  size="lg"
-                  onChange={handleRatingChange}
-                />
+                <RatingStars rating={0} isInteractive size='lg' onChange={handleRatingChange} />
               </FormControl>
 
               <FormControl>
@@ -111,7 +101,7 @@ export const RatingModal = ({
                 <Textarea
                   {...register('comment')}
                   placeholder={t('rating.commentPlaceholder')}
-                  resize="vertical"
+                  resize='vertical'
                   rows={4}
                 />
               </FormControl>
@@ -119,19 +109,15 @@ export const RatingModal = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
+            <Button variant='ghost' mr={3} onClick={onClose}>
               {t('common.cancel')}
             </Button>
-            <Button
-              type="submit"
-              isLoading={isSubmitting}
-              loadingText={t('common.submitting')}
-            >
+            <Button type='submit' isLoading={isSubmitting} loadingText={t('common.submitting')}>
               {t('rating.submit')}
             </Button>
           </ModalFooter>
         </form>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}

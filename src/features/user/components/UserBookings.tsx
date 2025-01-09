@@ -1,4 +1,18 @@
-import { Badge, Box, Button, Link, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Link,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
@@ -16,13 +30,13 @@ export const UserBookings = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedBooking, setSelectedBooking] = useState<{
     id: string
-    toolId: string
+    toolId: number
   } | null>(null)
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
-  const handleRateClick = (bookingId: string, toolId: string) => {
+  const handleRateClick = (bookingId: string, toolId: number) => {
     setSelectedBooking({ id: bookingId, toolId })
     onOpen()
   }
@@ -58,7 +72,7 @@ export const UserBookings = () => {
                     fontSize='lg'
                     _hover={{ color: 'primary.500', textDecoration: 'none' }}
                   >
-                    {booking.tool.name}
+                    {booking.tool.title}
                   </Link>
                   <Badge
                     colorScheme={
@@ -80,10 +94,11 @@ export const UserBookings = () => {
 
                 <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} color='gray.600'>
                   <Text>
-                    {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
+                    {new Date(booking.startDate).toLocaleDateString()} -{' '}
+                    {new Date(booking.endDate).toLocaleDateString()}
                   </Text>
                   <Text fontWeight='medium'>
-                    {t('tools.pricePerDay')}: {booking.tool.price}€
+                    {t('tools.pricePerDay')}: {booking.tool.cost}€
                   </Text>
                   <Text fontWeight='medium'>
                     {t('bookings.total')}: {booking.totalPrice}€
@@ -128,12 +143,8 @@ export const UserBookings = () => {
       </TabList>
 
       <TabPanels>
-        <TabPanel>
-          {renderBookingList(petitions)}
-        </TabPanel>
-        <TabPanel>
-          {renderBookingList(requests)}
-        </TabPanel>
+        <TabPanel>{renderBookingList(petitions)}</TabPanel>
+        <TabPanel>{renderBookingList(requests)}</TabPanel>
       </TabPanels>
     </Tabs>
   )
