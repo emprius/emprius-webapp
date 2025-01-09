@@ -66,7 +66,7 @@ const useAuthProvider = () => {
   }
 
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
-  const isLoading = useMemo(() => !!bearer && isLoadingUser, [bearer])
+  const isLoading = useMemo(() => !!bearer && isLoadingUser, [bearer, isLoadingUser])
 
   return {
     isAuthenticated,
