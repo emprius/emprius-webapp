@@ -1,5 +1,6 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
+import { UserProfile } from '~src/types'
 
 export interface ILoginParams {
   email: string
@@ -31,3 +32,9 @@ export const useRegister = (
     ...options,
   })
 }
+export const useCurrentUser = (options?: Omit<UseQueryOptions<UserProfile>, 'queryKey' | 'mutationFn'>) =>
+  useQuery({
+    queryKey: ['currentUser'],
+    queryFn: () => api.auth.getCurrentUser(),
+    ...options,
+  })

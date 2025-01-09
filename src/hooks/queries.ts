@@ -1,12 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import api from '../services/api'
-import type { SearchFilters } from '../types'
-
-export const useCurrentUser = () =>
-  useQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => api.auth.getCurrentUser(),
-  })
+import type {SearchFilters} from '../types'
 
 // Tools queries
 export const useTools = (filters?: SearchFilters) =>

@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
-import { LoginResponse, useLogin, useRegister } from '~src/features/auth/context/authQueries'
+import { LoginResponse, useCurrentUser, useLogin, useRegister } from '~src/features/auth/context/authQueries'
 import { STORAGE_KEYS } from '../../../constants'
-import type { UserProfile } from '../../../types'
 
 export const AuthContext = createContext<ReturnType<typeof useAuthProvider> | undefined>(undefined)
 
@@ -45,13 +44,18 @@ const useAuthProvider = () => {
     localStorage.setItem(STORAGE_KEYS.EXPIRITY, expirity)
   }, [])
 
-  const updateUserMutation = useMutation({
-    mutationFn: async (userData: UserProfile) => {
-      return userData
-    },
-    onSuccess: (userData) => {
-      queryClient.setQueryData(['user'], userData)
-    },
+  // todo(konv1): this is not the place for that
+  // const updateUserMutation = useMutation({
+  //   mutationFn: async (userData: UserProfile) => {
+  //     return userData
+  //   },
+  //   onSuccess: (userData) => {
+  //     queryClient.setQueryData(['user'], userData)
+  //   },
+  // })
+
+  const { data: user } = useCurrentUser({
+    enabled: !!bearer,
   })
 
   const logout = () => {
@@ -61,10 +65,6 @@ const useAuthProvider = () => {
     queryClient.setQueryData(['user'], null)
   }
 
-  const updateUser = (userData: UserProfile) => {
-    updateUserMutation.mutate(userData)
-  }
-
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
 
   return {
@@ -72,6 +72,6 @@ const useAuthProvider = () => {
     login,
     register,
     logout,
-    updateUser,
+    user,
   }
 }

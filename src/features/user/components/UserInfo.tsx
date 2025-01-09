@@ -1,10 +1,11 @@
-import React from 'react'
 import { Avatar, Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
-import { useCurrentUser, useUserRatings } from '../../../hooks/queries'
-import { RatingList } from '../../../features/rating/components/RatingList'
+import { useCurrentUser } from '~src/features/auth/context/authQueries'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import { RatingList } from '../../../features/rating/components/RatingList'
+import { useUserRatings } from '../../../hooks/queries'
 
 export const UserInfo = () => {
   const { t } = useTranslation()
