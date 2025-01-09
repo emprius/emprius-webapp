@@ -1,94 +1,159 @@
-import React from 'react';
 import {
+  Button,
+  Checkbox,
   Container,
-  Stack,
-  Heading,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Textarea,
-  Select,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Button,
-  useToast,
+  Select,
+  Stack,
+  Textarea,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { useCreateTool } from '../../../hooks/queries';
-import { TOOL_CATEGORIES } from '../../../constants';
+  useToast,
+} from '@chakra-ui/react'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { useCreateTool } from '~src/features/tools/toolsQueries'
+import { useUploadImage } from '~src/hooks/queries'
+import { TOOL_CATEGORIES } from '../../../constants'
+import { SearchMap } from '../components/SearchMap'
+
+const TRANSPORT_OPTIONS = [
+  { id: 1, label: 'Pickup' },
+  { id: 2, label: 'Delivery' },
+] as const
 
 interface NewToolForm {
-  name: string;
-  description: string;
-  category: string;
-  price: number;
-  location: string;
-  images: FileList;
+  title: string
+  description: string
+  mayBeFree: boolean
+  askWithFee: boolean
+  cost: number
+  transportOptions: number[]
+  category: number
+  estimatedValue: number
+  height: number
+  weight: number
+  images: FileList
 }
 
 export const NewToolPage = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const toast = useToast();
-  const bgColor = useColorModeValue('white', 'gray.800');
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const toast = useToast()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<NewToolForm>();
-  const createTool = useCreateTool();
+  const [selectedLocation, setSelectedLocation] = React.useState<{ lat: number; lng: number } | null>(null)
 
-  const onSubmit = async (data: NewToolForm) => {
-    try {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('description', data.description);
-      formData.append('category', data.category);
-      formData.append('price', data.price.toString());
-      formData.append('location', data.location);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<NewToolForm>()
 
-      Array.from(data.images).forEach((file) => {
-        formData.append('images', file);
-      });
-
-      await createTool.mutateAsync(formData);
-
+  const { mutateAsync: createTool, isPending: createToolIsPending } = useCreateTool({
+    onSuccess: () => {
       toast({
         title: t('tools.createSuccess'),
         status: 'success',
         duration: 3000,
-      });
-
-      navigate('/tools');
-    } catch (error) {
-      console.error('Failed to create tool:', error);
+      })
+      navigate('/tools')
+    },
+    onError: (error) => {
+      console.error('Failed to create tool:', error)
       toast({
         title: t('tools.createError'),
         status: 'error',
         duration: 5000,
-      });
+      })
+    },
+  })
+
+  const onSubmit = async (data: NewToolForm) => {
+    try {
+      if (!selectedLocation) {
+        toast({
+          title: 'Please select a location on the map',
+          status: 'error',
+          duration: 3000,
+        })
+        return
+      }
+      // Upload images first
+      const imageFiles = Array.from(data.images)
+      const imagePromises = imageFiles.map(async (file) => {
+        const reader = new FileReader()
+        const base64Promise = new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const base64 = reader.result?.toString().split(',')[1]
+            if (base64) resolve(base64)
+            else reject('Failed to convert image to base64')
+          }
+          reader.onerror = () => reject('Failed to read file')
+        })
+        reader.readAsDataURL(file)
+        const base64 = await base64Promise
+        const result = await uploadImage(base64)
+        return result.hash
+      })
+
+      const imageHashes = await Promise.all(imagePromises)
+
+      await createTool({
+        title: data.title,
+        description: data.description,
+        mayBeFree: data.mayBeFree,
+        askWithFee: data.askWithFee,
+        cost: Number(data.cost),
+        images: imageHashes,
+        transportOptions: Array.isArray(data.transportOptions) ? data.transportOptions : [data.transportOptions],
+        category: data.category,
+        location: {
+          latitude: Math.round(selectedLocation.lat * 1000000),
+          longitude: Math.round(selectedLocation.lng * 1000000),
+        },
+        estimatedValue: Number(data.estimatedValue),
+        height: Number(data.height),
+        weight: Number(data.weight),
+      })
+    } catch (error) {
+      console.error('Failed to process images:', error)
+      toast({
+        title: 'Failed to upload images',
+        status: 'error',
+        duration: 5000,
+      })
     }
-  };
+  }
+
+  const isLoading = createToolIsPending || uploadImageIsPending
 
   return (
-    <Container maxW="container.md" py={8}>
+    <Container maxW='container.md' py={8}>
       <Stack
-        as="form"
+        as='form'
         onSubmit={handleSubmit(onSubmit)}
         spacing={6}
         bg={bgColor}
         p={8}
-        borderRadius="lg"
-        boxShadow="sm"
+        borderRadius='lg'
+        boxShadow='sm'
       >
-        <Heading size="lg">{t('tools.addTool')}</Heading>
+        <Heading size='lg'>{t('tools.addTool')}</Heading>
 
-        <FormControl isRequired isInvalid={!!errors.name}>
+        <FormControl isRequired isInvalid={!!errors.title}>
           <FormLabel>{t('tools.name')}</FormLabel>
-          <Input {...register('name', { required: true })} />
+          <Input {...register('title', { required: true })} />
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors.description}>
@@ -96,22 +161,18 @@ export const NewToolPage = () => {
           <Textarea {...register('description', { required: true })} />
         </FormControl>
 
-        <FormControl isRequired isInvalid={!!errors.category}>
-          <FormLabel>{t('tools.category')}</FormLabel>
-          <Select {...register('category', { required: true })}>
-            <option value="">{t('tools.selectCategory')}</option>
-            {TOOL_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {t(`categories.${category}`)}
-              </option>
-            ))}
-          </Select>
+        <FormControl>
+          <Checkbox {...register('mayBeFree')}>May Be Free</Checkbox>
         </FormControl>
 
-        <FormControl isRequired isInvalid={!!errors.price}>
-          <FormLabel>{t('tools.pricePerDay')}</FormLabel>
-          <NumberInput min={1}>
-            <NumberInputField {...register('price', { required: true, min: 1 })} />
+        <FormControl>
+          <Checkbox {...register('askWithFee')}>Ask With Fee</Checkbox>
+        </FormControl>
+
+        <FormControl isRequired isInvalid={!!errors.cost}>
+          <FormLabel>Cost per day</FormLabel>
+          <NumberInput min={0}>
+            <NumberInputField {...register('cost', { required: true, min: 0, valueAsNumber: true })} />
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
@@ -119,30 +180,76 @@ export const NewToolPage = () => {
           </NumberInput>
         </FormControl>
 
-        <FormControl isRequired isInvalid={!!errors.location}>
-          <FormLabel>{t('tools.location')}</FormLabel>
-          <Input {...register('location', { required: true })} />
+        <FormControl isRequired isInvalid={!!errors.category}>
+          <FormLabel>{t('tools.category')}</FormLabel>
+          <Select {...register('category', { required: true, valueAsNumber: true })}>
+            {TOOL_CATEGORIES.map((category, index) => (
+              <option key={category} value={index + 1}>
+                {t(`categories.${category}`)}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl isRequired isInvalid={!!errors.transportOptions}>
+          <FormLabel>Transport Options</FormLabel>
+          <Select {...register('transportOptions', { required: true, valueAsNumber: true })} multiple>
+            {TRANSPORT_OPTIONS.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl isRequired isInvalid={!!errors.estimatedValue}>
+          <FormLabel>Estimated Value</FormLabel>
+          <NumberInput min={0}>
+            <NumberInputField {...register('estimatedValue', { required: true, valueAsNumber: true })} />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+
+        <FormControl isRequired isInvalid={!!errors.height}>
+          <FormLabel>Height (cm)</FormLabel>
+          <NumberInput min={0}>
+            <NumberInputField {...register('height', { required: true, valueAsNumber: true })} />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+
+        <FormControl isRequired isInvalid={!!errors.weight}>
+          <FormLabel>Weight (kg)</FormLabel>
+          <NumberInput min={0}>
+            <NumberInputField {...register('weight', { required: true, valueAsNumber: true })} />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+
+        <FormControl isRequired>
+          <FormLabel>Location</FormLabel>
+          <SearchMap tools={[]} onLocationSelect={setSelectedLocation} zoom={13} />
+          {!selectedLocation && <div style={{ color: 'red' }}>Please select a location on the map</div>}
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors.images}>
           <FormLabel>{t('tools.images')}</FormLabel>
-          <Input
-            type="file"
-            accept="image/*"
-            multiple
-            {...register('images', { required: true })}
-          />
+          <Input type='file' accept='image/*' multiple {...register('images', { required: true })} />
         </FormControl>
 
-        <Button
-          type="submit"
-          colorScheme="primary"
-          size="lg"
-          isLoading={isSubmitting}
-        >
+        <Button type='submit' colorScheme='primary' size='lg' isLoading={isLoading}>
           {t('tools.create')}
         </Button>
       </Stack>
     </Container>
-  );
-};
+  )
+}

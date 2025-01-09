@@ -1,6 +1,7 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams} from '~src/features/auth'
 import {LoginResponse} from '~src/features/auth/context/authQueries'
+import {createToolParams} from '~src/features/tools/toolsQueries'
 import {STORAGE_KEYS} from '../constants'
 import type {Booking, SearchFilters, Tool, UserProfile} from '../types'
 
@@ -66,12 +67,16 @@ export const auth = {
 export const tools = {
   getAll: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool[]>>('/tools', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
-  create: (data: FormData) =>
+  create: (data: createToolParams) =>
     apiRequest(
-      api.post<ApiResponse<Tool>>('/tools', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      api.post<ApiResponse<Tool>>('/tools', {
+        ...data,
+        cost: Math.max(0, Math.round(data.cost)),
+        transportOptions: data.transportOptions.map((t) => Math.max(0, Math.round(t))),
+        category: Math.max(0, Math.round(data.category)),
+        estimatedValue: Math.max(0, Math.round(data.estimatedValue)),
+        height: Math.max(0, Math.round(data.height)),
+        weight: Math.max(0, Math.round(data.weight)),
       })
     ),
   update: (id: string, data: FormData) =>
@@ -128,8 +133,14 @@ export const users = {
         },
       })
     ),
-  getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
-  getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
+  // not implemented yet?
+  // getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
+  // getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
+}
+
+// images
+export const images = {
+  uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
 }
 
 export default {
@@ -138,4 +149,5 @@ export default {
   bookings,
   ratings,
   users,
+  images,
 }

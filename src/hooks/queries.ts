@@ -1,6 +1,11 @@
-import {useMutation, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import api from '../services/api'
-import type {SearchFilters} from '../types'
+import type { SearchFilters } from '../types'
+
+export const useUploadImage = () =>
+  useMutation({
+    mutationFn: (content: string) => api.images.uploadImage(content),
+  })
 
 // Tools queries
 export const useTools = (filters?: SearchFilters) =>
@@ -14,11 +19,6 @@ export const useTool = (id: string) =>
     queryKey: ['tool', id],
     queryFn: () => api.tools.getById(id),
     enabled: !!id,
-  })
-
-export const useCreateTool = () =>
-  useMutation({
-    mutationFn: (data: FormData) => api.tools.create(data),
   })
 
 export const useUpdateTool = (id: string) =>
@@ -96,16 +96,16 @@ export const useUpdateProfile = () =>
     mutationFn: (data: FormData) => api.users.updateProfile(data),
   })
 
-export const useUserTools = (userId: string) =>
-  useQuery({
-    queryKey: ['userTools', userId],
-    queryFn: () => api.users.getTools(userId),
-    enabled: !!userId,
-  })
-
-export const useUserBookings = (userId: string) =>
-  useQuery({
-    queryKey: ['userBookings', userId],
-    queryFn: () => api.users.getBookings(userId),
-    enabled: !!userId,
-  })
+// export const useUserTools = (userId: string) =>
+//   useQuery({
+//     queryKey: ['userTools', userId],
+//     queryFn: () => api.users.getTools(userId),
+//     enabled: !!userId,
+//   })
+//
+// export const useUserBookings = (userId: string) =>
+//   useQuery({
+//     queryKey: ['userBookings', userId],
+//     queryFn: () => api.users.getBookings(userId),
+//     enabled: !!userId,
+//   })
