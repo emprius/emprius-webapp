@@ -27,7 +27,7 @@
   },
   "engines": {
     "yarn": "^1.19.x",
-    "node": "20.x"
+    "node": ">=20.x"
   },
   "scripts": {
     "dev": "vite",
