@@ -64,7 +64,7 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getAll: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool>>('/tools', { params })),
+  getAll: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<Tool[]>>('/tools', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: FormData) =>
     apiRequest(
@@ -87,7 +87,7 @@ export const tools = {
 
 // Bookings endpoints
 export const bookings = {
-  getAll: () => apiRequest(api.get<ApiResponse<Booking>>('/bookings')),
+  getAll: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings')),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (toolId: string, data: { startDate: string; endDate: string }) =>
     apiRequest(api.post<ApiResponse<Booking>>(`/tools/${toolId}/bookings`, data)),
@@ -103,15 +103,19 @@ export const ratings = {
   getByTool: (toolId: string) =>
     apiRequest(
       api.get<
-        ApiResponse<{
-          rating: number
-          comment: string
-          user: UserProfile
-        }>
+        // todo(konv1): move this into a object type
+        ApiResponse<
+          {
+            rating: number
+            comment: string
+            user: UserProfile
+          }[]
+        >
       >(`/tools/${toolId}/ratings`)
     ),
   getByUser: (userId: string) =>
-    apiRequest(api.get<ApiResponse<{ rating: number; comment: string; tool: Tool }>>(`/users/${userId}/ratings`)),
+    // todo(konv1): move this into a object type
+    apiRequest(api.get<ApiResponse<{ rating: number; comment: string; tool: Tool }[]>>(`/users/${userId}/ratings`)),
 }
 
 // Users endpoints
@@ -124,8 +128,8 @@ export const users = {
         },
       })
     ),
-  getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool>>(`/users/${userId}/tools`)),
-  getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking>>(`/users/${userId}/bookings`)),
+  getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
+  getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
 }
 
 export default {

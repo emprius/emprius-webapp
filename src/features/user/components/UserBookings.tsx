@@ -1,82 +1,59 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Stack,
-  Text,
-  Badge,
-  Button,
-  Link,
-  useDisclosure,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { FiStar } from 'react-icons/fi';
-import { useUserBookings } from '../../../hooks/queries';
-import { LoadingSpinner } from '../../../components/shared/LoadingSpinner';
-import { RatingModal } from '../../../features/rating/components/RatingModal';
+import { Badge, Box, Button, Link, Stack, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { FiStar } from 'react-icons/fi'
+import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '~src/features/auth/context/AuthContext'
+import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import { RatingModal } from '../../../features/rating/components/RatingModal'
+import { useUserBookings } from '../../../hooks/queries'
 
 export const UserBookings = () => {
-  const { t } = useTranslation();
-  const { data: bookings, isLoading } = useUserBookings('me');
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useTranslation()
+  const { user } = useAuth()
+  const { data: bookings, isLoading } = useUserBookings(user.id)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedBooking, setSelectedBooking] = useState<{
-    id: string;
-    toolId: string;
-  } | null>(null);
+    id: string
+    toolId: string
+  } | null>(null)
 
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   const handleRateClick = (bookingId: string, toolId: string) => {
-    setSelectedBooking({ id: bookingId, toolId });
-    onOpen();
-  };
-
-  if (isLoading) {
-    return <LoadingSpinner />;
+    setSelectedBooking({ id: bookingId, toolId })
+    onOpen()
   }
 
-  if (!bookings?.data.length) {
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (!bookings?.length) {
     return (
-      <Box
-        p={6}
-        bg={bgColor}
-        borderRadius="lg"
-        borderWidth={1}
-        borderColor={borderColor}
-        textAlign="center"
-      >
-        <Text color="gray.600">
-          {t('user.noBookings')}
-        </Text>
+      <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
+        <Text color='gray.600'>{t('user.noBookings')}</Text>
       </Box>
-    );
+    )
   }
 
   return (
     <>
       <Stack spacing={4}>
-        {bookings.data.map((booking) => (
-          <Box
-            key={booking.id}
-            p={6}
-            bg={bgColor}
-            borderRadius="lg"
-            borderWidth={1}
-            borderColor={borderColor}
-          >
+        {bookings.map((booking) => (
+          <Box key={booking.id} p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
             <Stack spacing={4}>
               <Stack
                 direction={{ base: 'column', sm: 'row' }}
-                justify="space-between"
+                justify='space-between'
                 align={{ base: 'flex-start', sm: 'center' }}
               >
                 <Link
                   as={RouterLink}
                   to={`/tools/${booking.tool.id}`}
-                  fontWeight="semibold"
-                  fontSize="lg"
+                  fontWeight='semibold'
+                  fontSize='lg'
                   _hover={{ color: 'primary.500', textDecoration: 'none' }}
                 >
                   {booking.tool.name}
@@ -86,32 +63,27 @@ export const UserBookings = () => {
                     booking.status === 'completed'
                       ? 'green'
                       : booking.status === 'cancelled'
-                      ? 'red'
-                      : booking.status === 'confirmed'
-                      ? 'blue'
-                      : 'yellow'
+                        ? 'red'
+                        : booking.status === 'confirmed'
+                          ? 'blue'
+                          : 'yellow'
                   }
                   px={2}
                   py={1}
-                  borderRadius="full"
+                  borderRadius='full'
                 >
                   {t(`bookings.status.${booking.status}`)}
                 </Badge>
               </Stack>
 
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                spacing={4}
-                color="gray.600"
-              >
+              <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} color='gray.600'>
                 <Text>
-                  {new Date(booking.startDate).toLocaleDateString()} -{' '}
-                  {new Date(booking.endDate).toLocaleDateString()}
+                  {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
                 </Text>
-                <Text fontWeight="medium">
+                <Text fontWeight='medium'>
                   {t('tools.pricePerDay')}: {booking.tool.price}€
                 </Text>
-                <Text fontWeight="medium">
+                <Text fontWeight='medium'>
                   {t('bookings.total')}: {booking.totalPrice}€
                 </Text>
               </Stack>
@@ -119,9 +91,9 @@ export const UserBookings = () => {
               {booking.status === 'completed' && (
                 <Button
                   leftIcon={<FiStar />}
-                  variant="outline"
+                  variant='outline'
                   onClick={() => handleRateClick(booking.id, booking.tool.id)}
-                  alignSelf="flex-start"
+                  alignSelf='flex-start'
                 >
                   {t('rating.rateTool')}
                 </Button>
@@ -135,13 +107,13 @@ export const UserBookings = () => {
         <RatingModal
           isOpen={isOpen}
           onClose={() => {
-            onClose();
-            setSelectedBooking(null);
+            onClose()
+            setSelectedBooking(null)
           }}
           toolId={selectedBooking.toolId}
           bookingId={selectedBooking.id}
         />
       )}
     </>
-  );
-};
+  )
+}

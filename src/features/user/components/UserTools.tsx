@@ -1,13 +1,14 @@
-import React from 'react'
 import { Box, SimpleGrid, Text, useColorModeValue } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useUserBookings, useUserTools } from '../../../hooks/queries'
-import { ToolCard } from '../../../features/tools/components/ToolCard'
+import { useAuth } from '~src/features/auth/context/AuthContext'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import { ToolCard } from '../../../features/tools/components/ToolCard'
+import { useUserTools } from '../../../hooks/queries'
 
 export const UserTools = () => {
   const { t } = useTranslation()
-  const { data: bookings, isLoading } = useUserBookings('me')
+  const { user } = useAuth()
   const { data: tools, isLoading } = useUserTools(user.id)
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -17,7 +18,7 @@ export const UserTools = () => {
     return <LoadingSpinner />
   }
 
-  if (!tools?.data.length) {
+  if (!tools?.length) {
     return (
       <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
         <Text color='gray.600'>{t('user.noTools')}</Text>
@@ -27,7 +28,7 @@ export const UserTools = () => {
 
   return (
     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-      {tools.data.map((tool) => (
+      {tools.map((tool) => (
         <ToolCard key={tool.id} tool={tool} />
       ))}
     </SimpleGrid>

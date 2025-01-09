@@ -2,33 +2,29 @@ import { Avatar, Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
-import { useCurrentUser } from '~src/features/auth/context/authQueries'
+import { useAuth } from '~src/features/auth/context/AuthContext'
+import { Rating } from '~src/types'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { RatingList } from '../../../features/rating/components/RatingList'
 import { useUserRatings } from '../../../hooks/queries'
 
 export const UserInfo = () => {
   const { t } = useTranslation()
-  const { data: user, isLoading: isLoadingUser } = useCurrentUser()
-  const { data: ratingsResponse, isLoading: isLoadingRatings } = useUserRatings(user?.id)
+  const { user } = useAuth()
+  const { data: ratingsResponse, isLoading } = useUserRatings(user?.id)
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
-  if (isLoadingUser) {
-    return <LoadingSpinner />
-  }
-
   // Transform the paginated response into the format expected by RatingList
-  const ratings = []
-  // const ratings = ratingsResponse
-  //   ? ratingsResponse.data.map((rating: Rating) => ({
-  //       rating: rating.rating,
-  //       comment: rating.comment,
-  //       tool: rating.tool,
-  //       createdAt: rating.createdAt,
-  //     }))
-  //   : []
+  const ratings = ratingsResponse
+    ? ratingsResponse?.map((rating: Rating) => ({
+        rating: rating.rating,
+        comment: rating.comment,
+        tool: rating.tool,
+        createdAt: rating.createdAt,
+      }))
+    : []
 
   return (
     <Stack spacing={8}>
@@ -58,7 +54,7 @@ export const UserInfo = () => {
         <Heading size='md' mb={4}>
           {t('rating.reviews')}
         </Heading>
-        {isLoadingRatings ? <LoadingSpinner /> : <RatingList ratings={ratings} showUser={false} showTool={true} />}
+        {isLoading ? <LoadingSpinner /> : <RatingList ratings={ratings} showUser={false} showTool={true} />}
       </Box>
     </Stack>
   )
