@@ -13,22 +13,12 @@ import {
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~src/components/shared/Form/LocationPicker'
-import { AvatarUpload } from './AvatarUpload'
+import { Avatar } from './Avatar'
 import { useUpdateUserProfile } from '../userQueries'
 import { AUTH_FORM } from '~src/constants'
 import { useUploadImage } from '~src/hooks/queries'
-import { EditProfileFormData } from '~src/types'
-
-interface EditProfileFormProps {
-  initialData: {
-    name: string
-    email: string
-    location?: { latitude: number; longitude: number }
-    active: boolean
-    avatar?: string
-  }
-  onSuccess?: () => void
-}
+import { EditProfileFormData, EditProfileFormProps } from '~src/types'
+import { getB64FromFile } from '~src/utils'
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
@@ -39,7 +29,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     watch,
     setValue,
   } = useForm<EditProfileFormData>({
@@ -52,28 +42,44 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
   const password = watch('password')
 
   const onSubmit = async (data: EditProfileFormData) => {
-    console.log('AAAA')
-    let avatar = initialData.avatar
-    if (newAvatar) {
-      try {
-        // Upload images first
-        avatar = (await uploadImage(newAvatar)).hash
-      } catch (error) {
-        console.error('Failed to process images:', error)
-        toast({
-          title: 'Failed to upload images',
-          status: 'error',
-          duration: 5000,
-        })
-        return
+    // Create an object with only the modified fields
+    const updatedFields = Object.keys(dirtyFields).reduce((acc, key) => {
+      const fieldKey = key as keyof EditProfileFormData
+      return {
+        ...acc,
+        [fieldKey]: data[fieldKey],
       }
+    }, {} as Partial<EditProfileFormData>)
+
+    try {
+      // Always include avatar if it was changed
+      if (newAvatar) {
+        updatedFields.avatar = await getB64FromFile(newAvatar)
+      }
+    } catch (error) {
+      console.error('Failed to process images:', error)
+      toast({
+        title: 'Failed to get image',
+        status: 'error',
+        duration: 5000,
+      })
+      throw new Error('Failed to process images:', error)
+    }
+
+    // Only include password fields if password was modified
+    if (!dirtyFields.password) {
+      delete updatedFields.password
+      delete updatedFields.confirmPassword
+    }
+
+    // Include location if it was modified (location is handled separately through setValue)
+    if (data.location !== initialData.location) {
+      updatedFields.location = data.location
     }
 
     try {
-      await updateProfile.mutateAsync({
-        ...data,
-        avatar,
-      })
+      // Cast to EditProfileFormData since we know the API handles partial updates
+      await updateProfile.mutateAsync(updatedFields as EditProfileFormData)
       toast({
         title: t('common.success'),
         description: t('user.profileUpdated'),
@@ -94,7 +100,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={6} align='stretch'>
         <Box display='flex' justifyContent='center' mb={4}>
-          <AvatarUpload currentAvatar={initialData.avatar} onAvatarChange={(hash) => setNewAvatar(hash)} />
+          <Avatar currentAvatar={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
         </Box>
 
         <FormControl isInvalid={!!errors.name}>

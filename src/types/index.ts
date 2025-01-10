@@ -2,7 +2,7 @@ export interface UserProfile {
   id: string
   name: string
   email: string
-  avatar?: string
+  avatarHash?: string
   bio?: string
   rating: number
   ratingCount: number
@@ -89,5 +89,16 @@ export interface EditProfileFormData {
   confirmPassword?: string
   location?: { latitude: number; longitude: number }
   active: boolean
-  avatar?: string
+  avatar?: string // b64 string
+}
+
+export interface EditProfileFormProps {
+  initialData: {
+    name: string
+    email: string
+    location?: { latitude: number; longitude: number }
+    active: boolean
+    avatarHash?: string
+  }
+  onSuccess?: () => void
 }

@@ -1,21 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import api from '../services/api'
 import type { SearchFilters } from '../types'
+import { getB64FromFile } from '~src/utils'
 
 export const useUploadImage = () =>
   useMutation({
     mutationFn: async (file: File) => {
-      const reader = new FileReader()
-      const base64Promise = new Promise<string>((resolve, reject) => {
-        reader.onload = () => {
-          const base64 = reader.result?.toString().split(',')[1]
-          if (base64) resolve(base64)
-          else reject('Failed to convert image to base64')
-        }
-        reader.onerror = () => reject('Failed to read file')
-      })
-      reader.readAsDataURL(file)
-      const base64 = await base64Promise
+      const base64 = await getB64FromFile(file)
       return api.images.uploadImage(base64)
     },
   })

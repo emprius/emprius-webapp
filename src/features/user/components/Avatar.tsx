@@ -12,7 +12,7 @@ interface AvatarUploadProps {
 export const Avatar: React.FC<AvatarUploadProps> = ({ currentAvatar, onAvatarChange }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const toast = useToast()
-  const [previewUrl, setPreviewUrl] = useState<string | undefined>(currentAvatar)
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>()
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]

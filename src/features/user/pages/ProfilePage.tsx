@@ -37,7 +37,7 @@ export const ProfilePage = () => {
                 email: user?.email || '',
                 location: user?.location,
                 active: user?.active || false,
-                avatar: user?.avatar,
+                avatarHash: user?.avatarHash,
               }}
               onSuccess={onToggle}
             />

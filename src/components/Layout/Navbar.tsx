@@ -43,12 +43,8 @@ export const Navbar = () => {
     >
       <Container maxW='container.xl' py={4}>
         <Stack direction='row' justify='space-between' align='center' spacing={8}>
-          <Link
-            as={RouterLink}
-            to='/'
-            _hover={{ textDecoration: 'none' }}
-          >
-            <Box as="img" src="/assets/logos/logo.png" alt="Emprius" h="40px" />
+          <Link as={RouterLink} to='/' _hover={{ textDecoration: 'none' }}>
+            <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
           </Link>
 
           <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
@@ -64,7 +60,7 @@ export const Navbar = () => {
             {isAuthenticated ? (
               <Menu>
                 <MenuButton>
-                  <Avatar size='sm' name={user?.name} src={user?.avatar} cursor='pointer' />
+                  <Avatar size='sm' name={user?.name} src={user?.avatarHash} cursor='pointer' />
                 </MenuButton>
                 <MenuList>
                   <MenuItem icon={<FiUser />} onClick={() => navigate('/profile')}>

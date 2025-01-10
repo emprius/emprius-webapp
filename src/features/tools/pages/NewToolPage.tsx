@@ -101,13 +101,12 @@ export const NewToolPage = () => {
       })
       imageHashes = await Promise.all(imagePromises)
     } catch (error) {
-      console.error('Failed to process images:', error)
       toast({
         title: 'Failed to upload images',
         status: 'error',
         duration: 5000,
       })
-      return
+      throw new Error('Failed to process images:', error)
     }
 
     await createTool({

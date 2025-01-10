@@ -31,7 +31,7 @@ export const UserInfo = () => {
       <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
         <Stack spacing={6}>
           <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
-            <Avatar size='2xl' name={user.name} src={user.avatar} />
+            <Avatar size='2xl' name={user.name} src={user.avatarHash} />
             <Stack spacing={3}>
               <Heading size='lg'>{user.name}</Heading>
               <Stack direction='row' align='center' spacing={2}>

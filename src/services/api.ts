@@ -129,7 +129,8 @@ export const ratings = {
 
 // Users endpoints
 export const users = {
-  updateProfile: (data: EditProfileFormData) => apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
+  updateProfile: (data: Partial<EditProfileFormData>) =>
+    apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
   // not implemented yet?
   // getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
   // getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
