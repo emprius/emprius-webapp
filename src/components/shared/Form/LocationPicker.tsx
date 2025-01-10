@@ -58,13 +58,15 @@ const MapController = ({
 
 export const LocationPicker: React.FC<LocationPickerProps> = ({ onChange, value, isRequired = false, error }) => {
   const { t } = useTranslation()
-  const [position, setPosition] = useState<LatLng | null>(value ? new LatLng(value.latitude, value.longitude) : null)
+  const [position, setPosition] = useState<LatLng | null>(
+    value ? new LatLng(value.latitude / 1000000, value.longitude / 1000000) : null
+  )
 
   const handleLocationSelect = (latLng: LatLng) => {
     setPosition(latLng)
     onChange({
-      latitude: latLng.lat,
-      longitude: latLng.lng,
+      latitude: Math.round(latLng.lat * 1000000),
+      longitude: Math.round(latLng.lng * 1000000),
     })
   }
 
