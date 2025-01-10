@@ -8,6 +8,11 @@ export interface UserProfile {
   ratingCount: number
   createdAt: string
   updatedAt: string
+  location?: {
+    latitude: number
+    longitude: number
+  }
+  active: boolean
 }
 
 export interface Image {
@@ -75,4 +80,14 @@ export interface SearchFilters {
   lat?: number
   lng?: number
   radius?: number
+}
+
+export interface EditProfileFormData {
+  name: string
+  email: string
+  password?: string
+  confirmPassword?: string
+  location?: { latitude: number; longitude: number }
+  active: boolean
+  avatar?: string
 }

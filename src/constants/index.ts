@@ -118,4 +118,5 @@ export const QUERY_KEYS = {
  */
 export const ASSETS = {
   TOOL_FALLBACK: '/assets/tools/tool-fallback.svg',
+  AVATAR_FALLBACK: '/assets/avatars/fallback.png',
 } as const

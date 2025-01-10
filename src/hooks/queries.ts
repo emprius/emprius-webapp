@@ -4,7 +4,20 @@ import type { SearchFilters } from '../types'
 
 export const useUploadImage = () =>
   useMutation({
-    mutationFn: (content: string) => api.images.uploadImage(content),
+    mutationFn: async (file: File) => {
+      const reader = new FileReader()
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const base64 = reader.result?.toString().split(',')[1]
+          if (base64) resolve(base64)
+          else reject('Failed to convert image to base64')
+        }
+        reader.onerror = () => reject('Failed to read file')
+      })
+      reader.readAsDataURL(file)
+      const base64 = await base64Promise
+      return api.images.uploadImage(base64)
+    },
   })
 
 // Tools queries
@@ -32,11 +45,11 @@ export const useDeleteTool = () =>
   })
 
 // Bookings queries
-export const useBookings = () =>
-  useQuery({
-    queryKey: ['bookings'],
-    queryFn: () => api.bookings.getAll(),
-  })
+// export const useBookings = () =>
+//   useQuery({
+//     queryKey: ['bookings'],
+//     queryFn: () => api.bookings.getAll(),
+//   })
 
 export const useBooking = (id: string) =>
   useQuery({

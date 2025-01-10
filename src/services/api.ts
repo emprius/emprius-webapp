@@ -4,7 +4,7 @@ import {LoginResponse} from '~src/features/auth/context/authQueries'
 import {createToolParams} from '~src/features/tools/toolsQueries'
 import {STORAGE_KEYS} from '../constants'
 import type {Booking, SearchFilters, Tool, UserProfile} from '../types'
-import {ImageContent} from '../types'
+import {EditProfileFormData, ImageContent} from '../types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -129,14 +129,7 @@ export const ratings = {
 
 // Users endpoints
 export const users = {
-  updateProfile: (data: FormData) =>
-    apiRequest(
-      api.post<ApiResponse<UserProfile>>('/profile', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-    ),
+  updateProfile: (data: EditProfileFormData) => apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
   // not implemented yet?
   // getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
   // getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
@@ -144,6 +137,7 @@ export const users = {
 
 // images
 export const images = {
+  // todo(konv1): move this into a object type
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
   getImage: (hash: string) => apiRequest(api.get<ApiResponse<ImageContent>>(`/images/${hash}`)),
 }

@@ -91,41 +91,15 @@ export const NewToolPage = () => {
   })
 
   const onSubmit = async (data: NewToolForm) => {
+    let imageHashes: string[] = []
     try {
       // Upload images first
       const imageFiles = Array.from(data.images)
       const imagePromises = imageFiles.map(async (file) => {
-        const reader = new FileReader()
-        const base64Promise = new Promise<string>((resolve, reject) => {
-          reader.onload = () => {
-            const base64 = reader.result?.toString().split(',')[1]
-            if (base64) resolve(base64)
-            else reject('Failed to convert image to base64')
-          }
-          reader.onerror = () => reject('Failed to read file')
-        })
-        reader.readAsDataURL(file)
-        const base64 = await base64Promise
-        const result = await uploadImage(base64)
+        const result = await uploadImage(file)
         return result.hash
       })
-
-      const imageHashes = await Promise.all(imagePromises)
-
-      await createTool({
-        title: data.title,
-        description: data.description,
-        mayBeFree: data.mayBeFree,
-        askWithFee: data.askWithFee,
-        cost: Number(data.cost),
-        images: imageHashes,
-        transportOptions: Array.isArray(data.transportOptions) ? data.transportOptions : [data.transportOptions],
-        category: data.category,
-        location: data.location,
-        estimatedValue: Number(data.estimatedValue),
-        height: Number(data.height),
-        weight: Number(data.weight),
-      })
+      imageHashes = await Promise.all(imagePromises)
     } catch (error) {
       console.error('Failed to process images:', error)
       toast({
@@ -133,7 +107,23 @@ export const NewToolPage = () => {
         status: 'error',
         duration: 5000,
       })
+      return
     }
+
+    await createTool({
+      title: data.title,
+      description: data.description,
+      mayBeFree: data.mayBeFree,
+      askWithFee: data.askWithFee,
+      cost: Number(data.cost),
+      images: imageHashes,
+      transportOptions: Array.isArray(data.transportOptions) ? data.transportOptions : [data.transportOptions],
+      category: data.category,
+      location: data.location,
+      estimatedValue: Number(data.estimatedValue),
+      height: Number(data.height),
+      weight: Number(data.weight),
+    })
   }
 
   const isLoading = createToolIsPending || uploadImageIsPending
