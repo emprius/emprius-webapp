@@ -159,6 +159,7 @@ export const RegisterPage = () => {
           </FormControl>
 
           <FormControl isInvalid={!!errors.location}>
+            <FormLabel>Location</FormLabel>
             <LocationPicker
               onChange={(location) => {
                 const event = {

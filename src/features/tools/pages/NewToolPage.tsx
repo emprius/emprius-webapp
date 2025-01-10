@@ -3,6 +3,7 @@ import {
   Checkbox,
   Container,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -24,7 +25,8 @@ import { useNavigate } from 'react-router-dom'
 import { useCreateTool } from '~src/features/tools/toolsQueries'
 import { useUploadImage } from '~src/hooks/queries'
 import { TOOL_CATEGORIES } from '../../../constants'
-import { SearchMap } from '../components/SearchMap'
+import { LocationPicker } from '~components/shared/Form/LocationPicker'
+import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 
 const TRANSPORT_OPTIONS = [
   { id: 1, label: 'Pickup' },
@@ -43,6 +45,10 @@ interface NewToolForm {
   height: number
   weight: number
   images: FileList
+  location?: {
+    latitude: number
+    longitude: number
+  }
 }
 
 export const NewToolPage = () => {
@@ -52,15 +58,19 @@ export const NewToolPage = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
 
-  const [selectedLocation, setSelectedLocation] = React.useState<{ lat: number; lng: number } | null>(null)
-
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<NewToolForm>()
 
-  const { mutateAsync: createTool, isPending: createToolIsPending } = useCreateTool({
+  const {
+    mutateAsync: createTool,
+    isPending: createToolIsPending,
+    isError,
+    error,
+  } = useCreateTool({
     onSuccess: () => {
       toast({
         title: t('tools.createSuccess'),
@@ -81,14 +91,6 @@ export const NewToolPage = () => {
 
   const onSubmit = async (data: NewToolForm) => {
     try {
-      if (!selectedLocation) {
-        toast({
-          title: 'Please select a location on the map',
-          status: 'error',
-          duration: 3000,
-        })
-        return
-      }
       // Upload images first
       const imageFiles = Array.from(data.images)
       const imagePromises = imageFiles.map(async (file) => {
@@ -118,10 +120,7 @@ export const NewToolPage = () => {
         images: imageHashes,
         transportOptions: Array.isArray(data.transportOptions) ? data.transportOptions : [data.transportOptions],
         category: data.category,
-        location: {
-          latitude: Math.round(selectedLocation.lat * 1000000),
-          longitude: Math.round(selectedLocation.lng * 1000000),
-        },
+        location: data.location,
         estimatedValue: Number(data.estimatedValue),
         height: Number(data.height),
         weight: Number(data.weight),
@@ -237,8 +236,19 @@ export const NewToolPage = () => {
 
         <FormControl isRequired>
           <FormLabel>Location</FormLabel>
-          <SearchMap tools={[]} onLocationSelect={setSelectedLocation} zoom={13} />
-          {!selectedLocation && <div style={{ color: 'red' }}>Please select a location on the map</div>}
+          <LocationPicker
+            onChange={(location) => {
+              const event = {
+                target: {
+                  name: 'location',
+                  value: location,
+                },
+              }
+              register('location').onChange(event)
+            }}
+            value={watch('location')}
+          />
+          <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors.images}>
@@ -249,6 +259,7 @@ export const NewToolPage = () => {
         <Button type='submit' colorScheme='primary' size='lg' isLoading={isLoading}>
           {t('tools.create')}
         </Button>
+        <FormSubmitMessage isError={isError} error={error} />
       </Stack>
     </Container>
   )
