@@ -1,0 +1,537 @@
+openapi: 3.0.0
+info:
+  title: Emprius App Backend API
+  version: 1.0.0
+  description: API for the Emprius App Backend service
+
+tags:
+  - name: System
+    description: System-related operations like health checks
+  - name: Authentication
+    description: User authentication and registration operations
+  - name: Users
+    description: User profile management operations
+  - name: Tools
+    description: Tool management and search operations
+  - name: Bookings
+    description: Booking management and rating operations
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: integer
+          format: int64
+          description: Latitude in microdegrees
+        longitude:
+          type: integer
+          format: int64
+          description: Longitude in microdegrees
+
+    DateRange:
+      type: object
+      properties:
+        from:
+          type: integer
+          format: uint32
+          description: Start date in UNIX timestamp
+        to:
+          type: integer
+          format: uint32
+          description: End date in UNIX timestamp
+
+    Tool:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        isAvailable:
+          type: boolean
+        mayBeFree:
+          type: boolean
+        askWithFee:
+          type: boolean
+        cost:
+          type: integer
+          format: uint64
+        userId:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+            format: byte
+        transportOptions:
+          type: array
+          items:
+            type: integer
+        toolCategory:
+          type: integer
+        location:
+          $ref: '#/components/schemas/Location'
+        rating:
+          type: integer
+          format: int32
+        estimatedValue:
+          type: integer
+          format: uint64
+        height:
+          type: integer
+          format: uint32
+        weight:
+          type: integer
+          format: uint32
+        reservedDates:
+          type: array
+          items:
+            $ref: '#/components/schemas/DateRange'
+
+    UserProfile:
+      type: object
+      properties:
+        name:
+          type: string
+        community:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        active:
+          type: boolean
+        avatar:
+          type: string
+          format: byte
+        password:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        expirity:
+          type: string
+          format: date-time
+
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - invitationToken
+      properties:
+        email:
+          type: string
+          format: email
+        invitationToken:
+          type: string
+        name:
+          type: string
+        community:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        password:
+          type: string
+
+    CreateBookingRequest:
+      type: object
+      required:
+        - toolId
+        - startDate
+        - endDate
+      properties:
+        toolId:
+          type: string
+        startDate:
+          type: integer
+          format: int64
+        endDate:
+          type: integer
+          format: int64
+        contact:
+          type: string
+        comments:
+          type: string
+
+    BookingResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        toolId:
+          type: string
+        fromUserId:
+          type: string
+        toUserId:
+          type: string
+        startDate:
+          type: integer
+          format: int64
+        endDate:
+          type: integer
+          format: int64
+        contact:
+          type: string
+        comments:
+          type: string
+        bookingStatus:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+paths:
+  /ping:
+    get:
+      tags:
+        - System
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Server is alive
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "."
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and get JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registration successful
+
+  /profile:
+    get:
+      tags:
+        - Users
+      summary: Get user profile
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    post:
+      tags:
+        - Users
+      summary: Update user profile
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: Profile updated successfully
+
+  /tools:
+    get:
+      tags:
+        - Tools
+      summary: Get user's own tools
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+    post:
+      tags:
+        - Tools
+      summary: Add a new tool
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tool'
+      responses:
+        '200':
+          description: Tool added successfully
+
+  /tools/search:
+    get:
+      tags:
+        - Tools
+      summary: Search tools
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: term
+          in: query
+          schema:
+            type: string
+        - name: categories
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: distance
+          in: query
+          schema:
+            type: integer
+        - name: maxCost
+          in: query
+          schema:
+            type: integer
+            format: uint64
+        - name: mayBeFree
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+
+  /tools/{id}:
+    get:
+      tags:
+        - Tools
+      summary: Get tool by ID
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tool details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tool'
+    put:
+      tags:
+        - Tools
+      summary: Update tool
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tool'
+      responses:
+        '200':
+          description: Tool updated successfully
+    delete:
+      tags:
+        - Tools
+      summary: Delete tool
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tool deleted successfully
+
+  /bookings:
+    post:
+      tags:
+        - Bookings
+      summary: Create a new booking
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+      responses:
+        '200':
+          description: Booking created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+
+  /bookings/requests:
+    get:
+      tags:
+        - Bookings
+      summary: Get booking requests
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of booking requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingResponse'
+
+  /bookings/petitions:
+    get:
+      tags:
+        - Bookings
+      summary: Get booking petitions
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of booking petitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingResponse'
+
+  /bookings/{bookingId}:
+    get:
+      tags:
+        - Bookings
+      summary: Get booking by ID
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Booking details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+
+  /bookings/{bookingId}/return:
+    post:
+      tags:
+        - Bookings
+      summary: Return a booking
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Booking returned successfully
+
+  /bookings/rates:
+    get:
+      tags:
+        - Bookings
+      summary: Get pending ratings
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of pending ratings
+    post:
+      tags:
+        - Bookings
+      summary: Rate a booking
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Rating submitted successfully
