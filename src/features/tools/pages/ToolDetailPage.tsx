@@ -9,9 +9,9 @@ import {
   Text,
   Badge,
   Link,
-  Image,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { ServerImage } from '../../../components/shared/ServerImage';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FiMapPin, FiStar } from 'react-icons/fi';
@@ -52,8 +52,8 @@ export const ToolDetailPage = () => {
               overflow="hidden"
             >
               {tool.images.length > 0 && (
-                <Image
-                  src={`/api/images/${tool.images[0].hash}`}
+                <ServerImage
+                  imageId={tool.images[0].hash}
                   alt={tool.title}
                   height="400px"
                   width="100%"
@@ -139,9 +139,9 @@ export const ToolDetailPage = () => {
                   <Heading size="md">{t('tools.images')}</Heading>
                   <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={4}>
                     {tool.images.map((image, index) => (
-                      <Image
+                      <ServerImage
                         key={image.hash}
-                        src={`/api/images/${image.hash}`}
+                        imageId={image.hash}
                         alt={`${tool.title} - ${image.name}`}
                         height="200px"
                         width="100%"
