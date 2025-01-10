@@ -27,81 +27,84 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
     const [previews, setPreviews] = useState<string[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
 
+    const [files, setFiles] = useState<File[]>([])
+
     const handleFileChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files
-        if (!files) return
+        const newFiles = event.target.files
+        if (!newFiles) return
 
-        // Create a DataTransfer object to combine existing and new files
-        const dataTransfer = new DataTransfer()
+        const filesArray = Array.from(newFiles)
         
-        // Add existing files from the input
-        const existingInput = document.querySelector(`input[name="${name}"]`) as HTMLInputElement
-        if (existingInput?.files) {
-          Array.from(existingInput.files).forEach(file => {
-            dataTransfer.items.add(file)
-          })
-        }
-        
-        // Add new files
-        Array.from(files).forEach(file => {
-          dataTransfer.items.add(file)
+        // Update files state and create DataTransfer object
+        setFiles(prev => {
+          const updatedFiles = [...prev, ...filesArray]
+          
+          // Create a new DataTransfer object with all files
+          const dataTransfer = new DataTransfer()
+          updatedFiles.forEach(file => dataTransfer.items.add(file))
+
+          // Update the file input's files
+          if (fileInputRef.current) {
+            fileInputRef.current.files = dataTransfer.files
+          }
+
+          return updatedFiles
         })
 
         // Create preview URLs for new files
-        const newPreviews = Array.from(files).map((file) => URL.createObjectURL(file))
+        const newPreviews = filesArray.map((file) => URL.createObjectURL(file))
         setPreviews((prev) => [...prev, ...newPreviews])
 
-        // Create a new change event with all files
-        const newEvent = {
-          target: {
-            name,
-            files: dataTransfer.files
-          }
-        } as unknown as React.ChangeEvent<HTMLInputElement>
-
-        // Call the original onChange from react-hook-form
-        onChange(newEvent)
-
-        // Reset the file input so the same file can be selected again
+        // Create a change event with all files
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          const syntheticEvent = {
+            target: fileInputRef.current,
+            currentTarget: fileInputRef.current,
+            type: 'change',
+            bubbles: true,
+            cancelable: true,
+            timeStamp: Date.now()
+          } as unknown as React.ChangeEvent<HTMLInputElement>
+          onChange(syntheticEvent)
         }
       },
-      [name, onChange]
+      [onChange]
     )
 
     const removeImage = useCallback(
       (index: number) => {
-        const dataTransfer = new DataTransfer()
-        const input = document.querySelector(`input[name="${name}"]`) as HTMLInputElement
-        const files = input?.files
-        
-        if (files) {
-          Array.from(files).forEach((file, i) => {
-            if (i !== index) {
-              dataTransfer.items.add(file)
-            }
-          })
+        // Update files array
+        setFiles(prev => {
+          const newFiles = prev.filter((_, i) => i !== index)
+          
+          // Create a new DataTransfer object with remaining files
+          const dataTransfer = new DataTransfer()
+          newFiles.forEach(file => dataTransfer.items.add(file))
 
-          // Create a new change event
-          const newEvent = {
-            target: {
-              name,
-              files: dataTransfer.files
-            }
-          } as unknown as React.ChangeEvent<HTMLInputElement>
+          // Create a change event with the updated files
+          if (fileInputRef.current) {
+            fileInputRef.current.files = dataTransfer.files
+            const syntheticEvent = {
+              target: fileInputRef.current,
+              currentTarget: fileInputRef.current,
+              type: 'change',
+              bubbles: true,
+              cancelable: true,
+              timeStamp: Date.now()
+            } as unknown as React.ChangeEvent<HTMLInputElement>
+            onChange(syntheticEvent)
+          }
 
-          // Update previews
-          setPreviews((prev) => {
-            const newPreviews = prev.filter((_, i) => i !== index)
-            URL.revokeObjectURL(prev[index])
-            return newPreviews
-          })
+          return newFiles
+        })
 
-          // Call the original onChange with our synthetic event
-          onChange(newEvent)
-        }
+        // Update previews
+        setPreviews((prev) => {
+          const newPreviews = prev.filter((_, i) => i !== index)
+          URL.revokeObjectURL(prev[index])
+          return newPreviews
+        })
       },
       [name, onChange]
     )
@@ -110,8 +113,28 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
       fileInputRef.current?.click()
     }
 
+    // Initialize file input with files when component mounts and trigger onChange
     React.useEffect(() => {
-      // Cleanup preview URLs when component unmounts
+      if (fileInputRef.current && files.length > 0) {
+        const dataTransfer = new DataTransfer()
+        files.forEach(file => dataTransfer.items.add(file))
+        fileInputRef.current.files = dataTransfer.files
+
+        // Trigger onChange to ensure form is aware of files
+        const syntheticEvent = {
+          target: fileInputRef.current,
+          currentTarget: fileInputRef.current,
+          type: 'change',
+          bubbles: true,
+          cancelable: true,
+          timeStamp: Date.now()
+        } as unknown as React.ChangeEvent<HTMLInputElement>
+        onChange(syntheticEvent)
+      }
+    }, [files, onChange])
+
+    // Cleanup preview URLs when component unmounts
+    React.useEffect(() => {
       return () => {
         previews.forEach((url) => URL.revokeObjectURL(url))
       }
