@@ -16,7 +16,6 @@ import { LocationPicker } from '~src/components/shared/Form/LocationPicker'
 import { Avatar } from './Avatar'
 import { useUpdateUserProfile } from '../userQueries'
 import { AUTH_FORM } from '~src/constants'
-import { useUploadImage } from '~src/hooks/queries'
 import { EditProfileFormData, EditProfileFormProps } from '~src/types'
 import { getB64FromFile } from '~src/utils'
 
@@ -24,7 +23,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
   const { t } = useTranslation()
   const toast = useToast()
   const updateProfile = useUpdateUserProfile()
-  const [newAvatar, setNewAvatar] = useState<File>()
+  const [newAvatar, setNewAvatar] = useState<File | ''>()
 
   const {
     register,
@@ -37,7 +36,6 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
       ...initialData,
     },
   })
-  const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
 
   const password = watch('password')
 
@@ -53,8 +51,8 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
 
     try {
       // Always include avatar if it was changed
-      if (newAvatar) {
-        updatedFields.avatar = await getB64FromFile(newAvatar)
+      if (newAvatar !== undefined) {
+        updatedFields.avatar = newAvatar === '' ? '' : await getB64FromFile(newAvatar)
       }
     } catch (error) {
       console.error('Failed to process images:', error)
@@ -95,12 +93,11 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
     }
   }
 
-  const isLoading = updateProfile.isPending || uploadImageIsPending
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={6} align='stretch'>
         <Box display='flex' justifyContent='center' mb={4}>
-          <Avatar currentAvatar={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
+          <Avatar currentAvatar={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} showControls />
         </Box>
 
         <FormControl isInvalid={!!errors.name}>
@@ -167,7 +164,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
           <Switch {...register('active')} />
         </FormControl>
 
-        <Button type='submit' colorScheme='blue' isLoading={isLoading} loadingText={t('common.saving')}>
+        <Button type='submit' colorScheme='blue' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
           {t('common.save')}
         </Button>
       </VStack>

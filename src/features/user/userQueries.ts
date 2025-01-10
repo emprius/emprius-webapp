@@ -1,4 +1,4 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { Booking, EditProfileFormData, UserProfile } from '~src/types'
 
@@ -22,8 +22,15 @@ export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, '
     ...options,
   })
 
-export const useUpdateUserProfile = () =>
-  useMutation<UserProfile, Error, EditProfileFormData>({
+export const useUpdateUserProfile = () => {
+  const client = useQueryClient()
+  return useMutation<UserProfile, Error, EditProfileFormData>({
     mutationFn: (data) => api.users.updateProfile(data),
     mutationKey: ['updateProfile'],
+    // Invalidate profile query after mutation
+    onMutate: async (data) => {
+      await client.invalidateQueries({ queryKey: ['currentUser'] })
+      return data
+    },
   })
+}

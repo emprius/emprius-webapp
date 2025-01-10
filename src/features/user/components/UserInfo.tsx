@@ -1,8 +1,9 @@
-import { Avatar, Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
 import { useAuth } from '~src/features/auth/context/AuthContext'
+import { Avatar } from './Avatar'
 import { Rating } from '~src/types'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { RatingList } from '../../../features/rating/components/RatingList'
@@ -31,7 +32,11 @@ export const UserInfo = () => {
       <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
         <Stack spacing={6}>
           <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
-            <Avatar size='2xl' name={user.name} src={user.avatarHash} />
+            <Avatar 
+              username={user.name}
+              currentAvatar={user.avatarHash}
+              showControls={false}
+            />
             <Stack spacing={3}>
               <Heading size='lg'>{user.name}</Heading>
               <Stack direction='row' align='center' spacing={2}>
