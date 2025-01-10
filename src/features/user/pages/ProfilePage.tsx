@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Container,
   Stack,
   Tab,
@@ -12,7 +11,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
-import { EditIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { UserBookings } from '~src/features/user/components/UserBookings'
 import { UserTools } from '~src/features/user/components/UserTools'
@@ -28,8 +26,8 @@ export const ProfilePage = () => {
 
   return (
     <Container maxW='container.xl' py={8}>
-      <Stack spacing={8}>
-        <Box position='relative'>
+      <Stack spacing={6}>
+        <Box position='relative' bg={tabBg} borderRadius='lg' p={6} boxShadow='sm'>
           {isOpen ? (
             <EditProfileForm
               initialData={{
@@ -42,28 +40,16 @@ export const ProfilePage = () => {
               onSuccess={onToggle}
             />
           ) : (
-            <>
-              <UserInfo />
-              <Button
-                leftIcon={<EditIcon />}
-                colorScheme='blue'
-                variant='outline'
-                onClick={onToggle}
-                position='absolute'
-                top='0'
-                right='0'
-              >
-                {t('common.edit')}
-              </Button>
-            </>
+            <UserInfo onEdit={onToggle} />
           )}
         </Box>
-        <Tabs variant='enclosed' bg={tabBg} borderRadius='lg' boxShadow='sm' isLazy>
-          <TabList>
+        <Tabs variant='enclosed' isLazy>
+          <Box bg={tabBg} borderRadius='lg' boxShadow='sm' p={4}>
+          <TabList mb={4}>
             <Tab>{t('user.myTools')}</Tab>
             <Tab>{t('user.myBookings')}</Tab>
           </TabList>
-          <TabPanels>
+          <TabPanels px={2}>
             <TabPanel>
               <UserTools />
             </TabPanel>
@@ -71,6 +57,7 @@ export const ProfilePage = () => {
               <UserBookings />
             </TabPanel>
           </TabPanels>
+          </Box>
         </Tabs>
       </Stack>
     </Container>

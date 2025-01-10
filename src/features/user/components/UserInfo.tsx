@@ -1,15 +1,24 @@
-import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Heading, IconButton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiStar } from 'react-icons/fi'
+import { FiStar, FiMapPin, FiMail } from 'react-icons/fi'
+import { EditIcon } from '@chakra-ui/icons'
 import { useAuth } from '~src/features/auth/context/AuthContext'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { LatLng } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import { MAP_DEFAULTS } from '~constants'
 import { Avatar } from './Avatar'
 import { Rating } from '~src/types'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { RatingList } from '../../../features/rating/components/RatingList'
 import { useUserRatings } from '../../../hooks/queries'
 
-export const UserInfo = () => {
+interface UserInfoProps {
+  onEdit?: () => void;
+}
+
+export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { data: ratingsResponse, isLoading } = useUserRatings(user?.id)
@@ -38,7 +47,23 @@ export const UserInfo = () => {
               showControls={false}
             />
             <Stack spacing={3}>
-              <Heading size='lg'>{user.name}</Heading>
+              <Stack direction="row" align="center" spacing={2}>
+                <Heading size='lg'>{user.name}</Heading>
+                <IconButton
+                  aria-label={t('common.edit')}
+                  icon={<EditIcon />}
+                  size="sm"
+                  variant="ghost"
+                  onClick={onEdit}
+                />
+                <Badge colorScheme={user.active ? 'green' : 'gray'} ml={2}>
+                  {user.active ? t('user.active') : t('user.inactive')}
+                </Badge>
+              </Stack>
+              <Stack direction='row' align='center' spacing={2}>
+                <FiMail />
+                <Text color='gray.500'>{user.email}</Text>
+              </Stack>
               <Stack direction='row' align='center' spacing={2}>
                 <FiStar />
                 <Text>{user.rating.toFixed(1)}</Text>
@@ -52,6 +77,23 @@ export const UserInfo = () => {
               </Text>
             </Stack>
           </Stack>
+          {user.location && (
+            <Box mt={4} height="200px" width="100%" borderRadius="md" overflow="hidden">
+              <MapContainer
+                center={new LatLng(user.location.latitude / 1000000, user.location.longitude / 1000000)}
+                zoom={13}
+                scrollWheelZoom={false}
+                dragging={false}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                />
+                <Marker position={new LatLng(user.location.latitude / 1000000, user.location.longitude / 1000000)} />
+              </MapContainer>
+            </Box>
+          )}
         </Stack>
       </Box>
 

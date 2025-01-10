@@ -6,6 +6,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Stack,
   Switch,
   useToast,
   VStack,
@@ -164,9 +165,14 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
           <Switch {...register('active')} />
         </FormControl>
 
-        <Button type='submit' colorScheme='blue' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
-          {t('common.save')}
-        </Button>
+        <Stack direction="row" spacing={4} justify="flex-end">
+          <Button onClick={onSuccess} variant="ghost">
+            {t('common.cancel')}
+          </Button>
+          <Button type='submit' colorScheme='blue' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
+            {t('common.save')}
+          </Button>
+        </Stack>
       </VStack>
     </Box>
   )
