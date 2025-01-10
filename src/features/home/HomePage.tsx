@@ -71,7 +71,7 @@ export const HomePage = () => {
                 <Button
                   size="lg"
                   colorScheme="primary"
-                  onClick={() => navigate('/tools')}
+                  onClick={() => navigate('/search')}
                 >
                   {t('home.findTools')}
                 </Button>

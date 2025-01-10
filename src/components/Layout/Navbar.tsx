@@ -69,7 +69,7 @@ export const Navbar = () => {
                   <MenuItem icon={<FiTool />} onClick={() => navigate('/tools/new')}>
                     {t('nav.addTool')}
                   </MenuItem>
-                  <MenuItem icon={<FiBookmark />} onClick={() => navigate('/tools')}>
+                  <MenuItem icon={<FiBookmark />} onClick={() => navigate('/search')}>
                     {t('nav.findTools')}
                   </MenuItem>
                   <MenuItem icon={<FiLogOut />} onClick={logout}>

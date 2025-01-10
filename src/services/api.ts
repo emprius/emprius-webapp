@@ -68,6 +68,15 @@ export const auth = {
 export const tools = {
   // todo(konv1): move this into a object type
   getUserTools: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools', { params })),
+  searchTools: (params: {
+    term?: string
+    categories?: number[]
+    distance?: number
+    maxCost?: number
+    mayBeFree?: boolean
+    latitude?: number
+    longitude?: number
+  }) => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>
     apiRequest(
