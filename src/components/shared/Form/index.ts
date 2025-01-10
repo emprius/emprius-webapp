@@ -5,7 +5,7 @@ import {
   Input,
   Textarea,
   Select,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 export {
   FormControl,
@@ -14,4 +14,7 @@ export {
   Input,
   Textarea,
   Select,
-};
+}
+
+export * from './DateRangePicker'
+export * from './LocationPicker'

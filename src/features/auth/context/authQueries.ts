@@ -7,9 +7,16 @@ export interface ILoginParams {
   password: string
 }
 
-export interface IRegisterParams extends ILoginParams {
-  name: string
-  confirmPassword: string
+export interface IRegisterParams {
+  email: string
+  invitationToken: string
+  name?: string
+  password?: string
+  community?: string
+  location?: {
+    latitude: number
+    longitude: number
+  }
 }
 
 export interface LoginResponse {

@@ -31,6 +31,8 @@ const resources = {
         password: 'Password',
         confirmPassword: 'Confirm Password',
         fullName: 'Full Name',
+        invitationToken: 'Invitation Token',
+        community: 'Community',
         noAccount: "Don't have an account?",
         haveAccount: 'Already have an account?',
         loginSuccess: 'Successfully logged in',

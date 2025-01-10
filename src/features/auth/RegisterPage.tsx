@@ -16,9 +16,14 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
+import { LocationPicker } from '~components/shared/Form/LocationPicker'
 import { AUTH_FORM } from '~constants'
 import { IRegisterParams } from '~src/features/auth/context/authQueries'
 import { useAuth } from './context/AuthContext'
+
+interface RegisterFormData extends IRegisterParams {
+  confirmPassword: string
+}
 
 export const RegisterPage = () => {
   const { t } = useTranslation()
@@ -33,14 +38,16 @@ export const RegisterPage = () => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<IRegisterParams>({
+  } = useForm<RegisterFormData>({
     mode: 'onChange',
   })
 
   const password = watch('password')
 
-  const onSubmit: SubmitHandler<IRegisterParams> = async (data) => {
-    await mutateAsync(data)
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+    // Remove confirmPassword before sending to backend
+    const { confirmPassword, ...registerData } = data
+    await mutateAsync(registerData)
       // todo(konv1): use route constants
       .then(() => navigate('/'))
       .catch((error) => {
@@ -69,7 +76,7 @@ export const RegisterPage = () => {
 
       <Box as='form' onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack spacing={6}>
-          <FormControl isRequired isInvalid={!!errors.name}>
+          <FormControl isInvalid={!!errors.name}>
             <FormLabel htmlFor='name'>{t('auth.name')}</FormLabel>
             <Input
               id='name'
@@ -79,10 +86,11 @@ export const RegisterPage = () => {
                   value: 2,
                   message: t('validation.nameLength'),
                 },
-                pattern: {
-                  value: /^[a-zA-Z\s]*$/,
-                  message: t('validation.namePattern'),
-                },
+                // todo(konv1): pattern?
+                // pattern: {
+                //   value: /^[a-zA-Z\s]*$/,
+                //   message: t('validation.namePattern'),
+                // },
               })}
             />
             <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
@@ -115,11 +123,6 @@ export const RegisterPage = () => {
                   value: AUTH_FORM.MIN_PASSWORD_LENGTH,
                   message: t('validation.passwordLength'),
                 },
-                // todo(konv1): uncomment this line
-                // pattern: {
-                //   value: AUTH_FORM.PASSWORD_REGEX,
-                //   message: t('validation.passwordPattern'),
-                // }
               })}
             />
             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
@@ -136,6 +139,39 @@ export const RegisterPage = () => {
               })}
             />
             <FormErrorMessage>{errors.confirmPassword && errors.confirmPassword.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={!!errors.invitationToken}>
+            <FormLabel htmlFor='invitationToken'>{t('auth.invitationToken')}</FormLabel>
+            <Input
+              id='invitationToken'
+              {...registerField('invitationToken', {
+                required: t('validation.required'),
+              })}
+            />
+            <FormErrorMessage>{errors.invitationToken && errors.invitationToken.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.community}>
+            <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
+            <Input id='community' {...registerField('community')} />
+            <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.location}>
+            <LocationPicker
+              onChange={(location) => {
+                const event = {
+                  target: {
+                    name: 'location',
+                    value: location,
+                  },
+                }
+                registerField('location').onChange(event)
+              }}
+              value={watch('location')}
+            />
+            <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
           </FormControl>
 
           <Button
