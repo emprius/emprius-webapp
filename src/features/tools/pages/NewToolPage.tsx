@@ -26,6 +26,7 @@ import { useCreateTool } from '~src/features/tools/toolsQueries'
 import { useUploadImage } from '~src/hooks/queries'
 import { TOOL_CATEGORIES } from '../../../constants'
 import { LocationPicker } from '~components/shared/Form/LocationPicker'
+import { ImageUploader } from '~components/shared/Form/ImageUploader'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 
 const TRANSPORT_OPTIONS = [
@@ -251,10 +252,12 @@ export const NewToolPage = () => {
           <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isRequired isInvalid={!!errors.images}>
-          <FormLabel>{t('tools.images')}</FormLabel>
-          <Input type='file' accept='image/*' multiple {...register('images', { required: true })} />
-        </FormControl>
+        <ImageUploader
+          isRequired
+          label={t('tools.images')}
+          error={errors.images?.message}
+          {...register('images', { required: true })}
+        />
 
         <Button type='submit' colorScheme='primary' size='lg' isLoading={isLoading}>
           {t('tools.create')}
