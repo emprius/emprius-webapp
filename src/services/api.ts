@@ -107,8 +107,8 @@ export const bookings = {
   getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
   getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
-  create: (toolId: string, data: { startDate: string; endDate: string }) =>
-    apiRequest(api.post<ApiResponse<Booking>>(`/tools/${toolId}/bookings`, data)),
+  create: (data: { toolId: string; startDate: number; endDate: number; contact?: string; comments?: string }) =>
+    apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   updateStatus: (id: string, status: Booking['status']) =>
     apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { status })),
   cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),

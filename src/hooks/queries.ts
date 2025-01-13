@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { getB64FromFile } from '~src/utils'
 import api from '../services/api'
 import type { SearchFilters } from '../types'
-import { getB64FromFile } from '~src/utils'
 
 export const useUploadImage = () =>
   useMutation({
@@ -49,10 +49,17 @@ export const useBooking = (id: string) =>
     enabled: !!id,
   })
 
+interface CreateBookingData {
+  toolId: string;
+  startDate: number;
+  endDate: number;
+  contact?: string;
+  comments?: string;
+}
+
 export const useCreateBooking = () =>
   useMutation({
-    mutationFn: ({ toolId, data }: { toolId: string; data: { startDate: string; endDate: string } }) =>
-      api.bookings.create(toolId, data),
+    mutationFn: (data: CreateBookingData) => api.bookings.create(data),
   })
 
 export const useUpdateBookingStatus = () =>
@@ -95,10 +102,10 @@ export const useUserRatings = (userId: string) =>
   })
 
 // User queries
-export const useUpdateProfile = () =>
-  useMutation({
-    mutationFn: (data: FormData) => api.users.updateProfile(data),
-  })
+// export const useUpdateProfile = () =>
+//   useMutation({
+//     mutationFn: (data: FormData) => api.users.updateProfile(data),
+//   })
 
 // export const useUserTools = (userId: string) =>
 //   useQuery({
