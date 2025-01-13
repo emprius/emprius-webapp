@@ -15,16 +15,13 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  Text,
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { SearchFilters } from '../searchQueries'
+import { useFormContext } from 'react-hook-form'
 
 interface FilterMenuProps {
   isOpen: boolean
   onClose: () => void
-  filters: Partial<SearchFilters>
-  onFiltersChange: (filters: Partial<SearchFilters>) => void
 }
 
 const categories = [
@@ -37,36 +34,26 @@ const categories = [
   { id: 6, key: 'other' },
 ]
 
-export const FilterMenu = ({ isOpen, onClose, filters, onFiltersChange }: FilterMenuProps) => {
+export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
   const { t } = useTranslation()
+  const { setValue, watch } = useFormContext()
+  const formValues = watch()
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const categoryId = parseInt(e.target.value)
-    onFiltersChange({
-      ...filters,
-      categories: categoryId >= 0 ? [categoryId] : undefined,
-    })
+    setValue('categories', categoryId >= 0 ? [categoryId] : undefined)
   }
 
   const handleDistanceChange = (value: number) => {
-    onFiltersChange({
-      ...filters,
-      distance: value,
-    })
+    setValue('distance', value)
   }
 
   const handleMaxCostChange = (value: number) => {
-    onFiltersChange({
-      ...filters,
-      maxCost: value,
-    })
+    setValue('maxCost', value)
   }
 
   const handleMayBeFreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onFiltersChange({
-      ...filters,
-      mayBeFree: e.target.checked,
-    })
+    setValue('mayBeFree', e.target.checked)
   }
 
   return (
@@ -85,7 +72,7 @@ export const FilterMenu = ({ isOpen, onClose, filters, onFiltersChange }: Filter
             <FormControl>
               <FormLabel>{t('search.category')}</FormLabel>
               <Select
-                value={filters.categories?.[0] ?? ''}
+                value={formValues.categories?.[0] ?? ''}
                 onChange={handleCategoryChange}
               >
                 <option value="">{t('search.allCategories')}</option>
@@ -98,13 +85,13 @@ export const FilterMenu = ({ isOpen, onClose, filters, onFiltersChange }: Filter
             </FormControl>
 
             <FormControl>
-              <FormLabel>{t('search.distance')} ({filters.distance || 10}km)</FormLabel>
+              <FormLabel>{t('search.distance')} ({formValues.distance || 10}km)</FormLabel>
               <Slider
                 defaultValue={10}
                 min={1}
                 max={50}
                 step={1}
-                value={filters.distance || 10}
+                value={formValues.distance || 10}
                 onChange={handleDistanceChange}
               >
                 <SliderTrack>
@@ -115,13 +102,13 @@ export const FilterMenu = ({ isOpen, onClose, filters, onFiltersChange }: Filter
             </FormControl>
 
             <FormControl>
-              <FormLabel>{t('search.maxCost')} ({filters.maxCost || 0}€)</FormLabel>
+              <FormLabel>{t('search.maxCost')} ({formValues.maxCost || 0}€)</FormLabel>
               <Slider
                 defaultValue={0}
                 min={0}
                 max={1000}
                 step={10}
-                value={filters.maxCost || 0}
+                value={formValues.maxCost || 0}
                 onChange={handleMaxCostChange}
               >
                 <SliderTrack>
@@ -134,7 +121,7 @@ export const FilterMenu = ({ isOpen, onClose, filters, onFiltersChange }: Filter
             <FormControl display="flex" alignItems="center">
               <FormLabel mb={0}>{t('search.mayBeFree')}</FormLabel>
               <Switch
-                isChecked={filters.mayBeFree}
+                isChecked={formValues.mayBeFree}
                 onChange={handleMayBeFreeChange}
               />
             </FormControl>

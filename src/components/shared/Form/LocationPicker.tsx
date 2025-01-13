@@ -82,8 +82,8 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({ onChange, value,
           maxZoom={MAP_DEFAULTS.MAX_ZOOM}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION}
+            url={MAP_DEFAULTS.TILE_LAYER.URL}
           />
           <MapController onLocationSelect={handleLocationSelect} position={position} />
           {position && <Marker position={position} />}

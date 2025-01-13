@@ -1,65 +1,55 @@
-import React, { useState } from 'react'
 import { Box } from '@chakra-ui/react'
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useSearchTools, SearchFilters } from '../searchQueries'
 import { SearchBar } from '../components/SearchBar'
 import { SearchMap } from '../components/SearchMap'
-import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import { SearchFilters, useSearchTools } from '../searchQueries'
+
+const defaultValues: Partial<SearchFilters> = {
+  term: '',
+  distance: 10,
+  maxCost: 0,
+  mayBeFree: false,
+}
 
 export const SearchPage = () => {
   const navigate = useNavigate()
-  const [filters, setFilters] = useState<Partial<SearchFilters>>({})
-  const { data: toolsResponse, isLoading } = useSearchTools(filters)
-
-  const handleSearch = (term: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      term,
-    }))
-  }
-
-  const handleFiltersChange = (newFilters: Partial<SearchFilters>) => {
-    setFilters((prev) => ({
-      ...prev,
-      ...newFilters,
-    }))
-  }
+  const { mutate, data: toolsResponse } = useSearchTools()
+  const methods = useForm<SearchFilters>({
+    defaultValues,
+  })
 
   const handleLocationSelect = (location: { lat: number; lng: number }) => {
-    setFilters((prev) => ({
-      ...prev,
-      latitude: location.lat,
-      longitude: location.lng,
-    }))
+    methods.setValue('latitude', location.lat)
+    methods.setValue('longitude', location.lng)
+    mutate(methods.getValues())
   }
 
   const handleToolSelect = (toolId: string) => {
     navigate(`/tools/${toolId}`)
   }
 
-  if (isLoading) {
-    return <LoadingSpinner />
+  const onSubmit = (data: SearchFilters) => {
+    mutate(data)
   }
 
   const tools = toolsResponse?.tools || []
+  const { latitude, longitude } = methods.watch()
 
   return (
-    <Box position="relative" height="100vh">
-      <SearchBar
-        onSearch={handleSearch}
-        onFiltersChange={handleFiltersChange}
-        filters={filters}
-      />
-      
+    <Box position='relative' height='100vh'>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <SearchBar />
+        </form>
+      </FormProvider>
+
       <SearchMap
         tools={tools}
         onLocationSelect={handleLocationSelect}
         onToolSelect={handleToolSelect}
-        center={
-          filters.latitude && filters.longitude
-            ? { lat: filters.latitude, lng: filters.longitude }
-            : undefined
-        }
+        center={latitude && longitude ? { lat: latitude, lng: longitude } : undefined}
       />
     </Box>
   )

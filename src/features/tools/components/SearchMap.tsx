@@ -1,10 +1,24 @@
 import { Box } from '@chakra-ui/react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useEffect } from 'react'
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { Tool } from '~src/types'
 import { ToolTooltip } from './ToolTooltip'
+import { MAP_DEFAULTS } from '~constants'
+
+// Set up default marker icon
+const DefaultIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41],
+})
+
+L.Marker.prototype.options.icon = DefaultIcon
 
 export interface SearchMapProps {
   tools: Tool[]
@@ -13,64 +27,63 @@ export interface SearchMapProps {
   center?: { lat: number; lng: number }
 }
 
-export const SearchMap = ({ tools, onLocationSelect, onToolSelect, center }: SearchMapProps) => {
-  const mapRef = useRef<L.Map | null>(null)
-  const markersRef = useRef<L.LayerGroup | null>(null)
+// Component to handle map events and center updates
+const MapController = ({
+  onLocationSelect,
+  center,
+}: {
+  onLocationSelect: (location: { lat: number; lng: number }) => void
+  center?: { lat: number; lng: number }
+}) => {
+  const map = useMap()
+
+  useMapEvents({
+    click: (e) => {
+      onLocationSelect({ lat: e.latlng.lat, lng: e.latlng.lng })
+    },
+  })
 
   useEffect(() => {
-    if (!mapRef.current) {
-      // Initialize map
-      mapRef.current = L.map('map').setView([41.3851, 2.1734], 13) // Default to Barcelona
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-      }).addTo(mapRef.current)
-
-      // Initialize markers layer group
-      markersRef.current = L.layerGroup().addTo(mapRef.current)
-
-      // Add click handler for location selection
-      mapRef.current.on('click', (e: L.LeafletMouseEvent) => {
-        onLocationSelect({ lat: e.latlng.lat, lng: e.latlng.lng })
+    if (center) {
+      map.flyTo([center.lat, center.lng], map.getZoom(), {
+        duration: 1.5,
       })
     }
+  }, [center, map])
 
-    // Update center if provided
-    if (center && mapRef.current) {
-      mapRef.current.setView([center.lat, center.lng], 13)
-    }
+  return null
+}
 
-    // Update markers
-    if (markersRef.current) {
-      markersRef.current.clearLayers()
-      tools.forEach((tool) => {
-        if (tool.location) {
-          const marker = L.marker([tool.location.latitude / 1e6, tool.location.longitude / 1e6])
-          const popupContent = document.createElement('div')
-          const popup = L.popup().setContent(popupContent)
-          marker.bindPopup(popup)
-
-          // Render React component when popup opens
-          marker.on('popupopen', () => {
-            ReactDOM.render(<ToolTooltip tool={tool} onSelect={onToolSelect} />, popupContent)
-          })
-
-          // Cleanup when popup closes
-          marker.on('popupclose', () => {
-            ReactDOM.unmountComponentAtNode(popupContent)
-          })
-
-          marker.addTo(markersRef.current!)
-        }
-      })
-    }
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove()
-        mapRef.current = null
-      }
-    }
-  }, [tools, center, onLocationSelect, onToolSelect])
-
-  return <Box id='map' height='100%' width='100%' />
+export const SearchMap = ({ tools, onLocationSelect, onToolSelect, center }: SearchMapProps) => {
+  return (
+    <Box height='100%' width='100%'>
+      <MapContainer
+        center={center || MAP_DEFAULTS.CENTER}
+        zoom={MAP_DEFAULTS.ZOOM}
+        scrollWheelZoom={true}
+        style={{ height: '100%', width: '100%' }}
+        minZoom={MAP_DEFAULTS.MIN_ZOOM}
+        maxZoom={MAP_DEFAULTS.MAX_ZOOM}
+      >
+        <TileLayer
+          attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION}
+          url={MAP_DEFAULTS.TILE_LAYER.URL}
+        />
+        <MapController onLocationSelect={onLocationSelect} center={center} />
+        {tools.map(
+          (tool) =>
+            tool.location && (
+              <Marker
+                key={tool.id}
+                position={[tool.location.latitude / 1e6, tool.location.longitude / 1e6]}
+              >
+                <Popup>
+                  <ToolTooltip tool={tool} onSelect={onToolSelect} />
+                </Popup>
+              </Marker>
+            )
+        )}
+      </MapContainer>
+    </Box>
+  )
 }

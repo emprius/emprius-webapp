@@ -74,6 +74,10 @@ export const MAP_DEFAULTS = {
   MIN_ZOOM: 3,
   MAX_ZOOM: 18,
   DEFAULT_RADIUS: 10, // km
+  TILE_LAYER: {
+    URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }
 } as const
 
 /**
