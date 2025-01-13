@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
-import { Tool } from '~src/types'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import React, { useEffect, useRef } from 'react'
+import ReactDOM from 'react-dom'
+import { Tool } from '~src/types'
+import { ToolTooltip } from './ToolTooltip'
 
 export interface SearchMapProps {
   tools: Tool[]
@@ -20,7 +22,7 @@ export const SearchMap = ({ tools, onLocationSelect, onToolSelect, center }: Sea
       // Initialize map
       mapRef.current = L.map('map').setView([41.3851, 2.1734], 13) // Default to Barcelona
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+        attribution: '© OpenStreetMap contributors',
       }).addTo(mapRef.current)
 
       // Initialize markers layer group
@@ -40,24 +42,26 @@ export const SearchMap = ({ tools, onLocationSelect, onToolSelect, center }: Sea
     // Update markers
     if (markersRef.current) {
       markersRef.current.clearLayers()
-      tools.forEach(tool => {
+      tools.forEach((tool) => {
         if (tool.location) {
           const marker = L.marker([tool.location.latitude / 1e6, tool.location.longitude / 1e6])
-            .bindPopup(`
-              <div>
-                <h3>${tool.title}</h3>
-                <p>${tool.description}</p>
-                <button onclick="window.handleToolSelect('${tool.id}')">View Details</button>
-              </div>
-            `)
+          const popupContent = document.createElement('div')
+          const popup = L.popup().setContent(popupContent)
+          marker.bindPopup(popup)
+
+          // Render React component when popup opens
+          marker.on('popupopen', () => {
+            ReactDOM.render(<ToolTooltip tool={tool} onSelect={onToolSelect} />, popupContent)
+          })
+
+          // Cleanup when popup closes
+          marker.on('popupclose', () => {
+            ReactDOM.unmountComponentAtNode(popupContent)
+          })
+
           marker.addTo(markersRef.current!)
         }
       })
-    }
-
-    // Add global handler for tool selection from popup
-    window.handleToolSelect = (toolId: string) => {
-      onToolSelect(toolId)
     }
 
     return () => {
@@ -65,18 +69,8 @@ export const SearchMap = ({ tools, onLocationSelect, onToolSelect, center }: Sea
         mapRef.current.remove()
         mapRef.current = null
       }
-      delete window.handleToolSelect
     }
   }, [tools, center, onLocationSelect, onToolSelect])
 
-  return (
-    <Box id="map" height="100%" width="100%" />
-  )
-}
-
-// Add type declaration for the global function
-declare global {
-  interface Window {
-    handleToolSelect: (toolId: string) => void
-  }
+  return <Box id='map' height='100%' width='100%' />
 }
