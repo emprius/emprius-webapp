@@ -44,16 +44,6 @@ const useAuthProvider = () => {
     localStorage.setItem(STORAGE_KEYS.EXPIRITY, expirity)
   }, [])
 
-  // todo(konv1): this is not the place for that
-  // const updateUserMutation = useMutation({
-  //   mutationFn: async (userData: UserProfile) => {
-  //     return userData
-  //   },
-  //   onSuccess: (userData) => {
-  //     queryClient.setQueryData(['user'], userData)
-  //   },
-  // })
-
   const { data: user, isLoading: isLoadingUser } = useCurrentUser({
     enabled: !!bearer,
   })

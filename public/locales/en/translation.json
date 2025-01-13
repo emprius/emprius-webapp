@@ -1,0 +1,28 @@
+{
+  "bookings": {
+    "myPetitions": "My Petitions",
+    "toolRequests": "Tool Requests",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "total": "Total",
+    "approve": "Approve",
+    "deny": "Deny",
+    "comments": "Comments",
+    "contact": "Contact",
+    "toolNotFound": "Tool not found"
+  },
+  "tools": {
+    "pricePerDay": "Price per day"
+  },
+  "user": {
+    "noBookings": "No bookings found",
+    "rating": "Rating"
+  },
+  "rating": {
+    "rateTool": "Rate Tool"
+  }
+}

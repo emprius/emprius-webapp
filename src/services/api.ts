@@ -109,8 +109,8 @@ export const bookings = {
   getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (data: { toolId: string; startDate: number; endDate: number; contact?: string; comments?: string }) =>
     apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
-  updateStatus: (id: string, status: Booking['status']) =>
-    apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { status })),
+  updateStatus: (id: string, status: Booking['bookingStatus']) =>
+    apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { bookingStatus: status })),
   cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),
 }
 
@@ -140,6 +140,7 @@ export const ratings = {
 export const users = {
   updateProfile: (data: Partial<EditProfileFormData>) =>
     apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
+  getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
   // not implemented yet?
   // getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
   // getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),

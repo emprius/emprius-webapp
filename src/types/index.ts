@@ -25,8 +25,8 @@ export interface ImageContent extends Image {
 }
 
 export interface DateRange {
-  from: number;
-  to: number;
+  from: number
+  to: number
 }
 
 export interface Tool {
@@ -54,12 +54,14 @@ export interface Tool {
 
 export interface Booking {
   id: string
-  tool: Tool
-  user: UserProfile
-  startDate: string
-  endDate: string
-  totalPrice: number
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  toolId: string
+  fromUserId: string
+  toUserId: string
+  startDate: number
+  endDate: number
+  contact?: string
+  comments?: string
+  bookingStatus: 'pending' | 'confirmed' | 'cancelled' | 'completed'
   createdAt: string
   updatedAt: string
 }
