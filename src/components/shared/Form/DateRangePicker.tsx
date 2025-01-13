@@ -11,6 +11,8 @@ import {
 import { useController, Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import type { DateRange } from '../../../types';
+
 interface DateRangePickerProps {
   startName: string;
   endName: string;
@@ -19,6 +21,7 @@ interface DateRangePickerProps {
   isRequired?: boolean;
   minDate?: Date;
   maxDate?: Date;
+  reservedDates?: DateRange[] | null;
 }
 
 export const DateRangePicker = ({
@@ -29,9 +32,25 @@ export const DateRangePicker = ({
   isRequired = false,
   minDate = new Date(),
   maxDate,
+  reservedDates,
 }: DateRangePickerProps) => {
   const { t } = useTranslation();
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+
+  const isDateRangeOverlapping = (start: Date, end: Date) => {
+    if (!reservedDates) return false;
+    
+    return reservedDates.some(reservation => {
+      const reservationStart = new Date(reservation.from * 1000);
+      const reservationEnd = new Date(reservation.to * 1000);
+      
+      // Check if either the start or end date falls within a reserved period
+      return (start >= reservationStart && start <= reservationEnd) ||
+             (end >= reservationStart && end <= reservationEnd) ||
+             // Or if the selected period completely encompasses a reserved period
+             (start <= reservationStart && end >= reservationEnd);
+    });
+  };
 
   const {
     field: startField,
@@ -56,7 +75,16 @@ export const DateRangePicker = ({
         if (!startField.value) return true;
         const start = new Date(startField.value);
         const end = new Date(value);
-        return end > start || t('validation.endDateAfterStart');
+        
+        if (end <= start) {
+          return t('validation.endDateAfterStart');
+        }
+        
+        if (isDateRangeOverlapping(start, end)) {
+          return t('bookings.dateConflict');
+        }
+        
+        return true;
       },
     },
   });

@@ -24,6 +24,11 @@ export interface ImageContent extends Image {
   content: string
 }
 
+export interface DateRange {
+  from: number;
+  to: number;
+}
+
 export interface Tool {
   id: number
   title: string
@@ -44,7 +49,7 @@ export interface Tool {
   estimatedValue: number
   height: number
   weight: number
-  reservedDates: any | null // todo(konv1) Replace `any` with the actual type if known
+  reservedDates: DateRange[] | null
 }
 
 export interface Booking {

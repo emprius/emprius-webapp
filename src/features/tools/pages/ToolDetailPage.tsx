@@ -20,6 +20,7 @@ import { BookingForm } from '../components/BookingForm';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner';
 import { RatingList } from '../../../features/rating/components/RatingList';
 import { useAuth } from '../../../features/auth/context/AuthContext';
+import { ToolAvailabilityCalendar } from '../components/ToolAvailabilityCalendar';
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -175,6 +176,7 @@ export const ToolDetailPage = () => {
 
         <GridItem>
           <Stack spacing={4} position="sticky" top="20px">
+            <ToolAvailabilityCalendar reservedDates={tool.reservedDates || []} />
             {isAuthenticated ? (
               tool.isAvailable ? (
                 <BookingForm tool={tool} />

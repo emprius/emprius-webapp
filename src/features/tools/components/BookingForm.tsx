@@ -111,6 +111,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             isRequired
             minDate={minDate}
             maxDate={maxDate}
+            reservedDates={tool.reservedDates}
           />
 
           <FormControl>
