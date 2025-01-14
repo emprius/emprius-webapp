@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { RatingStars } from './RatingStars'
 import type { Tool, UserProfile } from '../../../types'
+import { LoadingSpinner } from '~components/shared'
 
 interface Rating {
   rating: number
@@ -15,14 +16,19 @@ interface Rating {
 
 interface RatingListProps {
   ratings: Rating[]
+  isLoading?: boolean
   showUser?: boolean
   showTool?: boolean
 }
 
-export const RatingList = ({ ratings, showUser = true, showTool = false }: RatingListProps) => {
+export const RatingList = ({ ratings, isLoading = false, showUser = true, showTool = false }: RatingListProps) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
 
   if (!ratings.length) {
     return (
@@ -58,7 +64,8 @@ export const RatingList = ({ ratings, showUser = true, showTool = false }: Ratin
                 fontWeight='medium'
                 _hover={{ color: 'primary.500', textDecoration: 'none' }}
               >
-                {rating.tool.name}
+                todo(konv1): get tool info
+                {/*{rating.tool.name}*/}
               </Link>
             )}
 
