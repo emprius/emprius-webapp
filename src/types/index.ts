@@ -52,6 +52,13 @@ export interface Tool {
   reservedDates: DateRange[] | null
 }
 
+export enum BookingStatus {
+  PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+}
+
 export interface Booking {
   id: string
   toolId: string
@@ -61,7 +68,7 @@ export interface Booking {
   endDate: number
   contact?: string
   comments?: string
-  bookingStatus: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  bookingStatus: BookingStatus
   createdAt: string
   updatedAt: string
 }
