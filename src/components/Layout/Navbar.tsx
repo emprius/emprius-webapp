@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -19,6 +18,7 @@ import { FiBookmark, FiLogOut, FiMoon, FiSun, FiTool, FiUser } from 'react-icons
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../features/auth/context/AuthContext'
 import { LanguageSwitcher } from '../shared/LanguageSwitcher'
+import { Avatar } from '~src/features/user/components/Avatar'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -60,7 +60,7 @@ export const Navbar = () => {
             {isAuthenticated ? (
               <Menu>
                 <MenuButton>
-                  <Avatar size='sm' name={user?.name} src={user?.avatarHash} cursor='pointer' />
+                  <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                 </MenuButton>
                 <MenuList>
                   <MenuItem icon={<FiUser />} onClick={() => navigate('/profile')}>
