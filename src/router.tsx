@@ -1,16 +1,17 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Layout } from './components/Layout/Layout';
-import { HomePage } from './features/home/HomePage';
-import { SearchPage } from './features/tools/pages/SearchPage';
-import { ToolsListPage } from './features/tools/pages/ToolsListPage';
-import { ToolDetailPage } from './features/tools/pages/ToolDetailPage';
-import { NewToolPage } from './features/tools/pages/NewToolPage';
-import { LoginPage } from './features/auth/LoginPage';
-import { RegisterPage } from './features/auth/RegisterPage';
-import { ProfilePage } from './features/user/pages/ProfilePage';
-import { NotFoundPage } from './features/error/NotFoundPage';
-import { ProtectedRoute } from './features/auth/components/ProtectedRoute';
-import { AuthLayout } from './features/auth/components/AuthLayout';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Layout } from './components/Layout/Layout'
+import { HomePage } from './features/home/HomePage'
+import { SearchPage } from './features/tools/pages/SearchPage'
+import { ToolsListPage } from './features/tools/pages/ToolsListPage'
+import { ToolDetailPage } from './features/tools/pages/ToolDetailPage'
+import { NewToolPage } from './features/tools/pages/NewToolPage'
+import { EditToolPage } from './features/tools/pages/EditToolPage'
+import { LoginPage } from './features/auth/LoginPage'
+import { RegisterPage } from './features/auth/RegisterPage'
+import { ProfilePage } from './features/user/pages/ProfilePage'
+import { NotFoundPage } from './features/error/NotFoundPage'
+import { ProtectedRoute } from './features/auth/components/ProtectedRoute'
+import { AuthLayout } from './features/auth/components/AuthLayout'
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
           {
             path: ':id',
             element: <ToolDetailPage />,
+          },
+          {
+            path: ':id/edit',
+            element: (
+              <ProtectedRoute>
+                <EditToolPage />
+              </ProtectedRoute>
+            ),
           },
           {
             path: 'new',
@@ -72,8 +81,8 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />,
   },
-]);
+])
 
 export const AppRoutes = () => {
-  return <RouterProvider router={router} />;
-};
+  return <RouterProvider router={router} />
+}
