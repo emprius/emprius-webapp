@@ -14,11 +14,11 @@ import {
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~src/components/shared/Form/LocationPicker'
-import { Avatar } from './Avatar'
 import { useUpdateUserProfile } from '../userQueries'
 import { AUTH_FORM } from '~src/constants'
 import { EditProfileFormData, EditProfileFormProps } from '~src/types'
 import { getB64FromFile } from '~src/utils'
+import { EditableAvatar } from '~src/features/user/components/EditableAvatar'
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
@@ -98,7 +98,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={6} align='stretch'>
         <Box display='flex' justifyContent='center' mb={4}>
-          <Avatar currentAvatar={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} showControls />
+          <EditableAvatar avatarHash={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
         </Box>
 
         <FormControl isInvalid={!!errors.name}>
@@ -165,8 +165,8 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
           <Switch {...register('active')} />
         </FormControl>
 
-        <Stack direction="row" spacing={4} justify="flex-end">
-          <Button onClick={onSuccess} variant="ghost">
+        <Stack direction='row' spacing={4} justify='flex-end'>
+          <Button onClick={onSuccess} variant='ghost'>
             {t('common.cancel')}
           </Button>
           <Button type='submit' colorScheme='blue' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>

@@ -25,7 +25,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
       <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
         <Stack spacing={6}>
           <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
-            <Avatar username={user.name} currentAvatar={user.avatarHash} showControls={false} />
+            <Avatar username={user.name} avatarHash={user.avatarHash} />
             <Stack spacing={3}>
               <Stack direction='row' align='center' spacing={2}>
                 <Heading size='lg'>{user.name}</Heading>
