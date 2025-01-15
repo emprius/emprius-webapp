@@ -24,8 +24,6 @@ export const ProfilePage = () => {
   const tabBg = useColorModeValue('white', 'gray.800')
   const { isOpen, onToggle } = useDisclosure()
   const { user } = useAuth()
-  // todo(konv1): implement ratings
-  // const { data: ratings, isLoading } = useUserRatings(user?.id)
 
   return (
     <Container maxW='container.xl' py={8}>
@@ -50,8 +48,6 @@ export const ProfilePage = () => {
           <Heading size='md' mb={4}>
             {t('rating.reviews')}
           </Heading>
-          {/*todo(konv1): implement ratings*/}
-          {/*<RatingList showUser={false} showTool={true} />*/}
         </Box>
         <Tabs variant='enclosed' isLazy>
           <Box bg={tabBg} borderRadius='lg' boxShadow='sm' p={4}>

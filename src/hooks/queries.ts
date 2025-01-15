@@ -48,34 +48,6 @@ export const useCancelBooking = () =>
     mutationFn: (id: string) => api.bookings.cancel(id),
   })
 
-// Rating queries
-export const useCreateRating = () =>
-  useMutation({
-    mutationFn: ({
-      toolId,
-      bookingId,
-      data,
-    }: {
-      toolId: number
-      bookingId: string
-      data: { rating: number; comment: string }
-    }) => api.ratings.create(toolId, bookingId, data),
-  })
-
-export const useToolRatings = (toolId: string) =>
-  useQuery({
-    queryKey: ['toolRatings', toolId],
-    queryFn: () => api.ratings.getByTool(toolId),
-    enabled: !!toolId,
-  })
-
-export const useUserRatings = (userId: string) =>
-  useQuery({
-    queryKey: ['userRatings', userId],
-    queryFn: () => api.ratings.getByUser(userId),
-    enabled: !!userId,
-  })
-
 // User queries
 // export const useUpdateProfile = () =>
 //   useMutation({

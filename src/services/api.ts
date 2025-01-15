@@ -101,28 +101,6 @@ export const bookings = {
   cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),
 }
 
-// Ratings endpoints
-export const ratings = {
-  create: (toolId: number, bookingId: string, data: { rating: number; comment: string }) =>
-    apiRequest(api.post<ApiResponse<void>>(`/tools/${toolId}/bookings/${bookingId}/ratings`, data)),
-  getByTool: (toolId: string) =>
-    apiRequest(
-      api.get<
-        // todo(konv1): move this into a object type
-        ApiResponse<
-          {
-            rating: number
-            comment: string
-            user: UserProfile
-          }[]
-        >
-      >(`/tools/${toolId}/ratings`)
-    ),
-  getByUser: (userId: string) =>
-    // todo(konv1): move this into a object type
-    apiRequest(api.get<ApiResponse<{ rating: number; comment: string; tool: Tool }[]>>(`/users/${userId}/ratings`)),
-}
-
 // Users endpoints
 export const users = {
   updateProfile: (data: Partial<EditProfileFormData>) =>
@@ -144,7 +122,6 @@ export default {
   auth,
   tools,
   bookings,
-  ratings,
   users,
   images,
 }

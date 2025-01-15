@@ -5,10 +5,8 @@ import { Link as RouterLink, useParams } from 'react-router-dom'
 import { ROUTES } from '~src/router'
 import { useTranslation } from 'react-i18next'
 import { FiMapPin, FiStar } from 'react-icons/fi'
-import { useToolRatings } from '../../../hooks/queries'
 import { BookingForm } from '../components/BookingForm'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import { RatingList } from '../../../features/rating/components/RatingList'
 import { useAuth } from '../../../features/auth/context/AuthContext'
 import { ToolAvailabilityCalendar } from '../components/ToolAvailabilityCalendar'
 import { useTool } from '~src/features/tools/toolsQueries'
@@ -18,7 +16,6 @@ export const ToolDetailPage = () => {
   const { t } = useTranslation()
   const { isAuthenticated } = useAuth()
   const { data: tool, isLoading: isToolLoading } = useTool(id!)
-  const { data: ratings, isLoading: isRatingsLoading } = useToolRatings(id!)
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -116,13 +113,6 @@ export const ToolDetailPage = () => {
                 </Stack>
               </Box>
             )}
-
-            <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
-              <Stack p={6} spacing={4}>
-                <Heading size='md'>{t('rating.reviews')}</Heading>
-                {isRatingsLoading ? <LoadingSpinner /> : <RatingList ratings={ratings || []} />}
-              </Stack>
-            </Box>
           </Stack>
         </GridItem>
 
