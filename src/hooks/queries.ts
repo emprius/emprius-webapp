@@ -1,6 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getB64FromFile } from '~src/utils'
 import api from '../services/api'
+import { BookingStatus, ImageContent } from '../types'
+
+export const useImage = (imageId?: string) =>
+  useQuery<ImageContent>({
+    queryKey: ['image', imageId],
+    queryFn: () => api.images.getImage(imageId!),
+    enabled: !!imageId,
+  })
+
 
 export const useUploadImage = () =>
   useMutation({
@@ -39,7 +48,7 @@ export const useCreateBooking = () =>
 
 export const useUpdateBookingStatus = () =>
   useMutation({
-    mutationFn: ({ id, status }: { id: string; status: 'pending' | 'confirmed' | 'cancelled' | 'completed' }) =>
+    mutationFn: ({ id, status }: { id: string; status: BookingStatus }) =>
       api.bookings.updateStatus(id, status),
   })
 
