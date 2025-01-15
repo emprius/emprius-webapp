@@ -23,6 +23,25 @@
     "rating": "Rating"
   },
   "rating": {
-    "rateTool": "Rate Tool"
+    "rateTool": "Rate Tool",
+    "rateUser": "Rate User",
+    "pendingRatings": "Pending Ratings",
+    "noRatings": "No pending ratings",
+    "submit": "Submit Rating",
+    "submitting": "Submitting...",
+    "error": "Error loading ratings",
+    "submitSuccess": "Rating Submitted",
+    "submitSuccessDescription": "Successfully submitted {{count}} rating(s)",
+    "submitError": "Error Submitting Rating",
+    "submitErrorDescription": "There was an error submitting your rating. Please try again."
+  },
+  "nav": {
+    "ratings": "Pending Ratings",
+    "profile": "Profile",
+    "addTool": "Add Tool",
+    "findTools": "Find Tools",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
   }
 }

@@ -13,7 +13,7 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import { RatingModal } from '../../../features/rating/components/RatingModal'
+import { RatingModal } from '../../../features/bookings/components/RatingModal'
 import { useBookingPetitions, useBookingRequests } from '../userQueries'
 import { BookingCard } from './BookingCard'
 

@@ -5,6 +5,7 @@ import {createToolParams, UpdateToolParams} from '~src/features/tools/toolsQueri
 import {STORAGE_KEYS} from '../constants'
 import type {Booking, SearchFilters, Tool, UserProfile} from '../types'
 import {EditProfileFormData, ImageContent} from '../types'
+import type {RateSubmission, Rating} from '../features/bookings/types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -99,6 +100,8 @@ export const bookings = {
   updateStatus: (id: string, status: Booking['bookingStatus']) =>
     apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { bookingStatus: status })),
   cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),
+  getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
+  submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),
 }
 
 // Users endpoints

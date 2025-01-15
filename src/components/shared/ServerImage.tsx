@@ -8,13 +8,10 @@ interface ServerImageProps extends Omit<ImageProps, 'src'> {
   fallbackSrc?: string
 }
 
-export const ServerImage: React.FC<ServerImageProps> = ({ 
-  imageId, 
-  fallbackSrc = ASSETS.TOOL_FALLBACK,
-  ...props 
-}) => {
+export const ServerImage: React.FC<ServerImageProps> = ({ imageId, fallbackSrc = ASSETS.TOOL_FALLBACK, ...props }) => {
   const [imageSrc, setImageSrc] = useState<string>('')
 
+  // todo(konv1): this have to be inside a query, and use the query cache to avoid fetching the same image multiple times
   useEffect(() => {
     const fetchImage = async () => {
       try {
