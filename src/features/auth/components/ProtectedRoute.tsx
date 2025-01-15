@@ -1,13 +1,11 @@
 import React from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useOutletContext } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import { LoadingSpinner } from '~components/shared'
 import { useAuth } from '../context/AuthContext'
 
-interface ProtectedRouteProps {
-  children: React.ReactNode
-}
-
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute = () => {
+  const context = useOutletContext()
   const { isAuthenticated, isLoading } = useAuth()
   const location = useLocation()
 
@@ -16,8 +14,8 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to='/login' state={{ from: location }} replace />
+    return <Navigate to={ROUTES.AUTH.LOGIN} state={{ from: location }} replace />
   }
 
-  return <>{children}</>
+  return <Outlet context={context} />
 }

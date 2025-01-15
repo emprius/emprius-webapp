@@ -15,6 +15,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '~src/router';
 import { useCreateBooking } from '../../../hooks/queries';
 import { DateRangePicker } from '../../../components/shared/Form/DateRangePicker';
 import type { Tool } from '../../../types';
@@ -71,7 +72,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
         duration: 3000,
       });
 
-      navigate('/profile');
+      navigate(ROUTES.PROFILE);
     } catch (error) {
       console.error('Failed to create booking:', error);
       toast({

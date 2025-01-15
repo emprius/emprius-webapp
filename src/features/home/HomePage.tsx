@@ -11,6 +11,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '~src/router';
 import { useTranslation } from 'react-i18next';
 import { FiTool, FiSearch, FiUsers } from 'react-icons/fi';
 
@@ -71,7 +72,7 @@ export const HomePage = () => {
                 <Button
                   size="lg"
                   colorScheme="primary"
-                  onClick={() => navigate('/search')}
+                  onClick={() => navigate(ROUTES.SEARCH)}
                 >
                   {t('home.findTools')}
                 </Button>
@@ -79,7 +80,7 @@ export const HomePage = () => {
                   size="lg"
                   variant="outline"
                   colorScheme="primary"
-                  onClick={() => navigate('/tools/new')}
+                  onClick={() => navigate(ROUTES.TOOLS.NEW)}
                 >
                   {t('tools.addTool')}
                 </Button>

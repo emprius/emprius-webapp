@@ -15,6 +15,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { LocationPicker } from '~components/shared/Form/LocationPicker'
 import { AUTH_FORM } from '~constants'
@@ -49,7 +50,7 @@ export const RegisterPage = () => {
     const { confirmPassword, ...registerData } = data
     await mutateAsync(registerData)
       // todo(konv1): use route constants
-      .then(() => navigate('/'))
+      .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         console.error('Registration failed:', error)
         toast({
@@ -68,7 +69,7 @@ export const RegisterPage = () => {
         <Heading size='xl'>{t('auth.register')}</Heading>
         <Text color='gray.600'>
           {t('auth.haveAccount')}{' '}
-          <Link as={RouterLink} to='/login' color='primary.500' fontWeight='medium'>
+          <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
             {t('auth.login')}
           </Link>
         </Text>

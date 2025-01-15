@@ -1,6 +1,7 @@
 import { Box, Container, Image, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import { LoadingSpinner } from '~components/shared'
 import { useAuth } from '../context/AuthContext'
 
@@ -15,7 +16,7 @@ export const AuthLayout = () => {
 
   if (isAuthenticated) {
     // todo(konv1): use route constants
-    return <Navigate to='/' replace />
+    return <Navigate to={ROUTES.HOME} replace />
   }
 
   return (

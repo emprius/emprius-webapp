@@ -2,6 +2,7 @@ import React from 'react'
 import { Badge, Box, Container, Grid, GridItem, Heading, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { ServerImage } from '../../../components/shared/ServerImage'
 import { Link as RouterLink, useParams } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import { useTranslation } from 'react-i18next'
 import { FiMapPin, FiStar } from 'react-icons/fi'
 import { useToolRatings } from '../../../hooks/queries'
@@ -136,7 +137,7 @@ export const ToolDetailPage = () => {
                   <Text color='gray.600' mb={4}>
                     {t('tools.notAvailable')}
                   </Text>
-                  <Link as={RouterLink} to='/tools' color='primary.500' fontWeight='medium'>
+                  <Link as={RouterLink} to={ROUTES.TOOLS.LIST} color='primary.500' fontWeight='medium'>
                     {t('tools.findOther')}
                   </Link>
                 </Box>
@@ -146,7 +147,7 @@ export const ToolDetailPage = () => {
                 <Text color='gray.600' mb={4}>
                   {t('tools.loginToBook')}
                 </Text>
-                <Link as={RouterLink} to='/login' color='primary.500' fontWeight='medium'>
+                <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
                   {t('nav.login')}
                 </Link>
               </Box>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Container, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import { useTranslation } from 'react-i18next'
 import { FiGithub } from 'react-icons/fi'
 
@@ -15,13 +16,13 @@ export const Footer = () => {
       <Container maxW='container.xl'>
         <Stack direction={{ base: 'column', md: 'row' }} justify='space-between' align='center' spacing={4}>
           <Stack direction={{ base: 'column', sm: 'row' }} spacing={{ base: 2, sm: 6 }} align='center'>
-            <Link as={RouterLink} to='/' color={textColor} _hover={{ color: 'primary.500' }}>
+            <Link as={RouterLink} to={ROUTES.HOME} color={textColor} _hover={{ color: 'primary.500' }}>
               {t('nav.home')}
             </Link>
-            <Link as={RouterLink} to='/search' color={textColor} _hover={{ color: 'primary.500' }}>
+            <Link as={RouterLink} to={ROUTES.SEARCH} color={textColor} _hover={{ color: 'primary.500' }}>
               {t('nav.findTools')}
             </Link>
-            <Link as={RouterLink} to='/about' color={textColor} _hover={{ color: 'primary.500' }}>
+            <Link as={RouterLink} to={ROUTES.ABOUT} color={textColor} _hover={{ color: 'primary.500' }}>
               {t('nav.about')}
             </Link>
           </Stack>

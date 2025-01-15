@@ -16,6 +16,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiBookmark, FiLogOut, FiMoon, FiSun, FiTool, FiUser } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import { useAuth } from '../../features/auth/context/AuthContext'
 import { LanguageSwitcher } from '../shared/LanguageSwitcher'
 import { Avatar } from '~src/features/user/components/Avatar'
@@ -43,7 +44,7 @@ export const Navbar = () => {
     >
       <Container maxW='container.xl' py={4}>
         <Stack direction='row' justify='space-between' align='center' spacing={8}>
-          <Link as={RouterLink} to='/' _hover={{ textDecoration: 'none' }}>
+          <Link as={RouterLink} to={ROUTES.HOME} _hover={{ textDecoration: 'none' }}>
             <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
           </Link>
 
@@ -63,13 +64,13 @@ export const Navbar = () => {
                   <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem icon={<FiUser />} onClick={() => navigate('/profile')}>
+                  <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
                     {t('nav.profile')}
                   </MenuItem>
-                  <MenuItem icon={<FiTool />} onClick={() => navigate('/tools/new')}>
+                  <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.NEW)}>
                     {t('nav.addTool')}
                   </MenuItem>
-                  <MenuItem icon={<FiBookmark />} onClick={() => navigate('/search')}>
+                  <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.SEARCH)}>
                     {t('nav.findTools')}
                   </MenuItem>
                   <MenuItem icon={<FiLogOut />} onClick={logout}>
@@ -79,10 +80,10 @@ export const Navbar = () => {
               </Menu>
             ) : (
               <Stack direction='row' spacing={2}>
-                <Button as={RouterLink} to='/login' variant='ghost'>
+                <Button as={RouterLink} to={ROUTES.AUTH.LOGIN} variant='ghost'>
                   {t('nav.login')}
                 </Button>
-                <Button as={RouterLink} to='/register'>
+                <Button as={RouterLink} to={ROUTES.AUTH.REGISTER}>
                   {t('nav.register')}
                 </Button>
               </Stack>

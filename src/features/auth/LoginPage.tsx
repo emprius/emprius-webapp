@@ -3,6 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { ROUTES } from '~src/router'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { AUTH_FORM } from '~constants'
 import { ILoginParams } from '~src/features/auth/context/authQueries'
@@ -26,7 +27,7 @@ export const LoginPage = () => {
   const onSubmit = async (data: ILoginParams) => {
     await mutateAsync(data)
       // todo(konv1): use route constants
-      .then(() => navigate('/'))
+      .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         toast({
           title: t('auth.loginError'),
@@ -43,7 +44,7 @@ export const LoginPage = () => {
         <Heading size='xl'>{t('auth.login')}</Heading>
         <Text color='gray.600'>
           {t('auth.noAccount')}{' '}
-          <Link as={RouterLink} to='/register' color='primary.500' fontWeight='medium'>
+          <Link as={RouterLink} to={ROUTES.AUTH.REGISTER} color='primary.500' fontWeight='medium'>
             {t('auth.register')}
           </Link>
         </Text>

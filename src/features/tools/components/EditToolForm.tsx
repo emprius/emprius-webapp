@@ -7,6 +7,7 @@ import { useAuth } from '~src/features/auth/context/AuthContext'
 import { ToolForm, ToolFormData } from './ToolForm'
 import { useNavigate } from 'react-router-dom'
 import { useUploadImage } from '~src/hooks/queries'
+import { ROUTES } from '~src/router'
 
 interface EditToolFormProps {
   initialData: Tool
@@ -33,7 +34,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
         duration: 3000,
       })
       // todo(konv1): use defined routes
-      navigate('/tools')
+      navigate(ROUTES.TOOLS.LIST)
     },
     onError: (error) => {
       console.error('Failed to update tool:', error)

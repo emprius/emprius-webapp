@@ -13,54 +13,59 @@ import { NotFoundPage } from './features/error/NotFoundPage'
 import { ProtectedRoute } from './features/auth/components/ProtectedRoute'
 import { AuthLayout } from './features/auth/components/AuthLayout'
 
+export const ROUTES = {
+  HOME: '/',
+  SEARCH: '/search',
+  TOOLS: {
+    LIST: '/tools',
+    DETAIL: '/tools/:id',
+    EDIT: `/tools/:id/edit`,
+    NEW: '/tools/new',
+  },
+  PROFILE: '/profile',
+  AUTH: {
+    LOGIN: '/login',
+    REGISTER: '/register',
+  },
+  ABOUT: '/about',
+} as const
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: ROUTES.HOME,
         element: <HomePage />,
       },
       {
-        path: 'search',
+        path: ROUTES.SEARCH,
         element: <SearchPage />,
       },
       {
-        path: 'tools',
+        element: <ProtectedRoute />,
         children: [
           {
-            index: true,
+            path: ROUTES.PROFILE,
+            element: <ProfilePage />,
+          },
+          {
+            path: ROUTES.TOOLS.LIST,
             element: <ToolsListPage />,
           },
           {
-            path: ':id',
+            path: ROUTES.TOOLS.DETAIL,
             element: <ToolDetailPage />,
           },
           {
-            path: ':id/edit',
-            element: (
-              <ProtectedRoute>
-                <EditToolPage />
-              </ProtectedRoute>
-            ),
+            path: ROUTES.TOOLS.EDIT,
+            element: <EditToolPage />,
           },
           {
-            path: 'new',
-            element: (
-              <ProtectedRoute>
-                <NewToolPage />
-              </ProtectedRoute>
-            ),
+            path: ROUTES.TOOLS.NEW,
+            element: <NewToolPage />,
           },
         ],
-      },
-      {
-        path: 'profile',
-        element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
       },
     ],
   },
@@ -68,11 +73,11 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: 'login',
+        path: ROUTES.AUTH.LOGIN.slice(1),
         element: <LoginPage />,
       },
       {
-        path: 'register',
+        path: ROUTES.AUTH.REGISTER.slice(1),
         element: <RegisterPage />,
       },
     ],
