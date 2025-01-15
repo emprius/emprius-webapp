@@ -1,25 +1,6 @@
-import { useMutation, UseMutationOptions, useQueryClient } from '@tanstack/react-query'
-import { tools } from '~src/services/api'
-import { Tool, Image, ImageContent } from '~src/types'
-
-export interface UpdateToolParams {
-  id: string
-  title?: string
-  description?: string
-  mayBeFree?: boolean
-  askWithFee?: boolean
-  cost?: number
-  images?: ImageContent[]
-  transportOptions?: number[]
-  category?: number
-  location?: {
-    latitude: number
-    longitude: number
-  }
-  estimatedValue?: number
-  height?: number
-  weight?: number
-}
+import { useMutation, UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import api, { tools } from '~src/services/api'
+import { SearchFilters, Tool } from '~src/types'
 
 export interface createToolParams {
   title: string
@@ -27,7 +8,7 @@ export interface createToolParams {
   mayBeFree: boolean
   askWithFee: boolean
   cost: number // uint64
-  images: ImageContent[]
+  images: string[]
   transportOptions: number[] // []uint
   category: number // uint
   location: {
@@ -39,6 +20,10 @@ export interface createToolParams {
   weight: number // uint64
 }
 
+export interface UpdateToolParams extends createToolParams {
+  id: string
+}
+
 export const useCreateTool = (options?: Omit<UseMutationOptions<Tool, Error, createToolParams>, 'mutationFn'>) =>
   useMutation({
     mutationFn: tools.create,
@@ -47,45 +32,8 @@ export const useCreateTool = (options?: Omit<UseMutationOptions<Tool, Error, cre
 
 export const useUpdateTool = (options?: Omit<UseMutationOptions<Tool, Error, UpdateToolParams>, 'mutationFn'>) => {
   const queryClient = useQueryClient()
-  
   return useMutation({
-    mutationFn: async ({ id, ...data }: UpdateToolParams) => {
-      const formData = new FormData()
-      
-      // Type guard for location object
-      const isLocation = (value: any): value is { latitude: number; longitude: number } => {
-        return value && typeof value === 'object' && 'latitude' in value && 'longitude' in value
-      }
-
-      // Append all fields to FormData
-      Object.entries(data).forEach(([key, value]) => {
-        if (value !== undefined) {
-          if (key === 'location' && isLocation(value)) {
-            formData.append('latitude', value.latitude.toString())
-            formData.append('longitude', value.longitude.toString())
-          } else if (Array.isArray(value)) {
-            if (key === 'images') {
-              (value as ImageContent[]).forEach((image, index) => {
-                formData.append(`images[${index}]`, image.content)
-                formData.append(`imageHashes[${index}]`, image.hash)
-                formData.append(`imageNames[${index}]`, image.name)
-              })
-            } else if (key === 'transportOptions') {
-              value.forEach((option, index) => {
-                formData.append(`transportOptions[${index}]`, option.toString())
-              })
-            }
-          } else if (typeof value === 'boolean') {
-            formData.append(key, value ? '1' : '0')
-          } else {
-            formData.append(key, value.toString())
-          }
-        }
-      })
-
-      const response = await tools.update(id, formData)
-      return response
-    },
+    mutationFn: tools.update,
     onSuccess: (data) => {
       // Invalidate tool queries to refetch updated data
       queryClient.invalidateQueries({ queryKey: ['tools'] })
@@ -94,3 +42,21 @@ export const useUpdateTool = (options?: Omit<UseMutationOptions<Tool, Error, Upd
     ...options,
   })
 }
+
+// Tools queries
+export const useTools = (filters?: SearchFilters) =>
+  useQuery({
+    queryKey: ['tools', filters],
+    queryFn: () => api.tools.getUserTools(filters),
+  })
+export const useTool = (id: string) =>
+  useQuery({
+    queryKey: ['tool', id],
+    queryFn: () => api.tools.getById(id),
+    enabled: !!id,
+  })
+
+export const useDeleteTool = () =>
+  useMutation({
+    mutationFn: (id: string) => api.tools.delete(id),
+  })

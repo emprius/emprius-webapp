@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getB64FromFile } from '~src/utils'
 import api from '../services/api'
-import type { SearchFilters } from '../types'
 
 export const useUploadImage = () =>
   useMutation({
@@ -9,30 +8,6 @@ export const useUploadImage = () =>
       const base64 = await getB64FromFile(file)
       return api.images.uploadImage(base64)
     },
-  })
-
-// Tools queries
-export const useTools = (filters?: SearchFilters) =>
-  useQuery({
-    queryKey: ['tools', filters],
-    queryFn: () => api.tools.getUserTools(filters),
-  })
-
-export const useTool = (id: string) =>
-  useQuery({
-    queryKey: ['tool', id],
-    queryFn: () => api.tools.getById(id),
-    enabled: !!id,
-  })
-
-export const useUpdateTool = (id: string) =>
-  useMutation({
-    mutationFn: (data: FormData) => api.tools.update(id, data),
-  })
-
-export const useDeleteTool = () =>
-  useMutation({
-    mutationFn: (id: string) => api.tools.delete(id),
   })
 
 // Bookings queries
@@ -50,11 +25,11 @@ export const useBooking = (id: string) =>
   })
 
 interface CreateBookingData {
-  toolId: string;
-  startDate: number;
-  endDate: number;
-  contact?: string;
-  comments?: string;
+  toolId: string
+  startDate: number
+  endDate: number
+  contact?: string
+  comments?: string
 }
 
 export const useCreateBooking = () =>

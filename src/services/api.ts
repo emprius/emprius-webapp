@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams} from '~src/features/auth'
 import {LoginResponse} from '~src/features/auth/context/authQueries'
-import {createToolParams} from '~src/features/tools/toolsQueries'
+import {createToolParams, UpdateToolParams} from '~src/features/tools/toolsQueries'
 import {STORAGE_KEYS} from '../constants'
 import type {Booking, SearchFilters, Tool, UserProfile} from '../types'
 import {EditProfileFormData, ImageContent} from '../types'
@@ -82,22 +82,9 @@ export const tools = {
     apiRequest(
       api.post<ApiResponse<Tool>>('/tools', {
         ...data,
-        cost: Math.max(0, Math.round(data.cost)),
-        transportOptions: data.transportOptions.map((t) => Math.max(0, Math.round(t))),
-        category: Math.max(0, Math.round(data.category)),
-        estimatedValue: Math.max(0, Math.round(data.estimatedValue)),
-        height: Math.max(0, Math.round(data.height)),
-        weight: Math.max(0, Math.round(data.weight)),
       })
     ),
-  update: (id: string, data: FormData) =>
-    apiRequest(
-      api.put<ApiResponse<Tool>>(`/tools/${id}`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-    ),
+  update: ({ id, ...data }: UpdateToolParams) => apiRequest(api.put<ApiResponse<Tool>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
 }
 
