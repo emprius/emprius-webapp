@@ -50,7 +50,5 @@ export const useUpdateUserProfile = () => {
 export const useUserProfile = (userId: string) =>
   useQuery({
     queryKey: ['userProfile', userId],
-    // todo(konv1): this is a mock
-    queryFn: () => api.auth.getCurrentUser(),
-    // queryFn: () => api.users.getById(userId),
+    queryFn: () => api.users.getById(userId),
   })

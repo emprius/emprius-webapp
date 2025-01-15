@@ -3,11 +3,11 @@ import React from 'react'
 import {useTranslation} from 'react-i18next'
 import {FiMessageCircle, FiPhone, FiStar, FiThumbsDown, FiThumbsUp} from 'react-icons/fi'
 import {Link as RouterLink} from 'react-router-dom'
-import {useTool} from '~src/hooks/queries'
 import {Booking, BookingStatus} from '~src/types'
 import {useUpdateBookingStatus, useUserProfile} from '../userQueries'
 import {Avatar} from '~src/features/user/components/Avatar'
 import {ToolImage, ToolPriceRating} from '~src/features/tools/components/shared'
+import {useTool} from '~src/features/tools/toolsQueries'
 
 // Subcomponents
 const UserInfoCard = ({ userId, isLoading }: { userId: string; isLoading: boolean }) => {
@@ -42,9 +42,7 @@ const UserInfoCard = ({ userId, isLoading }: { userId: string; isLoading: boolea
 }
 
 const ToolInfoCard = ({ toolId, isLoading }: { toolId: string; isLoading: boolean }) => {
-  // todo(konv1): mock
-  const { data: tool } = useTool('117373659')
-  // const { data: tool } = useTool(toolId)
+  const { data: tool } = useTool(toolId)
 
   const { t } = useTranslation()
 
@@ -167,9 +165,7 @@ export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) =>
   const { t } = useTranslation()
   const { data: toUser, isLoading: isLoadingToUser } = useUserProfile(booking.toUserId)
   const { data: fromUser, isLoading: isLoadingFromUser } = useUserProfile(booking.fromUserId)
-  // todo(konv1): mock
-  const { isLoading: isLoadingTool } = useTool('117373659')
-  // const { isLoading: isLoadingTool } = useTool(booking.toolId)
+  const { isLoading: isLoadingTool } = useTool(booking.toolId)
   const isLoading = isLoadingTool || isLoadingToUser || isLoadingFromUser
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
