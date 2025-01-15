@@ -18,6 +18,7 @@ import { UserTools } from '~src/features/user/components/UserTools'
 import { UserInfo } from '../components/UserInfo'
 import { EditProfileForm } from '../components/EditProfileForm'
 import { useAuth } from '~src/features/auth/context/AuthContext'
+import { RatingsList } from '~src/features/bookings/components/RatingsList'
 
 export const ProfilePage = () => {
   const { t } = useTranslation()
@@ -54,6 +55,7 @@ export const ProfilePage = () => {
             <TabList mb={4}>
               <Tab>{t('user.myTools')}</Tab>
               <Tab>{t('user.myBookings')}</Tab>
+              <Tab>{t('rating.pendingRatings')}</Tab>
             </TabList>
             <TabPanels px={2}>
               <TabPanel>
@@ -61,6 +63,9 @@ export const ProfilePage = () => {
               </TabPanel>
               <TabPanel>
                 <UserBookings />
+              </TabPanel>
+              <TabPanel>
+                <RatingsList />
               </TabPanel>
             </TabPanels>
           </Box>

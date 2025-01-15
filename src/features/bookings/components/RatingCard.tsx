@@ -5,11 +5,7 @@ import { ASSETS } from '../../../constants'
 import { Rating } from '../types'
 import { RatingForm } from './RatingForm'
 
-interface RatingCardProps {
-  rating: Rating
-}
-
-export const RatingCard = ({ rating }: RatingCardProps) => {
+export const RatingCard = (rating: Rating) => {
   const { t } = useTranslation()
 
   // todo(konv1): implement this when backend is ready

@@ -12,7 +12,6 @@ import { ProfilePage } from './features/user/pages/ProfilePage'
 import { NotFoundPage } from './features/error/NotFoundPage'
 import { ProtectedRoute } from './features/auth/components/ProtectedRoute'
 import { AuthLayout } from './features/auth/components/AuthLayout'
-import { RatingsPage } from './features/bookings/pages/RatingsPage'
 
 export const ROUTES = {
   HOME: '/',
@@ -27,9 +26,6 @@ export const ROUTES = {
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
-  },
-  BOOKINGS: {
-    RATINGS: '/bookings/ratings',
   },
   ABOUT: '/about',
 } as const
@@ -68,10 +64,6 @@ const router = createBrowserRouter([
           {
             path: ROUTES.TOOLS.NEW,
             element: <NewToolPage />,
-          },
-          {
-            path: ROUTES.BOOKINGS.RATINGS,
-            element: <RatingsPage />,
           },
         ],
       },
