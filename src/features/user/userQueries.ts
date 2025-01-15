@@ -39,7 +39,7 @@ export const useUpdateUserProfile = () => {
     mutationFn: (data) => api.users.updateProfile(data),
     mutationKey: ['updateProfile'],
     // Invalidate profile query after mutation
-    onMutate: async (data) => {
+    onSuccess: async (data) => {
       await client.invalidateQueries({ queryKey: ['currentUser'] })
       return data
     },
