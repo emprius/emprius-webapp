@@ -4,7 +4,9 @@ import { LoginPage } from '~src/pages/auth/LoginPage'
 import { RegisterPage } from '~src/pages/auth/RegisterPage'
 import { AuthLayout } from '~src/pages/AuthLayout'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
+import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
 import { Profile } from '~src/pages/profile/Profile'
+import { UserRatingsPage } from '~src/pages/ratings/UserRatingsPage'
 import { SearchPage } from '~src/pages/search/SearchPage'
 import { ToolAddPage } from '~src/pages/tools/ToolAddPage'
 import { ToolDetailPage } from '~src/pages/tools/ToolDetailPage'
@@ -23,6 +25,8 @@ export const ROUTES = {
     NEW: '/tools/new',
   },
   PROFILE: '/profile',
+  BOOKINGS: '/bookings',
+  RATINGS: '/ratings',
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -64,6 +68,14 @@ const router = createBrowserRouter([
           {
             path: ROUTES.TOOLS.NEW,
             element: <ToolAddPage />,
+          },
+          {
+            path: ROUTES.BOOKINGS,
+            element: <UserBookingsPage />,
+          },
+          {
+            path: ROUTES.RATINGS,
+            element: <UserRatingsPage />,
           },
         ],
       },

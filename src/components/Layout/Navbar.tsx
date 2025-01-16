@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSun, FiTool, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -66,6 +66,15 @@ export const Navbar = () => {
                 <MenuList>
                   <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
                     {t('nav.profile')}
+                  </MenuItem>
+                  <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
+                    {t('nav.myTools')}
+                  </MenuItem>
+                  <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
+                    {t('nav.myBookings')}
+                  </MenuItem>
+                  <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
+                    {t('nav.ratings')}
                   </MenuItem>
                   <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.NEW)}>
                     {t('nav.addTool')}

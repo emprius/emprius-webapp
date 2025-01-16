@@ -43,7 +43,9 @@
     "findTools": "Find Tools",
     "logout": "Logout",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "myTools": "My Tools",
+    "myBookings": "My Bookings"
   },
   "common": {
     "cancel": "Cancel",
