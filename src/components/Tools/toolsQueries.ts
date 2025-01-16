@@ -53,11 +53,15 @@ export const useTools = (filters?: SearchFilters) =>
     queryKey: ['tools', filters],
     queryFn: () => (filters ? api.tools.searchTools(filters) : api.tools.getUserTools()),
   })
-export const useTool = (id: string) =>
+export const useTool = (
+  id: string,
+  options?: Omit<UseMutationOptions<Tool, Error, Partial<UpdateToolParams>>, 'mutationFn' | 'queryFn'>
+) =>
   useQuery({
     queryKey: ['tool', id],
     queryFn: () => api.tools.getById(id),
     enabled: !!id,
+    ...options,
   })
 
 export const useDeleteTool = () => {
