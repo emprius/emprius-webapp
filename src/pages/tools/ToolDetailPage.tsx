@@ -7,6 +7,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { BookingForm } from '~components/Bookings/BookingForm'
 import { ServerImage } from '~components/Images/ServerImage'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
 import { useTool } from '~components/Tools/toolsQueries'
 import { ROUTES } from '~src/router/router'
@@ -14,7 +15,7 @@ import { ROUTES } from '~src/router/router'
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { data: tool, isLoading: isToolLoading } = useTool(id!)
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -27,6 +28,8 @@ export const ToolDetailPage = () => {
   if (!tool) {
     return null
   }
+
+  const isOwner = user?.email === tool.userId
 
   return (
     <Container maxW='container.xl' py={8}>
@@ -81,6 +84,7 @@ export const ToolDetailPage = () => {
                   </Stack>
                 </Stack>
               </Stack>
+              <OwnerToolButtons tool={tool} />
             </Box>
 
             {tool.images.length > 0 && (
