@@ -72,7 +72,7 @@ export const UserBookings = () => {
   }
 
   return (
-    <Tabs>
+    <Tabs isLazy>
       <TabList>
         <Tab>{t('bookings.myPetitions')}</Tab>
         <Tab>{t('bookings.toolRequests')}</Tab>

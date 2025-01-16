@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -44,9 +44,40 @@ export const Navbar = () => {
     >
       <Container maxW='container.xl' py={4}>
         <Stack direction='row' justify='space-between' align='center' spacing={8}>
-          <Link as={RouterLink} to={ROUTES.HOME} _hover={{ textDecoration: 'none' }}>
-            <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
-          </Link>
+          <Stack direction='row' align='center' spacing={4}>
+            <Link as={RouterLink} to={ROUTES.HOME} _hover={{ textDecoration: 'none' }}>
+              <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
+            </Link>
+
+            {isAuthenticated && (
+              <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
+                <IconButton
+                  aria-label={t('nav.myTools')}
+                  icon={<FiTool />}
+                  onClick={() => navigate(ROUTES.TOOLS.LIST)}
+                  variant='ghost'
+                />
+                <IconButton
+                  aria-label={t('nav.myBookings')}
+                  icon={<FiBookmark />}
+                  onClick={() => navigate(ROUTES.BOOKINGS)}
+                  variant='ghost'
+                />
+                <IconButton
+                  aria-label={t('nav.ratings')}
+                  icon={<FiStar />}
+                  onClick={() => navigate(ROUTES.RATINGS)}
+                  variant='ghost'
+                />
+                <IconButton
+                  aria-label={t('nav.findTools')}
+                  icon={<FiSearch />}
+                  onClick={() => navigate(ROUTES.SEARCH)}
+                  variant='ghost'
+                />
+              </Stack>
+            )}
+          </Stack>
 
           <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
             <IconButton
@@ -59,31 +90,49 @@ export const Navbar = () => {
             <LanguageSwitcher />
 
             {isAuthenticated ? (
-              <Menu>
-                <MenuButton>
-                  <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
-                    {t('nav.profile')}
-                  </MenuItem>
-                  <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
-                    {t('nav.myTools')}
-                  </MenuItem>
-                  <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
-                    {t('nav.myBookings')}
-                  </MenuItem>
-                  <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
-                    {t('nav.ratings')}
-                  </MenuItem>
-                  <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.SEARCH)}>
-                    {t('nav.findTools')}
-                  </MenuItem>
-                  <MenuItem icon={<FiLogOut />} onClick={logout}>
-                    {t('nav.logout')}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+              <>
+                <Menu>
+                    <MenuButton display={{ base: 'none', md: 'block' }}>
+                      <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
+                        {t('nav.profile')}
+                      </MenuItem>
+                      <MenuItem icon={<FiLogOut />} onClick={logout}>
+                        {t('nav.logout')}
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+
+                  <Box display={{ base: 'block', md: 'none' }}>
+                    <Menu>
+                      <MenuButton>
+                        <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
+                          {t('nav.profile')}
+                        </MenuItem>
+                        <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
+                          {t('nav.myTools')}
+                        </MenuItem>
+                        <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
+                          {t('nav.myBookings')}
+                        </MenuItem>
+                        <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
+                          {t('nav.ratings')}
+                        </MenuItem>
+                        <MenuItem icon={<FiSearch />} onClick={() => navigate(ROUTES.SEARCH)}>
+                          {t('nav.findTools')}
+                        </MenuItem>
+                        <MenuItem icon={<FiLogOut />} onClick={logout}>
+                          {t('nav.logout')}
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Box>
+              </>
             ) : (
               <Stack direction='row' spacing={2}>
                 <Button as={RouterLink} to={ROUTES.AUTH.LOGIN} variant='ghost'>
