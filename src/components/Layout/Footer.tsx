@@ -1,9 +1,9 @@
-import React from 'react'
 import { Box, Container, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import { Link as RouterLink } from 'react-router-dom'
-import { ROUTES } from '~src/router'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiGithub } from 'react-icons/fi'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/router'
 
 export const Footer = () => {
   const { t } = useTranslation()

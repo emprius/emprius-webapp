@@ -1,5 +1,0 @@
-export * from './LoginPage'
-export * from './RegisterPage'
-export * from './components/AuthLayout'
-export { IRegisterParams } from '~src/features/auth/context/authQueries'
-export { ILoginParams } from '~src/features/auth/context/authQueries'

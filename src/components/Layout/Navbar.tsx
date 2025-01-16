@@ -14,12 +14,12 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSun, FiTool, FiUser, FiStar } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSun, FiTool, FiUser } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { ROUTES } from '~src/router'
-import { useAuth } from '../../features/auth/context/AuthContext'
-import { LanguageSwitcher } from '../shared/LanguageSwitcher'
-import { Avatar } from '~src/features/user/components/Avatar'
+import { useAuth } from '~components/Auth/AuthContext'
+import { Avatar } from '~components/Images/Avatar'
+import { ROUTES } from '~src/router/router'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -72,9 +72,6 @@ export const Navbar = () => {
                   </MenuItem>
                   <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.SEARCH)}>
                     {t('nav.findTools')}
-                  </MenuItem>
-                  <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.BOOKINGS.RATINGS)}>
-                    {t('nav.ratings')}
                   </MenuItem>
                   <MenuItem icon={<FiLogOut />} onClick={logout}>
                     {t('nav.logout')}
