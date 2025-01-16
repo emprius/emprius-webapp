@@ -15,7 +15,7 @@ export const ToolsListPage = () => {
     return <LoadingSpinner />
   }
 
-  const tools = toolsResponse || []
+  const tools = toolsResponse?.tools || []
 
   return (
     <Container maxW='container.xl' py={8}>

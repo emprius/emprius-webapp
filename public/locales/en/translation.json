@@ -16,7 +16,8 @@
     "toolNotFound": "Tool not found"
   },
   "tools": {
-    "pricePerDay": "Price per day"
+    "pricePerDay": "Price per day",
+    "isAvailable": "Available for rent"
   },
   "user": {
     "noBookings": "No bookings found",
@@ -43,5 +44,9 @@
     "logout": "Logout",
     "login": "Login",
     "register": "Register"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }

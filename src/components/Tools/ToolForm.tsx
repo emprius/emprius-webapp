@@ -12,16 +12,18 @@ import {
   NumberInputStepper,
   Select,
   Stack,
+  Switch,
   Textarea,
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
-import { Tool } from '~src/types'
+import { Tool } from './types'
 import { TOOL_CATEGORIES } from '~utils/constants'
 
 const TRANSPORT_OPTIONS = [
@@ -45,6 +47,7 @@ export interface ToolFormData {
     latitude: number
     longitude: number
   }
+  isAvailable: boolean
 }
 
 interface ToolFormProps {
@@ -54,7 +57,6 @@ interface ToolFormProps {
   isLoading?: boolean
   isError?: boolean
   error?: any
-  onCancel?: () => void
 }
 
 export const ToolForm: React.FC<ToolFormProps> = ({
@@ -64,10 +66,10 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   isLoading,
   isError,
   error,
-  onCancel,
 }) => {
   const { t } = useTranslation()
   const toast = useToast()
+  const navigate = useNavigate()
 
   const {
     register,
@@ -194,19 +196,21 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
       </FormControl>
 
+      <FormControl display='flex' alignItems='center'>
+        <FormLabel mb='0'>{t('tools.isAvailable')}</FormLabel>
+        <Switch {...register('isAvailable')} />
+      </FormControl>
+
       <ImageUploader
-        isRequired
         label={t('tools.images')}
         error={errors.images?.message}
-        {...register('images', { required: !initialData })}
+        {...register('images')}
       />
 
       <Stack direction='row' spacing={4} justify='flex-end'>
-        {onCancel && (
-          <Button onClick={onCancel} variant='ghost'>
-            {t('common.cancel')}
-          </Button>
-        )}
+        <Button onClick={() => navigate(-1)} variant='ghost'>
+          {t('common.cancel')}
+        </Button>
         <Button type='submit' colorScheme='primary' isLoading={isLoading}>
           {submitButtonText}
         </Button>

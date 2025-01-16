@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/imagesQueries'
 import { ROUTES } from '~src/router/router'
-import { Tool } from '~src/types'
 import { ToolForm, ToolFormData } from './ToolForm'
 import { UpdateToolParams, useUpdateTool } from './toolsQueries'
+import { Tool } from './types'
 
 interface EditToolFormProps {
   initialData: Tool
@@ -33,7 +33,6 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
         status: 'success',
         duration: 3000,
       })
-      // todo(konv1): use defined routes
       navigate(ROUTES.TOOLS.LIST)
     },
     onError: (error) => {
@@ -53,21 +52,24 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
 
   const handleSubmit = async (data: ToolFormData) => {
     let imageHashes: string[] = []
-    try {
-      // Upload images first
-      const imageFiles = Array.from(data.images)
-      const imagePromises = imageFiles.map(async (file) => {
-        const result = await uploadImage(file)
-        return result.hash
-      })
-      imageHashes = await Promise.all(imagePromises)
-    } catch (error) {
-      toast({
-        title: 'Failed to upload images',
-        status: 'error',
-        duration: 5000,
-      })
-      throw new Error('Failed to process images:', error)
+
+    if (data.images.length) {
+      try {
+        // Upload images first
+        const imageFiles = Array.from(data.images)
+        const imagePromises = imageFiles.map(async (file) => {
+          const result = await uploadImage(file)
+          return result.hash
+        })
+        imageHashes = await Promise.all(imagePromises)
+      } catch (error) {
+        toast({
+          title: 'Failed to upload images',
+          status: 'error',
+          duration: 5000,
+        })
+        throw new Error('Failed to process images:', error)
+      }
     }
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
       title: data.title,
@@ -82,6 +84,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
       weight: Number(data.weight),
       location: data.location,
       images: imageHashes,
+      isAvailable: data.isAvailable,
     }
 
     await createTool({
@@ -103,7 +106,6 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
         onSubmit={handleSubmit}
         submitButtonText={t('common.save')}
         isLoading={isLoading}
-        onCancel={onSuccess}
         isError={isError}
         error={error}
       />
