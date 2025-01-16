@@ -12,6 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
+import { PasswordInput } from './PasswordInput'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
@@ -115,9 +116,8 @@ export const RegisterPage = () => {
 
           <FormControl isRequired isInvalid={!!errors.password}>
             <FormLabel htmlFor='password'>{t('auth.password')}</FormLabel>
-            <Input
+            <PasswordInput
               id='password'
-              type='password'
               {...registerField('password', {
                 required: t('validation.required'),
                 minLength: {
@@ -131,9 +131,8 @@ export const RegisterPage = () => {
 
           <FormControl isRequired isInvalid={!!errors.confirmPassword}>
             <FormLabel htmlFor='confirmPassword'>{t('auth.confirmPassword')}</FormLabel>
-            <Input
+            <PasswordInput
               id='confirmPassword'
-              type='password'
               {...registerField('confirmPassword', {
                 required: t('validation.required'),
                 validate: (value) => value === password || t('validation.passwordMatch'),

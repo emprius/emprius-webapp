@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Stack, Text, useToast } from '@chakra-ui/react'
 import React from 'react'
+import { PasswordInput } from './PasswordInput'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
@@ -68,8 +69,7 @@ export const LoginPage = () => {
 
           <FormControl isRequired isInvalid={!!errors.password}>
             <FormLabel>{t('auth.password')}</FormLabel>
-            <Input
-              type='password'
+            <PasswordInput
               {...register('password', {
                 required: true,
                 minLength: {
