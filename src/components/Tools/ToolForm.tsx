@@ -23,8 +23,8 @@ import { useNavigate } from 'react-router-dom'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
-import { Tool } from './types'
 import { TOOL_CATEGORIES } from '~utils/constants'
+import { Tool } from './types'
 
 const TRANSPORT_OPTIONS = [
   { id: 1, label: 'Pickup' },
@@ -98,11 +98,24 @@ export const ToolForm: React.FC<ToolFormProps> = ({
 
   return (
     <Stack as='form' onSubmit={handleSubmit(handleFormSubmit)} spacing={6}>
-      <FormControl isRequired isInvalid={!!errors.title}>
-        <FormLabel>{t('tools.name')}</FormLabel>
-        <Input {...register('title', { required: true })} />
-        <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
-      </FormControl>
+      <Stack direction={{ base: 'column-reverse', sm: 'row' }} justify={'space-between'}>
+        <FormControl isRequired isInvalid={!!errors.title}>
+          <FormLabel>{t('tools.name')}</FormLabel>
+          <Input {...register('title', { required: true })} />
+          <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl
+          pt={{ base: 0, sm: 6 }}
+          pb={{ base: 6, sm: 0 }}
+          display='flex'
+          alignItems='center'
+          justifyContent={{ base: 'start', sm: 'end' }}
+        >
+          <FormLabel mb='0'>{t('tools.isAvailable')}</FormLabel>
+          <Switch {...register('isAvailable')} />
+        </FormControl>
+      </Stack>
 
       <FormControl isRequired isInvalid={!!errors.description}>
         <FormLabel>{t('tools.description')}</FormLabel>
@@ -196,16 +209,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl display='flex' alignItems='center'>
-        <FormLabel mb='0'>{t('tools.isAvailable')}</FormLabel>
-        <Switch {...register('isAvailable')} />
-      </FormControl>
-
-      <ImageUploader
-        label={t('tools.images')}
-        error={errors.images?.message}
-        {...register('images')}
-      />
+      <ImageUploader label={t('tools.images')} error={errors.images?.message} {...register('images')} />
 
       <Stack direction='row' spacing={4} justify='flex-end'>
         <Button onClick={() => navigate(-1)} variant='ghost'>

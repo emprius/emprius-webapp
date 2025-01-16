@@ -216,9 +216,17 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
           </Text>
         </Stack>
       </Link>
-
       {isOwner && (
-        <Stack direction='row' p={4} spacing={2} align='center' justify='flex-end'>
+        <Stack
+          direction='row'
+          pb={4}
+          pr={4}
+          spacing={2}
+          align='center'
+          justify='flex-end'
+          width='fit-content'
+          ml='auto'
+        >
           <EditToolButton toolId={tool.id} />
           <AvailabilityToggle tool={tool} />
           <DeleteToolButton tool={tool} />

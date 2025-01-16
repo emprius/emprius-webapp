@@ -30,7 +30,7 @@ export const Profile = () => {
           <UserInfo onEdit={onToggle} />
         )}
       </Box>
-      <Button mt={4} colorScheme='blue' onClick={() => navigate(ROUTES.TOOLS.NEW)}>
+      <Button mt={4} colorScheme='blue' onClick={() => navigate(ROUTES.TOOLS.LIST)}>
         My Tools
       </Button>
     </Container>
