@@ -1,7 +1,7 @@
 import { Badge, Box, Container, Grid, GridItem, Heading, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiMapPin, FiStar } from 'react-icons/fi'
+import { FiStar } from 'react-icons/fi'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { BookingForm } from '~components/Bookings/BookingForm'
@@ -65,16 +65,6 @@ export const ToolDetailPage = () => {
                   </Stack>
 
                   <Stack spacing={4}>
-                    <Stack direction='row' align='center' color='gray.600'>
-                      <FiMapPin />
-                      <Text>
-                        {t('tools.coordinates', {
-                          lat: String(tool.location.latitude),
-                          lng: String(tool.location.longitude),
-                        })}
-                      </Text>
-                    </Stack>
-
                     <Stack direction='row' align='center' color='orange.400'>
                       <FiStar />
                       <Text>{tool.rating.toFixed(1)}</Text>

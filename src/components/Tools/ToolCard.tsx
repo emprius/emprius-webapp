@@ -22,6 +22,7 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Tool } from '~components/Tools/types'
+import { ROUTES } from '~src/router/router'
 import { ToolImage, ToolPriceRating } from './shared'
 import { UpdateToolParams, useDeleteTool, useUpdateTool } from './toolsQueries'
 
@@ -35,7 +36,7 @@ const EditToolButton = ({ toolId }: { toolId: number }) => {
   return (
     <IconButton
       as={RouterLink}
-      to={`/tools/${toolId}/edit`}
+      to={ROUTES.TOOLS.EDIT.replace(':id', toolId.toString())}
       icon={<FiEdit2 />}
       aria-label={t('tools.edit')}
       size='sm'
@@ -54,24 +55,11 @@ const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef<HTMLButtonElement>(null)
   const newAvailability = !tool.isAvailable
-  // const [newAvailability, setNewAvailability] = React.useState(tool.isAvailable)
 
   const handleConfirmToggle = useCallback(async () => {
     try {
       const updateParams: Partial<UpdateToolParams> = {
         id: tool.id.toString(),
-        // title: tool.title,
-        // description: tool.description,
-        // mayBeFree: tool.mayBeFree,
-        // askWithFee: tool.askWithFee,
-        // cost: tool.cost,
-        // images: tool.images.map(img => img.hash),
-        // transportOptions: tool.transportOptions || [],
-        // category: tool.toolCategory,
-        // location: tool.location,
-        // estimatedValue: tool.estimatedValue,
-        // height: tool.height,
-        // weight: tool.weight,
         isAvailable: newAvailability,
       }
       await updateTool.mutateAsync(updateParams)
@@ -96,12 +84,7 @@ const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
 
   return (
     <>
-      <Switch
-        size='sm'
-        isChecked={tool.isAvailable}
-        onChange={(e) => onOpen()} // Controlled by modal
-        colorScheme='green'
-      />
+      <Switch size='sm' isChecked={tool.isAvailable} onChange={onOpen} colorScheme='green' />
 
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
         <AlertDialogOverlay>
@@ -117,13 +100,7 @@ const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button
-                ref={cancelRef}
-                onClick={() => {
-                  // setNewAvailability(tool.isAvailable) // Reset on cancel
-                  onClose()
-                }}
-              >
+              <Button ref={cancelRef} onClick={onClose}>
                 {t('common.cancel')}
               </Button>
               <Button colorScheme='blue' onClick={handleConfirmToggle} ml={3}>
@@ -207,37 +184,46 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
       borderRadius='lg'
       overflow='hidden'
       transition='transform 0.2s'
-      _hover={{ transform: 'translateY(-4px)' }}
+      _hover={{ transform: 'translateY(-4px)', cursor: 'pointer' }}
     >
-      <Box position='relative'>
-        <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} />
-      </Box>
+      <Link
+        as={RouterLink}
+        to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+        fontWeight='semibold'
+        fontSize='lg'
+        _hover={{ color: 'primary.500', textDecoration: 'none' }}
+      >
+        <Box position='relative'>
+          <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} />
+        </Box>
 
-      <Stack p={4} spacing={3}>
-        <Stack spacing={1}>
-          <Link
-            as={RouterLink}
-            to={`/tools/${tool.id}`}
-            fontWeight='semibold'
-            fontSize='lg'
-            _hover={{ color: 'primary.500', textDecoration: 'none' }}
-          >
-            {tool.title}
-          </Link>
-          <ToolPriceRating cost={tool.cost} rating={tool.rating} />
-        </Stack>
-
-        <Text color='gray.600' noOfLines={2} title={tool.description}>
-          {tool.description}
-        </Text>
-        {isOwner && (
-          <Stack direction='row' spacing={2} align='center' justify='flex-end'>
-            <EditToolButton toolId={tool.id} />
-            <AvailabilityToggle tool={tool} />
-            <DeleteToolButton tool={tool} />
+        <Stack p={4} spacing={3}>
+          <Stack spacing={1}>
+            <Link
+              as={RouterLink}
+              to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+              fontWeight='semibold'
+              fontSize='lg'
+              _hover={{ color: 'primary.500', textDecoration: 'none' }}
+            >
+              {tool.title}
+            </Link>
+            <ToolPriceRating cost={tool.cost} rating={tool.rating} />
           </Stack>
-        )}
-      </Stack>
+
+          <Text color='gray.600' noOfLines={2} title={tool.description}>
+            {tool.description}
+          </Text>
+        </Stack>
+      </Link>
+
+      {isOwner && (
+        <Stack direction='row' p={4} spacing={2} align='center' justify='flex-end'>
+          <EditToolButton toolId={tool.id} />
+          <AvailabilityToggle tool={tool} />
+          <DeleteToolButton tool={tool} />
+        </Stack>
+      )}
     </Box>
   )
 }

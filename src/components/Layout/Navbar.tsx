@@ -76,9 +76,6 @@ export const Navbar = () => {
                   <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
                     {t('nav.ratings')}
                   </MenuItem>
-                  <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.NEW)}>
-                    {t('nav.addTool')}
-                  </MenuItem>
                   <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.SEARCH)}>
                     {t('nav.findTools')}
                   </MenuItem>

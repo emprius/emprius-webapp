@@ -1,14 +1,17 @@
-import { Container, FormControl, FormLabel, Grid, GridItem, Select, Stack, useColorModeValue } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { Box, Button, Container, SimpleGrid, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '~src/router/router'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ToolCard } from '~components/Tools/ToolCard'
 import { useTools } from '~components/Tools/toolsQueries'
-import { TOOL_CATEGORIES } from '~utils/constants'
 
 export const ToolsListPage = () => {
   const { t } = useTranslation()
   const { data: toolsResponse, isLoading } = useTools()
+  const navigate = useNavigate()
   const bgColor = useColorModeValue('white', 'gray.800')
 
   if (isLoading) {
@@ -19,38 +22,29 @@ export const ToolsListPage = () => {
 
   return (
     <Container maxW='container.xl' py={8}>
-      <Grid templateColumns={{ base: '1fr', lg: '300px 1fr' }} gap={8}>
-        <GridItem>
-          <Stack spacing={6} position='sticky' top='20px' bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
-            <FormControl>
-              <FormLabel>{t('tools.category')}</FormLabel>
-              <Select defaultValue=''>
-                <option value=''>{t('tools.allCategories')}</option>
-                {TOOL_CATEGORIES.map((category) => (
-                  <option key={category} value={category}>
-                    {t(`categories.${category}`)}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
-        </GridItem>
+      <Box flex={1}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+          {tools.map((tool) => (
+            <ToolCard key={tool.id} tool={tool} />
+          ))}
+        </SimpleGrid>
+      </Box>
 
-        <GridItem>
-          <Grid
-            templateColumns={{
-              base: '1fr',
-              md: 'repeat(2, 1fr)',
-              xl: 'repeat(3, 1fr)',
-            }}
-            gap={6}
-          >
-            {tools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </Grid>
-        </GridItem>
-      </Grid>
+      <Button
+        position='fixed'
+        bottom='2rem'
+        left='50%'
+        transform='translateX(-50%)'
+        colorScheme='blue'
+        size='lg'
+        borderRadius='full'
+        px={6}
+        onClick={() => navigate(ROUTES.TOOLS.NEW)}
+        boxShadow='lg'
+        leftIcon={<AddIcon />}
+      >
+        {t('add tool')}
+      </Button>
     </Container>
   )
 }
