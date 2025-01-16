@@ -45,7 +45,7 @@ export const useUpdateBookingStatus = () => {
   })
 }
 
-interface CreateBookingData {
+export interface CreateBookingData {
   toolId: string
   startDate: number
   endDate: number

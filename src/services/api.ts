@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
-import {Booking} from '~components/Bookings/bookingsQueries'
+import {Booking, CreateBookingData} from '~components/Bookings/bookingsQueries'
 import {ImageContent} from '~components/Images/ServerImage'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
 import {SearchFilters} from '~components/Search/searchQueries'
@@ -69,17 +69,15 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  // todo(konv1): move this into a object type
-  getUserTools: (params?: SearchFilters) => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools', { params })),
-  searchTools: (params: {
-    term?: string
-    categories?: number[]
-    distance?: number
-    maxCost?: number
-    mayBeFree?: boolean
-    latitude?: number
-    longitude?: number
-  }) => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools/search', { params })),
+  getUserTools: () => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools')),
+  searchTools: (params: SearchFilters) =>
+    apiRequest(
+      api.get<
+        ApiResponse<{
+          tools: Tool[]
+        }>
+      >('/tools/search', { params })
+    ),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>
     apiRequest(
@@ -96,12 +94,9 @@ export const bookings = {
   // getAll: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings')),
   getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
   getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
-  getById: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
-  create: (data: { toolId: string; startDate: number; endDate: number; contact?: string; comments?: string }) =>
-    apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
+  create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   updateStatus: (id: string, status: Booking['bookingStatus']) =>
     apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { bookingStatus: status })),
-  cancel: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/bookings/${id}`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
   submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),
 }
@@ -111,14 +106,10 @@ export const users = {
   updateProfile: (data: Partial<EditProfileFormData>) =>
     apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
-  // not implemented yet?
-  // getTools: (userId: string) => apiRequest(api.get<ApiResponse<Tool[]>>(`/users/${userId}/tools`)),
-  // getBookings: (userId: string) => apiRequest(api.get<ApiResponse<Booking[]>>(`/users/${userId}/bookings`)),
 }
 
 // images
 export const images = {
-  // todo(konv1): move this into a object type
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
   getImage: (hash: string) => apiRequest(api.get<ApiResponse<ImageContent>>(`/images/${hash}`)),
 }
