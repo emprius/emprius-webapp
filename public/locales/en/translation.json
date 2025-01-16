@@ -17,7 +17,8 @@
   },
   "tools": {
     "pricePerDay": "Price per day",
-    "isAvailable": "Available for rent"
+    "isAvailable": "Available for rent",
+    "existingImages": "Current Images"
   },
   "user": {
     "noBookings": "No bookings found",

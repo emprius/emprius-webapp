@@ -1,9 +1,12 @@
+import { CloseIcon } from '@chakra-ui/icons'
 import {
+  Box,
   Button,
   Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  IconButton,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -11,8 +14,10 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
+  SimpleGrid,
   Stack,
   Switch,
+  Text,
   Textarea,
   useToast,
 } from '@chakra-ui/react'
@@ -20,6 +25,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { Image, ServerImage } from '~components/Images/ServerImage'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
@@ -57,6 +63,8 @@ interface ToolFormProps {
   isLoading?: boolean
   isError?: boolean
   error?: any
+  existingImages?: Image[]
+  onDeleteExistingImage?: (index: number) => void
 }
 
 export const ToolForm: React.FC<ToolFormProps> = ({
@@ -66,6 +74,8 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   isLoading,
   isError,
   error,
+  existingImages = [],
+  onDeleteExistingImage,
 }) => {
   const { t } = useTranslation()
   const toast = useToast()
@@ -93,6 +103,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         description: t('common.somethingWentWrong'),
         status: 'error',
       })
+      throw error
     }
   }
 
@@ -208,6 +219,34 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <LocationPicker onChange={(location) => setValue('location', location)} value={watch('location')} />
         <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
       </FormControl>
+
+      {existingImages.length > 0 && (
+        <Box mb={6}>
+          <Text mb={2} fontWeight='medium'>
+            {t('tools.existingImages')}
+          </Text>
+          <SimpleGrid columns={[2, 3, 4]} spacing={4}>
+            {existingImages.map((image, index) => (
+              <Box key={image.hash} position='relative'>
+                <ServerImage imageId={image.hash} objectFit='cover' w='100%' h='100px' borderRadius='md' />
+                {onDeleteExistingImage && (
+                  <IconButton
+                    aria-label='Delete image'
+                    icon={<CloseIcon />}
+                    size='sm'
+                    position='absolute'
+                    top={1}
+                    right={1}
+                    onClick={() => onDeleteExistingImage(index)}
+                    colorScheme='red'
+                    variant='solid'
+                  />
+                )}
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Box>
+      )}
 
       <ImageUploader label={t('tools.images')} error={errors.images?.message} {...register('images')} />
 

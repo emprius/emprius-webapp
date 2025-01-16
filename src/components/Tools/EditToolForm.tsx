@@ -1,5 +1,5 @@
 import { Box, Text, useToast } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -11,15 +11,15 @@ import { Tool } from './types'
 
 interface EditToolFormProps {
   initialData: Tool
-  onSuccess?: () => void
 }
 
-export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSuccess }) => {
+export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { images, ...initial } }) => {
   const { t } = useTranslation()
   const toast = useToast()
   const { user } = useAuth()
   const navigate = useNavigate()
   const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
+  const [existingImages, setExistingImages] = useState(images || [])
 
   const {
     mutateAsync: createTool,
@@ -46,22 +46,27 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
   })
 
   // Only allow editing if the current user is the tool owner
-  if (user?.email !== initialData.userId) {
+  if (user?.email !== initial.userId) {
     return <Text color='red.500'>{t('tools.notOwner')}</Text>
   }
 
-  const handleSubmit = async (data: ToolFormData) => {
-    let imageHashes: string[] = []
+  const handleDeleteExistingImage = (index: number) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index))
+  }
 
+  const handleSubmit = async (data: ToolFormData) => {
+    let newImageHashes: string[] = []
+
+    console.log('aaaa', data.images)
     if (data.images.length) {
       try {
-        // Upload images first
+        // Upload new images first
         const imageFiles = Array.from(data.images)
         const imagePromises = imageFiles.map(async (file) => {
           const result = await uploadImage(file)
           return result.hash
         })
-        imageHashes = await Promise.all(imagePromises)
+        newImageHashes = await Promise.all(imagePromises)
       } catch (error) {
         toast({
           title: 'Failed to upload images',
@@ -71,6 +76,10 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
         throw new Error('Failed to process images:', error)
       }
     }
+
+    // Combine existing image hashes with new image hashes
+    const allImageHashes = [...existingImages.map((img) => img.hash), ...newImageHashes]
+
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
       title: data.title,
       description: data.description,
@@ -83,19 +92,19 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
       height: Number(data.height),
       weight: Number(data.weight),
       location: data.location,
-      images: imageHashes,
+      images: allImageHashes,
       isAvailable: data.isAvailable,
     }
 
     await createTool({
-      id: initialData.id.toString(),
+      id: initial.id.toString(),
       ...updatedFields,
     })
   }
 
   const formInitialData = {
-    ...initialData,
-    category: initialData.toolCategory,
+    ...initial,
+    category: initial.toolCategory,
   }
   const isLoading = updateToolIsPending || uploadImageIsPending
 
@@ -108,6 +117,8 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData, onSucce
         isLoading={isLoading}
         isError={isError}
         error={error}
+        existingImages={existingImages}
+        onDeleteExistingImage={handleDeleteExistingImage}
       />
     </Box>
   )
