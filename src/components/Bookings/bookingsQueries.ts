@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstac
 import api from '~src/services/api'
 
 export enum BookingStatus {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  CANCELLED = 'CANCELLED',
-  COMPLETED = 'COMPLETED',
+  PENDING = 'PENDING', // Requested by the user awaiting approval
+  ACCEPTED = 'ACCEPTED', // Approved by the owner
+  CANCELLED = 'CANCELLED', // Cancelled by the requester
+  REJECTED = 'REJECTED', // Denied by the owner
+  RETURNED = 'RETURNED', // Completed by both parties
 }
 
 export interface Booking {

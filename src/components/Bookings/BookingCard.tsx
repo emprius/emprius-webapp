@@ -1,15 +1,19 @@
 import { Badge, Box, Button, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone, FiStar, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { Booking, BookingStatus, useUpdateBookingStatus } from '~components/Bookings/bookingsQueries'
+import { Booking, BookingStatus, useUpdateBookingStatus } from './bookingsQueries'
 import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
 import { useTool } from '~components/Tools/toolsQueries'
 import { useUserProfile } from '~components/User/userQueries'
 import { UserMiniCard } from '~components/User/UserMiniCard'
 
-const ToolInfoCard = ({ toolId, isLoading }: { toolId: string; isLoading: boolean }) => {
+interface ToolInfoCardProps {
+  toolId: string
+  isLoading: boolean
+}
+
+const ToolInfoCard = ({ toolId, isLoading }: ToolInfoCardProps) => {
   const { data: tool } = useTool(toolId)
 
   const { t } = useTranslation()
@@ -50,7 +54,12 @@ const ToolInfoCard = ({ toolId, isLoading }: { toolId: string; isLoading: boolea
   )
 }
 
-const BookingDates = ({ booking, isLoading }: { booking: Booking; isLoading: boolean }) => {
+interface BookingDatesProps {
+  booking: Booking
+  isLoading: boolean
+}
+
+const BookingDates = ({ booking, isLoading }: BookingDatesProps) => {
   if (isLoading) {
     return <Skeleton height='24px' width='300px' />
   }
@@ -63,30 +72,40 @@ const BookingDates = ({ booking, isLoading }: { booking: Booking; isLoading: boo
   )
 }
 
-const StatusBadge = ({ status }: { status: BookingStatus }) => {
+interface StatusBadgeProps {
+  status: BookingStatus
+}
+
+const StatusBadge = ({ status }: StatusBadgeProps) => {
   const { t } = useTranslation()
+  let colorScheme = 'yellow'
+  switch (status) {
+    case BookingStatus.RETURNED:
+      colorScheme = 'green'
+      break
+    case BookingStatus.REJECTED:
+    case BookingStatus.CANCELLED:
+      colorScheme = 'red'
+      break
+    case BookingStatus.ACCEPTED:
+      colorScheme = 'blue'
+      break
+    default:
+      colorScheme = 'yellow'
+  }
 
   return (
-    <Badge
-      colorScheme={
-        status === BookingStatus.COMPLETED
-          ? 'green'
-          : status === BookingStatus.CANCELLED
-            ? 'red'
-            : status === BookingStatus.CONFIRMED
-              ? 'blue'
-              : 'yellow'
-      }
-      px={2}
-      py={1}
-      borderRadius='full'
-    >
+    <Badge colorScheme={colorScheme} px={2} py={1} borderRadius='full'>
       {t(`bookings.status.${status}`)}
     </Badge>
   )
 }
 
-const BookingComments = ({ booking }: { booking: Booking }) => {
+interface BookingCommentsProps {
+  booking: Booking
+}
+
+const BookingComments = ({ booking }: BookingCommentsProps) => {
   const { t } = useTranslation()
 
   if (!booking.comments && !booking.contact) return null
@@ -127,6 +146,64 @@ interface BookingCardProps {
   booking: Booking
   type: 'request' | 'petition'
   onRateClick: (bookingId: string, toolId: string) => void
+}
+
+interface ActionButtonsProps {
+  booking: Booking
+  type: 'request' | 'petition'
+  onRateClick: (bookingId: string, toolId: string) => void
+  onStatusUpdate: (status: 'confirmed' | 'cancelled') => void
+  isLoading: boolean
+}
+
+const ActionButtons = ({ booking, type, onRateClick, onStatusUpdate, isLoading }: ActionButtonsProps) => {
+  const { t } = useTranslation()
+
+  if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
+    return (
+      <>
+        <Button
+          leftIcon={<FiThumbsUp />}
+          colorScheme='green'
+          variant='outline'
+          onClick={() => onStatusUpdate('confirmed')}
+        >
+          {t('bookings.approve')}
+        </Button>
+        <Button
+          leftIcon={<FiThumbsDown />}
+          colorScheme='red'
+          variant='outline'
+          onClick={() => onStatusUpdate('cancelled')}
+        >
+          {t('bookings.deny')}
+        </Button>
+      </>
+    )
+  }
+
+  if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
+    return (
+      <Button
+        leftIcon={<FiThumbsDown />}
+        colorScheme='red'
+        variant='outline'
+        onClick={() => onStatusUpdate('cancelled')}
+      >
+        {t('bookings.cancel')}
+      </Button>
+    )
+  }
+
+  if (booking.bookingStatus === BookingStatus.RETURNED && !isLoading) {
+    return (
+      <Button leftIcon={<FiStar />} variant='outline' onClick={() => onRateClick(booking.id, booking.toolId)}>
+        {t('rating.rateTool')}
+      </Button>
+    )
+  }
+
+  return null
 }
 
 export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) => {
@@ -172,41 +249,13 @@ export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) =>
         <Stack>
           <Divider />
           <HStack spacing={4} justify='flex-end'>
-            {booking.bookingStatus === BookingStatus.PENDING && type === 'request' && (
-              <>
-                <Button
-                  leftIcon={<FiThumbsUp />}
-                  colorScheme='green'
-                  variant='outline'
-                  onClick={() => handleStatusUpdate('confirmed')}
-                >
-                  {t('bookings.approve')}
-                </Button>
-                <Button
-                  leftIcon={<FiThumbsDown />}
-                  colorScheme='red'
-                  variant='outline'
-                  onClick={() => handleStatusUpdate('cancelled')}
-                >
-                  {t('bookings.deny')}
-                </Button>
-              </>
-            )}
-            {booking.bookingStatus === BookingStatus.PENDING && type === 'petition' && (
-              <Button
-                leftIcon={<FiThumbsDown />}
-                colorScheme='red'
-                variant='outline'
-                onClick={() => handleStatusUpdate('cancelled')}
-              >
-                {t('bookings.cancel')}
-              </Button>
-            )}
-            {booking.bookingStatus === BookingStatus.COMPLETED && !isLoading && (
-              <Button leftIcon={<FiStar />} variant='outline' onClick={() => onRateClick(booking.id, booking.toolId)}>
-                {t('rating.rateTool')}
-              </Button>
-            )}
+            <ActionButtons
+              booking={booking}
+              type={type}
+              onRateClick={onRateClick}
+              onStatusUpdate={handleStatusUpdate}
+              isLoading={isLoading}
+            />
           </HStack>
         </Stack>
       </Stack>
