@@ -1,13 +1,12 @@
 import { EditIcon } from '@chakra-ui/icons'
 import { Badge, Box, Heading, IconButton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import { LatLng } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiMail, FiStar } from 'react-icons/fi'
-import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '../Images/Avatar'
+import { MapMarker } from '~components/Layout/Map'
 
 interface UserInfoProps {
   onEdit?: () => void
@@ -59,19 +58,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
           </Stack>
           {user.location && (
             <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
-              <MapContainer
-                center={new LatLng(user.location.latitude / 1000000, user.location.longitude / 1000000)}
-                zoom={13}
-                scrollWheelZoom={false}
-                dragging={false}
-                style={{ height: '100%', width: '100%' }}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                />
-                <Marker position={new LatLng(user.location.latitude / 1000000, user.location.longitude / 1000000)} />
-              </MapContainer>
+              <MapMarker {...user.location} />
             </Box>
           )}
         </Stack>

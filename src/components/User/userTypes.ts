@@ -1,3 +1,5 @@
+import { EmpriusLocation } from '~components/Layout/types'
+
 export interface UserProfile {
   id: string
   name: string
@@ -8,10 +10,7 @@ export interface UserProfile {
   ratingCount: number
   createdAt: string
   updatedAt: string
-  location?: {
-    latitude: number
-    longitude: number
-  }
+  location?: EmpriusLocation
   active: boolean
 }
 
@@ -20,7 +19,7 @@ export interface EditProfileFormData {
   email: string
   password?: string
   confirmPassword?: string
-  location?: { latitude: number; longitude: number }
+  location?: EmpriusLocation
   active: boolean
   avatar?: string // b64 string
 }
@@ -29,7 +28,7 @@ export interface EditProfileFormProps {
   initialData: {
     name: string
     email: string
-    location?: { latitude: number; longitude: number }
+    location?: EmpriusLocation
     active: boolean
     avatarHash?: string
   }

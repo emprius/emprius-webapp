@@ -31,6 +31,7 @@ import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { Tool } from './types'
+import { EmpriusLocation } from '~components/Layout/types'
 
 export interface ToolFormData {
   title: string
@@ -44,10 +45,7 @@ export interface ToolFormData {
   height: number
   weight: number
   images: FileList | any[]
-  location?: {
-    latitude: number
-    longitude: number
-  }
+  location?: EmpriusLocation
   isAvailable: boolean
 }
 
@@ -153,19 +151,23 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       <FormControl isRequired isInvalid={!!errors.category}>
         <FormLabel>{t('tools.category')}</FormLabel>
         <Select
-          name="category"
+          name='category'
           options={categories.map((category) => ({
             value: category.id,
             label: category.name,
           }))}
-          value={watch('category') ? {
-            value: watch('category'),
-            label: categories.find((c) => c.id === watch('category'))?.name || '',
-          } : null}
+          value={
+            watch('category')
+              ? {
+                  value: watch('category'),
+                  label: categories.find((c) => c.id === watch('category'))?.name || '',
+                }
+              : null
+          }
           onChange={(newValue: any) => {
             setValue('category', newValue?.value, { shouldValidate: true })
           }}
-          placeholder="Select category"
+          placeholder='Select category'
           chakraStyles={{
             container: (provided) => ({
               ...provided,
@@ -180,7 +182,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormLabel>Transport Options</FormLabel>
         <Select
           isMulti
-          name="transportOptions"
+          name='transportOptions'
           options={transports.map((transport) => ({
             value: transport.id,
             label: transport.name,
@@ -196,7 +198,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
               { shouldValidate: true }
             )
           }}
-          placeholder="Select transport options"
+          placeholder='Select transport options'
           closeMenuOnSelect={false}
           chakraStyles={{
             container: (provided) => ({

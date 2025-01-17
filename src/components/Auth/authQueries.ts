@@ -1,6 +1,7 @@
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { UserProfile } from '~components/User/userTypes'
 import api from '~src/services/api'
+import { EmpriusLocation } from '~components/Layout/types'
 
 export interface ILoginParams {
   email: string
@@ -13,10 +14,7 @@ export interface IRegisterParams {
   name?: string
   password?: string
   community?: string
-  location?: {
-    latitude: number
-    longitude: number
-  }
+  location?: EmpriusLocation
 }
 
 export interface LoginResponse {

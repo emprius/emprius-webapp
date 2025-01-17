@@ -1,8 +1,22 @@
-import { Badge, Box, Container, Grid, GridItem, Heading, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Container,
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Link,
+  Stack,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiStar } from 'react-icons/fi'
+import { FiBox, FiDollarSign, FiStar, FiTag } from 'react-icons/fi'
 import { Link as RouterLink, useParams } from 'react-router-dom'
+import { UserMiniCard } from '~components/User/UserMiniCard'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useInfoContext } from '~components/Auth/InfoContext'
 import { BookingForm } from '~components/Bookings/BookingForm'
@@ -12,6 +26,7 @@ import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
 import { useTool } from '~components/Tools/toolsQueries'
 import { ROUTES } from '~src/router/router'
+import { MapMarker } from '~components/Layout/Map'
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -57,42 +72,67 @@ export const ToolDetailPage = () => {
                       {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                     </Badge>
                   </Stack>
-
-                  <Text color='primary.500' fontSize='2xl' fontWeight='bold'>
-                    {tool.cost}€/day
-                  </Text>
-
+                  <UserMiniCard userId={tool.userId} />
+                  {/*<UserMiniCard userId={'677d04bfb848190b34321fff'} />*/}
+                  <Stack direction='row' align='center' spacing={2}>
+                    <FiDollarSign size={20} color='green' />
+                    <Text color='primary.500' fontSize='2xl' fontWeight='bold'>
+                      {tool.cost}€/day
+                    </Text>
+                  </Stack>
                   <Text color='gray.600'>{tool.description}</Text>
-
                   <Stack direction='row' spacing={2}>
                     {tool.mayBeFree && <Badge colorScheme='blue'>{t('tools.mayBeFree')}</Badge>}
                     {tool.askWithFee && <Badge colorScheme='purple'>{t('tools.askWithFee')}</Badge>}
                   </Stack>
-
+                  <Divider />
                   <Stack spacing={4}>
-                    <Stack direction='row' align='center' color='orange.400'>
-                      <FiStar />
-                      <Text>{tool.rating.toFixed(1)}</Text>
+                    <Stack direction='row' align='center' spacing={4}>
+                      <Stack direction='row' align='center' color='orange.400'>
+                        <FiStar size={20} />
+                        <Text>{tool.rating.toFixed(1)}</Text>
+                      </Stack>
+
+                      {tool.estimatedValue && (
+                        <Stack direction='row' align='center'>
+                          <FiDollarSign size={20} />
+                          <Text>
+                            {t('tools.estimatedValue')}: {tool.estimatedValue}€
+                          </Text>
+                        </Stack>
+                      )}
                     </Stack>
 
-                    <Stack spacing={2}>
-                      <Text color='gray.600'>
-                        {t('tools.estimatedValue')}: {tool.estimatedValue}€
-                      </Text>
-                      <Text color='gray.600'>
-                        {t('tools.dimensions')}: {tool.height}cm x {tool.weight}kg
-                      </Text>
-                      <Text color='gray.600'>
-                        {t('tools.category')}: {categories.find(c => c.id === tool.category)?.name}
-                      </Text>
-                    </Stack>
+                    {(tool.height || tool.weight) && (
+                      <Stack direction='row' align='center'>
+                        <FiBox size={20} />
+                        <Text>
+                          {tool.height && `${tool.height}cm`}
+                          {tool.height && tool.weight && ' x '}
+                          {tool.weight && `${tool.weight}kg`}
+                        </Text>
+                      </Stack>
+                    )}
+
+                    {tool.category && (
+                      <Stack direction='row' align='center'>
+                        <FiTag size={20} />
+                        <Text>{categories.find((c) => c.id === tool.category)?.name}</Text>
+                      </Stack>
+                    )}
                   </Stack>
+                  F
+                  {tool.location && (
+                    <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
+                      <MapMarker {...tool.location} />
+                    </Box>
+                  )}
                 </Stack>
               </Stack>
               <OwnerToolButtons tool={tool} />
             </Box>
 
-            {tool.images.length > 0 && (
+            {tool.images.length > 1 && (
               <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
                 <Stack p={6} spacing={4}>
                   <Heading size='md'>{t('tools.images')}</Heading>

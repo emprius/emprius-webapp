@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import { MAP_DEFAULTS } from '~utils/constants'
 import './LocationPicker.css'
+import { EmpriusLocation } from '~components/Layout/types'
 
 const DefaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -20,8 +21,8 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon
 
 interface LocationPickerProps {
-  onChange: (location: { latitude: number; longitude: number } | null) => void
-  value?: { latitude: number; longitude: number } | null
+  onChange: (location: EmpriusLocation | null) => void
+  value?: EmpriusLocation | null
   isRequired?: boolean
   error?: string
 }

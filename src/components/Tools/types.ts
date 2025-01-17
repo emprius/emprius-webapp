@@ -1,26 +1,24 @@
 import { Image } from '~components/Images/ServerImage'
 import { DateRange } from '~components/Layout/Form/DateRangePicker'
+import { EmpriusLocation } from '~components/Layout/types'
 
 export interface Tool {
   id: number
   title: string
-  description: string
-  isAvailable: boolean
+  description?: string
+  isAvailable?: boolean
   mayBeFree: boolean
   askWithFee: boolean
-  cost: number
+  cost?: number
   userId: string
   images: Image[]
-  transportOptions: number[] // Array of transport IDs
-  category: number // Category ID
-  location: {
-    latitude: number
-    longitude: number
-  }
+  transportOptions?: number[] // Array of transport IDs
+  category?: number // Category ID
+  location?: EmpriusLocation
   rating: number
-  estimatedValue: number
-  height: number
-  weight: number
+  estimatedValue?: number
+  height?: number
+  weight?: number
   reservedDates: DateRange[] | null
 }
 
