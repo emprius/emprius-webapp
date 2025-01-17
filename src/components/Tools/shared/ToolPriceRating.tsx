@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import { FiStar } from 'react-icons/fi'
+import { DisplayRating } from '../../../pages/ratings/DisplayRating'
 import { formatCurrency } from '~src/utils'
 
 interface ToolPriceRatingProps {
@@ -21,10 +21,7 @@ export const ToolPriceRating = ({
       <Text color='primary.500' fontWeight='bold'>
         {formatCurrency(cost)}/day
       </Text>
-      <Stack direction='row' align='center' color='orange.400'>
-        <FiStar />
-        <Text>{rating?.toFixed(1) || '-'}</Text>
-      </Stack>
+      <DisplayRating rating={rating || 0} size="sm" showCount={rating !== undefined} />
     </Stack>
   )
 }

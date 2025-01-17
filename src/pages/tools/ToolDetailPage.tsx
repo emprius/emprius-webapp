@@ -14,7 +14,7 @@ import {
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBox, FiDollarSign, FiStar, FiTag } from 'react-icons/fi'
+import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import { UserMiniCard } from '~components/User/UserMiniCard'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -27,6 +27,7 @@ import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCale
 import { useTool } from '~components/Tools/toolsQueries'
 import { ROUTES } from '~src/router/router'
 import { MapMarker } from '~components/Layout/Map'
+import { DisplayRating } from '~src/pages/ratings/DisplayRating'
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -88,16 +89,13 @@ export const ToolDetailPage = () => {
                   <Divider />
                   <Stack spacing={4}>
                     <Stack direction='row' align='center' spacing={4}>
-                      <Stack direction='row' align='center' color='orange.400'>
-                        <FiStar size={20} />
-                        <Text>{tool.rating.toFixed(1)}</Text>
-                      </Stack>
+                      <DisplayRating rating={tool.rating} size='md' />
 
                       {tool.estimatedValue && (
                         <Stack direction='row' align='center'>
                           <FiDollarSign size={20} />
                           <Text>
-                            {t('tools.estimatedValue')}: {tool.estimatedValue}€
+                            {t('tools.estimatedValue')}: {tool.estimatedValue}
                           </Text>
                         </Stack>
                       )}

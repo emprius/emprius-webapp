@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { FiStar } from 'react-icons/fi'
+import { DisplayRating } from '../../pages/ratings/DisplayRating'
 import { Avatar } from '../Images/Avatar'
 import { useUserProfile } from './userQueries'
 
@@ -35,12 +35,7 @@ export const UserMiniCard: React.FC<UserMiniCardProps> = ({ userId }) => {
         <Avatar username={user.name} avatarHash={user.avatarHash} size='md' />
         <Stack spacing={1}>
           <Text fontWeight='bold'>{user.name}</Text>
-          <Flex align='center' color='orange.400'>
-            <FiStar />
-            <Text ml={1} fontSize='sm'>
-              {user.rating.toFixed(1)} ({user.ratingCount})
-            </Text>
-          </Flex>
+          <DisplayRating rating={user.rating} size="sm" ratingCount={user.ratingCount} />
         </Stack>
       </Flex>
     </Box>
