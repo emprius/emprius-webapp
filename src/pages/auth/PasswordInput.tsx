@@ -1,14 +1,14 @@
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { IconButton, Input, InputGroup, InputProps, InputRightElement } from '@chakra-ui/react'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 
-export const PasswordInput = (props: InputProps) => {
+export const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
   return (
     <InputGroup size='md'>
-      <Input pr='4.5rem' type={show ? 'text' : 'password'} {...props} />
+      <Input ref={ref} pr='4.5rem' type={show ? 'text' : 'password'} {...props} />
       <InputRightElement width='4.5rem'>
         <IconButton
           size='sm'
@@ -21,4 +21,4 @@ export const PasswordInput = (props: InputProps) => {
       </InputRightElement>
     </InputGroup>
   )
-}
+})

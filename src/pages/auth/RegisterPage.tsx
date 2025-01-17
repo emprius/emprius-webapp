@@ -175,6 +175,8 @@ export const RegisterPage = () => {
             <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
           </FormControl>
 
+          <FormSubmitMessage isError={isError} error={error} />
+
           <Button
             type='submit'
             size='lg'
@@ -185,7 +187,6 @@ export const RegisterPage = () => {
           >
             {t('auth.register')}
           </Button>
-          <FormSubmitMessage isError={isError} error={error} />
         </Stack>
       </Box>
     </Stack>

@@ -1,4 +1,16 @@
-import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Stack, Text, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react'
 import React from 'react'
 import { PasswordInput } from './PasswordInput'
 import { useForm } from 'react-hook-form'
@@ -58,32 +70,42 @@ export const LoginPage = () => {
             <Input
               type='email'
               {...register('email', {
-                required: true,
+                required: t('validation.required'),
                 pattern: {
                   value: AUTH_FORM.EMAIL_REGEX,
                   message: t('validation.email'),
                 },
               })}
             />
+            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors.password}>
             <FormLabel>{t('auth.password')}</FormLabel>
             <PasswordInput
               {...register('password', {
-                required: true,
+                required: t('validation.required'),
                 minLength: {
                   value: AUTH_FORM.MIN_PASSWORD_LENGTH,
                   message: t('validation.passwordLength'),
                 },
               })}
             />
+            <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
           </FormControl>
 
-          <Button type='submit' size='lg' isLoading={isSubmitting} loadingText={t('common.loading')}>
+          <FormSubmitMessage isError={isError} error={error} />
+          
+          <Button 
+            type='submit' 
+            size='lg' 
+            isLoading={isSubmitting} 
+            loadingText={t('common.loading')}
+            colorScheme='primary'
+            w='100%'
+          >
             {t('auth.login')}
           </Button>
-          <FormSubmitMessage isError={isError} error={error} />
         </Stack>
       </Box>
     </Stack>

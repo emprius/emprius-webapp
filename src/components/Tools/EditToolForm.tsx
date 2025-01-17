@@ -57,7 +57,6 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
   const handleSubmit = async (data: ToolFormData) => {
     let newImageHashes: string[] = []
 
-    console.log('aaaa', data.images)
     if (data.images.length) {
       try {
         // Upload new images first
