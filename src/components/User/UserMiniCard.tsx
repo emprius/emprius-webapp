@@ -1,9 +1,8 @@
-import { Box, Flex, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, HStack, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { FiStar } from 'react-icons/fi'
 import { Avatar } from '../Images/Avatar'
 import { useUserProfile } from './userQueries'
-import { LoadingSpinner } from '../Layout/LoadingSpinner'
 
 interface UserMiniCardProps {
   userId: string
@@ -15,7 +14,15 @@ export const UserMiniCard: React.FC<UserMiniCardProps> = ({ userId }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return (
+      <HStack spacing={4}>
+        <Skeleton height='32px' width='32px' borderRadius='full' />
+        <Stack spacing={2}>
+          <Skeleton height='16px' width='120px' />
+          <Skeleton height='14px' width='80px' />
+        </Stack>
+      </HStack>
+    )
   }
 
   if (!user) {

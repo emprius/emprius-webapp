@@ -1,45 +1,13 @@
-import {Badge, Box, Button, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue} from '@chakra-ui/react'
+import { Badge, Box, Button, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import {useTranslation} from 'react-i18next'
-import {FiMessageCircle, FiPhone, FiStar, FiThumbsDown, FiThumbsUp} from 'react-icons/fi'
-import {Link as RouterLink} from 'react-router-dom'
-import {Booking, BookingStatus, useUpdateBookingStatus} from '~components/Bookings/bookingsQueries'
-import {Avatar} from '~components/Images/Avatar'
-import {ToolImage, ToolPriceRating} from '~components/Tools/shared'
-import {useTool} from '~components/Tools/toolsQueries'
-import {useUserProfile} from '~components/User/userQueries'
-
-// Subcomponents
-const UserInfoCard = ({ userId, isLoading }: { userId: string; isLoading: boolean }) => {
-  const { data: user } = useUserProfile(userId)
-  const { t } = useTranslation()
-
-  if (isLoading) {
-    return (
-      <HStack spacing={4}>
-        <Skeleton height='32px' width='32px' borderRadius='full' />
-        <Stack spacing={2}>
-          <Skeleton height='16px' width='120px' />
-          <Skeleton height='14px' width='80px' />
-        </Stack>
-      </HStack>
-    )
-  }
-
-  if (!user) return null
-
-  return (
-    <HStack spacing={4}>
-      <Avatar avatarHash={user.avatarHash} username={user.name} size='sm' />
-      <Stack spacing={0}>
-        <Text fontWeight='medium'>{user.name}</Text>
-        <Text fontSize='sm' color='gray.500'>
-          {t('user.rating')}: {user.rating} ({user.ratingCount})
-        </Text>
-      </Stack>
-    </HStack>
-  )
-}
+import { useTranslation } from 'react-i18next'
+import { FiMessageCircle, FiPhone, FiStar, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
+import { Link as RouterLink } from 'react-router-dom'
+import { Booking, BookingStatus, useUpdateBookingStatus } from '~components/Bookings/bookingsQueries'
+import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
+import { useTool } from '~components/Tools/toolsQueries'
+import { useUserProfile } from '~components/User/userQueries'
+import { UserMiniCard } from '~components/User/UserMiniCard'
 
 const ToolInfoCard = ({ toolId, isLoading }: { toolId: string; isLoading: boolean }) => {
   const { data: tool } = useTool(toolId)
@@ -195,7 +163,7 @@ export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) =>
         {/* User Info and Comments Section */}
         <Stack direction={{ base: 'column', md: 'row' }} spacing={6}>
           <Box flex='1'>
-            <UserInfoCard userId={type === 'request' ? booking.fromUserId : booking.toUserId} isLoading={isLoading} />
+            <UserMiniCard userId={type === 'request' ? booking.fromUserId : booking.toUserId} />
           </Box>
           <Box flex='2'>{(booking.comments || booking.contact) && <BookingComments booking={booking} />}</Box>
         </Stack>

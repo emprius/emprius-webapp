@@ -72,8 +72,8 @@ export const ToolDetailPage = () => {
                       {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                     </Badge>
                   </Stack>
-                  <UserMiniCard userId={tool.userId} />
-                  {/*<UserMiniCard userId={'677d04bfb848190b34321fff'} />*/}
+                  {/*<UserMiniCard userId={tool.userId} />*/}
+                  <UserMiniCard userId={'677d04bfb848190b34321fff'} />
                   <Stack direction='row' align='center' spacing={2}>
                     <FiDollarSign size={20} color='green' />
                     <Text color='primary.500' fontSize='2xl' fontWeight='bold'>
