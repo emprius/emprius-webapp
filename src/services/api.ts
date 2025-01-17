@@ -92,12 +92,12 @@ export const tools = {
 
 // Bookings endpoints
 export const bookings = {
-  // getAll: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings')),
   getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
   getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   updateStatus: (id: string, status: Booking['bookingStatus']) =>
     apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { bookingStatus: status })),
+  return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
   submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),
 }

@@ -37,8 +37,19 @@ export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, '
   })
 export const useUpdateBookingStatus = () => {
   const client = useQueryClient()
-  return useMutation<Booking, Error, { bookingId: string; status: 'confirmed' | 'cancelled' }>({
-    mutationFn: ({ bookingId, status }) => api.bookings.updateStatus(bookingId, status),
+  return useMutation<Booking, Error, { bookingId: string; status: 'ACCEPTED' | 'CANCELLED' }>({
+    mutationFn: ({ bookingId, status }) => api.bookings.updateStatus(bookingId, status === 'ACCEPTED' ? BookingStatus.ACCEPTED : BookingStatus.CANCELLED),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['bookingRequests'] })
+      client.invalidateQueries({ queryKey: ['bookingPetitions'] })
+    },
+  })
+}
+
+export const useReturnBooking = () => {
+  const client = useQueryClient()
+  return useMutation<Booking, Error, string>({
+    mutationFn: (bookingId: string) => api.bookings.return(bookingId),
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['bookingRequests'] })
       client.invalidateQueries({ queryKey: ['bookingPetitions'] })

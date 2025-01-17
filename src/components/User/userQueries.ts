@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { EditProfileFormData, UserProfile } from '~components/User/userTypes'
 import api from '~src/services/api'
 
@@ -16,8 +16,9 @@ export const useUpdateUserProfile = () => {
 }
 
 // Query to get a user information
-export const useUserProfile = (userId: string) =>
+export const useUserProfile = (userId: string, options?: Omit<UseQueryOptions<UserProfile>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: ['userProfile', userId],
     queryFn: () => api.users.getById(userId),
+    ...options,
   })
