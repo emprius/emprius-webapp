@@ -51,5 +51,11 @@
   "common": {
     "cancel": "Cancel",
     "save": "Save"
+  },
+  "error": {
+    "serverError": "Server Connection Error",
+    "cannotReachServer": "We're unable to reach our servers at the moment. This could be due to maintenance or connectivity issues.",
+    "retry": "Try Again",
+    "goHome": "Go to Homepage"
   }
 }

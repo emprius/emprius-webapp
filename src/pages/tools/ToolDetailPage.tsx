@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
+import { useInfoContext } from '~components/Auth/InfoContext'
 import { BookingForm } from '~components/Bookings/BookingForm'
 import { ServerImage } from '~components/Images/ServerImage'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -16,6 +17,7 @@ export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
+  const { categories } = useInfoContext()
   const { data: tool, isLoading: isToolLoading } = useTool(id!)
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -79,6 +81,9 @@ export const ToolDetailPage = () => {
                       </Text>
                       <Text color='gray.600'>
                         {t('tools.dimensions')}: {tool.height}cm x {tool.weight}kg
+                      </Text>
+                      <Text color='gray.600'>
+                        {t('tools.category')}: {categories.find(c => c.id === tool.category)?.name}
                       </Text>
                     </Stack>
                   </Stack>

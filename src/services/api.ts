@@ -1,5 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
+import {InfoData} from '~components/Auth/infoTypes'
 import {Booking, CreateBookingData} from '~components/Bookings/bookingsQueries'
 import {ImageContent} from '~components/Images/ServerImage'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
@@ -114,10 +115,16 @@ export const images = {
   getImage: (hash: string) => apiRequest(api.get<ApiResponse<ImageContent>>(`/images/${hash}`)),
 }
 
+// Info endpoints
+export const info = {
+  getInfo: () => apiRequest(api.get<ApiResponse<InfoData>>('/info')),
+}
+
 export default {
   auth,
   tools,
   bookings,
   users,
   images,
+  info,
 }

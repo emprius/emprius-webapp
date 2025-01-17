@@ -11,8 +11,8 @@ export interface Tool {
   cost: number
   userId: string
   images: Image[]
-  transportOptions: any | null // todo(konv1) Replace `any` with the actual type if known
-  toolCategory: number
+  transportOptions: number[] // Array of transport IDs
+  category: number // Category ID
   location: {
     latitude: number
     longitude: number

@@ -15,7 +15,6 @@ export const AuthLayout = () => {
   }
 
   if (isAuthenticated) {
-    // todo(konv1): use route constants
     return <Navigate to={ROUTES.HOME} replace />
   }
 

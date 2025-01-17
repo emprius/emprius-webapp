@@ -25,11 +25,11 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useInfoContext } from '~components/Auth/InfoContext'
 import { Image, ServerImage } from '~components/Images/ServerImage'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
-import { TOOL_CATEGORIES } from '~utils/constants'
 import { Tool } from './types'
 
 const TRANSPORT_OPTIONS = [
@@ -80,6 +80,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   const { t } = useTranslation()
   const toast = useToast()
   const navigate = useNavigate()
+  const { categories, transports } = useInfoContext()
 
   const {
     register,
@@ -157,9 +158,9 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       <FormControl isRequired isInvalid={!!errors.category}>
         <FormLabel>{t('tools.category')}</FormLabel>
         <Select {...register('category', { required: true, valueAsNumber: true })}>
-          {TOOL_CATEGORIES.map((category, index) => (
-            <option key={category} value={index + 1}>
-              {t(`categories.${category}`)}
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
             </option>
           ))}
         </Select>
@@ -169,9 +170,9 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       <FormControl isRequired isInvalid={!!errors.transportOptions}>
         <FormLabel>Transport Options</FormLabel>
         <Select {...register('transportOptions', { required: true, valueAsNumber: true })} multiple>
-          {TRANSPORT_OPTIONS.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
+          {transports.map((transport) => (
+            <option key={transport.id} value={transport.id}>
+              {transport.name}
             </option>
           ))}
         </Select>

@@ -43,12 +43,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: ROUTES.SEARCH,
-        element: <SearchPage />,
-      },
-      {
         element: <ProtectedRoute />,
         children: [
+          {
+            path: ROUTES.SEARCH,
+            element: <SearchPage />,
+          },
           {
             path: ROUTES.PROFILE,
             element: <Profile />,
