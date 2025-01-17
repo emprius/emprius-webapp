@@ -13,7 +13,6 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Select,
   SimpleGrid,
   Stack,
   Switch,
@@ -21,6 +20,7 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react'
+import { Select } from 'chakra-react-select'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -31,11 +31,6 @@ import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { Tool } from './types'
-
-const TRANSPORT_OPTIONS = [
-  { id: 1, label: 'Pickup' },
-  { id: 2, label: 'Delivery' },
-] as const
 
 export interface ToolFormData {
   title: string
@@ -157,25 +152,59 @@ export const ToolForm: React.FC<ToolFormProps> = ({
 
       <FormControl isRequired isInvalid={!!errors.category}>
         <FormLabel>{t('tools.category')}</FormLabel>
-        <Select {...register('category', { required: true, valueAsNumber: true })}>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </Select>
+        <Select
+          name="category"
+          options={categories.map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))}
+          value={watch('category') ? {
+            value: watch('category'),
+            label: categories.find((c) => c.id === watch('category'))?.name || '',
+          } : null}
+          onChange={(newValue: any) => {
+            setValue('category', newValue?.value, { shouldValidate: true })
+          }}
+          placeholder="Select category"
+          chakraStyles={{
+            container: (provided) => ({
+              ...provided,
+              width: '100%',
+            }),
+          }}
+        />
         <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.transportOptions}>
         <FormLabel>Transport Options</FormLabel>
-        <Select {...register('transportOptions', { required: true, valueAsNumber: true })} multiple>
-          {transports.map((transport) => (
-            <option key={transport.id} value={transport.id}>
-              {transport.name}
-            </option>
-          ))}
-        </Select>
+        <Select
+          isMulti
+          name="transportOptions"
+          options={transports.map((transport) => ({
+            value: transport.id,
+            label: transport.name,
+          }))}
+          value={watch('transportOptions')?.map((id) => ({
+            value: id,
+            label: transports.find((t) => t.id === id)?.name || '',
+          }))}
+          onChange={(newValue) => {
+            setValue(
+              'transportOptions',
+              newValue.map((option: any) => option.value),
+              { shouldValidate: true }
+            )
+          }}
+          placeholder="Select transport options"
+          closeMenuOnSelect={false}
+          chakraStyles={{
+            container: (provided) => ({
+              ...provided,
+              width: '100%',
+            }),
+          }}
+        />
         <FormErrorMessage>{errors.transportOptions?.message}</FormErrorMessage>
       </FormControl>
 
