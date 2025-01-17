@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 
 export enum BookingStatus {
@@ -29,19 +29,21 @@ export const useBookingRequests = (options?: Omit<UseQueryOptions<Booking[]>, 'q
     queryFn: () => api.bookings.getRequests(),
     ...options,
   })
+
 export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: ['bookingPetitions'],
     queryFn: () => api.bookings.getPetitions(),
     ...options,
   })
+
 export const useUpdateBookingStatus = () => {
   const client = useQueryClient()
   return useMutation<Booking, Error, { bookingId: string; status: 'ACCEPTED' | 'CANCELLED' }>({
-    mutationFn: ({ bookingId, status }) => api.bookings.updateStatus(bookingId, status === 'ACCEPTED' ? BookingStatus.ACCEPTED : BookingStatus.CANCELLED),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['bookingRequests'] })
-      client.invalidateQueries({ queryKey: ['bookingPetitions'] })
+    mutationFn: ({ bookingId, status }) =>
+      api.bookings.updateStatus(bookingId, status === 'ACCEPTED' ? BookingStatus.ACCEPTED : BookingStatus.CANCELLED),
+    onSuccess: (res) => {
+      invalidateQueries(client, res.toolId)
     },
   })
 }
@@ -50,9 +52,8 @@ export const useReturnBooking = () => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.return(bookingId),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['bookingRequests'] })
-      client.invalidateQueries({ queryKey: ['bookingPetitions'] })
+    onSuccess: (res) => {
+      invalidateQueries(client, res.toolId)
     },
   })
 }
@@ -69,3 +70,11 @@ export const useCreateBooking = () =>
   useMutation({
     mutationFn: (data: CreateBookingData) => api.bookings.create(data),
   })
+
+// util function to invalidate queries using a client
+const invalidateQueries = (client: QueryClient, toolId: string) => {
+  client.invalidateQueries({ queryKey: ['bookingRequests'] })
+  client.invalidateQueries({ queryKey: ['bookingPetitions'] })
+  client.invalidateQueries({ queryKey: ['tools'] })
+  client.invalidateQueries({ queryKey: ['tool', toolId] })
+}

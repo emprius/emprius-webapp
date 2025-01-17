@@ -1,75 +1,13 @@
-import {
-  Box,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  useColorModeValue,
-  useDisclosure,
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useBookingPetitions, useBookingRequests } from '~components/Bookings/bookingsQueries'
+import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bookings/bookingsQueries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
-import { RatingModal } from '~components/Ratings/RatingModal'
-import { BookingCard } from './BookingCard'
+import { BookingCard, BookingCardType } from './BookingCard'
+import { UseQueryResult } from '@tanstack/react-query'
 
 export const UserBookings = () => {
   const { t } = useTranslation()
-  const { data: requests, isLoading: isLoadingRequests } = useBookingRequests()
-  const { data: petitions, isLoading: isLoadingPetitions } = useBookingPetitions()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [selectedBooking, setSelectedBooking] = useState<{
-    id: string
-    toolId: number
-  } | null>(null)
-
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-
-  const handleRateClick = (bookingId: string, toolId: string) => {
-    setSelectedBooking({ id: bookingId, toolId: parseInt(toolId) })
-    onOpen()
-  }
-
-  if (isLoadingRequests || isLoadingPetitions) {
-    return <LoadingSpinner />
-  }
-
-  const renderBookingList = (bookings: typeof requests, type: 'request' | 'petition') => {
-    if (!bookings?.length) {
-      return (
-        <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
-          <Text color='gray.600'>{t('user.noBookings')}</Text>
-        </Box>
-      )
-    }
-
-    return (
-      <>
-        <Stack spacing={4}>
-          {bookings.map((booking) => (
-            <BookingCard key={booking.id} booking={booking} type={type} onRateClick={handleRateClick} />
-          ))}
-        </Stack>
-
-        {selectedBooking && (
-          <RatingModal
-            isOpen={isOpen}
-            onClose={() => {
-              onClose()
-              setSelectedBooking(null)
-            }}
-            toolId={selectedBooking.toolId}
-            bookingId={selectedBooking.id}
-          />
-        )}
-      </>
-    )
-  }
 
   return (
     <Tabs isLazy>
@@ -79,9 +17,53 @@ export const UserBookings = () => {
       </TabList>
 
       <TabPanels>
-        <TabPanel>{renderBookingList(petitions, 'petition')}</TabPanel>
-        <TabPanel>{renderBookingList(requests, 'request')}</TabPanel>
+        <TabPanel>
+          <Petitions />
+        </TabPanel>
+        <TabPanel>
+          <Requests />
+        </TabPanel>
       </TabPanels>
     </Tabs>
+  )
+}
+
+const Requests = () => {
+  const query = useBookingRequests()
+  return <BookingList type={'request'} {...query} />
+}
+
+const Petitions = () => {
+  const query = useBookingPetitions()
+  return <BookingList type={'petition'} {...query} />
+}
+
+type BookingListProps = {
+  type: BookingCardType
+} & UseQueryResult<Booking[], Error>
+
+const BookingList = ({ data: bookings, type, isLoading, isError }: BookingListProps) => {
+  const { t } = useTranslation()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (!bookings?.length || isError) {
+    return (
+      <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
+        <Text color='gray.600'>{t('user.noBookings')}</Text>
+      </Box>
+    )
+  }
+
+  return (
+    <Stack spacing={4}>
+      {bookings.map((booking) => (
+        <BookingCard key={booking.id} booking={booking} type={type} />
+      ))}
+    </Stack>
   )
 }

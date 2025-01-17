@@ -5,11 +5,10 @@ import { RatingForm } from './RatingForm'
 interface RatingModalProps {
   isOpen: boolean
   onClose: () => void
-  toolId: number
   bookingId: string
 }
 
-export const RatingModal = ({ isOpen, onClose, toolId, bookingId }: RatingModalProps) => {
+export const RatingModal = ({ isOpen, onClose, bookingId }: RatingModalProps) => {
   const { t } = useTranslation()
 
   return (
@@ -19,7 +18,7 @@ export const RatingModal = ({ isOpen, onClose, toolId, bookingId }: RatingModalP
         <ModalHeader>{t('rating.pendingRatings')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <RatingForm bookingId={Number(bookingId)} onSuccess={onClose} />
+          <RatingForm bookingId={bookingId} onSuccess={onClose} />
         </ModalBody>
       </ModalContent>
     </Modal>

@@ -15,7 +15,7 @@ export interface Rating {
 }
 
 export interface RateSubmission {
-  bookingId: number
+  bookingId: string
   rating: number
   ratingType: 'USER' | 'TOOL'
 }

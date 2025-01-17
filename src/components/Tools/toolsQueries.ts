@@ -39,7 +39,6 @@ export const useUpdateTool = (
     onSuccess: (data, params) => {
       queryClient.invalidateQueries({ queryKey: ['tools'] })
       queryClient.invalidateQueries({ queryKey: ['tool', params.id.toString()] })
-      queryClient.invalidateQueries({ queryKey: ['userTools'] })
     },
     ...options,
   })
@@ -69,7 +68,6 @@ export const useDeleteTool = () => {
     onSuccess: () => {
       // Invalidate tool queries to refetch updated data
       queryClient.invalidateQueries({ queryKey: ['tools'] })
-      queryClient.invalidateQueries({ queryKey: ['userTools'] })
     },
   })
 }

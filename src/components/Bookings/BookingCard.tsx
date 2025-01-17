@@ -1,11 +1,12 @@
-import { Badge, Box, Button, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { FiCheck, FiMessageCircle, FiPhone, FiStar, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
+import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { Booking, BookingStatus, useReturnBooking, useUpdateBookingStatus } from './bookingsQueries'
+import { Booking, BookingStatus } from './bookingsQueries'
 import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
 import { useTool } from '~components/Tools/toolsQueries'
 import { UserMiniCard } from '~components/User/UserMiniCard'
+import { ActionButtons } from '~components/Bookings/BookingActions'
 
 interface ToolInfoCardProps {
   toolId: string
@@ -141,97 +142,17 @@ const BookingComments = ({ booking }: BookingCommentsProps) => {
   )
 }
 
+export type BookingCardType = 'request' | 'petition'
+
 interface BookingCardProps {
   booking: Booking
-  type: 'request' | 'petition'
-  onRateClick: (bookingId: string, toolId: string) => void
+  type: BookingCardType
 }
 
-interface ActionButtonsProps {
-  booking: Booking
-  type: 'request' | 'petition'
-  onRateClick: (bookingId: string, toolId: string) => void
-  onStatusUpdate: (status: 'ACCEPTED' | 'CANCELLED') => void
-  onReturn?: () => void
-  isLoading: boolean
-}
-
-const ActionButtons = ({ booking, type, onRateClick, onStatusUpdate, onReturn, isLoading }: ActionButtonsProps) => {
-  const { t } = useTranslation()
-
-  if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
-    return (
-      <>
-        <Button
-          leftIcon={<FiThumbsUp />}
-          colorScheme='green'
-          variant='outline'
-          onClick={() => onStatusUpdate('ACCEPTED')}
-        >
-          {t('bookings.approve')}
-        </Button>
-        <Button
-          leftIcon={<FiThumbsDown />}
-          colorScheme='red'
-          variant='outline'
-          onClick={() => onStatusUpdate('CANCELLED')}
-        >
-          {t('bookings.deny')}
-        </Button>
-      </>
-    )
-  }
-
-  if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
-    return (
-      <Button
-        leftIcon={<FiThumbsDown />}
-        colorScheme='red'
-        variant='outline'
-        onClick={() => onStatusUpdate('CANCELLED')}
-      >
-        {t('bookings.cancel')}
-      </Button>
-    )
-  }
-
-  if (booking.bookingStatus === BookingStatus.ACCEPTED) {
-    return (
-      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={onReturn}>
-        {t('bookings.markAsReturned')}
-      </Button>
-    )
-  }
-
-  if (booking.bookingStatus === BookingStatus.RETURNED) {
-    return (
-      <Button leftIcon={<FiStar />} variant='outline' onClick={() => onRateClick(booking.id, booking.toolId)}>
-        {t('rating.rateTool')}
-      </Button>
-    )
-  }
-
-  return null
-}
-
-export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) => {
+export const BookingCard = ({ booking, type }: BookingCardProps) => {
   const { isLoading } = useTool(booking.toolId)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const updateBookingStatus = useUpdateBookingStatus()
-  const returnBooking = useReturnBooking()
-
-  const handleStatusUpdate = (status: 'ACCEPTED' | 'CANCELLED') => {
-    updateBookingStatus.mutate({
-      bookingId: booking.id,
-      status,
-    })
-  }
-
-  const handleReturn = () => {
-    returnBooking.mutate(booking.id)
-  }
-
   return (
     <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
       <Stack spacing={6}>
@@ -258,14 +179,7 @@ export const BookingCard = ({ booking, type, onRateClick }: BookingCardProps) =>
         <Stack>
           <Divider />
           <HStack spacing={4} justify='flex-end'>
-            <ActionButtons
-              booking={booking}
-              type={type}
-              onRateClick={onRateClick}
-              onStatusUpdate={handleStatusUpdate}
-              onReturn={handleReturn}
-              isLoading={isLoading}
-            />
+            <ActionButtons booking={booking} type={type} />
           </HStack>
         </Stack>
       </Stack>

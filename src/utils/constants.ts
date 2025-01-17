@@ -76,8 +76,8 @@ export const MAP_DEFAULTS = {
   DEFAULT_RADIUS: 10, // km
   TILE_LAYER: {
     URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }
+    ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
 } as const
 
 /**
@@ -102,19 +102,6 @@ export const API_ENDPOINTS = {
     TOOLS: (id: string) => `/users/${id}/tools`,
     BOOKINGS: (id: string) => `/users/${id}/bookings`,
   },
-} as const
-
-/**
- * Query keys for React Query
- */
-export const QUERY_KEYS = {
-  CURRENT_USER: ['currentUser'],
-  TOOLS: ['tools'],
-  TOOL: (id: string) => ['tool', id],
-  USER_TOOLS: (userId: string) => ['userTools', userId],
-  USER_BOOKINGS: (userId: string) => ['userBookings', userId],
-  BOOKINGS: ['bookings'],
-  BOOKING: (id: string) => ['booking', id],
 } as const
 
 /**

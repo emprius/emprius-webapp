@@ -5,7 +5,7 @@ import { RatingStars } from '~components/Ratings/RatingStars'
 import { useSubmitRating } from './ratingQueries'
 
 interface RatingFormProps {
-  bookingId: number
+  bookingId: string
   onSuccess?: () => void
 }
 
@@ -15,6 +15,7 @@ interface RatingFormData {
 }
 
 export const RatingForm = ({ bookingId, onSuccess }: RatingFormProps) => {
+  console.log('AAAA', bookingId)
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()
