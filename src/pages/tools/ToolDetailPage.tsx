@@ -9,6 +9,9 @@ import {
   Link,
   SimpleGrid,
   Stack,
+  Tag,
+  TagLabel,
+  TagLeftIcon,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -30,12 +33,14 @@ import { MapMarker } from '~components/Layout/Map'
 import { DisplayRating } from '~src/pages/ratings/DisplayRating'
 import { UserMiniCard } from '~components/User/UserMiniCard'
 import { LuWeight } from 'react-icons/lu'
+import { HiOutlineTruck } from 'react-icons/hi2'
+import { MdDoneOutline } from 'react-icons/md'
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
-  const { categories } = useInfoContext()
+  const { categories, transports } = useInfoContext()
   const { data: tool, isLoading: isToolLoading } = useTool(id!)
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -56,11 +61,7 @@ export const ToolDetailPage = () => {
           <Stack spacing={8}>
             <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
               {tool.images.length > 0 && (
-                <ImageCarousel
-                  imageIds={tool.images.map(img => img.hash)}
-                  height='400px'
-                  width='100%'
-                />
+                <ImageCarousel imageIds={tool.images.map((img) => img.hash)} height='400px' width='100%' />
               )}
 
               <Stack p={6} spacing={6}>
@@ -117,7 +118,23 @@ export const ToolDetailPage = () => {
                       </Stack>
                     )}
                   </SimpleGrid>
-
+                  {tool.transportOptions.length > 0 && (
+                    <Stack direction='row' align='center'>
+                      <HiOutlineTruck size={20} />
+                      <Text>{t('tools.transportOptions')}:</Text>
+                      {
+                        // todo(konv1): check with https://github.com/emprius/emprius-app-backend/issues/10#issuecomment-2602741976
+                        tool.transportOptions
+                          .map((transport) => transports.find((t) => t.id === transport.id)?.name)
+                          .map((name) => (
+                            <Tag key={name} variant='subtle' colorScheme='cyan'>
+                              <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
+                              <TagLabel>{name}</TagLabel>
+                            </Tag>
+                          ))
+                      }
+                    </Stack>
+                  )}
                   <Divider />
                   {tool.location && (
                     <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
@@ -129,7 +146,6 @@ export const ToolDetailPage = () => {
               </Stack>
               <OwnerToolButtons tool={tool} />
             </Box>
-
           </Stack>
         </GridItem>
 
