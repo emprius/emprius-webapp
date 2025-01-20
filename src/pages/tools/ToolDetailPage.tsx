@@ -129,13 +129,12 @@ export const ToolDetailPage = () => {
                       }
                     </Stack>
                   )}
-                  <Divider />
+                  <UserMiniCard userId={tool.userId} />
                   {tool.location && (
                     <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
                       <MapMarker {...tool.location} />
                     </Box>
                   )}
-                  <UserMiniCard userId={tool.userId} />
                 </Stack>
               </Stack>
               <OwnerToolButtons tool={tool} />
