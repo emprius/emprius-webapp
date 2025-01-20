@@ -5,7 +5,6 @@ import {
   Divider,
   Grid,
   GridItem,
-  Heading,
   Link,
   SimpleGrid,
   Stack,
@@ -30,7 +29,6 @@ import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCale
 import { useTool } from '~components/Tools/toolsQueries'
 import { ROUTES } from '~src/router/router'
 import { MapMarker } from '~components/Layout/Map'
-import { DisplayRating } from '~src/pages/ratings/DisplayRating'
 import { UserMiniCard } from '~components/User/UserMiniCard'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
@@ -75,10 +73,6 @@ export const ToolDetailPage = () => {
                       <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                         {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                       </Badge>
-                    </Stack>
-                    <Stack direction='column'>
-                      <Heading size='lg'>{tool.title}</Heading>
-                      <DisplayRating rating={tool.rating} size='sm' />
                     </Stack>
                   </Stack>
                   <Text color='gray.600'>{tool.description}</Text>
