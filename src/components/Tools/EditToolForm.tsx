@@ -102,7 +102,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
     })
   }
 
-  const formInitialData = {
+  const initialData = {
     ...initial,
     category: initial.toolCategory,
   }
@@ -111,7 +111,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
   return (
     <Box>
       <ToolForm
-        initialData={formInitialData}
+        initialData={initialData}
         onSubmit={handleSubmit}
         submitButtonText={t('common.save')}
         isLoading={isLoading}
