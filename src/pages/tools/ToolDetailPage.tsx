@@ -20,7 +20,7 @@ import { Link as RouterLink, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useInfoContext } from '~components/Auth/InfoContext'
 import { BookingForm } from '~components/Bookings/BookingForm'
-import { ServerImage } from '~components/Images/ServerImage'
+import { ImageCarousel } from '~components/Layout/ImageCarousel'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
@@ -56,12 +56,10 @@ export const ToolDetailPage = () => {
           <Stack spacing={8}>
             <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
               {tool.images.length > 0 && (
-                <ServerImage
-                  imageId={tool.images[0].hash}
-                  alt={tool.title}
+                <ImageCarousel
+                  imageIds={tool.images.map(img => img.hash)}
                   height='400px'
                   width='100%'
-                  objectFit='cover'
                 />
               )}
 
@@ -132,26 +130,6 @@ export const ToolDetailPage = () => {
               <OwnerToolButtons tool={tool} />
             </Box>
 
-            {tool.images.length > 1 && (
-              <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
-                <Stack p={6} spacing={4}>
-                  <Heading size='md'>{t('tools.images')}</Heading>
-                  <Grid templateColumns='repeat(auto-fill, minmax(200px, 1fr))' gap={4}>
-                    {tool.images.map((image, index) => (
-                      <ServerImage
-                        key={image.hash}
-                        imageId={image.hash}
-                        alt={`${tool.title} - ${image.name}`}
-                        height='200px'
-                        width='100%'
-                        objectFit='cover'
-                        borderRadius='md'
-                      />
-                    ))}
-                  </Grid>
-                </Stack>
-              </Box>
-            )}
           </Stack>
         </GridItem>
 
