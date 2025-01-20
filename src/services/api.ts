@@ -1,7 +1,12 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
 import {InfoData} from '~components/Auth/infoTypes'
-import {Booking, CreateBookingData} from '~components/Bookings/bookingsQueries'
+import {
+  Booking,
+  BookingActionsParams,
+  BookingActionsReturnType,
+  CreateBookingData,
+} from '~components/Bookings/bookingsQueries'
 import {ImageContent} from '~components/Images/ServerImage'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
 import {SearchFilters} from '~components/Search/searchQueries'
@@ -94,9 +99,13 @@ export const tools = {
 export const bookings = {
   getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
   getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
+  cancel: (id: BookingActionsParams) =>
+    apiRequest(api.get<ApiResponse<BookingActionsReturnType>>(`/bookings/requests/${id}/cancel`)),
+  accept: (id: BookingActionsParams) =>
+    apiRequest(api.get<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/accept`)),
+  deny: (id: BookingActionsParams) =>
+    apiRequest(api.get<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/deny`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
-  updateStatus: (id: string, status: Booking['bookingStatus']) =>
-    apiRequest(api.patch<ApiResponse<Booking>>(`/bookings/${id}/status`, { bookingStatus: status })),
   return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
   submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),

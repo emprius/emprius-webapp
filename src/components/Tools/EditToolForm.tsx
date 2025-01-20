@@ -1,7 +1,7 @@
 import { Box, Text, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/imagesQueries'
 import { ROUTES } from '~src/router/router'
@@ -14,6 +14,7 @@ interface EditToolFormProps {
 }
 
 export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { images, ...initial } }) => {
+  const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const toast = useToast()
   const { user } = useAuth()
@@ -33,7 +34,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
         status: 'success',
         duration: 3000,
       })
-      navigate(ROUTES.TOOLS.LIST)
+      navigate(ROUTES.TOOLS.DETAIL.replace(':id', id!))
     },
     onError: (error) => {
       console.error('Failed to update tool:', error)
@@ -46,7 +47,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
   })
 
   // Only allow editing if the current user is the tool owner
-  if (user?.email !== initial.userId) {
+  if (user?.id !== initial.userId) {
     return <Text color='red.500'>{t('tools.notOwner')}</Text>
   }
 

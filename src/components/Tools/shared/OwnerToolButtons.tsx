@@ -24,7 +24,7 @@ import { ROUTES } from '~src/router/router'
 export const OwnerToolButtons = ({ tool }: { tool: Tool }) => {
   const { user } = useAuth()
 
-  const isOwner = user?.email === tool.userId
+  const isOwner = user?.id === tool.userId
 
   if (!isOwner) {
     return null

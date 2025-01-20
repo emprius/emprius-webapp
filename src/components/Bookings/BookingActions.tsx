@@ -1,7 +1,13 @@
 import { useTranslation } from 'react-i18next'
-import { Booking, BookingStatus, useReturnBooking, useUpdateBookingStatus } from '~components/Bookings/bookingsQueries'
-import { useQueryClient } from '@tanstack/react-query'
-import { Button, useDisclosure } from '@chakra-ui/react'
+import {
+  Booking,
+  BookingStatus,
+  useAcceptBooking,
+  useCancelBooking,
+  useDenyBooking,
+  useReturnBooking,
+} from '~components/Bookings/bookingsQueries'
+import { Button, useDisclosure, useToast } from '@chakra-ui/react'
 import { FiCheck, FiStar, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
 import { RatingModal } from '~components/Ratings/RatingModal'
 import React from 'react'
@@ -12,15 +18,52 @@ interface ActionsProps {
 
 const PendingRequestActions = ({ bookingId }: ActionsProps) => {
   const { t } = useTranslation()
-  const updateBookingStatus = useUpdateBookingStatus()
-  const client = useQueryClient()
+  const toast = useToast()
 
-  const handleStatusUpdate = (status: 'ACCEPTED' | 'CANCELLED') => {
-    updateBookingStatus.mutate({
-      bookingId,
-      status,
+  const { mutateAsync: acceptBooking, isPending: isAcceptPending } = useAcceptBooking({
+    onError: (error) => {
+      // Show toast error
+      toast({
+        title: t('bookings.accept_error'),
+        status: 'error',
+        isClosable: true,
+      })
+      console.error(error)
+    },
+  })
+  const { mutateAsync: denyBooking, isPending: isDenyPending } = useDenyBooking({
+    onError: (error) => {
+      // Show toast error
+      toast({
+        title: t('bookings.deny_error'),
+        status: 'error',
+        isClosable: true,
+      })
+      console.error(error)
+    },
+  })
+
+  const handleDeny = async () => {
+    await denyBooking(bookingId).then(() => {
+      toast({
+        title: t('bookings.deny_success'),
+        status: 'success',
+        isClosable: true,
+      })
     })
   }
+
+  const handleApprove = async () => {
+    await acceptBooking(bookingId).then(() => {
+      toast({
+        title: t('bookings.approve_success'),
+        status: 'success',
+        isClosable: true,
+      })
+    })
+  }
+
+  const isPending = isDenyPending || isDenyPending
 
   return (
     <>
@@ -28,7 +71,9 @@ const PendingRequestActions = ({ bookingId }: ActionsProps) => {
         leftIcon={<FiThumbsUp />}
         colorScheme='green'
         variant='outline'
-        onClick={() => handleStatusUpdate('ACCEPTED')}
+        onClick={handleApprove}
+        disabled={isPending}
+        isLoading={isAcceptPending}
       >
         {t('bookings.approve')}
       </Button>
@@ -36,7 +81,9 @@ const PendingRequestActions = ({ bookingId }: ActionsProps) => {
         leftIcon={<FiThumbsDown />}
         colorScheme='red'
         variant='outline'
-        onClick={() => handleStatusUpdate('CANCELLED')}
+        onClick={handleDeny}
+        isLoading={isDenyPending}
+        disabled={isPending}
       >
         {t('bookings.deny')}
       </Button>
@@ -46,17 +93,37 @@ const PendingRequestActions = ({ bookingId }: ActionsProps) => {
 
 const PendingPetitionActions = ({ bookingId }: ActionsProps) => {
   const { t } = useTranslation()
-  const updateBookingStatus = useUpdateBookingStatus()
+  const toast = useToast()
+  const { mutateAsync, isPending } = useCancelBooking({
+    onError: (error) => {
+      // Show toast error
+      toast({
+        title: t('bookings.cancel_error'),
+        status: 'error',
+        isClosable: true,
+      })
+      console.error(error)
+    },
+  })
 
   const handleCancel = () => {
-    updateBookingStatus.mutate({
-      bookingId,
-      status: 'CANCELLED',
+    mutateAsync(bookingId).then(() => {
+      toast({
+        title: t('bookings.cancel_success'),
+        status: 'success',
+        isClosable: true,
+      })
     })
   }
 
   return (
-    <Button leftIcon={<FiThumbsDown />} colorScheme='red' variant='outline' onClick={handleCancel}>
+    <Button
+      leftIcon={<FiThumbsDown />}
+      isLoading={isPending}
+      colorScheme='red'
+      variant='outline'
+      onClick={handleCancel}
+    >
       {t('bookings.cancel')}
     </Button>
   )
