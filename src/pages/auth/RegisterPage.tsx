@@ -78,7 +78,7 @@ export const RegisterPage = () => {
 
       <Box as='form' onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack spacing={6}>
-          <FormControl isInvalid={!!errors.name}>
+          <FormControl isInvalid={!!errors.name} isRequired>
             <FormLabel htmlFor='name'>{t('auth.name')}</FormLabel>
             <Input
               id='name'

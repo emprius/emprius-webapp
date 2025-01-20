@@ -13,7 +13,7 @@ export interface Tool {
   userId: string
   images: Image[]
   transportOptions?: number[] // Array of transport IDs
-  category?: number // Category ID
+  toolCategory?: number // Category ID
   location?: EmpriusLocation
   rating: number
   estimatedValue?: number
