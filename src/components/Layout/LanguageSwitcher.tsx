@@ -1,48 +1,33 @@
-import React from 'react';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { FiGlobe } from 'react-icons/fi';
-import { useTranslation } from 'react-i18next';
-
-const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'ca', name: 'Català' },
-  { code: 'es', name: 'Español' },
-];
+import React from 'react'
+import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from '@chakra-ui/react'
+import { FiGlobe } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
+import { LanguagesSlice } from '~i18n/languages.mjs'
 
 export const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
-  const menuBg = useColorModeValue('white', 'gray.800');
-  const hoverBg = useColorModeValue('gray.100', 'gray.700');
+  const { i18n } = useTranslation()
+  const menuBg = useColorModeValue('white', 'gray.800')
+  const hoverBg = useColorModeValue('gray.100', 'gray.700')
+  const languages = LanguagesSlice as { [key: string]: string }
 
   const handleLanguageChange = (languageCode: string) => {
-    i18n.changeLanguage(languageCode);
-    localStorage.setItem('language', languageCode);
-  };
+    i18n.changeLanguage(languageCode)
+    localStorage.setItem('language', languageCode)
+  }
 
   const getCurrentLanguageName = () => {
-    const currentLang = languages.find(lang => lang.code === i18n.language);
-    return currentLang ? currentLang.name : 'English';
-  };
+    return languages[i18n.language] || 'English'
+    // const currentLang = Object.keys(languages).find((lang) => lang === i18n.language)
+    // return currentLang ? currentLang.name : 'English'
+  }
 
   return (
     <Menu>
-      <MenuButton
-        as={Button}
-        variant="ghost"
-        leftIcon={<FiGlobe />}
-        size="sm"
-      >
+      <MenuButton as={Button} variant='ghost' leftIcon={<FiGlobe />} size='sm'>
         {getCurrentLanguageName()}
       </MenuButton>
       <MenuList bg={menuBg}>
-        {languages.map(({ code, name }) => (
+        {Object.entries(languages).map(([code, name]) => (
           <MenuItem
             key={code}
             onClick={() => handleLanguageChange(code)}
@@ -54,5 +39,5 @@ export const LanguageSwitcher = () => {
         ))}
       </MenuList>
     </Menu>
-  );
-};
+  )
+}

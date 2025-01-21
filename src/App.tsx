@@ -4,7 +4,6 @@ import React from 'react'
 import { AuthProvider } from '~components/Auth/AuthContext'
 import { InfoProvider } from '~components/Auth/InfoContext'
 import theme from '~theme/theme'
-import './i18n'
 import { AppRoutes } from './router/router'
 
 const queryClient = new QueryClient()
