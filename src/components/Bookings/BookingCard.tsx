@@ -1,58 +1,16 @@
-import { Badge, Box, Divider, HStack, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Card, CardBody, Flex, HStack, Link, Skeleton, Stack, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { Booking, BookingStatus } from './bookingsQueries'
-import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
+import { ToolImage } from '~components/Tools/shared'
 import { useTool } from '~components/Tools/toolsQueries'
-import { UserMiniCard } from '~components/User/UserMiniCard'
 import { ActionButtons } from '~components/Bookings/BookingActions'
-
-interface ToolInfoCardProps {
-  toolId: string
-  isLoading: boolean
-}
-
-const ToolInfoCard = ({ toolId, isLoading }: ToolInfoCardProps) => {
-  const { data: tool } = useTool(toolId)
-
-  const { t } = useTranslation()
-
-  if (isLoading) {
-    return (
-      <Stack spacing={4}>
-        <Skeleton height='200px' />
-        <Skeleton height='20px' width='200px' />
-      </Stack>
-    )
-  }
-
-  if (!tool) {
-    return (
-      <Text fontWeight='semibold' fontSize='lg'>
-        {t('bookings.toolNotFound')}
-      </Text>
-    )
-  }
-
-  return (
-    <Box borderRadius='lg' overflow='hidden'>
-      <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} height='200px' />
-      <Stack p={4} spacing={2}>
-        <Link
-          as={RouterLink}
-          to={`/tools/${tool.id}`}
-          fontWeight='semibold'
-          fontSize='lg'
-          _hover={{ color: 'primary.500', textDecoration: 'none' }}
-        >
-          {tool.title}
-        </Link>
-        <ToolPriceRating cost={tool.cost} rating={tool.rating} />
-      </Stack>
-    </Box>
-  )
-}
+import { useUserProfile } from '~components/User/userQueries'
+import React from 'react'
+import { DisplayRating } from '~src/pages/ratings/DisplayRating'
+import { Avatar } from '~components/Images/Avatar'
+import { UserMiniCard } from '~components/User/UserMiniCard'
 
 interface BookingDatesProps {
   booking: Booking
@@ -60,15 +18,23 @@ interface BookingDatesProps {
 }
 
 const BookingDates = ({ booking, isLoading }: BookingDatesProps) => {
+  const { t } = useTranslation()
+
   if (isLoading) {
     return <Skeleton height='24px' width='300px' />
   }
 
+  const begin = new Date(booking.startDate * 1000)
+  const end = new Date(booking.endDate * 1000)
+
+  const datef = t('bookings.date_format')
+
   return (
-    <Text fontSize='lg' fontWeight='medium' color='gray.700'>
-      {new Date(booking.startDate * 1000).toLocaleDateString()} -{' '}
-      {new Date(booking.endDate * 1000).toLocaleDateString()}
-    </Text>
+    <Stack spacing={1}>
+      <Text fontSize='lg' fontWeight='medium' color='gray.700'>
+        {t('bookings.dateRange', { date: { begin, end }, format: datef })}
+      </Text>
+    </Stack>
   )
 }
 
@@ -95,7 +61,16 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
   }
 
   return (
-    <Badge colorScheme={colorScheme} px={2} py={1} borderRadius='full'>
+    <Badge
+      colorScheme={colorScheme}
+      px={3}
+      py={1.5}
+      borderRadius='full'
+      fontSize='sm'
+      fontWeight='medium'
+      textTransform='uppercase'
+      letterSpacing='wide'
+    >
       {t(`bookings.status.${status}`)}
     </Badge>
   )
@@ -103,42 +78,51 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
 
 interface BookingCommentsProps {
   booking: Booking
+  type: BookingCardType
 }
 
 const BookingComments = ({ booking }: BookingCommentsProps) => {
-  const { t } = useTranslation()
-
-  if (!booking.comments && !booking.contact) return null
+  const userId = booking.fromUserId
+  const { data: user, isLoading } = useUserProfile(userId)
 
   return (
-    <Stack spacing={4} p={4} bg='gray.50' borderRadius='md'>
-      {booking.comments && (
-        <Stack direction='row' align='flex-start' spacing={3}>
-          <Box color='gray.500' mt={1}>
-            <FiMessageCircle size={20} />
-          </Box>
-          <Stack spacing={1}>
-            <Text fontWeight='medium' color='gray.700'>
-              {t('bookings.comments')}
-            </Text>
-            <Text color='gray.600'>{booking.comments}</Text>
+    <Flex direction='column' gap={1}>
+      <Flex flex={1} gap={1} direction={'row'}>
+        <Skeleton borderRadius='full' isLoaded={!isLoading}>
+          <Avatar username={user.name} avatarHash={user.avatarHash} size='sm' />
+        </Skeleton>
+        <Box w={'full'}>
+          <Stack spacing={3} bg='gray.100' p={4} borderRadius='lg'>
+            <Stack direction='row' align='center' spacing={2}>
+              <Box color='gray.500'>
+                <FiPhone size={16} />
+              </Box>
+              <Text fontSize='sm' color='gray.700'>
+                {booking.contact}
+              </Text>
+            </Stack>
+            <Stack direction='row' align='flex-start' spacing={2}>
+              <Box color='gray.500' mt={1}>
+                <FiMessageCircle size={16} />
+              </Box>
+              <Text fontSize='sm' color='gray.700'>
+                {booking.comments}
+              </Text>
+            </Stack>
           </Stack>
-        </Stack>
-      )}
-      {booking.contact && (
-        <Stack direction='row' align='flex-start' spacing={3}>
-          <Box color='gray.500' mt={1}>
-            <FiPhone size={20} />
-          </Box>
-          <Stack spacing={1}>
-            <Text fontWeight='medium' color='gray.700'>
-              {t('bookings.contact')}
+        </Box>
+      </Flex>
+      <Flex align='center' justify={'end'} gap={2}>
+        <Skeleton flexDirection={'row'} isLoaded={!isLoading}>
+          <HStack>
+            <Text fontSize='sm' fontWeight='medium'>
+              {user.name}
             </Text>
-            <Text color='gray.600'>{booking.contact}</Text>
-          </Stack>
-        </Stack>
-      )}
-    </Stack>
+            <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
+          </HStack>
+        </Skeleton>
+      </Flex>
+    </Flex>
   )
 }
 
@@ -150,39 +134,77 @@ interface BookingCardProps {
 }
 
 export const BookingCard = ({ booking, type }: BookingCardProps) => {
-  const { isLoading } = useTool(booking.toolId)
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const { data: tool, isLoading } = useTool(booking.toolId)
+  const { t } = useTranslation()
+
+  const isRequest = type === 'request'
+
   return (
-    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
-      <Stack spacing={6}>
-        {/* Header with Dates and Status */}
-        <Stack direction={{ base: 'column', sm: 'row' }} justify='space-between' align='center'>
-          <BookingDates booking={booking} isLoading={isLoading} />
-          <StatusBadge status={booking.bookingStatus} />
-        </Stack>
-
-        {/* Tool Info */}
-        <Box>
-          <ToolInfoCard toolId={booking.toolId} isLoading={isLoading} />
-        </Box>
-
-        {/* User Info and Comments Section */}
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={6}>
-          <Box flex='1'>
-            <UserMiniCard userId={type === 'request' ? booking.fromUserId : booking.toUserId} />
+    <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
+      <CardBody p={0}>
+        <Stack direction={{ base: 'column', lg: 'row' }} spacing={0} align='stretch'>
+          {/* Left side - Tool Image */}
+          <Box flex={{ base: '1', lg: '0 0 350px' }} position='relative' pl={4} py={6}>
+            <Box height={{ base: '220px', lg: '100%' }} width='100%' position='relative'>
+              {isLoading ? (
+                <Skeleton height='100%' />
+              ) : (
+                <Box>
+                  <ToolImage
+                    imageHash={tool?.images[0]?.hash}
+                    title={tool?.title}
+                    isAvailable={tool?.isAvailable}
+                    height='100%'
+                  />
+                  <UserMiniCard userId={booking.toUserId} />
+                </Box>
+              )}
+            </Box>
           </Box>
-          <Box flex='2'>{(booking.comments || booking.contact) && <BookingComments booking={booking} />}</Box>
-        </Stack>
 
-        {/* Action Buttons */}
-        <Stack>
-          <Divider />
-          <HStack spacing={4} justify='flex-end'>
-            <ActionButtons booking={booking} type={type} />
-          </HStack>
+          {/* Right side content */}
+          <Stack spacing={6} flex='1' p={6} position='relative'>
+            {/* Status Badge - Absolute positioned at top right */}
+            <Box position='absolute' top={6} right={6}>
+              <StatusBadge status={booking.bookingStatus} />
+            </Box>
+
+            {/* Booking Summary Section */}
+            <Stack spacing={4}>
+              {isLoading ? (
+                <Skeleton height='24px' width='200px' />
+              ) : (
+                <Stack spacing={2}>
+                  <Text fontSize='md' color='gray.500'>
+                    {isRequest ? t('bookings.requestedToYou') : t('bookings.petitionTo')}
+                  </Text>
+                  <Text fontSize='xl' fontWeight='semibold'>
+                    <Link
+                      as={RouterLink}
+                      to={`/tools/${tool?.id}`}
+                      _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                      display='inline'
+                    >
+                      {tool?.title || t('bookings.toolNotFound')}
+                    </Link>
+                  </Text>
+                  <BookingDates booking={booking} isLoading={isLoading} />
+                </Stack>
+              )}
+            </Stack>
+
+            {/* Comments Section */}
+            <BookingComments type={type} booking={booking} />
+
+            {/* Action Buttons */}
+            <Box mt='auto'>
+              <HStack spacing={4} justify='flex-end'>
+                <ActionButtons booking={booking} type={type} />
+              </HStack>
+            </Box>
+          </Stack>
         </Stack>
-      </Stack>
-    </Box>
+      </CardBody>
+    </Card>
   )
 }

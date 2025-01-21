@@ -1,10 +1,10 @@
-import { Box, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/router'
-import { ToolImage, ToolPriceRating } from './shared'
+import { ToolImage } from './shared'
 
 interface ToolCardProps {
   tool: Tool
@@ -37,16 +37,24 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
 
         <Stack p={4} spacing={3}>
           <Stack spacing={1}>
-            <Link
-              as={RouterLink}
-              to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
-              fontWeight='semibold'
-              fontSize='lg'
-              _hover={{ color: 'primary.500', textDecoration: 'none' }}
-            >
-              {tool.title}
-            </Link>
-            <ToolPriceRating cost={tool.cost} rating={tool.rating} />
+            <Stack direction='row' align='center' justify='space-between'>
+              <Link
+                as={RouterLink}
+                to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+                fontWeight='semibold'
+                fontSize='xl'
+                _hover={{ color: 'primary.500', textDecoration: 'none' }}
+              >
+                {tool.title}
+              </Link>
+              <Text color='gray.600' fontSize='lg' fontWeight='bold'>
+                {tool.cost}€/day
+              </Text>
+            </Stack>
+            <Stack direction='row' spacing={2}>
+              {tool.mayBeFree && <Badge colorScheme='blue'>Maybe Free</Badge>}
+              {tool.askWithFee && <Badge colorScheme='purple'>Ask with Fee</Badge>}
+            </Stack>
           </Stack>
 
           <Text color='gray.600' noOfLines={2} title={tool.description}>

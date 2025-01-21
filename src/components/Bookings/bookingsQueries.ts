@@ -71,6 +71,7 @@ export const useDenyBooking = (options?: BookingActionOptions) => {
     onSuccess: (res) => {
       invalidateQueries(client, res.toolId)
     },
+    ...options,
   })
 }
 
@@ -82,6 +83,7 @@ export const useCancelBooking = (options?: BookingActionOptions) => {
     onSuccess: (res) => {
       invalidateQueries(client, res.toolId)
     },
+    ...options,
   })
 }
 

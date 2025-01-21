@@ -21,18 +21,10 @@ export const ToolsListPage = () => {
   const tools = toolsResponse?.tools || []
 
   return (
-    <Container maxW='container.xl' py={8}>
-      <Box flex={1}>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {tools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </SimpleGrid>
-      </Box>
-
+    <Container maxW='container.xl' py={8} position="relative">
       <Button
         position='fixed'
-        bottom='2rem'
+        top='6rem'
         left='50%'
         transform='translateX(-50%)'
         colorScheme='blue'
@@ -42,9 +34,19 @@ export const ToolsListPage = () => {
         onClick={() => navigate(ROUTES.TOOLS.NEW)}
         boxShadow='lg'
         leftIcon={<AddIcon />}
+        zIndex={2}
       >
         {t('add tool')}
       </Button>
+
+      <Box flex={1} mt={20}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+          {tools.map((tool) => (
+            <ToolCard key={tool.id} tool={tool} />
+          ))}
+        </SimpleGrid>
+      </Box>
+
     </Container>
   )
 }
