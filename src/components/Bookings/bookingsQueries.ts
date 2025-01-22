@@ -87,13 +87,14 @@ export const useCancelBooking = (options?: BookingActionOptions) => {
   })
 }
 
-export const useReturnBooking = () => {
+export const useReturnBooking = (options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.return(bookingId),
-    onSuccess: (res) => {
-      invalidateQueries(client, res.toolId)
+    onSuccess: () => {
+      invalidateQueries(client)
     },
+    ...options,
   })
 }
 

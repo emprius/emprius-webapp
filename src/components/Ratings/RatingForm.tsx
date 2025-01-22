@@ -15,7 +15,6 @@ interface RatingFormData {
 }
 
 export const RatingForm = ({ bookingId, onSuccess }: RatingFormProps) => {
-  console.log('AAAA', bookingId)
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()

@@ -135,10 +135,27 @@ interface AcceptedBookingActionsProps {
 
 const AcceptedBookingActions = ({ bookingId }: AcceptedBookingActionsProps) => {
   const { t } = useTranslation()
-  const returnBooking = useReturnBooking()
+  const toast = useToast()
+  const { mutateAsync } = useReturnBooking({
+    onError: (error) => {
+      // Show toast error
+      toast({
+        title: t('bookings.return_error'),
+        status: 'error',
+        isClosable: true,
+      })
+      console.error(error)
+    },
+  })
 
   const handleReturn = () => {
-    returnBooking.mutate(bookingId)
+    mutateAsync(bookingId).then(() => {
+      toast({
+        title: t('bookings.return_success'),
+        status: 'success',
+        isClosable: true,
+      })
+    })
   }
 
   return (
