@@ -14,7 +14,6 @@ import { UserMiniCard } from '~components/User/UserMiniCard'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { ROUTES } from '~src/router/router'
-import { useAuth } from '~components/Auth/AuthContext'
 
 interface BookingDatesProps {
   booking: Booking
@@ -92,7 +91,6 @@ interface BookingCommentsProps {
 }
 
 const BookingComments = ({ booking, type }: BookingCommentsProps) => {
-  const { user: profile } = useAuth()
   const userId = booking.fromUserId
   const isRequest = type === 'request'
   const { data: user, isLoading } = useUserProfile(userId, { enabled: !isRequest })

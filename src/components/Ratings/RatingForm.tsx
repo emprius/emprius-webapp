@@ -1,4 +1,16 @@
-import { Badge, Box, Button, Flex, FormControl, FormLabel, Heading, Textarea, useToast, VStack } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  Textarea,
+  useToast,
+  VStack,
+} from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { RatingStars } from '~components/Ratings/RatingStars'
@@ -6,7 +18,9 @@ import { useSubmitRating } from './ratingQueries'
 import { Rating } from '~components/Ratings/types'
 import { useTool } from '~components/Tools/toolsQueries'
 import { UserMiniCard } from '~components/User/UserMiniCard'
+import { ServerImage } from '~components/Images/ServerImage'
 import { format } from 'date-fns'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 
 interface RatingFormProps {
   rating: Rating
@@ -67,70 +81,88 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
   }
 
   return (
-    <Box as='form' onSubmit={handleSubmit(onSubmit)}>
-      <Box p={6}>
-        {tool && (
-          <VStack spacing={4} align="stretch">
+    <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
+      {tool && (
+        <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
+          {tool.images?.[0] && (
+            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
+              <ServerImage
+                imageId={tool.images[0].hash}
+                alt={tool.title}
+                width='100%'
+                height='100%'
+                objectFit='cover'
+              />
+            </Box>
+          )}
+          <VStack align={'start'}>
             <Heading size='md' noOfLines={2}>
               {tool.title}
             </Heading>
-            
-            <Box>
-              <FormLabel fontSize='sm' fontWeight='medium'>
-                {t('rating.period')}
-              </FormLabel>
-              <Badge px={2} py={1} borderRadius='full' fontSize='sm' fontWeight='medium'>
-                {format(rating.startDate, 'PP')} - {format(rating.endDate, 'PP')}
-              </Badge>
-            </Box>
-
-            <Box>
-              <FormLabel fontSize='sm' fontWeight='medium'>
-                {t('rating.user')}
-              </FormLabel>
-              <UserMiniCard userId={rating.toUserId} />
-            </Box>
-          </VStack>
-        )}
-
-        <Box borderTopWidth='1px' pt={4} mt={4}>
-          <VStack spacing={4} align='stretch'>
-            <FormControl>
-              <FormLabel fontSize='sm' fontWeight='medium'>
-                {t('rating.rateUser')}
-              </FormLabel>
-              <RatingStars
-                initialRating={userRating}
-                onRatingChange={(rating) => setValue('userRating', rating)}
-                size='md'
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize='sm' fontWeight='medium'>
-                {t('rating.comment')}
-              </FormLabel>
-              <Textarea
-                value={comment}
-                onChange={(e) => setValue('comment', e.target.value)}
-                placeholder={t('rating.commentPlaceholder')}
-                resize="vertical"
-                minHeight="100px"
-              />
-            </FormControl>
-
-            <Button
-              type='submit'
-              colorScheme='blue'
-              isLoading={submitRating.status === 'pending'}
-              loadingText={t('rating.submitting')}
-              isDisabled={!userRating}
-              width='full'
+            <Badge
+              px={2}
+              py={1}
+              borderRadius='full'
+              fontSize='sm'
+              fontWeight='medium'
+              whiteSpace='normal'
+              wordBreak='break-word'
             >
-              {t('rating.submit')}
-            </Button>
+              <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
+              {format(rating.startDate * 1000, 'PP')}
+              <Icon as={FaArrowRight} mx={2} />
+              {format(rating.endDate * 1000, 'PP')}
+            </Badge>
+            <UserMiniCard
+              direction={'row'}
+              avatarSize={'sm'}
+              userId={rating.toUserId}
+              gap={2}
+              p={0}
+              fontSize={'sm'}
+              borderWidth={0}
+            />
           </VStack>
-        </Box>
+        </Flex>
+      )}
+
+      <Box borderTopWidth='1px' pt={4} mt={4}>
+        <VStack spacing={4} align='stretch'>
+          <FormControl>
+            <FormLabel fontSize='sm' fontWeight='medium'>
+              {t('rating.rateUser')}
+            </FormLabel>
+            <RatingStars
+              initialRating={userRating}
+              onRatingChange={(rating) => setValue('userRating', rating)}
+              size='md'
+            />
+          </FormControl>
+
+          <FormControl>
+            <FormLabel fontSize='sm' fontWeight='medium'>
+              {t('rating.comment')}
+            </FormLabel>
+            <Textarea
+              value={comment}
+              onChange={(e) => setValue('comment', e.target.value)}
+              placeholder={t('rating.commentPlaceholder')}
+              resize='vertical'
+              minHeight='100px'
+            />
+          </FormControl>
+
+          <Button
+            type='submit'
+            colorScheme='blue'
+            isLoading={submitRating.status === 'pending'}
+            loadingText={t('rating.submitting')}
+            isDisabled={!userRating}
+            width='full'
+          >
+            {t('rating.submit')}
+          </Button>
+        </VStack>
       </Box>
     </Box>
   )

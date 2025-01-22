@@ -1,14 +1,21 @@
-import { Box, Flex, HStack, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Flex, FlexProps, HStack, Skeleton, Stack, StackProps, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { DisplayRating } from '../Ratings/DisplayRating'
-import { Avatar } from '../Images/Avatar'
+import { Avatar, AvatarSize } from '../Images/Avatar'
 import { useUserProfile } from './userQueries'
 
-interface UserMiniCardProps {
+type UserMiniCardProps = {
   userId: string
-}
+  avatarSize?: AvatarSize
+  direction?: StackProps['direction']
+} & FlexProps
 
-export const UserMiniCard: React.FC<UserMiniCardProps> = ({ userId }) => {
+export const UserMiniCard: React.FC<UserMiniCardProps> = ({
+  userId,
+  avatarSize = 'md',
+  direction = 'column',
+  ...flexProps
+}) => {
   const { data: user, isLoading } = useUserProfile(userId)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -30,14 +37,21 @@ export const UserMiniCard: React.FC<UserMiniCardProps> = ({ userId }) => {
   }
 
   return (
-    <Box p={4} bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg'>
-      <Flex align='center' gap={4}>
-        <Avatar username={user.name} avatarHash={user.avatarHash} size='md' />
-        <Stack spacing={1}>
-          <Text fontWeight='bold'>{user.name}</Text>
-          <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
-        </Stack>
-      </Flex>
-    </Box>
+    <Flex
+      align='center'
+      gap={4}
+      p={4}
+      bg={bgColor}
+      borderWidth={1}
+      borderColor={borderColor}
+      borderRadius='lg'
+      {...flexProps}
+    >
+      <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />
+      <Stack direction={direction} spacing={1}>
+        <Text fontWeight='bold'>{user.name}</Text>
+        <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
+      </Stack>
+    </Flex>
   )
 }
