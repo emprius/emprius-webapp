@@ -1,14 +1,15 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { RatingForm } from './RatingForm'
+import { Booking } from '~components/Bookings/bookingsQueries'
 
 interface RatingModalProps {
   isOpen: boolean
   onClose: () => void
-  bookingId: string
+  booking: Booking
 }
 
-export const RatingModal = ({ isOpen, onClose, bookingId }: RatingModalProps) => {
+export const RatingModal = ({ isOpen, onClose, booking }: RatingModalProps) => {
   const { t } = useTranslation()
 
   return (
@@ -18,7 +19,7 @@ export const RatingModal = ({ isOpen, onClose, bookingId }: RatingModalProps) =>
         <ModalHeader>{t('rating.pendingRatings')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <RatingForm bookingId={bookingId} onSuccess={onClose} />
+          <RatingForm rating={booking} onSuccess={onClose} />
         </ModalBody>
       </ModalContent>
     </Modal>

@@ -1,68 +1,58 @@
-import { Box, Button, FormControl, FormLabel, useToast, VStack } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, FormControl, FormLabel, Heading, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { RatingStars } from '~components/Ratings/RatingStars'
 import { useSubmitRating } from './ratingQueries'
+import { Rating } from '~components/Ratings/types'
+import { useTool } from '~components/Tools/toolsQueries'
+import { UserMiniCard } from '~components/User/UserMiniCard'
+import { format } from 'date-fns'
 
 interface RatingFormProps {
-  bookingId: string
+  rating: Rating
   onSuccess?: () => void
 }
 
 interface RatingFormData {
   userRating: number
-  toolRating: number
+  comment: string
 }
 
-export const RatingForm = ({ bookingId, onSuccess }: RatingFormProps) => {
+export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()
+  const { data: tool } = useTool(rating.toolId)
   const { handleSubmit, setValue, watch } = useForm<RatingFormData>({
     defaultValues: {
       userRating: 0,
-      toolRating: 0,
+      comment: '',
     },
   })
 
   const userRating = watch('userRating')
-  const toolRating = watch('toolRating')
+  const comment = watch('comment')
 
   const onSubmit = async (data: RatingFormData) => {
     try {
-      let submittedCount = 0
-
-      // Submit user rating if provided
       if (data.userRating > 0) {
         await submitRating.mutateAsync({
-          bookingId,
+          bookingId: rating.id,
           rating: data.userRating,
-          ratingType: 'USER',
+          comment: data.comment,
         })
-        submittedCount++
-      }
 
-      // Submit tool rating if provided
-      if (data.toolRating > 0) {
-        await submitRating.mutateAsync({
-          bookingId,
-          rating: data.toolRating,
-          ratingType: 'TOOL',
+        // Show success toast
+        toast({
+          title: t('rating.submitSuccess'),
+          description: t('rating.submitSuccessDescription'),
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
         })
-        submittedCount++
+
+        onSuccess?.()
       }
-
-      // Show success toast
-      toast({
-        title: t('rating.submitSuccess'),
-        description: t('rating.submitSuccessDescription', { count: submittedCount }),
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'top',
-      })
-
-      onSuccess?.()
     } catch (error) {
       // Show error toast
       toast({
@@ -71,7 +61,6 @@ export const RatingForm = ({ bookingId, onSuccess }: RatingFormProps) => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top',
       })
       console.error('Error submitting rating:', error)
     }
@@ -79,41 +68,70 @@ export const RatingForm = ({ bookingId, onSuccess }: RatingFormProps) => {
 
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={4} align='stretch'>
-        <FormControl>
-          <FormLabel fontSize='sm' fontWeight='medium'>
-            {t('rating.rateUser')}
-          </FormLabel>
-          <RatingStars
-            initialRating={userRating}
-            onRatingChange={(rating) => setValue('userRating', rating)}
-            size='md'
-          />
-        </FormControl>
+      <Box p={6}>
+        {tool && (
+          <VStack spacing={4} align="stretch">
+            <Heading size='md' noOfLines={2}>
+              {tool.title}
+            </Heading>
+            
+            <Box>
+              <FormLabel fontSize='sm' fontWeight='medium'>
+                {t('rating.period')}
+              </FormLabel>
+              <Badge px={2} py={1} borderRadius='full' fontSize='sm' fontWeight='medium'>
+                {format(rating.startDate, 'PP')} - {format(rating.endDate, 'PP')}
+              </Badge>
+            </Box>
 
-        <FormControl>
-          <FormLabel fontSize='sm' fontWeight='medium'>
-            {t('rating.rateTool')}
-          </FormLabel>
-          <RatingStars
-            initialRating={toolRating}
-            onRatingChange={(rating) => setValue('toolRating', rating)}
-            size='md'
-          />
-        </FormControl>
+            <Box>
+              <FormLabel fontSize='sm' fontWeight='medium'>
+                {t('rating.user')}
+              </FormLabel>
+              <UserMiniCard userId={rating.toUserId} />
+            </Box>
+          </VStack>
+        )}
 
-        <Button
-          type='submit'
-          colorScheme='blue'
-          isLoading={submitRating.status === 'pending'}
-          loadingText={t('rating.submitting')}
-          // spinner={<Spinner size="sm" color="white" />}
-          isDisabled={!userRating && !toolRating}
-          width='full'
-        >
-          {t('rating.submit')}
-        </Button>
-      </VStack>
+        <Box borderTopWidth='1px' pt={4} mt={4}>
+          <VStack spacing={4} align='stretch'>
+            <FormControl>
+              <FormLabel fontSize='sm' fontWeight='medium'>
+                {t('rating.rateUser')}
+              </FormLabel>
+              <RatingStars
+                initialRating={userRating}
+                onRatingChange={(rating) => setValue('userRating', rating)}
+                size='md'
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel fontSize='sm' fontWeight='medium'>
+                {t('rating.comment')}
+              </FormLabel>
+              <Textarea
+                value={comment}
+                onChange={(e) => setValue('comment', e.target.value)}
+                placeholder={t('rating.commentPlaceholder')}
+                resize="vertical"
+                minHeight="100px"
+              />
+            </FormControl>
+
+            <Button
+              type='submit'
+              colorScheme='blue'
+              isLoading={submitRating.status === 'pending'}
+              loadingText={t('rating.submitting')}
+              isDisabled={!userRating}
+              width='full'
+            >
+              {t('rating.submit')}
+            </Button>
+          </VStack>
+        </Box>
+      </Box>
     </Box>
   )
 }

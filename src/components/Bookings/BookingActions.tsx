@@ -172,7 +172,7 @@ const ReturnedBookingActions = ({ bookingId }: ActionsProps) => {
   return (
     <>
       <Button leftIcon={<FiStar />} variant='outline' onClick={() => onOpen()}>
-        {t('rating.rateTool')}
+        {t('rating.rateUser')}
       </Button>
       <RatingModal
         isOpen={isOpen}

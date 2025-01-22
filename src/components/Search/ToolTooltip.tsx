@@ -2,7 +2,6 @@ import { Box, Button, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
-import { DisplayRating } from '../../pages/ratings/DisplayRating'
 import type { Tool } from '~components/Tools/types'
 
 interface ToolTooltipProps {

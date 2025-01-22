@@ -1,21 +1,9 @@
-import { Image } from '~components/Images/ServerImage'
-import { DateRange } from '~components/Layout/Form/DateRangePicker'
+import { Booking } from '~components/Bookings/bookingsQueries'
 
-export interface Rating {
-  id: number
-  isPending: boolean
-  fromUserId: number
-  toUserId: number
-  bookingId: number
-  thumbnail: Image
-  title: string
-  rating: number | null
-  reservedDates: DateRange
-  ratingType: 'USER' | 'TOOL'
-}
+export type Rating = {} & Booking
 
 export interface RateSubmission {
   bookingId: string
   rating: number
-  ratingType: 'USER' | 'TOOL'
+  comment: string
 }
