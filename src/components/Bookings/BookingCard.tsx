@@ -170,41 +170,45 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
   return (
     <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
       <CardBody pl={4} py={4}>
-        <HStack mb={4} color='gray.600'>
-          <Icon as={data.icon} fontSize='xl' />
-          <Text fontSize='xl' fontWeight={'extrabold'}>
-            {data.title}
-          </Text>
-          {/* Status Badge - Absolute positioned at top right */}
-          <Box position='absolute' right={6}>
+        <Stack
+          mb={4}
+          color='gray.600'
+          justify={{ base: 'center', md: 'space-between' }}
+          direction={{ base: 'column-reverse', md: 'row' }}
+        >
+          <HStack>
+            <Icon as={data.icon} fontSize='xl' />
+            <Text fontSize='xl' fontWeight={'extrabold'}>
+              {data.title}
+            </Text>
+          </HStack>
+          <Box right={6}>
             <StatusBadge status={booking.bookingStatus} />
           </Box>
-        </HStack>
+        </Stack>
 
-        <Stack direction={{ base: 'column', lg: 'row' }} spacing={0} align='stretch'>
+        <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 4 }} align='stretch'>
           {/* Left side - Tool Image */}
-          <Box flex={{ base: '1', lg: '0 0 350px' }} position='relative'>
-            <Box height={{ base: '220px', lg: '100%' }} width='100%' position='relative'>
-              {isLoading ? (
-                <Skeleton height='100%' />
-              ) : (
-                <Box>
-                  <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-                    <ToolImage
-                      imageHash={tool?.images[0]?.hash}
-                      title={tool?.title}
-                      isAvailable={tool?.isAvailable}
-                      height='100%'
-                    />
-                  </Link>
-                  {!isRequest && <UserMiniCard userId={booking.toUserId} />}
-                </Box>
-              )}
-            </Box>
+          <Box flex={{ base: '1', md: '0 0 350px' }} position='relative'>
+            {isLoading ? (
+              <Skeleton height='100%' />
+            ) : (
+              <Box>
+                <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+                  <ToolImage
+                    imageHash={tool?.images[0]?.hash}
+                    title={tool?.title}
+                    isAvailable={tool?.isAvailable}
+                    height='100%'
+                  />
+                </Link>
+                {!isRequest && <UserMiniCard userId={booking.toUserId} />}
+              </Box>
+            )}
           </Box>
 
           {/* Right side content */}
-          <Stack spacing={6} flex='1' pl={6} position='relative'>
+          <Stack spacing={6} flex='1' position='relative'>
             {/* Booking Summary Section */}
             <Stack spacing={2}>
               {isLoading ? (
