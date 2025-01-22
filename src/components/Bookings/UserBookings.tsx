@@ -17,10 +17,10 @@ export const UserBookings = () => {
       </TabList>
 
       <TabPanels>
-        <TabPanel>
+        <TabPanel px={1}>
           <Petitions />
         </TabPanel>
-        <TabPanel>
+        <TabPanel px={1}>
           <Requests />
         </TabPanel>
       </TabPanels>

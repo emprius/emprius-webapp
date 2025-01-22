@@ -13,10 +13,11 @@ import { RatingModal } from '~components/Ratings/RatingModal'
 import React from 'react'
 
 interface ActionsProps {
-  bookingId: string
+  booking: Booking
 }
 
-const PendingRequestActions = ({ bookingId }: ActionsProps) => {
+const PendingRequestActions = ({ booking }: ActionsProps) => {
+  const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
 
@@ -91,7 +92,8 @@ const PendingRequestActions = ({ bookingId }: ActionsProps) => {
   )
 }
 
-const PendingPetitionActions = ({ bookingId }: ActionsProps) => {
+const PendingPetitionActions = ({ booking }: ActionsProps) => {
+  const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
   const { mutateAsync, isPending } = useCancelBooking({
@@ -129,11 +131,8 @@ const PendingPetitionActions = ({ bookingId }: ActionsProps) => {
   )
 }
 
-interface AcceptedBookingActionsProps {
-  bookingId: string
-}
-
-const AcceptedBookingActions = ({ bookingId }: AcceptedBookingActionsProps) => {
+const AcceptedBookingActions = ({ booking }: ActionsProps) => {
+  const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
   const { mutateAsync } = useReturnBooking({
@@ -165,7 +164,7 @@ const AcceptedBookingActions = ({ bookingId }: AcceptedBookingActionsProps) => {
   )
 }
 
-const ReturnedBookingActions = ({ bookingId }: ActionsProps) => {
+const ReturnedBookingActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -179,7 +178,7 @@ const ReturnedBookingActions = ({ bookingId }: ActionsProps) => {
         onClose={() => {
           onClose()
         }}
-        bookingId={bookingId}
+        booking={booking}
       />
     </>
   )
@@ -192,19 +191,19 @@ interface ActionButtonsProps {
 
 export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
-    return <PendingRequestActions bookingId={booking.id} />
+    return <PendingRequestActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
-    return <PendingPetitionActions bookingId={booking.id} />
+    return <PendingPetitionActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.ACCEPTED) {
-    return <AcceptedBookingActions bookingId={booking.id} />
+    return <AcceptedBookingActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.RETURNED) {
-    return <ReturnedBookingActions bookingId={booking.id} />
+    return <ReturnedBookingActions booking={booking} />
   }
 
   return null

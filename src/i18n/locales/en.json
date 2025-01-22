@@ -73,9 +73,13 @@
     "submitting": "Submitting...",
     "error": "Error loading ratings",
     "submitSuccess": "Rating Submitted",
-    "submitSuccessDescription": "Successfully submitted {{count}} rating(s)",
+    "submitSuccessDescription": "Successfully submitted rating",
     "submitError": "Error Submitting Rating",
-    "submitErrorDescription": "There was an error submitting your rating. Please try again."
+    "submitErrorDescription": "There was an error submitting your rating. Please try again.",
+    "period": "Rental Period",
+    "user": "Tool Owner",
+    "comment": "Comments",
+    "commentPlaceholder": "Share your experience with this tool and its owner..."
   },
   "nav": {
     "ratings": "Pending Ratings",
