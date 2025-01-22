@@ -33,6 +33,7 @@ import { UserMiniCard } from '~components/User/UserMiniCard'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
 import { MdDoneOutline } from 'react-icons/md'
+import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -67,8 +68,7 @@ export const ToolDetailPage = () => {
                   <Stack spacing={1}>
                     <Stack direction='row' align='center' justify='space-between'>
                       <Text color='gray.600' fontSize='2xl' fontWeight='bold'>
-                        {tool.cost}
-                        {t('tools.costUnit')}
+                        {t('tools.costUnit', { cost: tool.cost })}
                       </Text>
                       <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                         {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
@@ -76,10 +76,7 @@ export const ToolDetailPage = () => {
                     </Stack>
                   </Stack>
                   <Text color='gray.600'>{tool.description}</Text>
-                  <Stack direction='row' spacing={2}>
-                    {tool.mayBeFree && <Badge colorScheme='blue'>{t('tools.mayBeFree')}</Badge>}
-                    {tool.askWithFee && <Badge colorScheme='purple'>{t('tools.askWithFee')}</Badge>}
-                  </Stack>
+                  <ToolBadges tool={tool} />
                   <Divider />
                   <SimpleGrid spacing={4} columns={{ base: 2 }}>
                     <Stack direction='row' align='center' spacing={4}>

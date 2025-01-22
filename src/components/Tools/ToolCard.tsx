@@ -1,16 +1,19 @@
-import { Badge, Box, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/router'
 import { ToolImage } from './shared'
+import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { useTranslation } from 'react-i18next'
 
 interface ToolCardProps {
   tool: Tool
 }
 
 export const ToolCard = ({ tool }: ToolCardProps) => {
+  const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
@@ -48,18 +51,15 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
                 {tool.title}
               </Link>
               <Text color='gray.600' fontSize='lg' fontWeight='bold'>
-                {tool.cost}€/day
+                {t('tools.costUnit', { cost: tool.cost })}
               </Text>
             </Stack>
-            <Stack direction='row' spacing={2}>
-              {tool.mayBeFree && <Badge colorScheme='blue'>Maybe Free</Badge>}
-              {tool.askWithFee && <Badge colorScheme='purple'>Ask with Fee</Badge>}
-            </Stack>
-          </Stack>
 
-          <Text color='gray.600' noOfLines={2} title={tool.description}>
-            {tool.description}
-          </Text>
+            <Text color='gray.600' noOfLines={2} title={tool.description}>
+              {tool.description}
+            </Text>
+            <ToolBadges tool={tool} />
+          </Stack>
         </Stack>
       </Link>
       <OwnerToolButtons tool={tool} />

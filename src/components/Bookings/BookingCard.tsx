@@ -1,4 +1,4 @@
-import { Badge, Box, Card, CardBody, Flex, HStack, Link, Skeleton, Stack, Text } from '@chakra-ui/react'
+import { Badge, Box, Card, CardBody, Flex, HStack, Icon, Link, Skeleton, Stack, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
@@ -11,6 +11,10 @@ import React from 'react'
 import { DisplayRating } from '~src/pages/ratings/DisplayRating'
 import { Avatar } from '~components/Images/Avatar'
 import { UserMiniCard } from '~components/User/UserMiniCard'
+import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
+import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { ROUTES } from '~src/router/router'
+import { useAuth } from '~components/Auth/AuthContext'
 
 interface BookingDatesProps {
   booking: Booking
@@ -29,10 +33,16 @@ const BookingDates = ({ booking, isLoading }: BookingDatesProps) => {
 
   const datef = t('bookings.date_format')
 
+  const date = { begin, end }
+
   return (
     <Stack spacing={1}>
       <Text fontSize='lg' fontWeight='medium' color='gray.700'>
-        {t('bookings.dateRange', { date: { begin, end }, format: datef })}
+        {t('bookings.dateRange', { date, format: datef })}
+      </Text>
+
+      <Text fontSize='md' fontWeight='medium' color='gray.600'>
+        {t('bookings.dateRangeTotal', { date, format: datef })}
       </Text>
     </Stack>
   )
@@ -81,16 +91,17 @@ interface BookingCommentsProps {
   type: BookingCardType
 }
 
-const BookingComments = ({ booking }: BookingCommentsProps) => {
+const BookingComments = ({ booking, type }: BookingCommentsProps) => {
+  const { user: profile } = useAuth()
   const userId = booking.fromUserId
-  const { data: user, isLoading } = useUserProfile(userId)
+  const isRequest = type === 'request'
+  const { data: user, isLoading } = useUserProfile(userId, { enabled: !isRequest })
+
+  const isLoaded = !isLoading && user !== undefined
 
   return (
     <Flex direction='column' gap={1}>
-      <Flex flex={1} gap={1} direction={'row'}>
-        <Skeleton borderRadius='full' isLoaded={!isLoading}>
-          <Avatar username={user.name} avatarHash={user.avatarHash} size='sm' />
-        </Skeleton>
+      <Flex flex={1} gap={1} direction={'row'} align={'end'}>
         <Box w={'full'}>
           <Stack spacing={3} bg='gray.100' p={4} borderRadius='lg'>
             <Stack direction='row' align='center' spacing={2}>
@@ -112,16 +123,21 @@ const BookingComments = ({ booking }: BookingCommentsProps) => {
           </Stack>
         </Box>
       </Flex>
-      <Flex align='center' justify={'end'} gap={2}>
-        <Skeleton flexDirection={'row'} isLoaded={!isLoading}>
-          <HStack>
-            <Text fontSize='sm' fontWeight='medium'>
-              {user.name}
-            </Text>
-            <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
-          </HStack>
-        </Skeleton>
-      </Flex>
+      {isRequest && (
+        <Flex align='center' justify={'end'} gap={2}>
+          <Skeleton flexDirection={'row'} isLoaded={isLoaded}>
+            <HStack>
+              <Text fontSize='sm' fontWeight='medium'>
+                {user?.name}
+              </Text>
+              {isLoaded && <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />}
+            </HStack>
+          </Skeleton>
+          <Skeleton borderRadius='full' isLoaded={isLoaded}>
+            <Avatar username={user?.name} avatarHash={user?.avatarHash} size='sm' />
+          </Skeleton>
+        </Flex>
+      )}
     </Flex>
   )
 }
@@ -139,55 +155,83 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
 
   const isRequest = type === 'request'
 
+  let data = {
+    icon: ImBoxAdd,
+    title: 'You are requesting a Tool',
+  }
+
+  if (isRequest) {
+    data = {
+      icon: ImBoxRemove,
+      title: 'Your tool is needed',
+    }
+  }
+
   return (
     <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
-      <CardBody p={0}>
+      <CardBody pl={4} py={4}>
+        <HStack mb={4} color='gray.600'>
+          <Icon as={data.icon} fontSize='xl' />
+          <Text fontSize='xl' fontWeight={'extrabold'}>
+            {data.title}
+          </Text>
+          {/* Status Badge - Absolute positioned at top right */}
+          <Box position='absolute' right={6}>
+            <StatusBadge status={booking.bookingStatus} />
+          </Box>
+        </HStack>
+
         <Stack direction={{ base: 'column', lg: 'row' }} spacing={0} align='stretch'>
           {/* Left side - Tool Image */}
-          <Box flex={{ base: '1', lg: '0 0 350px' }} position='relative' pl={4} py={6}>
+          <Box flex={{ base: '1', lg: '0 0 350px' }} position='relative'>
             <Box height={{ base: '220px', lg: '100%' }} width='100%' position='relative'>
               {isLoading ? (
                 <Skeleton height='100%' />
               ) : (
                 <Box>
-                  <ToolImage
-                    imageHash={tool?.images[0]?.hash}
-                    title={tool?.title}
-                    isAvailable={tool?.isAvailable}
-                    height='100%'
-                  />
-                  <UserMiniCard userId={booking.toUserId} />
+                  <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+                    <ToolImage
+                      imageHash={tool?.images[0]?.hash}
+                      title={tool?.title}
+                      isAvailable={tool?.isAvailable}
+                      height='100%'
+                    />
+                  </Link>
+                  {!isRequest && <UserMiniCard userId={booking.toUserId} />}
                 </Box>
               )}
             </Box>
           </Box>
 
           {/* Right side content */}
-          <Stack spacing={6} flex='1' p={6} position='relative'>
-            {/* Status Badge - Absolute positioned at top right */}
-            <Box position='absolute' top={6} right={6}>
-              <StatusBadge status={booking.bookingStatus} />
-            </Box>
-
+          <Stack spacing={6} flex='1' pl={6} position='relative'>
             {/* Booking Summary Section */}
-            <Stack spacing={4}>
+            <Stack spacing={2}>
               {isLoading ? (
                 <Skeleton height='24px' width='200px' />
               ) : (
                 <Stack spacing={2}>
-                  <Text fontSize='md' color='gray.500'>
-                    {isRequest ? t('bookings.requestedToYou') : t('bookings.petitionTo')}
-                  </Text>
-                  <Text fontSize='xl' fontWeight='semibold'>
-                    <Link
-                      as={RouterLink}
-                      to={`/tools/${tool?.id}`}
-                      _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                      display='inline'
-                    >
-                      {tool?.title || t('bookings.toolNotFound')}
-                    </Link>
-                  </Text>
+                  <Stack spacing={3}>
+                    <Stack spacing={1}>
+                      <Link
+                        as={RouterLink}
+                        to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+                        fontWeight='semibold'
+                        fontSize='xl'
+                        _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                      >
+                        {tool.title}
+                      </Link>
+                      {!isRequest && (
+                        <HStack>
+                          <Text color='gray.600' fontSize='lg' fontWeight='bold'>
+                            {t('tools.costUnit', { cost: tool.cost })}
+                          </Text>
+                          <ToolBadges tool={tool} />
+                        </HStack>
+                      )}
+                    </Stack>
+                  </Stack>
                   <BookingDates booking={booking} isLoading={isLoading} />
                 </Stack>
               )}

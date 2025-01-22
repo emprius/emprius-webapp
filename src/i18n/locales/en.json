@@ -5,7 +5,8 @@
     "dates": "Dates",
     "date_format": "PPP",
     "duration": "",
-    "dateRange": "From {{ date.begin, format }} to {{date.end, format}} (total of {{ date, duration }})",
+    "dateRange": "From {{ date.begin, format }} to {{date.end, format}}",
+    "dateRangeTotal": "(Total of {{ date, duration }})",
     "myPetitions": "My Petitions",
     "toolRequests": "Tool Requests",
     "requestedToYou": "New request for:",
@@ -29,6 +30,7 @@
     "toolNotFound": "Tool not found"
   },
   "tools": {
+    "costUnit": "{{ cost }} €/day",
     "addTool": "Add Tool",
     "findTools": "Find Tools",
     "myTools": "My Tools",
