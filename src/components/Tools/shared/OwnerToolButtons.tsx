@@ -32,8 +32,8 @@ export const OwnerToolButtons = ({ tool }: { tool: Tool }) => {
 
   return (
     <Stack direction='row' pb={4} pr={4} spacing={2} align='center' justify='flex-end' width='fit-content' ml='auto'>
-      <EditToolButton toolId={tool.id} />
       <AvailabilityToggle tool={tool} />
+      <EditToolButton toolId={tool.id} />
       <DeleteToolButton tool={tool} />
     </Stack>
   )
@@ -48,7 +48,7 @@ export const EditToolButton = ({ toolId }: { toolId: number }) => {
       to={ROUTES.TOOLS.EDIT.replace(':id', toolId.toString())}
       icon={<FiEdit2 />}
       aria-label={t('tools.edit')}
-      size='sm'
+      size='md'
       colorScheme='blue'
       onClick={(e) => {
         e.stopPropagation()
@@ -93,7 +93,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
 
   return (
     <>
-      <Switch size='sm' isChecked={tool.isAvailable} onChange={onOpen} colorScheme='green' />
+      <Switch size='lg' isChecked={tool.isAvailable} onChange={onOpen} colorScheme='green' />
 
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
         <AlertDialogOverlay>
@@ -153,7 +153,7 @@ export const DeleteToolButton = ({ tool }: { tool: Tool }) => {
 
   return (
     <>
-      <IconButton icon={<FiTrash2 />} aria-label={t('tools.delete')} size='sm' colorScheme='red' onClick={onOpen} />
+      <IconButton icon={<FiTrash2 />} aria-label={t('tools.delete')} size='md' colorScheme='red' onClick={onOpen} />
 
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
