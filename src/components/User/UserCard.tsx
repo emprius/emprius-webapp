@@ -10,7 +10,7 @@ type UserMiniCardProps = {
   direction?: StackProps['direction']
 } & FlexProps
 
-export const UserMiniCard: React.FC<UserMiniCardProps> = ({
+export const UserCard: React.FC<UserMiniCardProps> = ({
   userId,
   avatarSize = 'md',
   direction = 'column',

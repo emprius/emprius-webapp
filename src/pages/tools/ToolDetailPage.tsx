@@ -29,7 +29,7 @@ import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCale
 import { useTool } from '~components/Tools/toolsQueries'
 import { ROUTES } from '~src/router/router'
 import { MapMarker } from '~components/Layout/Map'
-import { UserMiniCard } from '~components/User/UserMiniCard'
+import { UserCard } from '~components/User/UserCard'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
 import { MdDoneOutline } from 'react-icons/md'
@@ -126,7 +126,7 @@ export const ToolDetailPage = () => {
                       }
                     </Stack>
                   )}
-                  <UserMiniCard userId={tool.userId} />
+                  <UserCard userId={tool.userId} />
                   {tool.location && (
                     <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
                       <MapMarker {...tool.location} />

@@ -10,7 +10,7 @@ import { useUserProfile } from '~components/User/userQueries'
 import React from 'react'
 import { DisplayRating } from '~components/Ratings/DisplayRating'
 import { Avatar } from '~components/Images/Avatar'
-import { UserMiniCard } from '~components/User/UserMiniCard'
+import { UserCard } from '~components/User/UserCard'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { ROUTES } from '~src/router/router'
@@ -200,7 +200,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                     height='100%'
                   />
                 </Link>
-                {!isRequest && <UserMiniCard userId={booking.toUserId} />}
+                {!isRequest && <UserCard userId={booking.toUserId} />}
               </Box>
             )}
           </Box>

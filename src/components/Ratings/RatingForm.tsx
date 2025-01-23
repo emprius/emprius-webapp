@@ -17,7 +17,7 @@ import { RatingStars } from '~components/Ratings/RatingStars'
 import { useSubmitRating } from './ratingQueries'
 import { Rating } from '~components/Ratings/types'
 import { useTool } from '~components/Tools/toolsQueries'
-import { UserMiniCard } from '~components/User/UserMiniCard'
+import { UserCard } from '~components/User/UserCard'
 import { ServerImage } from '~components/Images/ServerImage'
 import { format } from 'date-fns'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
@@ -113,7 +113,7 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
               <Icon as={FaArrowRight} mx={2} />
               {format(rating.endDate * 1000, 'PP')}
             </Badge>
-            <UserMiniCard
+            <UserCard
               direction={'row'}
               avatarSize={'sm'}
               userId={rating.toUserId}
