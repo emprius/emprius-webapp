@@ -14,31 +14,33 @@ import { UserCard } from '~components/User/UserCard'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { ROUTES } from '~src/router/router'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { format } from 'date-fns'
 
 interface BookingDatesProps {
   booking: Booking
-  isLoading: boolean
 }
 
-const BookingDates = ({ booking, isLoading }: BookingDatesProps) => {
+const BookingDates = ({ booking }: BookingDatesProps) => {
   const { t } = useTranslation()
-
-  if (isLoading) {
-    return <Skeleton height='24px' width='300px' />
-  }
+  //
+  // if (isLoading) {
+  //   return <Skeleton height='24px' width='300px' />
+  // }
 
   const begin = new Date(booking.startDate * 1000)
   const end = new Date(booking.endDate * 1000)
-
-  const datef = t('bookings.date_format')
-
   const date = { begin, end }
+  const datef = 'PPP'
 
   return (
     <Stack spacing={1}>
-      <Text fontSize='lg' fontWeight='medium' color='gray.700'>
-        {t('bookings.date_range', { date, format: datef })}
-      </Text>
+      <Flex align={'center'} fontSize='md' color='gray.700'>
+        <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
+        {format(begin, datef)}
+        <Icon as={FaArrowRight} mx={2} />
+        {format(end, datef)}
+      </Flex>
 
       <Text fontSize='md' fontWeight='medium' color='gray.600'>
         {t('bookings.date_range_total', { date, format: datef })}
@@ -200,7 +202,17 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                     height='100%'
                   />
                 </Link>
-                {!isRequest && <UserCard userId={booking.toUserId} />}
+                {!isRequest && (
+                  <UserCard
+                    p={2}
+                    gap={2}
+                    direction={'row'}
+                    fontSize={'sm'}
+                    avatarSize={'sm'}
+                    userId={booking.toUserId}
+                    justify={'center'}
+                  />
+                )}
               </Box>
             )}
           </Box>
@@ -234,7 +246,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                       )}
                     </Stack>
                   </Stack>
-                  <BookingDates booking={booking} isLoading={isLoading} />
+                  <BookingDates booking={booking} />
                 </Stack>
               )}
             </Stack>
