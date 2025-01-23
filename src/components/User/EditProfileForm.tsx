@@ -23,6 +23,7 @@ import { getB64FromFile } from '~src/utils'
 import { ASSETS, AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, sizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './userQueries'
+import { PasswordInput } from '~src/pages/auth/PasswordInput'
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
@@ -137,8 +138,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
 
         <FormControl isInvalid={!!errors.password}>
           <FormLabel>{t('common.password')}</FormLabel>
-          <Input
-            type='password'
+          <PasswordInput
             {...register('password', {
               pattern: {
                 value: AUTH_FORM.PASSWORD_REGEX,
@@ -155,8 +155,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
 
         <FormControl isInvalid={!!errors.confirmPassword}>
           <FormLabel>{t('auth.confirm_password')}</FormLabel>
-          <Input
-            type='password'
+          <PasswordInput
             {...register('confirmPassword', {
               validate: (value) => !password || value === password || t('auth.passwords_do_not_match'),
             })}

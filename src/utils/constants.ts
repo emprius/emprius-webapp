@@ -1,7 +1,8 @@
 export const AUTH_FORM = {
   EMAIL_REGEX: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  MIN_PASSWORD_LENGTH: 2,
-  PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  MIN_PASSWORD_LENGTH: 8,
+  // Minimum eight characters, at least one letter and one number:
+  PASSWORD_REGEX: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
 }
 
 /**

@@ -11,7 +11,7 @@
     "name": "Name",
     "no_account": "Don't have an account?",
     "password": "Password",
-    "password_requirements": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    "password_requirements": "Password must contain at least one letter and one number",
     "passwords_do_not_match": "Passwords do not match",
     "password_too_short": "Password must be at least 8 characters long",
     "register": "Register",
