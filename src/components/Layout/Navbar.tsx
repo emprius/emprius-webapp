@@ -52,13 +52,13 @@ export const Navbar = () => {
             {isAuthenticated && (
               <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
                 <IconButton
-                  aria-label={t('nav.myTools')}
+                  aria-label={t('nav.my_tools')}
                   icon={<FiTool />}
                   onClick={() => navigate(ROUTES.TOOLS.LIST)}
                   variant='ghost'
                 />
                 <IconButton
-                  aria-label={t('nav.myBookings')}
+                  aria-label={t('nav.my_bookings')}
                   icon={<FiBookmark />}
                   onClick={() => navigate(ROUTES.BOOKINGS)}
                   variant='ghost'
@@ -70,7 +70,7 @@ export const Navbar = () => {
                   variant='ghost'
                 />
                 <IconButton
-                  aria-label={t('nav.findTools')}
+                  aria-label={t('nav.find_tools')}
                   icon={<FiSearch />}
                   onClick={() => navigate(ROUTES.SEARCH)}
                   variant='ghost'
@@ -118,16 +118,16 @@ export const Navbar = () => {
                         {t('nav.profile')}
                       </MenuItem>
                       <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
-                        {t('nav.myTools')}
+                        {t('nav.my_tools')}
                       </MenuItem>
                       <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
-                        {t('nav.myBookings')}
+                        {t('nav.my_bookings')}
                       </MenuItem>
                       <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
                         {t('nav.ratings')}
                       </MenuItem>
                       <MenuItem icon={<FiSearch />} onClick={() => navigate(ROUTES.SEARCH)}>
-                        {t('nav.findTools')}
+                        {t('nav.find_tools')}
                       </MenuItem>
                       <MenuItem icon={<FiSettings />} onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
                         {t('nav.settings')}
