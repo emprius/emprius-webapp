@@ -8,8 +8,8 @@
 
 export const LanguagesSlice = {
   en: 'English',
-  // es: 'Español',
-  // ca: 'Català',
+  es: 'Español',
+  ca: 'Català',
 }
 
 const languages = Object.keys(LanguagesSlice)
