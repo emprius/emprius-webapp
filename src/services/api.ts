@@ -9,7 +9,7 @@ import {
 } from '~components/Bookings/bookingsQueries'
 import {ImageContent} from '~components/Images/ServerImage'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
-import {SearchFilters} from '~components/Search/searchQueries'
+import {SearchFilters, SearchToolsResponse} from '~components/Search/searchQueries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/toolsQueries'
 import {Tool} from '~components/Tools/types'
 import {EditProfileFormData, UserProfile} from '~components/User/userTypes'
@@ -75,15 +75,9 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getUserTools: () => apiRequest(api.get<ApiResponse<{ tools: Tool[] }>>('/tools')),
+  getUserTools: () => apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools')),
   searchTools: (params: SearchFilters) =>
-    apiRequest(
-      api.get<
-        ApiResponse<{
-          tools: Tool[]
-        }>
-      >('/tools/search', { params })
-    ),
+    apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>
     apiRequest(

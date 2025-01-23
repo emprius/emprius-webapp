@@ -168,13 +168,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           onChange={(newValue: any) => {
             setValue('category', newValue?.value, { shouldValidate: true })
           }}
-          placeholder='Select category'
-          chakraStyles={{
-            container: (provided) => ({
-              ...provided,
-              width: '100%',
-            }),
-          }}
+          placeholder={t('tools.selectCategory', { defaultValue: 'Select category' })}
         />
         <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
       </FormControl>
