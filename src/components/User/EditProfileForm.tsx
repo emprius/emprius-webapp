@@ -2,6 +2,7 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -84,7 +85,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
       await updateProfile.mutateAsync(updatedFields as EditProfileFormData)
       toast({
         title: t('common.success'),
-        description: t('user.profileUpdated'),
+        description: t('user.profile_updated'),
         status: 'success',
       })
       onSuccess?.()
@@ -100,9 +101,15 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={6} align='stretch'>
-        <Box display='flex' justifyContent='center' mb={4}>
-          <EditableAvatar avatarHash={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
-        </Box>
+        <Flex justifyContent='center' mb={4}>
+          <VStack spacing={4}>
+            <EditableAvatar avatarHash={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
+            <FormControl display='flex' flexDirection='column' alignItems='center' gap={3}>
+              <FormLabel mb='0'>{watch('active') ? t('user.activate') : t('user.deactivate')}</FormLabel>
+              <Switch size={'lg'} {...register('active')} />
+            </FormControl>
+          </VStack>
+        </Flex>
 
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>{t('common.name')}</FormLabel>
@@ -135,11 +142,11 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
             {...register('password', {
               pattern: {
                 value: AUTH_FORM.PASSWORD_REGEX,
-                message: t('auth.passwordRequirements'),
+                message: t('auth.password_requirements'),
               },
               minLength: {
                 value: AUTH_FORM.MIN_PASSWORD_LENGTH,
-                message: t('auth.passwordTooShort'),
+                message: t('auth.password_too_short'),
               },
             })}
           />
@@ -147,11 +154,11 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
         </FormControl>
 
         <FormControl isInvalid={!!errors.confirmPassword}>
-          <FormLabel>{t('auth.confirmPassword')}</FormLabel>
+          <FormLabel>{t('auth.confirm_password')}</FormLabel>
           <Input
             type='password'
             {...register('confirmPassword', {
-              validate: (value) => !password || value === password || t('auth.passwordsDoNotMatch'),
+              validate: (value) => !password || value === password || t('auth.passwords_do_not_match'),
             })}
           />
           <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
@@ -162,11 +169,6 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
           onChange={(location) => setValue('location', location)}
           error={errors.location?.message}
         />
-
-        <FormControl display='flex' alignItems='center'>
-          <FormLabel mb='0'>{t('user.activeProfile')}</FormLabel>
-          <Switch {...register('active')} />
-        </FormControl>
 
         <Stack direction='row' spacing={4} justify='flex-end'>
           <Button onClick={onSuccess} variant='ghost'>
@@ -188,6 +190,7 @@ interface EditableAvatarProps extends AvatarProps {
 const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, size = '2xl', onAvatarChange }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const toast = useToast()
+  const { t } = useTranslation()
   const [previewUrl, setPreviewUrl] = useState<string | undefined>()
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,7 +207,7 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
       onAvatarChange(file)
     } catch (error) {
       toast({
-        title: 'Error uploading image',
+        title: t('user.error_uploading_image'),
         status: 'error',
         duration: 3000,
       })

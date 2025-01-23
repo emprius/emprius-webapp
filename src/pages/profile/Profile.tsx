@@ -1,6 +1,7 @@
 import { Box, Button, Container, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '~components/Auth/AuthContext'
 import { EditProfileForm } from '~components/User/EditProfileForm'
 import { UserInfo } from '~components/User/UserInfo'
@@ -11,6 +12,7 @@ export const Profile = () => {
   const { isOpen, onToggle } = useDisclosure()
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <Container maxW='container.xl' py={8}>
@@ -31,7 +33,7 @@ export const Profile = () => {
         )}
       </Box>
       <Button mt={4} colorScheme='blue' onClick={() => navigate(ROUTES.TOOLS.LIST)}>
-        My Tools
+        {t('user.my_tools')}
       </Button>
     </Container>
   )

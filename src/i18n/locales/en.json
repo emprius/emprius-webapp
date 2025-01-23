@@ -176,9 +176,13 @@
   },
   "user": {
     "active": "Active",
-    "active_profile": "Active Profile",
+    "activate": "Activate profile",
+    "deactivate": "Deactivate profile",
+    "edit_profile": "Edit profile",
+    "error_uploading_image": "Error uploading image",
     "inactive": "Inactive",
     "member_since": "Member since",
+    "my_tools": "My Tools",
     "no_bookings": "No bookings found",
     "no_tools": "No tools added yet",
     "profile_updated": "Profile updated successfully"
