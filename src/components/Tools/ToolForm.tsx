@@ -95,7 +95,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('common.somethingWentWrong'),
+        description: t('common.something_went_wrong'),
         status: 'error',
       })
       throw error
@@ -118,7 +118,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           alignItems='center'
           justifyContent={{ base: 'start', sm: 'end' }}
         >
-          <FormLabel mb='0'>{t('tools.isAvailable')}</FormLabel>
+          <FormLabel mb='0'>{t('tools.is_available')}</FormLabel>
           <Switch {...register('isAvailable')} />
         </FormControl>
       </Stack>
@@ -168,7 +168,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           onChange={(newValue: any) => {
             setValue('category', newValue?.value, { shouldValidate: true })
           }}
-          placeholder={t('tools.selectCategory', { defaultValue: 'Select category' })}
+          placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
         />
         <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
       </FormControl>
@@ -250,7 +250,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       {existingImages.length > 0 && (
         <Box mb={6}>
           <Text mb={2} fontWeight='medium'>
-            {t('tools.existingImages')}
+            {t('tools.existing_images')}
           </Text>
           <SimpleGrid columns={[2, 3, 4]} spacing={4}>
             {existingImages.map((image, index) => (

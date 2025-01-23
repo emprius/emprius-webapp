@@ -37,11 +37,11 @@ const BookingDates = ({ booking, isLoading }: BookingDatesProps) => {
   return (
     <Stack spacing={1}>
       <Text fontSize='lg' fontWeight='medium' color='gray.700'>
-        {t('bookings.dateRange', { date, format: datef })}
+        {t('bookings.date_range', { date, format: datef })}
       </Text>
 
       <Text fontSize='md' fontWeight='medium' color='gray.600'>
-        {t('bookings.dateRangeTotal', { date, format: datef })}
+        {t('bookings.date_range_total', { date, format: datef })}
       </Text>
     </Stack>
   )
@@ -227,7 +227,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                       {!isRequest && (
                         <HStack>
                           <Text color='gray.600' fontSize='lg' fontWeight='bold'>
-                            {t('tools.costUnit', { cost: tool.cost })}
+                            {t('tools.cost_unit', { cost: tool.cost })}
                           </Text>
                           <ToolBadges tool={tool} />
                         </HStack>

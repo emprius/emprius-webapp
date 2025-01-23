@@ -159,7 +159,7 @@ const AcceptedBookingActions = ({ booking }: ActionsProps) => {
 
   return (
     <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={handleReturn}>
-      {t('bookings.markAsReturned')}
+      {t('bookings.mark_as_returned')}
     </Button>
   )
 }
@@ -171,7 +171,7 @@ const ReturnedBookingActions = ({ booking }: ActionsProps) => {
   return (
     <>
       <Button leftIcon={<FiStar />} variant='outline' onClick={() => onOpen()}>
-        {t('rating.rateUser')}
+        {t('rating.rate_user')}
       </Button>
       <RatingModal
         isOpen={isOpen}

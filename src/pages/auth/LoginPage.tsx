@@ -43,7 +43,7 @@ export const LoginPage = () => {
       .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         toast({
-          title: t('auth.loginError'),
+          title: t('auth.login_error'),
           status: 'error',
           duration: 3000,
         })
@@ -56,7 +56,7 @@ export const LoginPage = () => {
       <Stack align='center'>
         <Heading size='xl'>{t('auth.login')}</Heading>
         <Text color='gray.600'>
-          {t('auth.noAccount')}{' '}
+          {t('auth.no_account')}{' '}
           <Link as={RouterLink} to={ROUTES.AUTH.REGISTER} color='primary.500' fontWeight='medium'>
             {t('auth.register')}
           </Link>

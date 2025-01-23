@@ -82,7 +82,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
       console.error('Failed to create booking:', error)
       toast({
         title: t('bookings.error'),
-        description: t('bookings.tryAgain'),
+        description: t('bookings.try_again'),
         status: 'error',
         duration: 5000,
       })
@@ -119,10 +119,10 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               {...register('contact', {
                 maxLength: {
                   value: 100,
-                  message: t('validation.maxLength', { max: 100 }),
+                  message: t('validation.max_length', { max: 100 }),
                 },
               })}
-              placeholder={t('bookings.contactPlaceholder')}
+              placeholder={t('bookings.contact_placeholder')}
             />
             {errors.contact && <FormErrorMessage>{errors.contact.message}</FormErrorMessage>}
           </FormControl>
@@ -133,25 +133,25 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               {...register('comments', {
                 maxLength: {
                   value: 500,
-                  message: t('validation.maxLength', { max: 500 }),
+                  message: t('validation.max_length', { max: 500 }),
                 },
               })}
-              placeholder={t('bookings.commentsPlaceholder')}
+              placeholder={t('bookings.comments_placeholder')}
               rows={4}
             />
             {errors.comments && <FormErrorMessage>{errors.comments.message}</FormErrorMessage>}
           </FormControl>
           <Text fontSize='sm' color='gray.600'>
-            {t('tools.pricePerDay')}: {tool.cost}€
+            {t('tools.price_per_day')}: {tool.cost}€
           </Text>
           {tool.mayBeFree && (
             <Text fontSize='sm' color='blue.500'>
-              {t('tools.mayBeFreeNote')}
+              {t('tools.may_be_free_note')}
             </Text>
           )}
           {tool.askWithFee && (
             <Text fontSize='sm' color='purple.500'>
-              {t('tools.askWithFeeNote')}
+              {t('tools.ask_with_fee_note')}
             </Text>
           )}
         </Stack>

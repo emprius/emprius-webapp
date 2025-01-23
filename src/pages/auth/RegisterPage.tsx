@@ -55,7 +55,7 @@ export const RegisterPage = () => {
       .catch((error) => {
         console.error('Registration failed:', error)
         toast({
-          title: t('auth.registerError'),
+          title: t('auth.register_error'),
           description: t('auth.tryAgain'),
           status: 'error',
           duration: 5000,
@@ -69,7 +69,7 @@ export const RegisterPage = () => {
       <Stack align='center'>
         <Heading size='xl'>{t('auth.register')}</Heading>
         <Text color='gray.600'>
-          {t('auth.haveAccount')}{' '}
+          {t('auth.have_account')}{' '}
           <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
             {t('auth.login')}
           </Link>
@@ -130,12 +130,12 @@ export const RegisterPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors.confirmPassword}>
-            <FormLabel htmlFor='confirmPassword'>{t('auth.confirmPassword')}</FormLabel>
+            <FormLabel htmlFor='confirmPassword'>{t('auth.confirm_password')}</FormLabel>
             <PasswordInput
               id='confirmPassword'
               {...registerField('confirmPassword', {
                 required: t('validation.required'),
-                validate: (value) => value === password || t('validation.passwordMatch'),
+                validate: (value) => value === password || t('validation.password_match'),
               })}
             />
             <FormErrorMessage>{errors.confirmPassword && errors.confirmPassword.message}</FormErrorMessage>
