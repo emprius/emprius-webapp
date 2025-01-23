@@ -77,7 +77,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
         duration: 3000,
       })
 
-      navigate(ROUTES.PROFILE)
+      navigate(ROUTES.PROFILE.VIEW)
     } catch (error) {
       console.error('Failed to create booking:', error)
       toast({

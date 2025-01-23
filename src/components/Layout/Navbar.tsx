@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -92,46 +92,52 @@ export const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Menu>
-                    <MenuButton display={{ base: 'none', md: 'block' }}>
+                  <MenuButton display={{ base: 'none', md: 'block' }}>
+                    <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE.VIEW)}>
+                      {t('nav.profile')}
+                    </MenuItem>
+                    <MenuItem icon={<FiSettings />} onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
+                      {t('nav.settings')}
+                    </MenuItem>
+                    <MenuItem icon={<FiLogOut />} onClick={logout}>
+                      {t('nav.logout')}
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+
+                <Box display={{ base: 'block', md: 'none' }}>
+                  <Menu>
+                    <MenuButton>
                       <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
+                      <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE.VIEW)}>
                         {t('nav.profile')}
+                      </MenuItem>
+                      <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
+                        {t('nav.myTools')}
+                      </MenuItem>
+                      <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
+                        {t('nav.myBookings')}
+                      </MenuItem>
+                      <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
+                        {t('nav.ratings')}
+                      </MenuItem>
+                      <MenuItem icon={<FiSearch />} onClick={() => navigate(ROUTES.SEARCH)}>
+                        {t('nav.findTools')}
+                      </MenuItem>
+                      <MenuItem icon={<FiSettings />} onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
+                        {t('nav.settings')}
                       </MenuItem>
                       <MenuItem icon={<FiLogOut />} onClick={logout}>
                         {t('nav.logout')}
                       </MenuItem>
                     </MenuList>
                   </Menu>
-
-                  <Box display={{ base: 'block', md: 'none' }}>
-                    <Menu>
-                      <MenuButton>
-                        <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE)}>
-                          {t('nav.profile')}
-                        </MenuItem>
-                        <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
-                          {t('nav.myTools')}
-                        </MenuItem>
-                        <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
-                          {t('nav.myBookings')}
-                        </MenuItem>
-                        <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
-                          {t('nav.ratings')}
-                        </MenuItem>
-                        <MenuItem icon={<FiSearch />} onClick={() => navigate(ROUTES.SEARCH)}>
-                          {t('nav.findTools')}
-                        </MenuItem>
-                        <MenuItem icon={<FiLogOut />} onClick={logout}>
-                          {t('nav.logout')}
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </Box>
+                </Box>
               </>
             ) : (
               <Stack direction='row' spacing={2}>

@@ -3,18 +3,18 @@ import { Badge, Box, Button, Heading, HStack, Stack, Text, useColorModeValue } f
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiMail, FiStar } from 'react-icons/fi'
+import { FiMail } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '../Images/Avatar'
 import { MapMarker } from '~components/Layout/Map'
+import { DisplayRating } from '~components/Ratings/DisplayRating'
+import { ROUTES } from '~src/router/router'
+import { useNavigate } from 'react-router-dom'
 
-interface UserInfoProps {
-  onEdit?: () => void
-}
-
-export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
+export const UserInfo = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -37,12 +37,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
                   <FiMail />
                   <Text color='gray.500'>{user.email}</Text>
                 </Stack>
-                <Stack direction='row' align='center' spacing={2}>
-                  <FiStar />
-                  <Text>{user.rating.toFixed(1)}</Text>
-                  <Text color='gray.600'>({t('rating.count', { count: user.ratingCount })})</Text>
-                </Stack>
-                {user.bio && <Text color='gray.600'>{user.bio}</Text>}
+                <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
                 <Text fontSize='sm' color='gray.500'>
                   {t('user.member_since', {
                     date: new Date(user.createdAt).toLocaleDateString(),
@@ -50,7 +45,13 @@ export const UserInfo: React.FC<UserInfoProps> = ({ onEdit }) => {
                 </Text>
               </Stack>
             </Stack>
-            <Button aria-label={t('common.edit')} rightIcon={<EditIcon />} size='lg' variant='ghost' onClick={onEdit}>
+            <Button
+              aria-label={t('common.edit')}
+              rightIcon={<EditIcon />}
+              size='md'
+              variant='ghost'
+              onClick={() => navigate(ROUTES.PROFILE.EDIT)}
+            >
               {t('user.edit_profile')}
             </Button>
           </HStack>

@@ -6,6 +6,7 @@ import { AuthLayout } from '~src/pages/AuthLayout'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
 import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
 import { Profile } from '~src/pages/profile/Profile'
+import { EditProfile } from '~src/pages/profile/EditProfile'
 import { UserRatingsPage } from '~src/pages/ratings/UserRatingsPage'
 import { SearchPage } from '~src/pages/search/SearchPage'
 import { ToolAddPage } from '~src/pages/tools/ToolAddPage'
@@ -24,7 +25,10 @@ export const ROUTES = {
     EDIT: `/tools/:id/edit`,
     NEW: '/tools/new',
   },
-  PROFILE: '/profile',
+  PROFILE: {
+    VIEW: '/profile',
+    EDIT: '/profile/edit',
+  },
   BOOKINGS: '/bookings',
   RATINGS: '/ratings',
   AUTH: {
@@ -50,8 +54,12 @@ const router = createBrowserRouter([
             element: <SearchPage />,
           },
           {
-            path: ROUTES.PROFILE,
+            path: ROUTES.PROFILE.VIEW,
             element: <Profile />,
+          },
+          {
+            path: ROUTES.PROFILE.EDIT,
+            element: <EditProfile />,
           },
           {
             path: ROUTES.TOOLS.LIST,
