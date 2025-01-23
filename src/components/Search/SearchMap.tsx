@@ -14,7 +14,7 @@ import { IoMdHome } from 'react-icons/io'
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
   html: ReactDOMServer.renderToString(
-    <IoMdHome style={{ color: '#0967D2', fontSize: '52px', filter: 'drop-shadow(3px 3px 4px #4444dd)' }} />
+    <IoMdHome style={{ color: '#0967D2', fontSize: '52px', filter: 'drop-shadow(3px 3px 4px #0967D2)' }} />
   ),
   iconSize: [35, 35],
   iconAnchor: [17, 35],
