@@ -19,9 +19,6 @@ export const Footer = () => {
             <Link as={RouterLink} to={ROUTES.HOME} color={textColor} _hover={{ color: 'primary.500' }}>
               {t('nav.home')}
             </Link>
-            <Link as={RouterLink} to={ROUTES.SEARCH} color={textColor} _hover={{ color: 'primary.500' }}>
-              {t('nav.findTools')}
-            </Link>
             <Link as={RouterLink} to={ROUTES.ABOUT} color={textColor} _hover={{ color: 'primary.500' }}>
               {t('nav.about')}
             </Link>
