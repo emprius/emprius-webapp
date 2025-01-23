@@ -16,7 +16,7 @@ export const SearchBar = () => {
       top={4}
       left='50%'
       transform='translateX(-50%)'
-      zIndex={1000}
+      zIndex={900}
       width='90%'
       maxWidth='600px'
       bg='white'
