@@ -48,11 +48,11 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
                 {t('tools.cost_unit', { cost: tool.cost })}
               </Text>
             </Stack>
+            <ToolBadges tool={tool} />
 
             <Text color='gray.600' noOfLines={2} title={tool.description}>
               {tool.description}
             </Text>
-            <ToolBadges tool={tool} />
           </Stack>
         </Stack>
       </Link>
