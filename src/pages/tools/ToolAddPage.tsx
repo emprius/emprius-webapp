@@ -65,7 +65,6 @@ export const ToolAddPage = () => {
       images: imageHashes,
       transportOptions: data.transportOptions.map(Number),
       category: data.category,
-      location: data.location,
       estimatedValue: Number(data.estimatedValue),
       height: Number(data.height),
       weight: Number(data.weight),

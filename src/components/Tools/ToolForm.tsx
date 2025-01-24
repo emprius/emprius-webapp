@@ -28,7 +28,6 @@ import { useNavigate } from 'react-router-dom'
 import { useInfoContext } from '~components/Auth/InfoContext'
 import { Image, ServerImage } from '~components/Images/ServerImage'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
-import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { Tool } from './types'
 import { EmpriusLocation } from '~components/Layout/types'
@@ -239,12 +238,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           </NumberInputStepper>
         </NumberInput>
         <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isRequired>
-        <FormLabel>Location</FormLabel>
-        <LocationPicker onChange={(location) => setValue('location', location)} value={watch('location')} />
-        <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
       </FormControl>
 
       {existingImages.length > 0 && (
