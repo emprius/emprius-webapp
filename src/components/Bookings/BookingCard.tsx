@@ -7,7 +7,6 @@ import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { useTool } from '~components/Tools/toolsQueries'
 import { ActionButtons } from '~components/Bookings/BookingActions'
 import { useUserProfile } from '~components/User/userQueries'
-import React from 'react'
 import { DisplayRating } from '~components/Ratings/DisplayRating'
 import { Avatar } from '~components/Images/Avatar'
 import { UserCard } from '~components/User/UserCard'
@@ -15,7 +14,6 @@ import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { ROUTES } from '~src/router/router'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
-import { format } from 'date-fns'
 
 interface BookingDatesProps {
   booking: Booking
@@ -27,15 +25,15 @@ const BookingDates = ({ booking }: BookingDatesProps) => {
   const begin = new Date(booking.startDate * 1000)
   const end = new Date(booking.endDate * 1000)
   const date = { begin, end }
-  const datef = 'PPP'
+  const datef = t('bookings.datef')
 
   return (
     <Stack spacing={1}>
       <Flex align={'center'} fontSize='md' color='gray.700'>
         <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-        {format(begin, datef)}
+        {t('bookings.date_formatted', { date: date.begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
-        {format(end, datef)}
+        {t('bookings.date_formatted', { date: date.end, format: datef })}
       </Flex>
 
       <Text fontSize='md' fontWeight='medium' color='gray.600'>
@@ -51,19 +49,31 @@ interface StatusBadgeProps {
 
 const StatusBadge = ({ status }: StatusBadgeProps) => {
   const { t } = useTranslation()
-  let colorScheme = 'yellow'
+  let colorScheme = ''
+  let text = ''
   switch (status) {
     case BookingStatus.RETURNED:
       colorScheme = 'green'
+      text = t(`bookings.status.RETURNED`)
       break
     case BookingStatus.REJECTED:
+      text = t(`bookings.status.REJECTED`)
+      colorScheme = 'red'
+      break
     case BookingStatus.CANCELLED:
+      text = t(`bookings.status.CANCELLED`)
       colorScheme = 'red'
       break
     case BookingStatus.ACCEPTED:
+      text = t(`bookings.status.ACCEPTED`)
       colorScheme = 'blue'
       break
+    case BookingStatus.PENDING:
+      text = t(`bookings.status.PENDING`)
+      colorScheme = 'yellow'
+      break
     default:
+      text = BookingStatus.PENDING
       colorScheme = 'yellow'
   }
 
@@ -78,7 +88,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
       textTransform='uppercase'
       letterSpacing='wide'
     >
-      {t(`bookings.status.${status}`)}
+      {text}
     </Badge>
   )
 }
@@ -153,13 +163,13 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
 
   let data = {
     icon: ImBoxAdd,
-    title: 'You are requesting a Tool',
+    title: t('bookings.tool_petition_title', { defaultValue: 'You are requesting a Tool' }),
   }
 
   if (isRequest) {
     data = {
       icon: ImBoxRemove,
-      title: 'Your tool is needed',
+      title: t('bookings.tool_request_title', { defaultValue: 'Your tool is needed' }),
     }
   }
 

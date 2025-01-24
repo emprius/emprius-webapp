@@ -129,15 +129,15 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl>
-        <Checkbox {...register('mayBeFree')}>May Be Free</Checkbox>
+        <Checkbox {...register('mayBeFree')}>{t('tools.may_be_free', { defaultValue: 'May Be Free' })}</Checkbox>
       </FormControl>
 
       <FormControl>
-        <Checkbox {...register('askWithFee')}>Ask With Fee</Checkbox>
+        <Checkbox {...register('askWithFee')}>{t('tools.ask_with_fee', { defaultValue: 'Ask With Fee' })}</Checkbox>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.cost}>
-        <FormLabel>Cost per day</FormLabel>
+        <FormLabel>{t('tools.cost_per_day', { defaultValue: 'Cost per day' })}</FormLabel>
         <NumberInput min={0}>
           <NumberInputField {...register('cost', { required: true, min: 0, valueAsNumber: true })} />
           <NumberInputStepper>
@@ -173,7 +173,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.transportOptions}>
-        <FormLabel>Transport Options</FormLabel>
+        <FormLabel>{t('tools.transport_options', { defaultValue: 'Transport Options' })}</FormLabel>
         <Select
           isMulti
           name='transportOptions'
@@ -192,7 +192,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
               { shouldValidate: true }
             )
           }}
-          placeholder='Select transport options'
+          placeholder={t('tools.select_transport', { defaultValue: 'Select transport options' })}
           closeMenuOnSelect={false}
           chakraStyles={{
             container: (provided) => ({
@@ -205,7 +205,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.estimatedValue}>
-        <FormLabel>Estimated Value</FormLabel>
+        <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
         <NumberInput min={0}>
           <NumberInputField {...register('estimatedValue', { required: true, valueAsNumber: true })} />
           <NumberInputStepper>
@@ -217,7 +217,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.height}>
-        <FormLabel>Height (cm)</FormLabel>
+        <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
         <NumberInput min={0}>
           <NumberInputField {...register('height', { required: true, valueAsNumber: true })} />
           <NumberInputStepper>
@@ -229,7 +229,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors.weight}>
-        <FormLabel>Weight (kg)</FormLabel>
+        <FormLabel>{t('tools.weight', { defaultValue: 'Weight (kg)' })}</FormLabel>
         <NumberInput min={0}>
           <NumberInputField {...register('weight', { required: true, valueAsNumber: true })} />
           <NumberInputStepper>

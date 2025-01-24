@@ -11,7 +11,7 @@ export const UserBookingsPage = () => {
     <Container maxW='container.xl' py={{ base: 2, md: 8 }}>
       <Box bg={bgColor} borderRadius='lg' p={{ base: 3, md: 6 }} boxShadow='sm'>
         <Heading size='md' mb={4}>
-          {t('bookings.myPetitions')}
+          {t('bookings.my_petitions')}
         </Heading>
         <UserBookings />
       </Box>

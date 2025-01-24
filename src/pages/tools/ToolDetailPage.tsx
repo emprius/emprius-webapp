@@ -112,7 +112,7 @@ export const ToolDetailPage = () => {
                   {tool.transportOptions.length > 0 && (
                     <Stack direction='row' align='center'>
                       <HiOutlineTruck size={20} />
-                      <Text>{t('tools.transportOptions')}:</Text>
+                      <Text>{t('tools.transport_options')}:</Text>
                       {
                         // todo(konv1): check with https://github.com/emprius/emprius-app-backend/issues/10#issuecomment-2602741976
                         tool.transportOptions

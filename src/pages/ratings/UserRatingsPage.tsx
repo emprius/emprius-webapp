@@ -11,7 +11,7 @@ export const UserRatingsPage = () => {
     <Container maxW='container.xl' py={8}>
       <Box bg={bgColor} borderRadius='lg' p={{ base: 3, md: 6 }} boxShadow='sm'>
         <Heading size='md' mb={4}>
-          {t('rating.pendingRatings')}
+          {t('rating.pending_ratings')}
         </Heading>
         <RatingsList />
       </Box>

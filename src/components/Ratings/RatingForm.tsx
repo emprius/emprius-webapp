@@ -19,7 +19,6 @@ import { Rating } from '~components/Ratings/types'
 import { useTool } from '~components/Tools/toolsQueries'
 import { UserCard } from '~components/User/UserCard'
 import { ServerImage } from '~components/Images/ServerImage'
-import { format } from 'date-fns'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 
 interface RatingFormProps {
@@ -80,6 +79,8 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
     }
   }
 
+  const datef = t('rating.datef')
+
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
       {tool && (
@@ -109,9 +110,9 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
               wordBreak='break-word'
             >
               <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-              {format(rating.startDate * 1000, 'PP')}
+              {t('rating.date_formatted', { date: rating.startDate * 1000, format: datef })}
               <Icon as={FaArrowRight} mx={2} />
-              {format(rating.endDate * 1000, 'PP')}
+              {t('rating.date_formatted', { date: rating.endDate * 1000, format: datef })}
             </Badge>
             <UserCard
               direction={'row'}
@@ -130,7 +131,7 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
         <VStack spacing={4} align='stretch'>
           <FormControl>
             <FormLabel fontSize='sm' fontWeight='medium'>
-              {t('rating.rateUser')}
+              {t('rating.rate_user')}
             </FormLabel>
             <RatingStars
               initialRating={userRating}
@@ -146,7 +147,7 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
             <Textarea
               value={comment}
               onChange={(e) => setValue('comment', e.target.value)}
-              placeholder={t('rating.commentPlaceholder')}
+              placeholder={t('rating.comment_placeholder')}
               resize='vertical'
               minHeight='100px'
             />

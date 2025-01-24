@@ -12,8 +12,8 @@ export const UserBookings = () => {
   return (
     <Tabs isLazy>
       <TabList>
-        <Tab>{t('bookings.myPetitions')}</Tab>
-        <Tab>{t('bookings.toolRequests')}</Tab>
+        <Tab>{t('bookings.my_petitions')}</Tab>
+        <Tab>{t('bookings.tool_requests')}</Tab>
       </TabList>
 
       <TabPanels>

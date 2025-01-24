@@ -33,6 +33,8 @@
     "date_conflict": "Selected dates overlap with existing bookings",
     "date_range_total": "(Total of {{ date, duration }})",
     "dates": "Dates",
+    "datef": "PPP",
+    "date_formatted": "{{ date, format }}",
     "deny": "Deny",
     "deny_error": "Failed to deny booking",
     "deny_success": "Booking denied successfully",
@@ -43,6 +45,13 @@
     "return_error": "Failed to mark tool as returned",
     "return_success": "Tool marked as returned successfully",
     "start_date": "Start Date",
+    "status": {
+      "PENDING": "PENDING",
+      "ACCEPTED": "ACCEPTED",
+      "CANCELLED": "CANCELLED",
+      "REJECTED": "REJECTED",
+      "RETURNED": "RETURNED"
+    },
     "success": "Booking successful",
     "tool_requests": "Tool Requests",
     "try_again": "Please try again later"
@@ -111,10 +120,12 @@
     "settings": "Settings"
   },
   "rating": {
+    "date_formatted": "{{ date, format }}",
     "comment": "Comments",
     "comment_placeholder": "Share your experience with this tool and its owner...",
     "count_one": "{{count}} rating",
     "count_other": "{{count}} ratings",
+    "datef": "PP",
     "error": "Error loading ratings",
     "no_ratings": "No pending ratings",
     "pending_ratings": "Pending Ratings",
@@ -138,6 +149,14 @@
   },
   "tools": {
     "add_tool": "Add Tool",
+    "ask_with_fee": "Ask With Fee",
+    "cost_per_day": "Cost per day",
+    "estimated_value": "Estimated Value",
+    "height": "Height (cm)",
+    "may_be_free": "May Be Free",
+    "select_transport": "Select transport options",
+    "transport_options": "Transport Options",
+    "weight": "Weight (kg)",
     "ask_with_fee_note": "You can ask for a fee when lending this tool",
     "available": "Available",
     "availability": "Availability",
