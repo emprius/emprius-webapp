@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/router'
-import { ToolImage } from './shared'
+import { ToolImage } from './shared/ToolImage'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { useTranslation } from 'react-i18next'
 
@@ -41,17 +41,11 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
         <Stack p={4} spacing={3}>
           <Stack spacing={1}>
             <Stack direction='row' align='center' justify='space-between'>
-              <Link
-                as={RouterLink}
-                to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
-                fontWeight='semibold'
-                fontSize='xl'
-                _hover={{ color: 'primary.500', textDecoration: 'none' }}
-              >
+              <Text fontWeight='semibold' fontSize='xl' _hover={{ color: 'primary.500', textDecoration: 'none' }}>
                 {tool.title}
-              </Link>
+              </Text>
               <Text color='gray.600' fontSize='lg' fontWeight='bold'>
-                {t('tools.costUnit', { cost: tool.cost })}
+                {t('tools.cost_unit', { cost: tool.cost })}
               </Text>
             </Stack>
 

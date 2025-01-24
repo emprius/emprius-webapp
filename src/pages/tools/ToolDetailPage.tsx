@@ -68,10 +68,10 @@ export const ToolDetailPage = () => {
                   <Stack spacing={1}>
                     <Stack direction='row' align='center' justify='space-between'>
                       <Text color='gray.600' fontSize='2xl' fontWeight='bold'>
-                        {t('tools.costUnit', { cost: tool.cost })}
+                        {t('tools.cost_unit', { cost: tool.cost })}
                       </Text>
                       <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
-                        {t(`tools.status.${tool.isAvailable ? 'available' : 'unavailable'}`)}
+                        {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                       </Badge>
                     </Stack>
                   </Stack>

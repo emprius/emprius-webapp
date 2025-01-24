@@ -26,16 +26,12 @@ import { useTranslation } from 'react-i18next'
 import { useFormContext } from 'react-hook-form'
 import { useInfoContext } from '~components/Auth/InfoContext'
 import { Select } from 'chakra-react-select'
+import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~src/pages/search/SearchPage'
 
 interface FilterMenuProps {
   isOpen: boolean
   onClose: () => void
 }
-
-const MAX_COST_MAX = 1000
-const MAX_COST_DEFAULT = MAX_COST_MAX
-const DISTANCE_MAX = 250
-const DISTANCE_DEFAULT = 50
 
 export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
   const { categories, transports } = useInfoContext()
@@ -82,7 +78,7 @@ export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
         <DrawerBody>
           <Stack spacing={6} pb={6}>
             <FormControl display='flex' alignItems='center'>
-              <FormLabel mb={0}>{t('search.mayBeFree')}</FormLabel>
+              <FormLabel mb={0}>{t('search.may_be_free')}</FormLabel>
               <Switch isChecked={watch('mayBeFree')} onChange={handleMayBeFreeChange} />
             </FormControl>
 
@@ -121,7 +117,7 @@ export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>{t('search.maxCost')} (€)</FormLabel>
+              <FormLabel>{t('search.max_cost')} (€)</FormLabel>
               <HStack spacing={4}>
                 <Slider
                   flex='1'

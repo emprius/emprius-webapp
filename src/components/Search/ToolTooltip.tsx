@@ -1,36 +1,37 @@
-import { Box, Button, Stack, Text } from '@chakra-ui/react'
+import { Button, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ToolImage, ToolPriceRating } from '~components/Tools/shared'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
 import type { Tool } from '~components/Tools/types'
+import { ROUTES } from '~src/router/router'
+import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { Link } from 'react-router-dom'
 
 interface ToolTooltipProps {
   tool: Tool
-  onSelect: (toolId: string) => void
 }
 
-export const ToolTooltip = ({ tool, onSelect }: ToolTooltipProps) => {
+export const ToolTooltip = ({ tool }: ToolTooltipProps) => {
   const { t } = useTranslation()
 
   return (
-    <Box width='200px'>
+    <Stack spacing={2} width='200px' py={4}>
       <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} height='120px' />
-
-      <Stack p={2} spacing={2}>
-        <Text fontWeight='semibold' noOfLines={1}>
+      <Stack mt={2} direction='row' align='center' justify='space-between'>
+        <Text fontWeight='semibold' fontSize='lg' _hover={{ color: 'primary.500', textDecoration: 'none' }}>
           {tool.title}
         </Text>
-
-        <ToolPriceRating cost={tool.cost} rating={tool.rating} />
-
-        <Text fontSize='sm' color='gray.600' noOfLines={2}>
-          {tool.description}
+        <Text color='gray.600' fontSize='md' fontWeight='bold'>
+          {t('tools.cost_unit', { cost: tool.cost })}
         </Text>
-
-        <Button size='sm' colorScheme='primary' onClick={() => onSelect(tool.id.toString())}>
-          {t('common.viewDetails')}
-        </Button>
       </Stack>
-    </Box>
+      <ToolBadges tool={tool} />
+      <Text fontSize='sm' color='gray.600' noOfLines={2}>
+        {tool.description}
+      </Text>
+      <Button size='sm' as={Link} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+        {t('common.view_details')}
+      </Button>
+    </Stack>
   )
 }

@@ -15,16 +15,10 @@ export const LanguageSwitcher = () => {
     localStorage.setItem('language', languageCode)
   }
 
-  const getCurrentLanguageName = () => {
-    return languages[i18n.language] || 'English'
-    // const currentLang = Object.keys(languages).find((lang) => lang === i18n.language)
-    // return currentLang ? currentLang.name : 'English'
-  }
-
   return (
     <Menu>
       <MenuButton as={Button} variant='ghost' leftIcon={<FiGlobe />} size='sm'>
-        {getCurrentLanguageName()}
+        {languages[i18n.language] || 'English'}
       </MenuButton>
       <MenuList bg={menuBg}>
         {Object.entries(languages).map(([code, name]) => (

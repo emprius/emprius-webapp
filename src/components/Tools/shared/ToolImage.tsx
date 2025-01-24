@@ -13,6 +13,10 @@ interface ToolImageProps {
 export const ToolImage = ({ imageHash, title, isAvailable, height = '200px' }: ToolImageProps) => {
   const { t } = useTranslation()
 
+  let badge = t(`tools.unavailable`)
+  if (isAvailable) {
+    badge = t(`tools.available`)
+  }
   return (
     <Box position='relative'>
       <ServerImage imageId={imageHash} alt={title} height={height} width='100%' objectFit='cover' />
@@ -25,7 +29,7 @@ export const ToolImage = ({ imageHash, title, isAvailable, height = '200px' }: T
         py={1}
         borderRadius='full'
       >
-        {t(`tools.status.${isAvailable ? 'available' : 'unavailable'}`)}
+        {badge}
       </Badge>
     </Box>
   )

@@ -23,11 +23,10 @@ const HomeIcon = L.divIcon({
 
 export interface SearchMapProps {
   tools: Tool[]
-  onToolSelect: (toolId: string) => void
   center: EmpriusLocation
 }
 
-export const SearchMap = ({ tools, onToolSelect, center: { latitude, longitude } }: SearchMapProps) => {
+export const SearchMap = ({ tools, center: { latitude, longitude } }: SearchMapProps) => {
   const latlng = new LatLng(latitude / 1000000, longitude / 1000000)
   const { t } = useTranslation()
 
@@ -62,7 +61,7 @@ export const SearchMap = ({ tools, onToolSelect, center: { latitude, longitude }
             tool.location && (
               <Marker key={tool.id} position={[tool.location.latitude / 1e6, tool.location.longitude / 1e6]}>
                 <Popup>
-                  <ToolTooltip tool={tool} onSelect={onToolSelect} />
+                  <ToolTooltip tool={tool} />
                 </Popup>
               </Marker>
             )

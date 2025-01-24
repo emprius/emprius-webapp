@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { Booking, BookingStatus } from './bookingsQueries'
-import { ToolImage } from '~components/Tools/shared'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { useTool } from '~components/Tools/toolsQueries'
 import { ActionButtons } from '~components/Bookings/BookingActions'
 import { useUserProfile } from '~components/User/userQueries'
@@ -23,10 +23,6 @@ interface BookingDatesProps {
 
 const BookingDates = ({ booking }: BookingDatesProps) => {
   const { t } = useTranslation()
-  //
-  // if (isLoading) {
-  //   return <Skeleton height='24px' width='300px' />
-  // }
 
   const begin = new Date(booking.startDate * 1000)
   const end = new Date(booking.endDate * 1000)

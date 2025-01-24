@@ -4,6 +4,15 @@
   z-index: 1;
 }
 
+/*Fix to show the proper color on innter tooltip links and do not break chakra buttons*/
+.leaflet-container a.chakra-button {
+  color: white;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
+}
+
 .map-container {
   height: 300px;
   width: 100%;

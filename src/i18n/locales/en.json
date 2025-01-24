@@ -139,6 +139,7 @@
   "tools": {
     "add_tool": "Add Tool",
     "ask_with_fee_note": "You can ask for a fee when lending this tool",
+    "available": "Available",
     "availability": "Availability",
     "availability_confirmation_title": "Update Tool Availability",
     "availability_updated": "Tool availability updated successfully",
@@ -173,7 +174,8 @@
     "transport_options": "Transport Options",
     "update_failed": "Failed to update tool",
     "update_error": "Error updating tool",
-    "update_success": "Tool updated successfully"
+    "update_success": "Tool updated successfully",
+    "unavailable": "Unavailable"
   },
   "user": {
     "active": "Active",
