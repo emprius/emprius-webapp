@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { useUploadImage } from '~components/Images/imagesQueries'
 import { ToolForm, ToolFormData } from '~components/Tools/ToolForm'
 import { useCreateTool } from '~components/Tools/toolsQueries'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export const ToolAddPage = () => {
   const { t } = useTranslation()
+  const { user } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -84,6 +86,7 @@ export const ToolAddPage = () => {
           isLoading={isLoading}
           isError={isError}
           error={error}
+          initialData={{ location: user.location }}
         />
       </Stack>
     </Container>
