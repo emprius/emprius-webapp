@@ -93,7 +93,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('common.somethingWentWrong'),
+        description: t('common.something_went_wrong'),
         status: 'error',
       })
     }
@@ -129,7 +129,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, o
               required: t('common.required'),
               pattern: {
                 value: AUTH_FORM.EMAIL_REGEX,
-                message: t('auth.invalidEmail'),
+                message: t('auth.invalid_email'),
               },
             })}
           />

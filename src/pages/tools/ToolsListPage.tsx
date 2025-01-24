@@ -21,7 +21,7 @@ export const ToolsListPage = () => {
   const tools = toolsResponse?.tools || []
 
   return (
-    <Container maxW='container.xl' py={8} position="relative">
+    <Container maxW='container.xl' py={8} position='relative'>
       <Button
         position='fixed'
         top='6rem'
@@ -36,7 +36,7 @@ export const ToolsListPage = () => {
         leftIcon={<AddIcon />}
         zIndex={2}
       >
-        {t('add tool')}
+        {t('tools.add_tool')}
       </Button>
 
       <Box flex={1} mt={20}>
@@ -46,7 +46,6 @@ export const ToolsListPage = () => {
           ))}
         </SimpleGrid>
       </Box>
-
     </Container>
   )
 }

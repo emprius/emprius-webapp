@@ -30,7 +30,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
   } = useUpdateTool({
     onSuccess: () => {
       toast({
-        title: t('tools.updateSuccesss'),
+        title: t('tools.update_success'),
         status: 'success',
         duration: 3000,
       })
@@ -39,7 +39,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
     onError: (error) => {
       console.error('Failed to update tool:', error)
       toast({
-        title: t('tools.updateError'),
+        title: t('tools.update_error'),
         status: 'error',
         duration: 5000,
       })
@@ -48,7 +48,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
 
   // Only allow editing if the current user is the tool owner
   if (user?.id !== initial.userId) {
-    return <Text color='red.500'>{t('tools.notOwner')}</Text>
+    return <Text color='red.500'>{t('tools.not_owner')}</Text>
   }
 
   const handleDeleteExistingImage = (index: number) => {

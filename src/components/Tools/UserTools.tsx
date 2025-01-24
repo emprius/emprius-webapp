@@ -19,7 +19,7 @@ export const UserTools = () => {
   if (!tools?.tools?.length) {
     return (
       <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
-        <Text color='gray.600'>{t('user.noTools')}</Text>
+        <Text color='gray.600'>{t('user.no_tools')}</Text>
       </Box>
     )
   }

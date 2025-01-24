@@ -56,7 +56,7 @@ export const RegisterPage = () => {
         console.error('Registration failed:', error)
         toast({
           title: t('auth.register_error'),
-          description: t('auth.tryAgain'),
+          description: t('auth.try_again'),
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -86,13 +86,8 @@ export const RegisterPage = () => {
                 required: t('validation.required'),
                 minLength: {
                   value: 2,
-                  message: t('validation.nameLength'),
+                  message: t('validation.name_length'),
                 },
-                // todo(konv1): pattern?
-                // pattern: {
-                //   value: /^[a-zA-Z\s]*$/,
-                //   message: t('validation.namePattern'),
-                // },
               })}
             />
             <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
@@ -146,7 +141,7 @@ export const RegisterPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors.invitationToken}>
-            <FormLabel htmlFor='invitationToken'>{t('auth.invitationToken')}</FormLabel>
+            <FormLabel htmlFor='invitationToken'>{t('auth.invitation_token')}</FormLabel>
             <Input
               id='invitationToken'
               {...registerField('invitationToken', {

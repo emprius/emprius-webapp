@@ -163,7 +163,7 @@ export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
                   value: transport.id,
                   label: transport.name,
                 }))}
-                placeholder={t('tools.selectTransport', { defaultValue: 'Select transport' })}
+                placeholder={t('tools.select_transport', { defaultValue: 'Select transport' })}
               />
             </FormControl>
             <FormControl>
@@ -179,7 +179,7 @@ export const FilterMenu = ({ isOpen, onClose }: FilterMenuProps) => {
                   value: category.id,
                   label: category.name,
                 }))}
-                placeholder={t('tools.selectCategory', { defaultValue: 'Select category' })}
+                placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
               />
             </FormControl>
           </Stack>

@@ -40,7 +40,7 @@ export const ToolEditPage = () => {
 
   return (
     <Container maxW='container.md' py={8}>
-      <Heading mb={6}>{t('tools.editTool')}</Heading>
+      <Heading mb={6}>{t('tools.edit_tool')}</Heading>
       <Box bg='white' p={6} borderRadius='lg' shadow='sm'>
         <EditToolForm initialData={tool} />
       </Box>

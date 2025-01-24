@@ -34,7 +34,7 @@ export const RatingsList = () => {
       <Center minH='200px'>
         <Alert status='info' borderRadius='md'>
           <AlertIcon />
-          {t('rating.noRatings')}
+          {t('rating.no_ratings')}
         </Alert>
       </Center>
     )

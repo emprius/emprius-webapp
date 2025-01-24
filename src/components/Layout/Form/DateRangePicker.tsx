@@ -56,7 +56,7 @@ export const DateRangePicker = ({
     name: startName,
     control,
     rules: {
-      required: isRequired && t('validation.required', { field: t('bookings.startDate') }),
+      required: isRequired && t('validation.required', { field: t('bookings.start_date') }),
     },
   })
 
@@ -67,18 +67,18 @@ export const DateRangePicker = ({
     name: endName,
     control,
     rules: {
-      required: isRequired && t('validation.required', { field: t('bookings.endDate') }),
+      required: isRequired && t('validation.required', { field: t('bookings.end_date') }),
       validate: (value) => {
         if (!startField.value) return true
         const start = new Date(startField.value)
         const end = new Date(value)
 
         if (end <= start) {
-          return t('validation.endDateAfterStart')
+          return t('validation.end_date_after_start')
         }
 
         if (isDateRangeOverlapping(start, end)) {
-          return t('bookings.dateConflict')
+          return t('bookings.date_conflict')
         }
 
         return true

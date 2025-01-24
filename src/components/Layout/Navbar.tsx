@@ -114,7 +114,7 @@ export const Navbar = () => {
 
           <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
             <IconButton
-              aria-label={t('common.toggleTheme')}
+              aria-label={t('common.toggle_theme')}
               icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
               onClick={toggleColorMode}
               variant='ghost'

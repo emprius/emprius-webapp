@@ -84,7 +84,7 @@ export const ToolDetailPage = () => {
                         <Stack direction='row' align='center'>
                           <FiDollarSign size={20} />
                           <Text>
-                            {t('tools.estimatedValue')}: {tool.estimatedValue}
+                            {t('tools.estimated_value')}: {tool.estimatedValue}
                           </Text>
                         </Stack>
                       )}
@@ -148,17 +148,17 @@ export const ToolDetailPage = () => {
               ) : (
                 <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
                   <Text color='gray.600' mb={4}>
-                    {t('tools.notAvailable')}
+                    {t('tools.not_available')}
                   </Text>
                   <Link as={RouterLink} to={ROUTES.TOOLS.LIST} color='primary.500' fontWeight='medium'>
-                    {t('tools.findOther')}
+                    {t('tools.find_other')}
                   </Link>
                 </Box>
               )
             ) : (
               <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
                 <Text color='gray.600' mb={4}>
-                  {t('tools.loginToBook')}
+                  {t('tools.login_to_book')}
                 </Text>
                 <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
                   {t('nav.login')}

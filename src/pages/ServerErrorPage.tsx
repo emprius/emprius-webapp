@@ -18,19 +18,17 @@ export const ServerErrorPage = () => {
   }
 
   return (
-    <Container maxW="container.md" py={20}>
-      <VStack spacing={8} textAlign="center">
-        <Heading size="2xl">🔌</Heading>
-        <Heading>{t('error.serverError')}</Heading>
-        <Text color="gray.600">
-          {t('error.cannotReachServer')}
-        </Text>
+    <Container maxW='container.md' py={20}>
+      <VStack spacing={8} textAlign='center'>
+        <Heading size='2xl'>🔌</Heading>
+        <Heading>{t('error.server_error')}</Heading>
+        <Text color='gray.600'>{t('error.cannot_reach_server')}</Text>
         <Box>
-          <Button onClick={handleRetry} colorScheme="primary" mr={4}>
+          <Button onClick={handleRetry} colorScheme='primary' mr={4}>
             {t('error.retry')}
           </Button>
-          <Button onClick={handleGoHome} variant="ghost">
-            {t('error.goHome')}
+          <Button onClick={handleGoHome} variant='ghost'>
+            {t('error.go_home')}
           </Button>
         </Box>
       </VStack>

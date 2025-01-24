@@ -57,8 +57,8 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
 
         // Show success toast
         toast({
-          title: t('rating.submitSuccess'),
-          description: t('rating.submitSuccessDescription'),
+          title: t('rating.submit_success'),
+          description: t('rating.submit_success_description'),
           status: 'success',
           duration: 5000,
           isClosable: true,
@@ -69,8 +69,8 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
     } catch (error) {
       // Show error toast
       toast({
-        title: t('rating.submitError'),
-        description: t('rating.submitErrorDescription'),
+        title: t('rating.submit_error'),
+        description: t('rating.submit_error_description'),
         status: 'error',
         duration: 5000,
         isClosable: true,

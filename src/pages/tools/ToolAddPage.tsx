@@ -23,7 +23,7 @@ export const ToolAddPage = () => {
   } = useCreateTool({
     onSuccess: () => {
       toast({
-        title: t('tools.createSuccess'),
+        title: t('tools.create_success'),
         status: 'success',
         duration: 3000,
       })
@@ -32,7 +32,7 @@ export const ToolAddPage = () => {
     onError: (error) => {
       console.error('Failed to create tool:', error)
       toast({
-        title: t('tools.createError'),
+        title: t('tools.create_error'),
         status: 'error',
         duration: 5000,
       })
@@ -79,7 +79,7 @@ export const ToolAddPage = () => {
   return (
     <Container maxW='container.md' py={8}>
       <Stack bg={bgColor} p={8} borderRadius='lg' boxShadow='sm' spacing={6}>
-        <Heading size='lg'>{t('tools.addTool')}</Heading>
+        <Heading size='lg'>{t('tools.add_tool')}</Heading>
         <ToolForm
           onSubmit={handleSubmit}
           submitButtonText={t('tools.create')}

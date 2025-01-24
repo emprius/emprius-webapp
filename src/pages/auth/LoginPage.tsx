@@ -87,7 +87,7 @@ export const LoginPage = () => {
                 required: t('validation.required'),
                 minLength: {
                   value: AUTH_FORM.MIN_PASSWORD_LENGTH,
-                  message: t('validation.passwordLength'),
+                  message: t('validation.password_length'),
                 },
               })}
             />
@@ -95,11 +95,11 @@ export const LoginPage = () => {
           </FormControl>
 
           <FormSubmitMessage isError={isError} error={error} />
-          
-          <Button 
-            type='submit' 
-            size='lg' 
-            isLoading={isSubmitting} 
+
+          <Button
+            type='submit'
+            size='lg'
+            isLoading={isSubmitting}
             loadingText={t('common.loading')}
             colorScheme='primary'
             w='100%'
