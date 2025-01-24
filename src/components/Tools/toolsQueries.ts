@@ -2,6 +2,7 @@ import { useMutation, UseMutationOptions, useQuery, useQueryClient } from '@tans
 import { SearchFilters } from '~components/Search/searchQueries'
 import api, { tools } from '~src/services/api'
 import { Tool } from './types'
+import { EmpriusLocation } from '~components/Layout/types'
 
 export interface createToolParams {
   title: string
@@ -12,6 +13,7 @@ export interface createToolParams {
   images: string[]
   transportOptions: number[] // []uint
   category: number // uint
+  location: EmpriusLocation
   estimatedValue: number // uint64
   height: number // uint64
   weight: number // uint64

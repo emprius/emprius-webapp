@@ -91,6 +91,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
       estimatedValue: Number(data.estimatedValue),
       height: Number(data.height),
       weight: Number(data.weight),
+      location: data.location,
       images: allImageHashes,
       isAvailable: data.isAvailable,
     }
