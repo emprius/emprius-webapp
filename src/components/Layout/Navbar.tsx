@@ -15,7 +15,7 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
 import { ROUTES } from '~src/router/router'
@@ -25,10 +25,10 @@ export const Navbar = () => {
   const { t } = useTranslation()
   const { colorMode, toggleColorMode } = useColorMode()
   const { isAuthenticated, logout, user } = useAuth()
-  const navigate = useNavigate()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
 
   return (
     <Box
@@ -51,30 +51,50 @@ export const Navbar = () => {
 
             {isAuthenticated && (
               <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
-                <IconButton
-                  aria-label={t('nav.my_tools')}
-                  icon={<FiTool />}
-                  onClick={() => navigate(ROUTES.TOOLS.LIST)}
-                  variant='ghost'
-                />
-                <IconButton
-                  aria-label={t('nav.my_bookings')}
-                  icon={<FiBookmark />}
-                  onClick={() => navigate(ROUTES.BOOKINGS)}
-                  variant='ghost'
-                />
-                <IconButton
-                  aria-label={t('nav.ratings')}
-                  icon={<FiStar />}
-                  onClick={() => navigate(ROUTES.RATINGS)}
-                  variant='ghost'
-                />
-                <IconButton
-                  aria-label={t('nav.find_tools')}
-                  icon={<FiSearch />}
-                  onClick={() => navigate(ROUTES.SEARCH)}
-                  variant='ghost'
-                />
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.TOOLS.LIST}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <Box as={FiTool} aria-label={t('nav.my_tools')} color={iconColor} boxSize={5} />
+                </Link>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.BOOKINGS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <Box as={FiBookmark} aria-label={t('nav.my_bookings')} color={iconColor} boxSize={5} />
+                </Link>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.RATINGS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <Box as={FiStar} aria-label={t('nav.ratings')} color={iconColor} boxSize={5} />
+                </Link>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.SEARCH}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <Box as={FiSearch} aria-label={t('nav.find_tools')} color={iconColor} boxSize={5} />
+                </Link>
               </Stack>
             )}
           </Stack>
@@ -96,13 +116,13 @@ export const Navbar = () => {
                     <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE.VIEW)}>
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />} color={'primary.500'}>
                       {t('nav.profile')}
                     </MenuItem>
-                    <MenuItem icon={<FiSettings />} onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />} color={'primary.500'}>
                       {t('nav.settings')}
                     </MenuItem>
-                    <MenuItem icon={<FiLogOut />} onClick={logout}>
+                    <MenuItem icon={<FiLogOut />} onClick={logout} color={'primary.500'}>
                       {t('nav.logout')}
                     </MenuItem>
                   </MenuList>
@@ -114,25 +134,25 @@ export const Navbar = () => {
                       <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem icon={<FiUser />} onClick={() => navigate(ROUTES.PROFILE.VIEW)}>
+                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />} color={'primary.500'}>
                         {t('nav.profile')}
                       </MenuItem>
-                      <MenuItem icon={<FiTool />} onClick={() => navigate(ROUTES.TOOLS.LIST)}>
+                      <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={<FiTool />} color={'primary.500'}>
                         {t('nav.my_tools')}
                       </MenuItem>
-                      <MenuItem icon={<FiBookmark />} onClick={() => navigate(ROUTES.BOOKINGS)}>
+                      <MenuItem as={RouterLink} to={ROUTES.BOOKINGS} icon={<FiBookmark />} color={'primary.500'}>
                         {t('nav.my_bookings')}
                       </MenuItem>
-                      <MenuItem icon={<FiStar />} onClick={() => navigate(ROUTES.RATINGS)}>
+                      <MenuItem as={RouterLink} to={ROUTES.RATINGS} icon={<FiStar />} color={'primary.500'}>
                         {t('nav.ratings')}
                       </MenuItem>
-                      <MenuItem icon={<FiSearch />} onClick={() => navigate(ROUTES.SEARCH)}>
+                      <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />} color={'primary.500'}>
                         {t('nav.find_tools')}
                       </MenuItem>
-                      <MenuItem icon={<FiSettings />} onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
+                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />} color={'primary.500'}>
                         {t('nav.settings')}
                       </MenuItem>
-                      <MenuItem icon={<FiLogOut />} onClick={logout}>
+                      <MenuItem icon={<FiLogOut />} onClick={logout} color={'primary.500'}>
                         {t('nav.logout')}
                       </MenuItem>
                     </MenuList>
