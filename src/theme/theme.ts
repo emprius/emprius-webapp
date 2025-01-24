@@ -25,6 +25,14 @@ const theme = extendTheme({
     heading: 'Montserrat, system-ui, sans-serif',
     body: 'Roboto, system-ui, sans-serif',
   },
+  styles: {
+    global: (props: { colorMode: string }) => ({
+      body: {
+        bg: props.colorMode === 'dark' ? 'gray.800' : 'gray.50',
+        color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+      },
+    }),
+  },
   components: {
     Button: {
       baseStyle: {
@@ -36,33 +44,113 @@ const theme = extendTheme({
       },
     },
     Input: {
+      variants: {
+        outline: (props: { colorMode: string }) => ({
+          field: {
+            bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
+            color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+            _placeholder: {
+              color: props.colorMode === 'dark' ? 'whiteAlpha.600' : 'gray.500',
+            },
+          },
+        }),
+      },
       defaultProps: {
         focusBorderColor: 'primary.500',
       },
     },
     Select: {
+      variants: {
+        outline: (props: { colorMode: string }) => ({
+          field: {
+            bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
+            color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+          },
+        }),
+      },
       defaultProps: {
         focusBorderColor: 'primary.500',
       },
     },
     Textarea: {
+      variants: {
+        outline: (props: { colorMode: string }) => ({
+          bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+          _placeholder: {
+            color: props.colorMode === 'dark' ? 'whiteAlpha.600' : 'gray.500',
+          },
+        }),
+      },
       defaultProps: {
         focusBorderColor: 'primary.500',
       },
+    },
+    Menu: {
+      baseStyle: (props: { colorMode: string }) => ({
+        list: {
+          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+        },
+        item: {
+          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+          _hover: {
+            bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
+          },
+          _focus: {
+            bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
+          },
+        },
+      }),
+    },
+    Popover: {
+      baseStyle: (props: { colorMode: string }) => ({
+        content: {
+          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+        },
+        header: {
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+        },
+        body: {
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+        },
+      }),
+    },
+    Tooltip: {
+      baseStyle: (props: { colorMode: string }) => ({
+        bg: props.colorMode === 'dark' ? 'gray.700' : 'gray.700',
+        color: props.colorMode === 'dark' ? 'white' : 'white',
+        borderRadius: 'md',
+        px: '2',
+        py: '1',
+      }),
+    },
+    Modal: {
+      baseStyle: (props: { colorMode: string }) => ({
+        dialog: {
+          bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+        },
+        header: {
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+        },
+        body: {
+          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+        },
+        footer: {
+          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+        },
+      }),
     },
     Link: {
       baseStyle: {
         _hover: {
           textDecoration: 'none',
         },
-      },
-    },
-  },
-  styles: {
-    global: {
-      body: {
-        bg: 'gray.50',
-        color: 'gray.800',
       },
     },
   },
