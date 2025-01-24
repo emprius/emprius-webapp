@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  Text,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -61,6 +62,9 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <Box as={FiTool} aria-label={t('nav.my_tools')} color={iconColor} boxSize={5} />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.my_tools')}
+                  </Text>
                 </Link>
                 <Link
                   as={RouterLink}
@@ -72,6 +76,9 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <Box as={FiBookmark} aria-label={t('nav.my_bookings')} color={iconColor} boxSize={5} />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.my_bookings')}
+                  </Text>
                 </Link>
                 <Link
                   as={RouterLink}
@@ -83,6 +90,9 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <Box as={FiStar} aria-label={t('nav.ratings')} color={iconColor} boxSize={5} />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.ratings')}
+                  </Text>
                 </Link>
                 <Link
                   as={RouterLink}
@@ -94,6 +104,9 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <Box as={FiSearch} aria-label={t('nav.find_tools')} color={iconColor} boxSize={5} />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.find_tools')}
+                  </Text>
                 </Link>
               </Stack>
             )}
@@ -116,13 +129,13 @@ export const Navbar = () => {
                     <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />} color={'primary.500'}>
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />}>
                       {t('nav.profile')}
                     </MenuItem>
-                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />} color={'primary.500'}>
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
                       {t('nav.settings')}
                     </MenuItem>
-                    <MenuItem icon={<FiLogOut />} onClick={logout} color={'primary.500'}>
+                    <MenuItem icon={<FiLogOut />} onClick={logout}>
                       {t('nav.logout')}
                     </MenuItem>
                   </MenuList>
@@ -134,25 +147,25 @@ export const Navbar = () => {
                       <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />}>
                         {t('nav.profile')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={<FiTool />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={<FiTool />}>
                         {t('nav.my_tools')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.BOOKINGS} icon={<FiBookmark />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.BOOKINGS} icon={<FiBookmark />}>
                         {t('nav.my_bookings')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.RATINGS} icon={<FiStar />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.RATINGS} icon={<FiStar />}>
                         {t('nav.ratings')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />}>
                         {t('nav.find_tools')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />} color={'primary.500'}>
+                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
                         {t('nav.settings')}
                       </MenuItem>
-                      <MenuItem icon={<FiLogOut />} onClick={logout} color={'primary.500'}>
+                      <MenuItem icon={<FiLogOut />} onClick={logout}>
                         {t('nav.logout')}
                       </MenuItem>
                     </MenuList>
