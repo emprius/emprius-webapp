@@ -101,7 +101,8 @@ interface BookingCommentsProps {
 const BookingComments = ({ booking, type }: BookingCommentsProps) => {
   const userId = booking.fromUserId
   const isRequest = type === 'request'
-  const { data: user, isLoading } = useUserProfile(userId, { enabled: !isRequest })
+
+  const { data: user, isLoading } = useUserProfile(userId, { enabled: isRequest })
 
   const isLoaded = !isLoading && user !== undefined
 
