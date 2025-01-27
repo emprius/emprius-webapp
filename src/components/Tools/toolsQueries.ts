@@ -1,4 +1,4 @@
-import { useMutation, UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { SearchFilters } from '~components/Search/searchQueries'
 import api, { tools } from '~src/services/api'
 import { Tool } from './types'
@@ -50,10 +50,7 @@ export const useTools = (filters?: SearchFilters) =>
     queryKey: ['tools', filters],
     queryFn: () => (filters ? api.tools.searchTools(filters) : api.tools.getUserTools()),
   })
-export const useTool = (
-  id: string,
-  options?: Omit<UseMutationOptions<Tool, Error, Partial<UpdateToolParams>>, 'mutationFn' | 'queryFn'>
-) =>
+export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: ['tool', id],
     queryFn: () => api.tools.getById(id),

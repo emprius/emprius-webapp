@@ -18,11 +18,10 @@ export const ServerImage: React.FC<ServerImageProps> = ({ imageId, fallbackSrc =
   return <Image src={`data:image/jpeg;base64,${image.content}`} fallbackSrc={fallbackSrc} {...props} />
 }
 
-export interface Image {
-  hash: string
-  name: string
-}
+export type Image = string
 
-export interface ImageContent extends Image {
+export type ImageContent = {
+  hash: Image
   content: string
+  name: string
 }

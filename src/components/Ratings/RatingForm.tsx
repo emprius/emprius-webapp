@@ -87,13 +87,7 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
         <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
           {tool.images?.[0] && (
             <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ServerImage
-                imageId={tool.images[0].hash}
-                alt={tool.title}
-                width='100%'
-                height='100%'
-                objectFit='cover'
-              />
+              <ServerImage imageId={tool.images[0]} alt={tool.title} width='100%' height='100%' objectFit='cover' />
             </Box>
           )}
           <VStack align={'start'}>

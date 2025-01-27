@@ -202,7 +202,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
               <Box>
                 <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
                   <ToolImage
-                    imageHash={tool?.images[0]?.hash}
+                    imageHash={tool?.images[0]}
                     title={tool?.title}
                     isAvailable={tool?.isAvailable}
                     height='100%'

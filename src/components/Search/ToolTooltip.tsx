@@ -16,7 +16,7 @@ export const ToolTooltip = ({ tool }: ToolTooltipProps) => {
 
   return (
     <Stack spacing={2} width='200px' py={4}>
-      <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} height='120px' />
+      <ToolImage imageHash={tool.images[0]} title={tool.title} isAvailable={tool.isAvailable} height='120px' />
       <Stack mt={2} direction='row' align='center' justify='space-between'>
         <Text fontWeight='semibold' fontSize='lg' _hover={{ color: 'primary.500', textDecoration: 'none' }}>
           {tool.title}

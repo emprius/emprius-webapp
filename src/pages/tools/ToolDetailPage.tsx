@@ -59,9 +59,7 @@ export const ToolDetailPage = () => {
         <GridItem>
           <Stack spacing={8}>
             <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
-              {tool.images.length > 0 && (
-                <ImageCarousel imageIds={tool.images.map((img) => img.hash)} height='400px' width='100%' />
-              )}
+              {tool.images.length > 0 && <ImageCarousel imageIds={tool.images} height='400px' width='100%' />}
 
               <Stack p={6} spacing={6}>
                 <Stack spacing={4}>

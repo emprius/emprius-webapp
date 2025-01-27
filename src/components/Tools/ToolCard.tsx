@@ -35,7 +35,7 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
         _hover={{ color: 'primary.500', textDecoration: 'none' }}
       >
         <Box position='relative'>
-          <ToolImage imageHash={tool.images[0]?.hash} title={tool.title} isAvailable={tool.isAvailable} />
+          <ToolImage imageHash={tool.images[0]} title={tool.title} isAvailable={tool.isAvailable} />
         </Box>
 
         <Stack p={4} spacing={3}>
