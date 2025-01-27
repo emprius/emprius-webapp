@@ -38,8 +38,7 @@ export const SearchPage = () => {
       mayBeFree: data.mayBeFree,
       maxCost: data.maxCost,
       term: data.term,
-      // todo(konv1): fix this when fixed on the backend
-      // distance: data.distance,
+      distance: data.distance,
       categories: data.categories,
       transportOptions: data.transportOptions,
     })
