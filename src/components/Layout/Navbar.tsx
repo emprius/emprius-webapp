@@ -21,11 +21,14 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
 import { ROUTES } from '~src/router/router'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { BadgeIcon } from './BadgeIcon'
+import { usePendingActions } from './PendingActionsProvider'
 
 export const Navbar = () => {
   const { t } = useTranslation()
   const { colorMode, toggleColorMode } = useColorMode()
   const { isAuthenticated, logout, user } = useAuth()
+  const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -75,7 +78,13 @@ export const Navbar = () => {
                   borderRadius='md'
                   _hover={{ bg: 'gray.100' }}
                 >
-                  <Box as={FiBookmark} aria-label={t('nav.my_bookings')} color={iconColor} boxSize={5} />
+                  <BadgeIcon
+                    icon={FiBookmark}
+                    aria-label={t('nav.my_bookings')}
+                    count={pendingRequestsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
                   <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
                     {t('nav.my_bookings')}
                   </Text>
@@ -89,7 +98,13 @@ export const Navbar = () => {
                   borderRadius='md'
                   _hover={{ bg: 'gray.100' }}
                 >
-                  <Box as={FiStar} aria-label={t('nav.ratings')} color={iconColor} boxSize={5} />
+                  <BadgeIcon
+                    icon={FiStar}
+                    aria-label={t('nav.ratings')}
+                    count={pendingRatingsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
                   <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
                     {t('nav.ratings')}
                   </Text>
@@ -153,10 +168,32 @@ export const Navbar = () => {
                       <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={<FiTool />}>
                         {t('nav.my_tools')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.BOOKINGS} icon={<FiBookmark />}>
+                      <MenuItem
+                        as={RouterLink}
+                        to={ROUTES.BOOKINGS}
+                        icon={
+                          <BadgeIcon
+                            icon={FiBookmark}
+                            aria-label={t('nav.my_bookings')}
+                            count={pendingRequestsCount}
+                            badgeProps={{ top: '-12px', right: '-12px' }}
+                          />
+                        }
+                      >
                         {t('nav.my_bookings')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.RATINGS} icon={<FiStar />}>
+                      <MenuItem
+                        as={RouterLink}
+                        to={ROUTES.RATINGS}
+                        icon={
+                          <BadgeIcon
+                            icon={FiStar}
+                            aria-label={t('nav.ratings')}
+                            count={pendingRatingsCount}
+                            badgeProps={{ top: '-12px', right: '-12px' }}
+                          />
+                        }
+                      >
                         {t('nav.ratings')}
                       </MenuItem>
                       <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />}>

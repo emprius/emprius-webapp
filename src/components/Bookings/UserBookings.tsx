@@ -5,17 +5,21 @@ import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bo
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { BookingCard, BookingCardType } from './BookingCard'
 import { UseQueryResult } from '@tanstack/react-query'
+import { usePendingActions } from '~components/Layout/PendingActionsProvider'
+import { BadgeCounter } from '~components/Layout/BadgeIcon'
 
 export const UserBookings = () => {
   const { t } = useTranslation()
+  const { pendingRequestsCount } = usePendingActions()
 
   return (
     <Tabs isLazy>
       <TabList>
         <Tab>{t('bookings.my_petitions')}</Tab>
-        <Tab>{t('bookings.tool_requests')}</Tab>
+        <Tab>
+          <BadgeCounter count={pendingRequestsCount}>{t('bookings.tool_requests')}</BadgeCounter>
+        </Tab>
       </TabList>
-
       <TabPanels>
         <TabPanel px={1}>
           <Petitions />

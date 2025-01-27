@@ -14,6 +14,7 @@ import {createToolParams, UpdateToolParams} from '~components/Tools/toolsQueries
 import {Tool} from '~components/Tools/types'
 import {EditProfileFormData, UserProfile} from '~components/User/userTypes'
 import {STORAGE_KEYS} from '~utils/constants'
+import {BookingPendings} from '~components/Layout/PendingActionsProvider'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -103,6 +104,7 @@ export const bookings = {
   return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
   submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),
+  getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
 }
 
 // Users endpoints
