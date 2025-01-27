@@ -203,15 +203,16 @@
     "edit_profile": "Edit",
     "error_uploading_image": "Error uploading image",
     "inactive": "Inactive",
+    "list_title": "Members",
     "member_since": "Member since",
     "no_bookings": "No bookings found",
     "no_tools": "No tools added yet",
-    "profile_updated": "Profile updated successfully",
-    "list_title": "Members",
-    "no_location": "No location set",
     "no_users_found": "No community members found",
     "no_users_found_desc": "There are currently no members in the community. Check back later!",
-    "view_profile": "View Profile"
+    "profile_updated": "Profile updated successfully"
+  },
+  "users": {
+    "list_title": "Users"
   },
   "validation": {
     "email": "Invalid email address",

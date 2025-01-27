@@ -70,7 +70,10 @@
     "loading": "Cargando...",
     "location": "Ubicación",
     "name": "Nombre",
+    "next": "Siguiente",
+    "page": "Página",
     "password": "Contraseña",
+    "previous": "Anterior",
     "required": "Este campo es obligatorio",
     "save": "Guardar",
     "saving": "Guardando...",
@@ -200,10 +203,16 @@
     "edit_profile": "Editar",
     "error_uploading_image": "Error al subir la imagen",
     "inactive": "Inactivo",
+    "list_title": "Miembros",
     "member_since": "Miembro desde",
     "no_bookings": "No se encontraron reservas",
     "no_tools": "Aún no se han añadido herramientas",
+    "no_users_found": "No se encontraron miembros de la comunidad",
+    "no_users_found_desc": "Actualmente no hay miembros en la comunidad. ¡Vuelve más tarde!",
     "profile_updated": "Perfil actualizado con éxito"
+  },
+  "users": {
+    "list_title": "Usuarios"
   },
   "validation": {
     "email": "Dirección de correo electrónico inválida",

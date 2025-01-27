@@ -70,7 +70,10 @@
     "loading": "Carregant...",
     "location": "Ubicació",
     "name": "Nom",
+    "next": "Següent",
+    "page": "Pàgina",
     "password": "Contrasenya",
+    "previous": "Anterior",
     "required": "Aquest camp és obligatori",
     "save": "Desar",
     "saving": "Desant...",
@@ -200,10 +203,16 @@
     "edit_profile": "Editar",
     "error_uploading_image": "Error al pujar la imatge",
     "inactive": "Inactiu",
+    "list_title": "Membres",
     "member_since": "Membre des de",
     "no_bookings": "No s'han trobat reserves",
     "no_tools": "Encara no s'han afegit eines",
+    "no_users_found": "No s'han trobat membres de la comunitat",
+    "no_users_found_desc": "Actualment no hi ha membres a la comunitat. Torna més tard!",
     "profile_updated": "Perfil actualitzat amb èxit"
+  },
+  "users": {
+    "list_title": "Usuaris"
   },
   "validation": {
     "email": "Adreça de correu electrònic invàlida",
