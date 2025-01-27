@@ -112,6 +112,8 @@ export const users = {
   updateProfile: (data: Partial<EditProfileFormData>) =>
     apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
+  getList: (page: number = 0) =>
+    apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
 }
 
 // images

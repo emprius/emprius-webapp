@@ -6,6 +6,8 @@ import { AuthLayout } from '~src/pages/AuthLayout'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
 import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
 import { Profile } from '~src/pages/profile/Profile'
+import { UsersList } from '~src/pages/users/UsersList'
+import { UserDetail } from '~src/pages/users/UserDetail'
 import { EditProfile } from '~src/pages/profile/EditProfile'
 import { UserRatingsPage } from '~src/pages/ratings/UserRatingsPage'
 import { SearchPage } from '~src/pages/search/SearchPage'
@@ -31,6 +33,10 @@ export const ROUTES = {
   },
   BOOKINGS: '/bookings',
   RATINGS: '/ratings',
+  USERS: {
+    LIST: '/users',
+    DETAIL: '/users/:id',
+  },
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -84,6 +90,14 @@ const router = createBrowserRouter([
           {
             path: ROUTES.RATINGS,
             element: <UserRatingsPage />,
+          },
+          {
+            path: ROUTES.USERS.LIST,
+            element: <UsersList />,
+          },
+          {
+            path: ROUTES.USERS.DETAIL,
+            element: <UserDetail />,
           },
         ],
       },

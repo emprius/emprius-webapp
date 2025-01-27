@@ -70,7 +70,10 @@
     "loading": "Loading...",
     "location": "Location",
     "name": "Name",
+    "next": "Next",
+    "page": "Page",
     "password": "Password",
+    "previous": "Previous",
     "required": "This field is required",
     "save": "Save",
     "saving": "Saving...",
@@ -203,7 +206,12 @@
     "member_since": "Member since",
     "no_bookings": "No bookings found",
     "no_tools": "No tools added yet",
-    "profile_updated": "Profile updated successfully"
+    "profile_updated": "Profile updated successfully",
+    "list_title": "Members",
+    "no_location": "No location set",
+    "no_users_found": "No community members found",
+    "no_users_found_desc": "There are currently no members in the community. Check back later!",
+    "view_profile": "View Profile"
   },
   "validation": {
     "email": "Invalid email address",

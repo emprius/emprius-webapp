@@ -3,20 +3,28 @@ import React from 'react'
 import { DisplayRating } from '../Ratings/DisplayRating'
 import { Avatar, AvatarSize } from '../Images/Avatar'
 import { useUserProfile } from './userQueries'
+import { UseQueryOptions } from '@tanstack/react-query/build/modern'
+import { UserProfile } from '~components/User/userTypes'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/router'
 
 type UserMiniCardProps = {
   userId: string
   avatarSize?: AvatarSize
   direction?: StackProps['direction']
+  placeholderData?: UseQueryOptions<UserProfile>['placeholderData']
 } & FlexProps
 
 export const UserCard: React.FC<UserMiniCardProps> = ({
   userId,
   avatarSize = 'md',
   direction = 'column',
+  placeholderData,
   ...flexProps
 }) => {
-  const { data: user, isLoading } = useUserProfile(userId)
+  const { data: user, isLoading } = useUserProfile(userId, {
+    placeholderData,
+  })
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
@@ -45,6 +53,8 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       borderWidth={1}
       borderColor={borderColor}
       borderRadius='lg'
+      as={RouterLink}
+      to={ROUTES.USERS.DETAIL.replace(':id', userId)}
       {...flexProps}
     >
       <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />

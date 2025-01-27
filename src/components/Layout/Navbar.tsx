@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser, FiUsers } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -123,6 +123,20 @@ export const Navbar = () => {
                     {t('nav.find_tools')}
                   </Text>
                 </Link>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.USERS.LIST}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <Box as={FiUsers} aria-label={t('user.list_title')} color={iconColor} boxSize={5} />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('user.list_title')}
+                  </Text>
+                </Link>
               </Stack>
             )}
           </Stack>
@@ -198,6 +212,9 @@ export const Navbar = () => {
                       </MenuItem>
                       <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />}>
                         {t('nav.find_tools')}
+                      </MenuItem>
+                      <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={<FiUsers />}>
+                        {t('user.list_title')}
                       </MenuItem>
                       <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
                         {t('nav.settings')}
