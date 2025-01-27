@@ -1,12 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { AuthProvider } from '~components/Auth/AuthContext'
 import { InfoProvider } from '~components/Auth/InfoContext'
 import theme from '~theme/theme'
 import { AppRoutes } from './router/router'
-
-const queryClient = new QueryClient()
+import queryClient from '~src/services/queryClient'
 
 export const App = () => {
   return (

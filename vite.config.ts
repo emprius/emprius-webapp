@@ -4,6 +4,7 @@ import {createHtmlPlugin} from 'vite-plugin-html'
 import svgr from 'vite-plugin-svgr'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import {execSync} from 'child_process'
+import {VitePWA, VitePWAOptions} from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 const viteconfig = ({ mode }) => {
@@ -41,6 +42,7 @@ const viteconfig = ({ mode }) => {
       tsconfigPaths(),
       react(),
       svgr(),
+      VitePWA(pwaManifest),
       createHtmlPlugin({
         template: `index.html`,
         minify: {
@@ -56,6 +58,65 @@ const viteconfig = ({ mode }) => {
       }),
     ],
   })
+}
+
+const pwaManifest: Partial<VitePWAOptions> = {
+  registerType: 'autoUpdate',
+  manifest: {
+    name: 'Emprius',
+    short_name: 'Emprius',
+    description: 'A platform for sharing tools and resources',
+    theme_color: '#319795',
+    icons: [
+      {
+        src: '/assets/pwa/manifest-icon-192.maskable.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any maskable'
+      },
+      {
+        src: '/assets/pwa/manifest-icon-512.maskable.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any maskable'
+      },
+      {
+        src: '/assets/pwa/apple-icon-180.png',
+        sizes: '180x180',
+        type: 'image/png',
+        purpose: 'any'
+      }
+    ],
+  },
+  workbox: {
+    runtimeCaching: [
+      {
+        urlPattern: /^https:\/\/app-api\.emprius\.cat\/.*/i,
+        handler: 'NetworkFirst',
+        options: {
+          cacheName: 'api-cache',
+          expiration: {
+            maxEntries: 100,
+            maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
+      {
+        urlPattern: /\.(png|jpg|jpeg|svg|gif)$/,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'image-cache',
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+          },
+        },
+      },
+    ],
+  },
 }
 
 export default viteconfig
