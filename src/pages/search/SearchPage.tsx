@@ -38,7 +38,7 @@ export const SearchPage = () => {
       mayBeFree: data.mayBeFree,
       maxCost: data.maxCost,
       term: data.term,
-      distance: data.distance,
+      distance: data.distance * 1000, // Convert to meters
       categories: data.categories,
       transportOptions: data.transportOptions,
     })
