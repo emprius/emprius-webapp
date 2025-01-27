@@ -1,16 +1,16 @@
-import { Badge, Box } from '@chakra-ui/react'
+import { Badge, Box, ImageProps } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ServerImage } from '~components/Images/ServerImage'
 
-interface ToolImageProps {
+type ToolImageProps = {
   imageHash?: string
   title: string
   isAvailable: boolean
   height?: string
-}
+} & Omit<ImageProps, 'src'>
 
-export const ToolImage = ({ imageHash, title, isAvailable, height = '200px' }: ToolImageProps) => {
+export const ToolImage = ({ imageHash, title, isAvailable, height = '200px', ...rest }: ToolImageProps) => {
   const { t } = useTranslation()
 
   let badge = t(`tools.unavailable`)
@@ -19,7 +19,7 @@ export const ToolImage = ({ imageHash, title, isAvailable, height = '200px' }: T
   }
   return (
     <Box position='relative'>
-      <ServerImage imageId={imageHash} alt={title} height={height} width='100%' objectFit='cover' />
+      <ServerImage imageId={imageHash} alt={title} height={height} width='100%' objectFit='cover' {...rest} />
       <Badge
         position='absolute'
         top={2}

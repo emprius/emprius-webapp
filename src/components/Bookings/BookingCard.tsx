@@ -206,6 +206,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                     title={tool?.title}
                     isAvailable={tool?.isAvailable}
                     height='100%'
+                    maxH={64}
                   />
                 </Link>
                 {!isRequest && (
