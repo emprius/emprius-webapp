@@ -198,7 +198,7 @@ export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
     return <PendingPetitionActions booking={booking} />
   }
 
-  if (booking.bookingStatus === BookingStatus.ACCEPTED) {
+  if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
     return <AcceptedBookingActions booking={booking} />
   }
 
