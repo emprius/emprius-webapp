@@ -1,7 +1,6 @@
 import { Image } from '~components/Images/ServerImage'
 import { DateRange } from '~components/Layout/Form/DateRangePicker'
 import { EmpriusLocation } from '~components/Layout/types'
-import { Transport } from '~components/Auth/infoTypes'
 
 export interface Tool {
   id: number
@@ -13,7 +12,7 @@ export interface Tool {
   cost?: number
   userId: string
   images: Image[]
-  transportOptions?: Transport[] // Array of transport IDs
+  transportOptions?: number[] // Array of transport IDs
   toolCategory?: number // Category ID
   location?: EmpriusLocation
   rating: number

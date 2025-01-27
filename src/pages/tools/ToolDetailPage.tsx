@@ -73,7 +73,7 @@ export const ToolDetailPage = () => {
                       </Badge>
                     </Stack>
                   </Stack>
-                  <Text color='gray.600'>{tool.description}</Text>
+                  {tool?.description && <Text color='gray.600'>{tool.description}</Text>}
                   <ToolBadges tool={tool} />
                   <Divider />
                   <SimpleGrid spacing={4} columns={{ base: 2 }}>
@@ -111,17 +111,14 @@ export const ToolDetailPage = () => {
                     <Stack direction='row' align='center'>
                       <HiOutlineTruck size={20} />
                       <Text>{t('tools.transport_options')}:</Text>
-                      {
-                        // todo(konv1): check with https://github.com/emprius/emprius-app-backend/issues/10#issuecomment-2602741976
-                        tool.transportOptions
-                          .map((transport) => transports.find((t) => t.id === transport.id)?.name)
-                          .map((name) => (
-                            <Tag key={name} variant='subtle' colorScheme='cyan'>
-                              <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
-                              <TagLabel>{name}</TagLabel>
-                            </Tag>
-                          ))
-                      }
+                      {tool.transportOptions
+                        .map((transport) => transports.find((t) => t.id === transport)?.name)
+                        .map((name) => (
+                          <Tag key={name} variant='subtle' colorScheme='cyan'>
+                            <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
+                            <TagLabel>{name}</TagLabel>
+                          </Tag>
+                        ))}
                     </Stack>
                   )}
                   <UserCard userId={tool.userId} />
