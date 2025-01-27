@@ -123,9 +123,9 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </FormControl>
       </Stack>
 
-      <FormControl isRequired isInvalid={!!errors.description}>
+      <FormControl isInvalid={!!errors.description}>
         <FormLabel>{t('tools.description')}</FormLabel>
-        <Textarea {...register('description', { required: true })} />
+        <Textarea {...register('description', {})} />
         <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </FormControl>
 
@@ -137,10 +137,10 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <Checkbox {...register('askWithFee')}>{t('tools.ask_with_fee', { defaultValue: 'Ask With Fee' })}</Checkbox>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.cost}>
+      <FormControl isInvalid={!!errors.cost}>
         <FormLabel>{t('tools.cost_per_day', { defaultValue: 'Cost per day' })}</FormLabel>
         <NumberInput min={0}>
-          <NumberInputField {...register('cost', { required: true, min: 0, valueAsNumber: true })} />
+          <NumberInputField {...register('cost', { valueAsNumber: true })} />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -149,7 +149,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.category}>
+      <FormControl isInvalid={!!errors.category} isRequired>
         <FormLabel>{t('tools.category')}</FormLabel>
         <Select
           name='category'
@@ -169,11 +169,12 @@ export const ToolForm: React.FC<ToolFormProps> = ({
             setValue('category', newValue?.value, { shouldValidate: true })
           }}
           placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
+          required
         />
         <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.transportOptions}>
+      <FormControl isInvalid={!!errors.transportOptions}>
         <FormLabel>{t('tools.transport_options', { defaultValue: 'Transport Options' })}</FormLabel>
         <Select
           isMulti
@@ -205,10 +206,10 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.transportOptions?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.estimatedValue}>
+      <FormControl isInvalid={!!errors.estimatedValue}>
         <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
         <NumberInput min={0}>
-          <NumberInputField {...register('estimatedValue', { required: true, valueAsNumber: true })} />
+          <NumberInputField {...register('estimatedValue', { valueAsNumber: true })} />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -217,10 +218,10 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.height}>
+      <FormControl isInvalid={!!errors.height}>
         <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
         <NumberInput min={0}>
-          <NumberInputField {...register('height', { required: true, valueAsNumber: true })} />
+          <NumberInputField {...register('height', { valueAsNumber: true })} />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -229,10 +230,10 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.height?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isRequired isInvalid={!!errors.weight}>
+      <FormControl isInvalid={!!errors.weight}>
         <FormLabel>{t('tools.weight', { defaultValue: 'Weight (kg)' })}</FormLabel>
         <NumberInput min={0}>
-          <NumberInputField {...register('weight', { required: true, valueAsNumber: true })} />
+          <NumberInputField {...register('weight', { valueAsNumber: true })} />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -242,7 +243,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <FormControl isRequired>
-        <FormLabel>Location</FormLabel>
         <LocationPicker onChange={(location) => setValue('location', location)} value={watch('location')} />
         <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
       </FormControl>
