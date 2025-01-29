@@ -23,7 +23,7 @@ import { getB64FromFile } from '~src/utils'
 import { ASSETS, AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, sizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './userQueries'
-import { PasswordInput } from '~src/pages/auth/PasswordInput'
+import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()

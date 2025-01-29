@@ -30,7 +30,7 @@ import { ROUTES } from '~src/router/routes'
 import React from 'react'
 import { Tool } from '~components/Tools/types'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useInfoContext } from '~components/Auth/InfoContext'
+import { useInfoContext } from '~components/Info/InfoContext'
 import { useTranslation } from 'react-i18next'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {

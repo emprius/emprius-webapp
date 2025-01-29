@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
-import { PasswordInput } from './PasswordInput'
+import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
@@ -27,7 +27,7 @@ interface RegisterFormData extends IRegisterParams {
   confirmPassword: string
 }
 
-export const RegisterPage = () => {
+export const Register = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const toast = useToast()

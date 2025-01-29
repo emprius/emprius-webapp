@@ -3,17 +3,25 @@ import { AuthLayout } from '~src/pages/AuthLayout'
 import { ROUTES } from '~src/router/routes/index'
 import { SuspenseLoader } from '~src/router/SuspenseLoader'
 
-const LoginPage = lazy(() => import('~src/pages/auth/LoginPage').then(m => ({ default: m.LoginPage })))
-const RegisterPage = lazy(() => import('~src/pages/auth/RegisterPage').then(m => ({ default: m.RegisterPage })))
+const LoginPage = lazy(() => import('~src/pages/auth/login').then((m) => ({ default: m.Login })))
+const RegisterPage = lazy(() => import('~src/pages/auth/register').then((m) => ({ default: m.Register })))
 
 const AuthRoutesElements = [
   {
     path: ROUTES.AUTH.LOGIN.slice(1),
-    element: <SuspenseLoader><LoginPage /></SuspenseLoader>,
+    element: (
+      <SuspenseLoader>
+        <LoginPage />
+      </SuspenseLoader>
+    ),
   },
   {
     path: ROUTES.AUTH.REGISTER.slice(1),
-    element: <SuspenseLoader><RegisterPage /></SuspenseLoader>,
+    element: (
+      <SuspenseLoader>
+        <RegisterPage />
+      </SuspenseLoader>
+    ),
   },
 ]
 

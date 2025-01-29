@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
-import {InfoData} from '~components/Auth/infoTypes'
+import {InfoData} from '~components/Info/infoTypes'
 import {
   Booking,
   BookingActionsParams,

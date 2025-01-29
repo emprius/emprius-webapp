@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation, useOutletContext } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useInfoContext } from '~components/Auth/InfoContext'
+import { useInfoContext } from '~components/Info/InfoContext'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ServerErrorPage } from '~src/pages/ServerErrorPage'
 

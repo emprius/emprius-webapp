@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
-import { PasswordInput } from './PasswordInput'
+import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
 import { AUTH_FORM } from '~utils/constants'
 import { ROUTES } from '~src/router/routes'
 
-export const LoginPage = () => {
+export const Login = () => {
   const { t } = useTranslation()
   const toast = useToast()
   const navigate = useNavigate()
@@ -39,7 +39,6 @@ export const LoginPage = () => {
 
   const onSubmit = async (data: ILoginParams) => {
     await mutateAsync(data)
-      // todo(konv1): use route constants
       .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         toast({
