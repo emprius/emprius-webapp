@@ -6,7 +6,7 @@ import { AuthLayout } from '~src/pages/AuthLayout'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
 import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
 import { Profile } from '~src/pages/profile/Profile'
-import { UsersList } from '~src/pages/users/UsersList'
+import { UsersListPage } from '~src/pages/users/UsersListPage'
 import { UserDetail } from '~src/pages/users/UserDetail'
 import { EditProfile } from '~src/pages/profile/EditProfile'
 import { UserRatingsPage } from '~src/pages/ratings/UserRatingsPage'
@@ -17,6 +17,7 @@ import { ToolEditPage } from '~src/pages/tools/ToolEditPage'
 import { ToolsListPage } from '~src/pages/tools/ToolsListPage'
 import { ProtectedRoute } from '~src/router/ProtectedRoute'
 import { Layout } from '../pages/Layout'
+import { TitlePageLayout } from '~src/pages/TitlePageLayout'
 
 export const ROUTES = {
   HOME: '/',
@@ -64,6 +65,23 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
+            element: <TitlePageLayout />,
+            children: [
+              {
+                path: ROUTES.BOOKINGS,
+                element: <UserBookingsPage />,
+              },
+              {
+                path: ROUTES.RATINGS,
+                element: <UserRatingsPage />,
+              },
+              {
+                path: ROUTES.USERS.LIST,
+                element: <UsersListPage />,
+              },
+            ],
+          },
+          {
             path: ROUTES.PROFILE.EDIT,
             element: <EditProfile />,
           },
@@ -82,18 +100,6 @@ const router = createBrowserRouter([
           {
             path: ROUTES.TOOLS.NEW,
             element: <ToolAddPage />,
-          },
-          {
-            path: ROUTES.BOOKINGS,
-            element: <UserBookingsPage />,
-          },
-          {
-            path: ROUTES.RATINGS,
-            element: <UserRatingsPage />,
-          },
-          {
-            path: ROUTES.USERS.LIST,
-            element: <UsersList />,
           },
           {
             path: ROUTES.USERS.DETAIL,

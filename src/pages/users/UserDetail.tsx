@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { UserProfile } from '~components/Users/UserProfile'
+import { UserProfile } from '~components/User/UserProfile'
 import { NotFoundPage } from '../NotFoundPage'
 
 export const UserDetail = () => {

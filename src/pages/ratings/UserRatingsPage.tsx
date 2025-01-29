@@ -1,20 +1,16 @@
-import { Box, Container, Heading, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RatingsList } from '~components/Ratings/RatingsList'
+import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
+import { useOutletContext } from 'react-router-dom'
 
 export const UserRatingsPage = () => {
   const { t } = useTranslation()
-  const bgColor = useColorModeValue('white', 'gray.800')
+  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
 
-  return (
-    <Container maxW='container.xl' py={8}>
-      <Box bg={bgColor} borderRadius='lg' p={{ base: 3, md: 6 }} boxShadow='sm'>
-        <Heading size='md' mb={4}>
-          {t('rating.pending_ratings')}
-        </Heading>
-        <RatingsList />
-      </Box>
-    </Container>
-  )
+  useEffect(() => {
+    setTitle(t('rating.pending_ratings'))
+  }, [setTitle])
+
+  return <RatingsList />
 }

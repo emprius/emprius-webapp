@@ -10,10 +10,11 @@ export const Layout = () => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
 
   return (
-    <Box minH='100vh' display='flex' flexDirection='column' bg={bgColor}>
+    <Box minH='100vh' px={0} display='flex' flexDirection='column' bg={bgColor}>
       <ScrollToTop />
       <Navbar />
-      <Box flex={1}>
+      <Box flex={1} px={0}>
+        {/*lalalala*/}
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
