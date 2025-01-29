@@ -4,7 +4,7 @@ import { RatingsList } from '~components/Ratings/RatingsList'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 import { useOutletContext } from 'react-router-dom'
 
-export const UserRatingsPage = () => {
+export const View = () => {
   const { t } = useTranslation()
   const { setTitle } = useOutletContext<TitlePageLayoutContext>()
 

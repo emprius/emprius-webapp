@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiSun, FiUser } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -100,7 +100,7 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <BadgeIcon
-                    icon={FiStar}
+                    icon={icons.ratings}
                     aria-label={t('nav.ratings')}
                     count={pendingRatingsCount}
                     color={iconColor}
@@ -202,7 +202,7 @@ export const Navbar = () => {
                         to={ROUTES.RATINGS}
                         icon={
                           <BadgeIcon
-                            icon={FiStar}
+                            icon={icons.ratings}
                             aria-label={t('nav.ratings')}
                             count={pendingRatingsCount}
                             badgeProps={{ top: '-12px', right: '-12px' }}

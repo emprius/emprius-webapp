@@ -1,42 +1,34 @@
-import { Alert, AlertIcon, Center, SimpleGrid, Spinner } from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { RatingCard } from './RatingCard'
 import { useGetPendingRatings } from './ratingQueries'
 import { Rating } from './types'
+import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import ErrorComponent from '~components/Layout/ErrorComponent'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import { icons } from '~utils/icons'
 
 export const RatingsList = () => {
   const { t } = useTranslation()
   const { data: pendingRatings, isLoading, error } = useGetPendingRatings() as UseQueryResult<Rating[]>
 
   if (isLoading) {
-    return (
-      <Center minH='200px'>
-        <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='xl' />
-      </Center>
-    )
+    return <LoadingSpinner />
   }
 
   if (error) {
-    return (
-      <Center minH='200px'>
-        <Alert status='error' borderRadius='md'>
-          <AlertIcon />
-          {t('rating.error')}
-        </Alert>
-      </Center>
-    )
+    return <ErrorComponent error={error} />
   }
 
   if (!pendingRatings?.length) {
     return (
-      <Center minH='200px'>
-        <Alert status='info' borderRadius='md'>
-          <AlertIcon />
-          {t('rating.no_ratings')}
-        </Alert>
-      </Center>
+      <ElementNotFound
+        icon={icons.ratings}
+        title={t('rating.no_ratings_found')}
+        desc={t('rating.no_ratings_found_desc')}
+      />
     )
   }
 

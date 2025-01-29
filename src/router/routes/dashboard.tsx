@@ -14,9 +14,7 @@ const ToolEditPage = lazy(() => import('~src/pages/tools/edit').then((m) => ({ d
 const UserBookingsPage = lazy(() =>
   import('~src/pages/bookings/UserBookingsPage').then((m) => ({ default: m.UserBookingsPage }))
 )
-const UserRatingsPage = lazy(() =>
-  import('~src/pages/ratings/UserRatingsPage').then((m) => ({ default: m.UserRatingsPage }))
-)
+const UserRatingsPage = lazy(() => import('~src/pages/ratings/view').then((m) => ({ default: m.View })))
 const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
 const ToolDetailPage = lazy(() => import('~src/pages/tools/detail').then((m) => ({ default: m.Detail })))

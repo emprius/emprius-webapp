@@ -1,6 +1,6 @@
 import { HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
-import { FiStar } from 'react-icons/fi'
+import { icons } from '~utils/icons'
 
 interface DisplayRatingProps {
   rating: number
@@ -48,5 +48,5 @@ const Star = ({ rating, position, size }: { rating: number; position: number; si
     return <Icon as={FaStarHalfAlt} fontSize={sizes[size].fontSize} color={starColor} />
   }
   // Empty star
-  return <Icon as={FiStar} fontSize={sizes[size].fontSize} color={starColor} />
+  return <Icon as={icons.ratings} fontSize={sizes[size].fontSize} color={starColor} />
 }

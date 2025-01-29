@@ -8,9 +8,10 @@ import {
   useReturnBooking,
 } from '~components/Bookings/bookingsQueries'
 import { Button, useDisclosure, useToast } from '@chakra-ui/react'
-import { FiCheck, FiStar, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
+import { FiCheck, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
 import { RatingModal } from '~components/Ratings/RatingModal'
 import React from 'react'
+import { icons } from '~utils/icons'
 
 interface ActionsProps {
   booking: Booking
@@ -170,7 +171,7 @@ const ReturnedBookingActions = ({ booking }: ActionsProps) => {
 
   return (
     <>
-      <Button leftIcon={<FiStar />} variant='outline' onClick={() => onOpen()}>
+      <Button leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
         {t('rating.rate_user')}
       </Button>
       <RatingModal
