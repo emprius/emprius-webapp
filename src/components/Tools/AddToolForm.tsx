@@ -1,20 +1,18 @@
 import { useToast } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useOutletContext } from 'react-router-dom'
-import { useUploadImage } from '~components/Images/imagesQueries'
-import { ToolForm, ToolFormData } from '~components/Tools/ToolForm'
-import { useCreateTool } from '~components/Tools/toolsQueries'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { FormLayoutContext } from '~src/pages/FormLayout'
+import { useUploadImage } from '~components/Images/imagesQueries'
+import { ToolForm, ToolFormData } from './ToolForm'
+import { useCreateTool } from './toolsQueries'
 
-export const ToolAddPage = () => {
+export const AddToolForm = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
   const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
-  const { setTitle } = useOutletContext<FormLayoutContext>()
 
   const {
     mutateAsync: createTool,
@@ -76,10 +74,6 @@ export const ToolAddPage = () => {
   }
 
   const isLoading = createToolIsPending || uploadImageIsPending
-
-  useEffect(() => {
-    setTitle(t('tools.add_tool'))
-  }, [setTitle])
 
   return (
     <ToolForm

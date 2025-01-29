@@ -1,11 +1,12 @@
 import { Box, Button, Container, Heading, Icon, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiSearch, FiTool, FiUsers } from 'react-icons/fi'
+import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
 
 import { ROUTES } from '~src/router/routes'
+import { icons } from '~utils/icons'
 
 export const HomePage = () => {
   const { t } = useTranslation()
@@ -17,7 +18,7 @@ export const HomePage = () => {
     {
       title: t('home.share_tools.title'),
       description: t('home.share_tools.description'),
-      icon: FiTool,
+      icon: icons.tools,
     },
     {
       title: t('home.find_what.title'),
@@ -27,7 +28,7 @@ export const HomePage = () => {
     {
       title: t('home.build_community.title'),
       description: t('home.build_community.description'),
-      icon: FiUsers,
+      icon: icons.users,
     },
   ]
 

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser } from 'react-icons/fi'
+import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiUser } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -65,7 +65,7 @@ export const Navbar = () => {
                   borderRadius='md'
                   _hover={{ bg: 'gray.100' }}
                 >
-                  <Box as={FiTool} aria-label={t('nav.my_tools')} color={iconColor} boxSize={5} />
+                  <Box as={icons.tools} aria-label={t('nav.my_tools')} color={iconColor} boxSize={5} />
                   <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
                     {t('nav.my_tools')}
                   </Text>
@@ -180,7 +180,7 @@ export const Navbar = () => {
                       <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />}>
                         {t('nav.profile')}
                       </MenuItem>
-                      <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={<FiTool />}>
+                      <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={icons.tools({})}>
                         {t('nav.my_tools')}
                       </MenuItem>
                       <MenuItem

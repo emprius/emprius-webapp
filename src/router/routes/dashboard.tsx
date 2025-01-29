@@ -9,8 +9,8 @@ import { Layout } from '~src/pages/Layout'
 const SearchPage = lazy(() => import('~src/pages/search/SearchPage').then((m) => ({ default: m.SearchPage })))
 const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ default: m.View })))
 const EditProfile = lazy(() => import('~src/pages/profile/edit').then((m) => ({ default: m.Edit })))
-const ToolAddPage = lazy(() => import('~src/pages/tools/ToolAddPage').then((m) => ({ default: m.ToolAddPage })))
-const ToolEditPage = lazy(() => import('~src/pages/tools/ToolEditPage').then((m) => ({ default: m.ToolEditPage })))
+const ToolAddPage = lazy(() => import('~src/pages/tools/add').then((m) => ({ default: m.Add })))
+const ToolEditPage = lazy(() => import('~src/pages/tools/edit').then((m) => ({ default: m.Edit })))
 const UserBookingsPage = lazy(() =>
   import('~src/pages/bookings/UserBookingsPage').then((m) => ({ default: m.UserBookingsPage }))
 )
@@ -18,10 +18,8 @@ const UserRatingsPage = lazy(() =>
   import('~src/pages/ratings/UserRatingsPage').then((m) => ({ default: m.UserRatingsPage }))
 )
 const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
-const ToolsListPage = lazy(() => import('~src/pages/tools/ToolsListPage').then((m) => ({ default: m.ToolsListPage })))
-const ToolDetailPage = lazy(() =>
-  import('~src/pages/tools/ToolDetailPage').then((m) => ({ default: m.ToolDetailPage }))
-)
+const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
+const ToolDetailPage = lazy(() => import('~src/pages/tools/detail').then((m) => ({ default: m.Detail })))
 const UserDetail = lazy(() => import('~src/pages/users/detail').then((m) => ({ default: m.Detail })))
 
 const DashboardRoutesElements = [

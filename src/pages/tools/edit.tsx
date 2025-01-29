@@ -1,25 +1,22 @@
-import { Center, Spinner } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useOutletContext, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { EditToolForm } from '~components/Tools/EditToolForm'
 import { useTool } from '~components/Tools/toolsQueries'
-import { NotFoundPage } from '~src/pages/NotFoundPage'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 import { ROUTES } from '~src/router/routes'
+import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import { icons } from '~utils/icons'
 
-export const ToolEditPage = () => {
+export const Edit = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const { user } = useAuth()
   const { setTitle } = useOutletContext<FormLayoutContext>()
 
-  const {
-    data: tool,
-    isLoading,
-    isError,
-  } = useTool(id!, {
+  const { data, isLoading, isError } = useTool(id!, {
     retry: false, // Don't retry on error
   })
 
@@ -28,21 +25,17 @@ export const ToolEditPage = () => {
   }, [setTitle])
 
   if (isLoading) {
-    return (
-      <Center h='100vh'>
-        <Spinner size='xl' />
-      </Center>
-    )
+    return <LoadingSpinner />
   }
 
-  if (isError) {
-    return <NotFoundPage />
+  if (!data || !id || isError) {
+    return <ElementNotFound icon={icons.tools} title={t('tools.not_found')} desc={t('tools.find_other')} />
   }
 
   // Only allow tool owner to access this page
-  if (!user || !tool || user.id !== tool.userId) {
+  if (!user || user.id !== data.userId) {
     return <Navigate to={ROUTES.TOOLS.DETAIL.replace(':id', id!)} replace />
   }
 
-  return <EditToolForm initialData={tool} />
+  return <EditToolForm initialData={data} />
 }

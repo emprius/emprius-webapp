@@ -14,44 +14,31 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import 'leaflet/dist/leaflet.css'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
-import { Link as RouterLink, useParams } from 'react-router-dom'
-import { useAuth } from '~components/Auth/AuthContext'
-import { useInfoContext } from '~components/Auth/InfoContext'
-import { BookingForm } from '~components/Bookings/BookingForm'
 import { ImageCarousel } from '~components/Layout/ImageCarousel'
-import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
-import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
-import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
-import { useTool } from '~components/Tools/toolsQueries'
-import { MapMarker } from '~components/Layout/Map'
-import { UserCard } from '~components/Users/UserCard'
+import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
 import { MdDoneOutline } from 'react-icons/md'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { UserCard } from '~components/Users/UserCard'
+import { MapMarker } from '~components/Layout/Map'
+import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
+import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
+import { BookingForm } from '~components/Bookings/BookingForm'
+import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
+import React from 'react'
+import { Tool } from '~components/Tools/types'
+import { useAuth } from '~components/Auth/AuthContext'
+import { useInfoContext } from '~components/Auth/InfoContext'
+import { useTranslation } from 'react-i18next'
 
-export const ToolDetailPage = () => {
-  const { id } = useParams<{ id: string }>()
+export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
   const { categories, transports } = useInfoContext()
-  const { data: tool, isLoading: isToolLoading } = useTool(id!)
-
-  const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-
-  if (isToolLoading) {
-    return <LoadingSpinner />
-  }
-
-  if (!tool) {
-    return null
-  }
+  const bgColor = useColorModeValue('white', 'gray.800')
 
   return (
     <Container maxW='container.xl' py={8}>

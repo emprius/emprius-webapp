@@ -185,6 +185,7 @@
     "may_be_free_note": "This tool may be available for free",
     "name": "Tool Name",
     "not_available": "This tool is currently not available",
+    "not_found": "Tool not found",
     "not_owner": "You are not the owner of this tool",
     "price_per_day": "Price per day",
     "select_category": "Select category",
