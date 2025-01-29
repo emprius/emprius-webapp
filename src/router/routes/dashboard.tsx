@@ -1,20 +1,22 @@
-import { SearchPage } from '~src/pages/search/SearchPage'
-import { Profile } from '~src/pages/profile/Profile'
-import { EditProfile } from '~src/pages/profile/EditProfile'
-import { ToolAddPage } from '~src/pages/tools/ToolAddPage'
-import { ToolEditPage } from '~src/pages/tools/ToolEditPage'
-import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
-import { UserRatingsPage } from '~src/pages/ratings/UserRatingsPage'
-import { UsersListPage } from '~src/pages/users/UsersListPage'
-import { ToolsListPage } from '~src/pages/tools/ToolsListPage'
-import { ToolDetailPage } from '~src/pages/tools/ToolDetailPage'
-import { UserDetail } from '~src/pages/users/UserDetail'
+import { lazy } from 'react'
 import { ProtectedRoute } from '~src/router/ProtectedRoute'
 import { FormLayout } from '~src/pages/FormLayout'
 import { TitlePageLayout } from '~src/pages/TitlePageLayout'
-
+import { SuspenseLoader } from '~src/router/SuspenseLoader'
 import { ROUTES } from '~src/router/routes/index'
 import { Layout } from '~src/pages/Layout'
+
+const SearchPage = lazy(() => import('~src/pages/search/SearchPage').then(m => ({ default: m.SearchPage })))
+const Profile = lazy(() => import('~src/pages/profile/Profile').then(m => ({ default: m.Profile })))
+const EditProfile = lazy(() => import('~src/pages/profile/EditProfile').then(m => ({ default: m.EditProfile })))
+const ToolAddPage = lazy(() => import('~src/pages/tools/ToolAddPage').then(m => ({ default: m.ToolAddPage })))
+const ToolEditPage = lazy(() => import('~src/pages/tools/ToolEditPage').then(m => ({ default: m.ToolEditPage })))
+const UserBookingsPage = lazy(() => import('~src/pages/bookings/UserBookingsPage').then(m => ({ default: m.UserBookingsPage })))
+const UserRatingsPage = lazy(() => import('~src/pages/ratings/UserRatingsPage').then(m => ({ default: m.UserRatingsPage })))
+const UsersListPage = lazy(() => import('~src/pages/users/UsersListPage').then(m => ({ default: m.UsersListPage })))
+const ToolsListPage = lazy(() => import('~src/pages/tools/ToolsListPage').then(m => ({ default: m.ToolsListPage })))
+const ToolDetailPage = lazy(() => import('~src/pages/tools/ToolDetailPage').then(m => ({ default: m.ToolDetailPage })))
+const UserDetail = lazy(() => import('~src/pages/users/UserDetail').then(m => ({ default: m.UserDetail })))
 
 const DashboardRoutesElements = [
   {
@@ -22,26 +24,26 @@ const DashboardRoutesElements = [
     children: [
       {
         path: ROUTES.SEARCH,
-        element: <SearchPage />,
+        element: <SuspenseLoader><SearchPage /></SuspenseLoader>,
       },
       {
         path: ROUTES.PROFILE.VIEW,
-        element: <Profile />,
+        element: <SuspenseLoader><Profile /></SuspenseLoader>,
       },
       {
         element: <FormLayout />,
         children: [
           {
             path: ROUTES.PROFILE.EDIT,
-            element: <EditProfile />,
+            element: <SuspenseLoader><EditProfile /></SuspenseLoader>,
           },
           {
             path: ROUTES.TOOLS.NEW,
-            element: <ToolAddPage />,
+            element: <SuspenseLoader><ToolAddPage /></SuspenseLoader>,
           },
           {
             path: ROUTES.TOOLS.EDIT,
-            element: <ToolEditPage />,
+            element: <SuspenseLoader><ToolEditPage /></SuspenseLoader>,
           },
         ],
       },
@@ -50,29 +52,29 @@ const DashboardRoutesElements = [
         children: [
           {
             path: ROUTES.BOOKINGS,
-            element: <UserBookingsPage />,
+            element: <SuspenseLoader><UserBookingsPage /></SuspenseLoader>,
           },
           {
             path: ROUTES.RATINGS,
-            element: <UserRatingsPage />,
+            element: <SuspenseLoader><UserRatingsPage /></SuspenseLoader>,
           },
           {
             path: ROUTES.USERS.LIST,
-            element: <UsersListPage />,
+            element: <SuspenseLoader><UsersListPage /></SuspenseLoader>,
           },
         ],
       },
       {
         path: ROUTES.TOOLS.LIST,
-        element: <ToolsListPage />,
+        element: <SuspenseLoader><ToolsListPage /></SuspenseLoader>,
       },
       {
         path: ROUTES.TOOLS.DETAIL,
-        element: <ToolDetailPage />,
+        element: <SuspenseLoader><ToolDetailPage /></SuspenseLoader>,
       },
       {
         path: ROUTES.USERS.DETAIL,
-        element: <UserDetail />,
+        element: <SuspenseLoader><UserDetail /></SuspenseLoader>,
       },
     ],
   },
