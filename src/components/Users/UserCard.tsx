@@ -4,7 +4,7 @@ import { DisplayRating } from '../Ratings/DisplayRating'
 import { Avatar, AvatarSize } from '../Images/Avatar'
 import { useUserProfile } from './userQueries'
 import { UseQueryOptions } from '@tanstack/react-query/build/modern'
-import { UserProfile } from '~components/User/userTypes'
+import { UserProfile } from '~components/Users/userTypes'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { ROUTES } from '~src/router/routes'

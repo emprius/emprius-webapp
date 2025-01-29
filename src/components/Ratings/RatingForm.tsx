@@ -17,7 +17,7 @@ import { RatingStars } from '~components/Ratings/RatingStars'
 import { useSubmitRating } from './ratingQueries'
 import { Rating } from '~components/Ratings/types'
 import { useTool } from '~components/Tools/toolsQueries'
-import { UserCard } from '~components/User/UserCard'
+import { UserCard } from '~components/Users/UserCard'
 import { ServerImage } from '~components/Images/ServerImage'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 

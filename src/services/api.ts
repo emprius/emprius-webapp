@@ -12,7 +12,7 @@ import type {RateSubmission, Rating} from '~components/Ratings/types'
 import {SearchFilters, SearchToolsResponse} from '~components/Search/searchQueries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/toolsQueries'
 import {Tool} from '~components/Tools/types'
-import {EditProfileFormData, UserProfile} from '~components/User/userTypes'
+import {EditProfileFormData, UserProfile} from '~components/Users/userTypes'
 import {STORAGE_KEYS} from '~utils/constants'
 import {BookingPendings} from '~components/Layout/PendingActionsProvider'
 

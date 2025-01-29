@@ -19,7 +19,7 @@ const sizes = {
 
 export const DisplayRating = ({ rating, size = 'md', showCount = true, ratingCount }: DisplayRatingProps) => {
   return (
-    <HStack spacing={2}>
+    <HStack spacing={2} wrap={'wrap'}>
       <HStack spacing={sizes[size].spacing}>
         {[0, 1, 2, 3, 4].map((position) => (
           <Star key={position} position={position} rating={rating} size={size} />

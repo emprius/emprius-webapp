@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { EditProfileForm } from '~components/User/EditProfileForm'
+import { EditProfileForm } from '~components/Users/EditProfileForm'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 
-export const EditProfile = () => {
+export const Edit = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const { setTitle } = useOutletContext<FormLayoutContext>()

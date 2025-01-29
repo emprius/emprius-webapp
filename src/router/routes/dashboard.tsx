@@ -6,17 +6,23 @@ import { SuspenseLoader } from '~src/router/SuspenseLoader'
 import { ROUTES } from '~src/router/routes/index'
 import { Layout } from '~src/pages/Layout'
 
-const SearchPage = lazy(() => import('~src/pages/search/SearchPage').then(m => ({ default: m.SearchPage })))
-const Profile = lazy(() => import('~src/pages/profile/Profile').then(m => ({ default: m.Profile })))
-const EditProfile = lazy(() => import('~src/pages/profile/EditProfile').then(m => ({ default: m.EditProfile })))
-const ToolAddPage = lazy(() => import('~src/pages/tools/ToolAddPage').then(m => ({ default: m.ToolAddPage })))
-const ToolEditPage = lazy(() => import('~src/pages/tools/ToolEditPage').then(m => ({ default: m.ToolEditPage })))
-const UserBookingsPage = lazy(() => import('~src/pages/bookings/UserBookingsPage').then(m => ({ default: m.UserBookingsPage })))
-const UserRatingsPage = lazy(() => import('~src/pages/ratings/UserRatingsPage').then(m => ({ default: m.UserRatingsPage })))
-const UsersListPage = lazy(() => import('~src/pages/users/UsersListPage').then(m => ({ default: m.UsersListPage })))
-const ToolsListPage = lazy(() => import('~src/pages/tools/ToolsListPage').then(m => ({ default: m.ToolsListPage })))
-const ToolDetailPage = lazy(() => import('~src/pages/tools/ToolDetailPage').then(m => ({ default: m.ToolDetailPage })))
-const UserDetail = lazy(() => import('~src/pages/users/UserDetail').then(m => ({ default: m.UserDetail })))
+const SearchPage = lazy(() => import('~src/pages/search/SearchPage').then((m) => ({ default: m.SearchPage })))
+const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ default: m.View })))
+const EditProfile = lazy(() => import('~src/pages/profile/edit').then((m) => ({ default: m.Edit })))
+const ToolAddPage = lazy(() => import('~src/pages/tools/ToolAddPage').then((m) => ({ default: m.ToolAddPage })))
+const ToolEditPage = lazy(() => import('~src/pages/tools/ToolEditPage').then((m) => ({ default: m.ToolEditPage })))
+const UserBookingsPage = lazy(() =>
+  import('~src/pages/bookings/UserBookingsPage').then((m) => ({ default: m.UserBookingsPage }))
+)
+const UserRatingsPage = lazy(() =>
+  import('~src/pages/ratings/UserRatingsPage').then((m) => ({ default: m.UserRatingsPage }))
+)
+const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
+const ToolsListPage = lazy(() => import('~src/pages/tools/ToolsListPage').then((m) => ({ default: m.ToolsListPage })))
+const ToolDetailPage = lazy(() =>
+  import('~src/pages/tools/ToolDetailPage').then((m) => ({ default: m.ToolDetailPage }))
+)
+const UserDetail = lazy(() => import('~src/pages/users/detail').then((m) => ({ default: m.Detail })))
 
 const DashboardRoutesElements = [
   {
@@ -24,26 +30,46 @@ const DashboardRoutesElements = [
     children: [
       {
         path: ROUTES.SEARCH,
-        element: <SuspenseLoader><SearchPage /></SuspenseLoader>,
+        element: (
+          <SuspenseLoader>
+            <SearchPage />
+          </SuspenseLoader>
+        ),
       },
       {
         path: ROUTES.PROFILE.VIEW,
-        element: <SuspenseLoader><Profile /></SuspenseLoader>,
+        element: (
+          <SuspenseLoader>
+            <Profile />
+          </SuspenseLoader>
+        ),
       },
       {
         element: <FormLayout />,
         children: [
           {
             path: ROUTES.PROFILE.EDIT,
-            element: <SuspenseLoader><EditProfile /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <EditProfile />
+              </SuspenseLoader>
+            ),
           },
           {
             path: ROUTES.TOOLS.NEW,
-            element: <SuspenseLoader><ToolAddPage /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <ToolAddPage />
+              </SuspenseLoader>
+            ),
           },
           {
             path: ROUTES.TOOLS.EDIT,
-            element: <SuspenseLoader><ToolEditPage /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <ToolEditPage />
+              </SuspenseLoader>
+            ),
           },
         ],
       },
@@ -52,29 +78,53 @@ const DashboardRoutesElements = [
         children: [
           {
             path: ROUTES.BOOKINGS,
-            element: <SuspenseLoader><UserBookingsPage /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <UserBookingsPage />
+              </SuspenseLoader>
+            ),
           },
           {
             path: ROUTES.RATINGS,
-            element: <SuspenseLoader><UserRatingsPage /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <UserRatingsPage />
+              </SuspenseLoader>
+            ),
           },
           {
             path: ROUTES.USERS.LIST,
-            element: <SuspenseLoader><UsersListPage /></SuspenseLoader>,
+            element: (
+              <SuspenseLoader>
+                <UsersListPage />
+              </SuspenseLoader>
+            ),
           },
         ],
       },
       {
         path: ROUTES.TOOLS.LIST,
-        element: <SuspenseLoader><ToolsListPage /></SuspenseLoader>,
+        element: (
+          <SuspenseLoader>
+            <ToolsListPage />
+          </SuspenseLoader>
+        ),
       },
       {
         path: ROUTES.TOOLS.DETAIL,
-        element: <SuspenseLoader><ToolDetailPage /></SuspenseLoader>,
+        element: (
+          <SuspenseLoader>
+            <ToolDetailPage />
+          </SuspenseLoader>
+        ),
       },
       {
         path: ROUTES.USERS.DETAIL,
-        element: <SuspenseLoader><UserDetail /></SuspenseLoader>,
+        element: (
+          <SuspenseLoader>
+            <UserDetail />
+          </SuspenseLoader>
+        ),
       },
     ],
   },

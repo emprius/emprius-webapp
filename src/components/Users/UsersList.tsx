@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { users } from '~src/services/api'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { FiChevronLeft, FiChevronRight, FiUsers } from 'react-icons/fi'
-import { UserCard } from '~components/User/UserCard'
+import { UserCard } from '~components/Users/UserCard'
 
 export const UsersList = () => {
   const { t } = useTranslation()
