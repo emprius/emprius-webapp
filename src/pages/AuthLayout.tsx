@@ -19,7 +19,7 @@ export const AuthLayout = () => {
   }
 
   return (
-    <Box minH='100vh' display='flex' alignItems='center' bg={bgColor}>
+    <Box minH='100vh' display='flex' alignItems='center' bg={bgColor} py={4}>
       <Container maxW='container.sm'>
         <Box mb={8} display='flex' justifyContent='center'>
           <Image src='/assets/logos/logo.png' alt='Emprius' h='60px' objectFit='contain' />

@@ -1,8 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { HomePage } from '~components/Home/HomePage'
-import { LoginPage } from '~src/pages/auth/LoginPage'
-import { RegisterPage } from '~src/pages/auth/RegisterPage'
-import { AuthLayout } from '~src/pages/AuthLayout'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
 import { UserBookingsPage } from '~src/pages/bookings/UserBookingsPage'
 import { Profile } from '~src/pages/profile/Profile'
@@ -19,6 +16,7 @@ import { ProtectedRoute } from '~src/router/ProtectedRoute'
 import { Layout } from '../pages/Layout'
 import { TitlePageLayout } from '~src/pages/TitlePageLayout'
 import { FormLayout } from '~src/pages/FormLayout'
+import { useAuthRoutes } from '~src/router/routes/auth'
 
 export const ROUTES = {
   HOME: '/',
@@ -46,85 +44,67 @@ export const ROUTES = {
   ABOUT: '/about',
 } as const
 
-const router = createBrowserRouter([
+const routes = [
   {
-    element: <Layout />,
+    path: ROUTES.HOME,
+    element: <HomePage />,
+  },
+  {
+    element: <ProtectedRoute />,
     children: [
       {
-        path: ROUTES.HOME,
-        element: <HomePage />,
+        path: ROUTES.SEARCH,
+        element: <SearchPage />,
       },
       {
-        element: <ProtectedRoute />,
+        path: ROUTES.PROFILE.VIEW,
+        element: <Profile />,
+      },
+      {
+        element: <FormLayout />,
         children: [
           {
-            path: ROUTES.SEARCH,
-            element: <SearchPage />,
+            path: ROUTES.PROFILE.EDIT,
+            element: <EditProfile />,
           },
           {
-            path: ROUTES.PROFILE.VIEW,
-            element: <Profile />,
+            path: ROUTES.TOOLS.NEW,
+            element: <ToolAddPage />,
           },
           {
-            element: <FormLayout />,
-            children: [
-              {
-                path: ROUTES.PROFILE.EDIT,
-                element: <EditProfile />,
-              },
-              {
-                path: ROUTES.TOOLS.NEW,
-                element: <ToolAddPage />,
-              },
-              {
-                path: ROUTES.TOOLS.EDIT,
-                element: <ToolEditPage />,
-              },
-            ],
-          },
-          {
-            element: <TitlePageLayout />,
-            children: [
-              {
-                path: ROUTES.BOOKINGS,
-                element: <UserBookingsPage />,
-              },
-              {
-                path: ROUTES.RATINGS,
-                element: <UserRatingsPage />,
-              },
-              {
-                path: ROUTES.USERS.LIST,
-                element: <UsersListPage />,
-              },
-            ],
-          },
-          {
-            path: ROUTES.TOOLS.LIST,
-            element: <ToolsListPage />,
-          },
-          {
-            path: ROUTES.TOOLS.DETAIL,
-            element: <ToolDetailPage />,
-          },
-          {
-            path: ROUTES.USERS.DETAIL,
-            element: <UserDetail />,
+            path: ROUTES.TOOLS.EDIT,
+            element: <ToolEditPage />,
           },
         ],
       },
-    ],
-  },
-  {
-    element: <AuthLayout />,
-    children: [
       {
-        path: ROUTES.AUTH.LOGIN.slice(1),
-        element: <LoginPage />,
+        element: <TitlePageLayout />,
+        children: [
+          {
+            path: ROUTES.BOOKINGS,
+            element: <UserBookingsPage />,
+          },
+          {
+            path: ROUTES.RATINGS,
+            element: <UserRatingsPage />,
+          },
+          {
+            path: ROUTES.USERS.LIST,
+            element: <UsersListPage />,
+          },
+        ],
       },
       {
-        path: ROUTES.AUTH.REGISTER.slice(1),
-        element: <RegisterPage />,
+        path: ROUTES.TOOLS.LIST,
+        element: <ToolsListPage />,
+      },
+      {
+        path: ROUTES.TOOLS.DETAIL,
+        element: <ToolDetailPage />,
+      },
+      {
+        path: ROUTES.USERS.DETAIL,
+        element: <UserDetail />,
       },
     ],
   },
@@ -132,8 +112,18 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />,
   },
-])
+]
+
+const useRoutes = () => ({
+  path: ROUTES.HOME,
+  element: <Layout />,
+  children: routes,
+})
 
 export const AppRoutes = () => {
+  const auth = useAuthRoutes()
+  const routes = useRoutes()
+  const router = createBrowserRouter([routes, auth])
+
   return <RouterProvider router={router} />
 }
