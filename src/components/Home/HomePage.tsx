@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { FiSearch, FiTool, FiUsers } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 export const HomePage = () => {
   const { t } = useTranslation()

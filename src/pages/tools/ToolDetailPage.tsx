@@ -27,13 +27,13 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
 import { useTool } from '~components/Tools/toolsQueries'
-import { ROUTES } from '~src/router/router'
 import { MapMarker } from '~components/Layout/Map'
 import { UserCard } from '~components/User/UserCard'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
 import { MdDoneOutline } from 'react-icons/md'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { ROUTES } from '~src/router/routes'
 
 export const ToolDetailPage = () => {
   const { id } = useParams<{ id: string }>()

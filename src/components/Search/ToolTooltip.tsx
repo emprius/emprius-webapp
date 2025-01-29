@@ -3,9 +3,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import type { Tool } from '~components/Tools/types'
-import { ROUTES } from '~src/router/router'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { Link } from 'react-router-dom'
+import { ROUTES } from '~src/router/routes'
 
 interface ToolTooltipProps {
   tool: Tool

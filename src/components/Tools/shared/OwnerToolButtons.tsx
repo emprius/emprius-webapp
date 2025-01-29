@@ -19,7 +19,8 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/toolsQueries'
 import { Tool } from '~components/Tools/types'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 export const OwnerToolButtons = ({ tool }: { tool: Tool }) => {
   const { user } = useAuth()

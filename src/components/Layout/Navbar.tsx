@@ -15,14 +15,25 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiStar, FiSun, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import {
+  FiBookmark,
+  FiLogOut,
+  FiMoon,
+  FiSearch,
+  FiSettings,
+  FiStar,
+  FiSun,
+  FiTool,
+  FiUser,
+  FiUsers,
+} from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
-import { ROUTES } from '~src/router/router'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { BadgeIcon } from './BadgeIcon'
 import { usePendingActions } from './PendingActionsProvider'
+import { ROUTES } from '~src/router/routes'
 
 export const Navbar = () => {
   const { t } = useTranslation()

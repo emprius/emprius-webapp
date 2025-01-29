@@ -3,7 +3,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiGithub } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 export const Footer = () => {
   const { t } = useTranslation()

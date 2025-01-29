@@ -12,8 +12,8 @@ import { Avatar } from '~components/Images/Avatar'
 import { UserCard } from '~components/User/UserCard'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
-import { ROUTES } from '~src/router/router'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { ROUTES } from '~src/router/routes'
 
 interface BookingDatesProps {
   booking: Booking

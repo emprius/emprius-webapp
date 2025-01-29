@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/imagesQueries'
-import { ROUTES } from '~src/router/router'
 import { ToolForm, ToolFormData } from './ToolForm'
 import { UpdateToolParams, useUpdateTool } from './toolsQueries'
 import { Tool } from './types'
+import { ROUTES } from '~src/router/routes'
 
 interface EditToolFormProps {
   initialData: Tool

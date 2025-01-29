@@ -4,7 +4,8 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { useInfoContext } from '~components/Auth/InfoContext'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ServerErrorPage } from '~src/pages/ServerErrorPage'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 export const ProtectedRoute = () => {
   const context = useOutletContext()

@@ -8,11 +8,11 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '../Images/Avatar'
 import { MapMarker } from '~components/Layout/Map'
 import { DisplayRating } from '~components/Ratings/DisplayRating'
-import { ROUTES } from '~src/router/router'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { auth, users } from '../../services/api'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { ROUTES } from '~src/router/routes'
 
 interface UserInfoProps {
   userId?: string // Optional - if not provided, shows current user's profile
@@ -25,7 +25,7 @@ export const UserInfo = ({ userId }: UserInfoProps) => {
 
   const { data: userProfile, isLoading } = useQuery({
     queryKey: ['user', userId],
-    queryFn: () => userId ? users.getById(userId) : auth.getCurrentUser(),
+    queryFn: () => (userId ? users.getById(userId) : auth.getCurrentUser()),
   })
 
   const bgColor = useColorModeValue('white', 'gray.800')

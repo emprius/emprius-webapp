@@ -6,7 +6,8 @@ import { useUserProfile } from './userQueries'
 import { UseQueryOptions } from '@tanstack/react-query/build/modern'
 import { UserProfile } from '~components/User/userTypes'
 import { Link as RouterLink } from 'react-router-dom'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 type UserMiniCardProps = {
   userId: string

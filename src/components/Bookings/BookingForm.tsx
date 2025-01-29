@@ -17,8 +17,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useCreateBooking } from '~components/Bookings/bookingsQueries'
 import { DateRangePicker } from '~components/Layout/Form/DateRangePicker'
-import { ROUTES } from '~src/router/router'
 import { Tool } from '~components/Tools/types'
+import { ROUTES } from '~src/router/routes'
 
 interface BookingFormProps {
   tool: Tool

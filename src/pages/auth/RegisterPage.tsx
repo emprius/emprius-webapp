@@ -20,8 +20,8 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { IRegisterParams } from '~components/Auth/authQueries'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
-import { ROUTES } from '~src/router/router'
 import { AUTH_FORM } from '~utils/constants'
+import { ROUTES } from '~src/router/routes'
 
 interface RegisterFormData extends IRegisterParams {
   confirmPassword: string

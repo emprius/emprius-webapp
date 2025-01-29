@@ -2,7 +2,8 @@ import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '~src/router/router'
+
+import { ROUTES } from '~src/router/routes'
 
 export const ServerErrorPage = () => {
   const { t } = useTranslation()

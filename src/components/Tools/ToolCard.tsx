@@ -3,10 +3,10 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool } from '~components/Tools/types'
-import { ROUTES } from '~src/router/router'
 import { ToolImage } from './shared/ToolImage'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { useTranslation } from 'react-i18next'
+import { ROUTES } from '~src/router/routes'
 
 interface ToolCardProps {
   tool: Tool

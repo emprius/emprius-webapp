@@ -19,8 +19,8 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ILoginParams } from '~components/Auth/authQueries'
 import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
-import { ROUTES } from '~src/router/router'
 import { AUTH_FORM } from '~utils/constants'
+import { ROUTES } from '~src/router/routes'
 
 export const LoginPage = () => {
   const { t } = useTranslation()

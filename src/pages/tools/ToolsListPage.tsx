@@ -3,10 +3,10 @@ import { Box, Button, Container, SimpleGrid, useColorModeValue } from '@chakra-u
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '~src/router/router'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ToolCard } from '~components/Tools/ToolCard'
 import { useTools } from '~components/Tools/toolsQueries'
+import { ROUTES } from '~src/router/routes'
 
 export const ToolsListPage = () => {
   const { t } = useTranslation()

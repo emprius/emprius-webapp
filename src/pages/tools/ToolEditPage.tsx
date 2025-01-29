@@ -6,8 +6,8 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { EditToolForm } from '~components/Tools/EditToolForm'
 import { useTool } from '~components/Tools/toolsQueries'
 import { NotFoundPage } from '~src/pages/NotFoundPage'
-import { ROUTES } from '~src/router/router'
 import { FormLayoutContext } from '~src/pages/FormLayout'
+import { ROUTES } from '~src/router/routes'
 
 export const ToolEditPage = () => {
   const { t } = useTranslation()
