@@ -6,7 +6,7 @@ import { SuspenseLoader } from '~src/router/SuspenseLoader'
 import { ROUTES } from '~src/router/routes/index'
 import { Layout } from '~src/pages/Layout'
 
-const SearchPage = lazy(() => import('~src/pages/search/SearchPage').then((m) => ({ default: m.SearchPage })))
+const SearchPage = lazy(() => import('~src/pages/search/view').then((m) => ({ default: m.View })))
 const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ default: m.View })))
 const EditProfile = lazy(() => import('~src/pages/profile/edit').then((m) => ({ default: m.Edit })))
 const ToolAddPage = lazy(() => import('~src/pages/tools/add').then((m) => ({ default: m.Add })))

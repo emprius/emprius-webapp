@@ -1,81 +1,58 @@
 import { Box } from '@chakra-ui/react'
-import L, { LatLng } from 'leaflet'
-import 'leaflet/dist/leaflet.css'
 import React from 'react'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import { MAP_DEFAULTS } from '~utils/constants'
-import { ToolTooltip } from './ToolTooltip'
-import { Tool } from '~components/Tools/types'
-import { EmpriusLocation } from '~components/Layout/types'
-import { useTranslation } from 'react-i18next'
-import ReactDOMServer from 'react-dom/server'
-import { IoMdHome } from 'react-icons/io'
+import { FormProvider, useForm } from 'react-hook-form'
+import { SearchBar } from '~components/Search/SearchBar'
+import { Map } from '~components/Search/Map'
+import { SearchFilters, useSearchTools } from '~components/Search/searchQueries'
+import { useAuth } from '~components/Auth/AuthContext'
 
-const HomeIcon = L.divIcon({
-  className: 'custom-home-marker',
-  html: ReactDOMServer.renderToString(
-    <IoMdHome style={{ color: '#0967D2', fontSize: '52px', filter: 'drop-shadow(3px 3px 4px #0967D2)' }} />
-  ),
-  iconSize: [35, 35],
-  iconAnchor: [17, 35],
-  popupAnchor: [1, -35],
-})
+export const MAX_COST_MAX = 1000
+export const MAX_COST_DEFAULT = MAX_COST_MAX
+export const DISTANCE_MAX = 250
+export const DISTANCE_DEFAULT = 50
 
-export interface SearchMapProps {
-  tools: Tool[]
-  center: EmpriusLocation
+const defaultValues: Partial<SearchFilters> = {
+  term: '',
+  categories: undefined,
+  transportOptions: undefined,
+  distance: DISTANCE_DEFAULT,
+  maxCost: MAX_COST_DEFAULT,
+  mayBeFree: false,
 }
 
-export const SearchMap = ({ tools, center: { latitude, longitude } }: SearchMapProps) => {
-  const latlng = new LatLng(latitude / 1000000, longitude / 1000000)
-  const { t } = useTranslation()
+export const SearchMap = () => {
+  const { user } = useAuth()
+  const { mutate, data: toolsResponse } = useSearchTools()
+  const methods = useForm<SearchFilters>({
+    defaultValues,
+  })
+
+  const onSubmit = (data: SearchFilters) => {
+    // Avoid sending term if is empty
+    if (!data.term) {
+      delete data.term
+    }
+    mutate({
+      mayBeFree: data.mayBeFree,
+      maxCost: data.maxCost,
+      term: data.term,
+      distance: data.distance * 1000, // Convert to meters
+      categories: data.categories,
+      transportOptions: data.transportOptions,
+    })
+  }
+
+  const tools = toolsResponse?.tools || []
 
   return (
-    <Box
-      height='91vh'
-      width='100%'
-      maxHeight='800px'
-      sx={{
-        '.custom-home-marker': {
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'none',
-          border: 'none',
-        },
-        '.leaflet-control-zoom': {
-          '@media (max-width: 48em)': {
-            position: 'fixed',
-            right: '16px',
-            bottom: '25px',
-            zIndex: 1000,
-          },
-        },
-      }}
-    >
-      <MapContainer
-        center={latlng || MAP_DEFAULTS.CENTER}
-        zoom={MAP_DEFAULTS.ZOOM}
-        scrollWheelZoom={true}
-        style={{ height: '100%', width: '100%' }}
-        minZoom={MAP_DEFAULTS.MIN_ZOOM}
-        maxZoom={MAP_DEFAULTS.MAX_ZOOM}
-      >
-        <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
-        <Marker position={latlng} icon={HomeIcon}>
-          <Popup>{t('map.you_are_here', { defaultValue: 'You are here' })}</Popup>
-        </Marker>
-        {tools.map(
-          (tool) =>
-            tool.location && (
-              <Marker key={tool.id} position={[tool.location.latitude / 1e6, tool.location.longitude / 1e6]}>
-                <Popup>
-                  <ToolTooltip tool={tool} />
-                </Popup>
-              </Marker>
-            )
-        )}
-      </MapContainer>
+    <Box position='relative' height='100vh'>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <SearchBar />
+        </form>
+      </FormProvider>
+
+      <Map tools={tools} center={user.location} />
     </Box>
   )
 }
