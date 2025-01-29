@@ -108,17 +108,21 @@ export const ToolDetailPage = () => {
                     )}
                   </SimpleGrid>
                   {tool.transportOptions.length > 0 && (
-                    <Stack direction='row' align='center'>
-                      <HiOutlineTruck size={20} />
-                      <Text>{t('tools.transport_options')}:</Text>
-                      {tool.transportOptions
-                        .map((transport) => transports.find((t) => t.id === transport)?.name)
-                        .map((name) => (
-                          <Tag key={name} variant='subtle' colorScheme='cyan'>
-                            <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
-                            <TagLabel>{name}</TagLabel>
-                          </Tag>
-                        ))}
+                    <Stack direction={{ base: 'column', sm: 'row' }} align='start' wrap='wrap'>
+                      <Stack direction={'row'}>
+                        <HiOutlineTruck size={20} />
+                        <Text>{t('tools.transport_options')}:</Text>
+                      </Stack>
+                      <Stack direction={'row'} wrap='wrap'>
+                        {tool.transportOptions
+                          .map((transport) => transports.find((t) => t.id === transport)?.name)
+                          .map((name) => (
+                            <Tag key={name} variant='subtle' colorScheme='cyan'>
+                              <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
+                              <TagLabel>{name}</TagLabel>
+                            </Tag>
+                          ))}
+                      </Stack>
                     </Stack>
                   )}
                   <UserCard userId={tool.userId} />

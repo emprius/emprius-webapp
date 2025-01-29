@@ -78,7 +78,7 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
     }
 
     // Combine existing image hashes with new image hashes
-    const allImageHashes = [...existingImages.map((img) => img.hash), ...newImageHashes]
+    const allImageHashes = [...existingImages, ...newImageHashes]
 
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
       title: data.title,

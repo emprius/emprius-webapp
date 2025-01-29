@@ -29,7 +29,7 @@ const BookingDates = ({ booking }: BookingDatesProps) => {
 
   return (
     <Stack spacing={1}>
-      <Flex align={'center'} fontSize='md' color='gray.700'>
+      <Flex align={'center'} fontSize='md' color='gray.700' wrap={'wrap'}>
         <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
         {t('bookings.date_formatted', { date: date.begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
@@ -245,7 +245,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                         {tool.title}
                       </Link>
                       {!isRequest && (
-                        <HStack>
+                        <HStack wrap={'wrap'}>
                           <Text color='gray.600' fontSize='lg' fontWeight='bold'>
                             {t('tools.cost_unit', { cost: tool.cost })}
                           </Text>

@@ -84,7 +84,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   } = useForm<ToolFormData>({
     defaultValues: {
       ...initialData,
-      transportOptions: initialData?.transportOptions?.map((value) => value.id) || [],
+      // transportOptions: initialData?.transportOptions?.map((value) => value.id) || [],
       isAvailable: initialData?.isAvailable || true,
     },
   })

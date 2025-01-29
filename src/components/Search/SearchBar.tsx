@@ -12,7 +12,7 @@ export const SearchBar = () => {
 
   return (
     <Box
-      position='absolute'
+      position={'absolute'}
       top={4}
       left='50%'
       transform='translateX(-50%)'
