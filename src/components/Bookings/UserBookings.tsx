@@ -1,4 +1,4 @@
-import { Box, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react'
+import { Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bookings/bookingsQueries'
@@ -7,6 +7,9 @@ import { BookingCard, BookingCardType } from './BookingCard'
 import { UseQueryResult } from '@tanstack/react-query'
 import { usePendingActions } from '~components/Layout/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import { icons } from '~utils/icons'
+import ErrorComponent from '~components/Layout/ErrorComponent'
 
 export const UserBookings = () => {
   const { t } = useTranslation()
@@ -46,21 +49,19 @@ type BookingListProps = {
   type: BookingCardType
 } & UseQueryResult<Booking[], Error>
 
-const BookingList = ({ data: bookings, type, isLoading, isError }: BookingListProps) => {
+const BookingList = ({ data: bookings, type, isLoading, error }: BookingListProps) => {
   const { t } = useTranslation()
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   if (isLoading) {
     return <LoadingSpinner />
   }
 
-  if (!bookings?.length || isError) {
-    return (
-      <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} textAlign='center'>
-        <Text color='gray.600'>{t('user.no_bookings')}</Text>
-      </Box>
-    )
+  if (!bookings?.length) {
+    return <ElementNotFound icon={icons.ratings} title={t('user.no_bookings')} desc={t('user.no_bookings_desc')} />
+  }
+
+  if (error) {
+    return <ErrorComponent error={error} />
   }
 
   return (

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiBookmark, FiLogOut, FiMoon, FiSearch, FiSettings, FiSun, FiUser } from 'react-icons/fi'
+import { FiLogOut, FiMoon, FiSearch, FiSettings, FiSun } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -80,7 +80,7 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <BadgeIcon
-                    icon={FiBookmark}
+                    icon={icons.bookings}
                     aria-label={t('nav.my_bookings')}
                     count={pendingRequestsCount}
                     color={iconColor}
@@ -159,7 +159,7 @@ export const Navbar = () => {
                     <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />}>
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
                       {t('nav.profile')}
                     </MenuItem>
                     <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
@@ -177,7 +177,7 @@ export const Navbar = () => {
                       <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<FiUser />}>
+                      <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
                         {t('nav.profile')}
                       </MenuItem>
                       <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={icons.tools({})}>
@@ -188,7 +188,7 @@ export const Navbar = () => {
                         to={ROUTES.BOOKINGS}
                         icon={
                           <BadgeIcon
-                            icon={FiBookmark}
+                            icon={icons.bookings}
                             aria-label={t('nav.my_bookings')}
                             count={pendingRequestsCount}
                             badgeProps={{ top: '-12px', right: '-12px' }}

@@ -4,7 +4,7 @@ import { UserBookings } from '~components/Bookings/UserBookings'
 import { useOutletContext } from 'react-router-dom'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 
-export const UserBookingsPage = () => {
+export const View = () => {
   const { t } = useTranslation()
   const { setTitle } = useOutletContext<TitlePageLayoutContext>()
 
