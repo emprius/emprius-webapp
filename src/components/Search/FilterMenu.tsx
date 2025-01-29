@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useFormContext } from 'react-hook-form'
 import { useInfoContext } from '~components/Info/InfoContext'
 import { Select } from 'chakra-react-select'
-import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~src/pages/search/view'
+import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~components/Search/SearchMap'
 
 interface FilterMenuProps {
   isOpen: boolean
