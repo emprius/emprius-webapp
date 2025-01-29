@@ -1,4 +1,4 @@
-import { Box, Text, useToast } from '@chakra-ui/react'
+import { Text, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -109,17 +109,15 @@ export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { image
   const isLoading = updateToolIsPending || uploadImageIsPending
 
   return (
-    <Box>
-      <ToolForm
-        initialData={initialData}
-        onSubmit={handleSubmit}
-        submitButtonText={t('common.save')}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        existingImages={existingImages}
-        onDeleteExistingImage={handleDeleteExistingImage}
-      />
-    </Box>
+    <ToolForm
+      initialData={initialData}
+      onSubmit={handleSubmit}
+      submitButtonText={t('common.save')}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      existingImages={existingImages}
+      onDeleteExistingImage={handleDeleteExistingImage}
+    />
   )
 }

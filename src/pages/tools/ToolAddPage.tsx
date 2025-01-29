@@ -1,19 +1,20 @@
-import { Container, Heading, Stack, useColorModeValue, useToast } from '@chakra-ui/react'
-import React from 'react'
+import { useToast } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { useUploadImage } from '~components/Images/imagesQueries'
 import { ToolForm, ToolFormData } from '~components/Tools/ToolForm'
 import { useCreateTool } from '~components/Tools/toolsQueries'
 import { useAuth } from '~components/Auth/AuthContext'
+import { FormLayoutContext } from '~src/pages/FormLayout'
 
 export const ToolAddPage = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
-  const bgColor = useColorModeValue('white', 'gray.800')
   const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
+  const { setTitle } = useOutletContext<FormLayoutContext>()
 
   const {
     mutateAsync: createTool,
@@ -76,19 +77,18 @@ export const ToolAddPage = () => {
 
   const isLoading = createToolIsPending || uploadImageIsPending
 
+  useEffect(() => {
+    setTitle(t('tools.add_tool'))
+  }, [setTitle])
+
   return (
-    <Container maxW='container.md' py={8}>
-      <Stack bg={bgColor} p={8} borderRadius='lg' boxShadow='sm' spacing={6}>
-        <Heading size='lg'>{t('tools.add_tool')}</Heading>
-        <ToolForm
-          onSubmit={handleSubmit}
-          submitButtonText={t('tools.create')}
-          isLoading={isLoading}
-          isError={isError}
-          error={error}
-          initialData={{ location: user.location }}
-        />
-      </Stack>
-    </Container>
+    <ToolForm
+      onSubmit={handleSubmit}
+      submitButtonText={t('tools.create')}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      initialData={{ location: user.location }}
+    />
   )
 }

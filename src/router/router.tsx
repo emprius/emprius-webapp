@@ -18,6 +18,7 @@ import { ToolsListPage } from '~src/pages/tools/ToolsListPage'
 import { ProtectedRoute } from '~src/router/ProtectedRoute'
 import { Layout } from '../pages/Layout'
 import { TitlePageLayout } from '~src/pages/TitlePageLayout'
+import { FormLayout } from '~src/pages/FormLayout'
 
 export const ROUTES = {
   HOME: '/',
@@ -65,6 +66,23 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
+            element: <FormLayout />,
+            children: [
+              {
+                path: ROUTES.PROFILE.EDIT,
+                element: <EditProfile />,
+              },
+              {
+                path: ROUTES.TOOLS.NEW,
+                element: <ToolAddPage />,
+              },
+              {
+                path: ROUTES.TOOLS.EDIT,
+                element: <ToolEditPage />,
+              },
+            ],
+          },
+          {
             element: <TitlePageLayout />,
             children: [
               {
@@ -82,24 +100,12 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: ROUTES.PROFILE.EDIT,
-            element: <EditProfile />,
-          },
-          {
             path: ROUTES.TOOLS.LIST,
             element: <ToolsListPage />,
           },
           {
             path: ROUTES.TOOLS.DETAIL,
             element: <ToolDetailPage />,
-          },
-          {
-            path: ROUTES.TOOLS.EDIT,
-            element: <ToolEditPage />,
-          },
-          {
-            path: ROUTES.TOOLS.NEW,
-            element: <ToolAddPage />,
           },
           {
             path: ROUTES.USERS.DETAIL,
