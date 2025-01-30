@@ -1,8 +1,9 @@
-import { CloseIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, ChevronUpIcon, CloseIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
   Checkbox,
+  Collapse,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -18,6 +19,7 @@ import {
   Switch,
   Text,
   Textarea,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
@@ -84,7 +86,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   } = useForm<ToolFormData>({
     defaultValues: {
       ...initialData,
-      // transportOptions: initialData?.transportOptions?.map((value) => value.id) || [],
       isAvailable: initialData?.isAvailable || true,
     },
   })
@@ -102,52 +103,28 @@ export const ToolForm: React.FC<ToolFormProps> = ({
     }
   }
 
+  const { isOpen, onToggle } = useDisclosure()
+
   return (
     <Stack as='form' onSubmit={handleSubmit(handleFormSubmit)} spacing={6}>
-      <Stack direction={{ base: 'column-reverse', sm: 'row' }} justify={'space-between'}>
+      <Stack direction={{ base: 'column-reverse', md: 'row' }} justify={'space-between'} flex={1} spacing={6}>
         <FormControl isRequired isInvalid={!!errors.title}>
           <FormLabel>{t('tools.name')}</FormLabel>
           <Input {...register('title', { required: true })} />
           <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
         </FormControl>
-
         <FormControl
-          pt={{ base: 0, sm: 6 }}
-          pb={{ base: 6, sm: 0 }}
-          display='flex'
-          alignItems='center'
-          justifyContent={{ base: 'start', sm: 'end' }}
+          as={Stack}
+          alignItems={'center'}
+          direction={'row'}
+          wrap={'wrap'}
+          pt={{ base: 0, md: 6 }}
+          justifyContent={{ base: 'start', md: 'end' }}
         >
           <FormLabel mb='0'>{t('tools.is_available')}</FormLabel>
-          <Switch {...register('isAvailable')} />
+          <Switch size={'lg'} {...register('isAvailable')} />
         </FormControl>
       </Stack>
-
-      <FormControl isInvalid={!!errors.description}>
-        <FormLabel>{t('tools.description')}</FormLabel>
-        <Textarea {...register('description', {})} />
-        <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl>
-        <Checkbox {...register('mayBeFree')}>{t('tools.may_be_free', { defaultValue: 'May Be Free' })}</Checkbox>
-      </FormControl>
-
-      <FormControl>
-        <Checkbox {...register('askWithFee')}>{t('tools.ask_with_fee', { defaultValue: 'Ask With Fee' })}</Checkbox>
-      </FormControl>
-
-      <FormControl isInvalid={!!errors.cost}>
-        <FormLabel>{t('tools.cost_per_day', { defaultValue: 'Cost per day' })}</FormLabel>
-        <NumberInput min={0}>
-          <NumberInputField {...register('cost', { valueAsNumber: true })} />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
-      </FormControl>
 
       <FormControl isInvalid={!!errors.category} isRequired>
         <FormLabel>{t('tools.category')}</FormLabel>
@@ -170,76 +147,18 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           }}
           placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
           required
-        />
-        <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={!!errors.transportOptions}>
-        <FormLabel>{t('tools.transport_options', { defaultValue: 'Transport Options' })}</FormLabel>
-        <Select
-          isMulti
-          name='transportOptions'
-          options={transports.map((transport) => ({
-            value: transport.id,
-            label: transport.name,
-          }))}
-          value={watch('transportOptions')?.map((id) => ({
-            value: id,
-            label: transports.find((t) => t.id === id)?.name || '',
-          }))}
-          onChange={(newValue) => {
-            setValue(
-              'transportOptions',
-              newValue.map((option: any) => option.value),
-              { shouldValidate: true }
-            )
-          }}
-          placeholder={t('tools.select_transport', { defaultValue: 'Select transport options' })}
-          closeMenuOnSelect={false}
           chakraStyles={{
-            container: (provided) => ({
+            menuList: (provided) => ({
               ...provided,
-              width: '100%',
+              zIndex: 9999,
+            }),
+            menu: (provided) => ({
+              ...provided,
+              zIndex: 9999,
             }),
           }}
         />
-        <FormErrorMessage>{errors.transportOptions?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={!!errors.estimatedValue}>
-        <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
-        <NumberInput min={0}>
-          <NumberInputField {...register('estimatedValue', { valueAsNumber: true })} />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={!!errors.height}>
-        <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
-        <NumberInput min={0}>
-          <NumberInputField {...register('height', { valueAsNumber: true })} />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <FormErrorMessage>{errors.height?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={!!errors.weight}>
-        <FormLabel>{t('tools.weight', { defaultValue: 'Weight (kg)' })}</FormLabel>
-        <NumberInput min={0}>
-          <NumberInputField {...register('weight', { valueAsNumber: true })} />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired>
@@ -276,6 +195,132 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       )}
 
       <ImageUploader label={t('tools.images')} error={errors.images?.message} {...register('images')} />
+
+      {/* Optional Fields Toggle Button */}
+      <Button
+        onClick={onToggle}
+        variant='ghost'
+        rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        width='100%'
+      >
+        {t('common.additional_options', { defaultValue: 'Additional Options' })}
+      </Button>
+
+      {/* Optional Fields */}
+      <Collapse in={isOpen} animateOpacity>
+        <Stack spacing={6}>
+          <FormControl isInvalid={!!errors.description}>
+            <FormLabel>{t('tools.description')}</FormLabel>
+            <Textarea {...register('description', {})} />
+            <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl>
+            <Checkbox {...register('mayBeFree')}>{t('tools.may_be_free', { defaultValue: 'May Be Free' })}</Checkbox>
+          </FormControl>
+
+          <FormControl>
+            <Checkbox {...register('askWithFee')}>{t('tools.ask_with_fee', { defaultValue: 'Ask With Fee' })}</Checkbox>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.cost}>
+            <FormLabel>{t('tools.cost_per_day', { defaultValue: 'Cost per day' })}</FormLabel>
+            <NumberInput min={0} precision={0}>
+              <NumberInputField
+                {...register('cost', {
+                  valueAsNumber: true,
+                })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.transportOptions}>
+            <FormLabel>{t('tools.transport_options', { defaultValue: 'Transport Options' })}</FormLabel>
+            <Select
+              isMulti
+              name='transportOptions'
+              options={transports.map((transport) => ({
+                value: transport.id,
+                label: transport.name,
+              }))}
+              value={watch('transportOptions')?.map((id) => ({
+                value: id,
+                label: transports.find((t) => t.id === id)?.name || '',
+              }))}
+              onChange={(newValue) => {
+                setValue(
+                  'transportOptions',
+                  newValue.map((option: any) => option.value),
+                  { shouldValidate: true }
+                )
+              }}
+              placeholder={t('tools.select_transport', { defaultValue: 'Select transport options' })}
+              closeMenuOnSelect={false}
+              chakraStyles={{
+                container: (provided) => ({
+                  ...provided,
+                  width: '100%',
+                }),
+              }}
+            />
+            <FormErrorMessage>{errors.transportOptions?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.estimatedValue}>
+            <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
+            <NumberInput min={0} precision={0}>
+              <NumberInputField
+                {...register('estimatedValue', {
+                  valueAsNumber: true,
+                })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.height}>
+            <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
+            <NumberInput min={0} precision={0}>
+              <NumberInputField
+                {...register('height', {
+                  valueAsNumber: true,
+                })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <FormErrorMessage>{errors.height?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.weight}>
+            <FormLabel>{t('tools.weight', { defaultValue: 'Weight (kg)' })}</FormLabel>
+            <NumberInput min={0} precision={0}>
+              <NumberInputField
+                {...register('weight', {
+                  valueAsNumber: true,
+                  setValueAs: (value) => (value === '' ? undefined : parseInt(value)),
+                })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
+          </FormControl>
+        </Stack>
+      </Collapse>
 
       <Stack direction='row' spacing={4} justify='flex-end'>
         <Button onClick={() => navigate(-1)} variant='ghost'>

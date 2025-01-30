@@ -57,6 +57,24 @@ export const AddTool = () => {
       throw new Error('Failed to process images:', error)
     }
 
+    // Create object with only non-null values
+    // todo(kon): finally we have to send null values or not?
+    // const toolData = {
+    //   title: data.title,
+    //   images: imageHashes,
+    //   ...(data.description && { description: data.description }),
+    //   ...(data.mayBeFree !== undefined && { mayBeFree: data.mayBeFree }),
+    //   ...(data.askWithFee !== undefined && { askWithFee: data.askWithFee }),
+    //   ...(!Number.isNaN(data.cost) && { cost: Number(data.cost) }),
+    //   ...(data.transportOptions?.length && { transportOptions: data.transportOptions }),
+    //   ...(data.category && { category: data.category }),
+    //   ...(data.location && { location: data.location }),
+    //   ...(!Number.isNaN(data.estimatedValue) && { estimatedValue: Number(data.estimatedValue) }),
+    //   ...(!Number.isNaN(data.height) && { height: Number(data.height) }),
+    //   ...(!Number.isNaN(data.weight) && { weight: Number(data.weight) }),
+    // }
+    //
+    // await createTool(toolData)
     await createTool({
       title: data.title,
       description: data.description,
@@ -64,7 +82,7 @@ export const AddTool = () => {
       askWithFee: data.askWithFee,
       cost: Number(data.cost),
       images: imageHashes,
-      transportOptions: data.transportOptions.map(Number),
+      transportOptions: data.transportOptions || [],
       category: data.category,
       location: data.location,
       estimatedValue: Number(data.estimatedValue),

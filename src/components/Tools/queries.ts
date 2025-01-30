@@ -6,17 +6,17 @@ import { EmpriusLocation } from '~components/Layout/types'
 
 export interface createToolParams {
   title: string
-  description: string
-  mayBeFree: boolean
-  askWithFee: boolean
-  cost: number // uint64
+  description?: string
+  mayBeFree?: boolean
+  askWithFee?: boolean
+  cost?: number // uint64
   images: string[]
-  transportOptions: number[] // []uint
-  category: number // uint
+  transportOptions?: number[] // []uint
+  category?: number // uint
   location: EmpriusLocation
-  estimatedValue: number // uint64
-  height: number // uint64
-  weight: number // uint64
+  estimatedValue?: number // uint64
+  height?: number // uint64
+  weight?: number // uint64
   isAvailable?: boolean
 }
 

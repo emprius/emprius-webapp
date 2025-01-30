@@ -12,7 +12,7 @@ export const FormLayout = () => {
 
   return (
     <Container maxW='container.md' py={8}>
-      <Stack bg={bgColor} p={8} borderRadius='lg' boxShadow='sm' spacing={6}>
+      <Stack bg={bgColor} p={8} borderRadius='lg' boxShadow='sm' spacing={4}>
         {title && (
           <Heading size='lg' mb={4}>
             {title}
