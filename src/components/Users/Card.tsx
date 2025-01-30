@@ -1,10 +1,10 @@
 import { Flex, FlexProps, HStack, Skeleton, Stack, StackProps, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { DisplayRating } from '../Ratings/DisplayRating'
+import { ShowRatingStars } from '../Ratings/ShowRatingStars'
 import { Avatar, AvatarSize } from '../Images/Avatar'
-import { useUserProfile } from './userQueries'
+import { useUserProfile } from './queries'
 import { UseQueryOptions } from '@tanstack/react-query/build/modern'
-import { UserProfile } from '~components/Users/userTypes'
+import { UserProfile } from '~components/Users/types'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { ROUTES } from '~src/router/routes'
@@ -61,7 +61,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />
       <Stack direction={direction} spacing={1}>
         <Text fontWeight='bold'>{user.name}</Text>
-        <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
+        <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
       </Stack>
     </Flex>
   )

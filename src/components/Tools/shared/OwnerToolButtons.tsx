@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/toolsQueries'
+import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/queries'
 import { Tool } from '~components/Tools/types'
 
 import { ROUTES } from '~src/router/routes'

@@ -13,11 +13,11 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { RatingStars } from '~components/Ratings/RatingStars'
-import { useSubmitRating } from './ratingQueries'
+import { SetRatingStars } from '~components/Ratings/SetRatingStars'
+import { useSubmitRating } from './queries'
 import { Rating } from '~components/Ratings/types'
-import { useTool } from '~components/Tools/toolsQueries'
-import { UserCard } from '~components/Users/UserCard'
+import { useTool } from '~components/Tools/queries'
+import { UserCard } from '~components/Users/Card'
 import { ServerImage } from '~components/Images/ServerImage'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 
@@ -31,7 +31,7 @@ interface RatingFormData {
   comment: string
 }
 
-export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
+export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()
@@ -125,7 +125,7 @@ export const RatingForm = ({ rating, onSuccess }: RatingFormProps) => {
             <FormLabel fontSize='sm' fontWeight='medium'>
               {t('rating.rate_user')}
             </FormLabel>
-            <RatingStars
+            <SetRatingStars
               initialRating={userRating}
               onRatingChange={(rating) => setValue('userRating', rating)}
               size='md'

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { users } from '~src/services/api'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { UserCard } from '~components/Users/UserCard'
+import { UserCard } from '~components/Users/Card'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~utils/icons'
 

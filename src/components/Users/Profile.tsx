@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Avatar } from '~components/Images/Avatar'
 import { FiMail } from 'react-icons/fi'
-import { DisplayRating } from '~components/Ratings/DisplayRating'
+import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { EditIcon } from '@chakra-ui/icons'
 import { ROUTES } from '~src/router/routes'
-import { MapMarker } from '~components/Layout/Map'
-import { UserProfile as UserProfileType } from '~components/Users/userTypes'
+import { MapMarker } from '~components/Layout/MapMarker'
+import { UserProfile as UserProfileType } from '~components/Users/types'
 import { useAuth } from '~components/Auth/AuthContext'
 
-export const UserInfo = (user: UserProfileType) => {
+export const UserProfile = (user: UserProfileType) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const tabBg = useColorModeValue('white', 'gray.800')
@@ -45,7 +45,7 @@ export const UserInfo = (user: UserProfileType) => {
                       <FiMail />
                       <Text color='gray.500'>{user.email}</Text>
                     </Stack>
-                    <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />
+                    <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
                     <Text fontSize='sm' color='gray.500'>
                       {t('user.member_since', {
                         date: new Date(user.createdAt).toLocaleDateString(),

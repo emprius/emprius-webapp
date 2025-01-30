@@ -4,7 +4,7 @@ import BrowserLanguageDetector from 'i18next-browser-languagedetector'
 import { LanguagesSlice } from '~i18n/languages.mjs'
 import { dateLocales, translations } from '~i18n/locales'
 import { format, formatDistance, Locale } from 'date-fns'
-import { ucfirst } from '~utils/strings'
+import { currency, ucfirst } from '~utils/strings'
 
 const i18n = i18next.createInstance()
 i18n
@@ -102,4 +102,8 @@ i18n.services.formatter?.add('lowercase', (value: string, lng: string | undefine
  */
 i18n.services.formatter?.add('ucfirst', (value: string, lng: string | undefined) => ucfirst(value, lng))
 
+/**
+ * Currency
+ */
+i18n.services.formatter?.add('currency', (amount: number, lng?: string | undefined) => currency(amount, lng))
 export default i18n

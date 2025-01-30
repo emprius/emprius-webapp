@@ -1,8 +1,8 @@
 import React from 'react'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
-import { useTools } from '~components/Tools/toolsQueries'
+import { useTools } from '~components/Tools/queries'
 import ErrorComponent from '~components/Layout/ErrorComponent'
-import { ToolsList } from '~components/Tools/ToolsList'
+import { ToolList } from '~components/Tools/List'
 
 export const List = () => {
   const { data: toolsResponse, isLoading, error, isError } = useTools()
@@ -14,5 +14,5 @@ export const List = () => {
     return <ErrorComponent error={error} />
   }
 
-  return <ToolsList tools={toolsResponse?.tools || []} />
+  return <ToolList tools={toolsResponse?.tools || []} />
 }

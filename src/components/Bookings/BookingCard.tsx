@@ -2,14 +2,14 @@ import { Badge, Box, Card, CardBody, Flex, HStack, Icon, Link, Skeleton, Stack, 
 import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { Booking, BookingStatus } from './bookingsQueries'
+import { Booking, BookingStatus } from './queries'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
-import { useTool } from '~components/Tools/toolsQueries'
-import { ActionButtons } from '~components/Bookings/BookingActions'
-import { useUserProfile } from '~components/Users/userQueries'
-import { DisplayRating } from '~components/Ratings/DisplayRating'
+import { useTool } from '~components/Tools/queries'
+import { ActionButtons } from '~components/Bookings/Actions'
+import { useUserProfile } from '~components/Users/queries'
+import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { Avatar } from '~components/Images/Avatar'
-import { UserCard } from '~components/Users/UserCard'
+import { UserCard } from '~components/Users/Card'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
@@ -137,7 +137,7 @@ const BookingComments = ({ booking, type }: BookingCommentsProps) => {
               <Text fontSize='sm' fontWeight='medium'>
                 {user?.name}
               </Text>
-              {isLoaded && <DisplayRating rating={user.rating} size='sm' ratingCount={user.ratingCount} />}
+              {isLoaded && <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />}
             </HStack>
           </Skeleton>
           <Skeleton borderRadius='full' isLoaded={isLoaded}>

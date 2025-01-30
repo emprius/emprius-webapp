@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { SearchFilters } from '~components/Search/searchQueries'
+import { SearchFilters } from '~components/Search/queries'
 import api, { tools } from '~src/services/api'
 import { Tool } from './types'
 import { EmpriusLocation } from '~components/Layout/types'
@@ -50,6 +50,7 @@ export const useTools = (filters?: SearchFilters) =>
     queryKey: ['tools', filters],
     queryFn: () => (filters ? api.tools.searchTools(filters) : api.tools.getUserTools()),
   })
+
 export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: ['tool', id],

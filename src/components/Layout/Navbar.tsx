@@ -21,7 +21,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { BadgeIcon } from './BadgeIcon'
-import { usePendingActions } from './PendingActionsProvider'
+import { usePendingActions } from '~components/Providers/PendingActionsProvider'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~utils/icons'
 

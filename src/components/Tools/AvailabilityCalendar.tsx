@@ -9,7 +9,7 @@ interface ToolAvailabilityCalendarProps {
   reservedDates: DateRange[]
 }
 
-export const ToolAvailabilityCalendar = ({ reservedDates }: ToolAvailabilityCalendarProps) => {
+export const AvailabilityCalendar = ({ reservedDates }: ToolAvailabilityCalendarProps) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const reservedColor = useColorModeValue('red.100', 'red.900')

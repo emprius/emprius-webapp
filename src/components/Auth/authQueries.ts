@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { UserProfile } from '~components/Users/userTypes'
+import { UserProfile } from '~components/Users/types'
 import api from '~src/services/api'
 import { EmpriusLocation } from '~components/Layout/types'
 

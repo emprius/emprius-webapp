@@ -1,22 +1,3 @@
-/**
- * Format a number as currency in EUR
- */
-export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('ca-ES', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
-/**
- * Convert degrees to radians
- */
-const toRad = (degrees: number): number => {
-  return (degrees * Math.PI) / 180
-}
-
 export const getB64FromFile = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()

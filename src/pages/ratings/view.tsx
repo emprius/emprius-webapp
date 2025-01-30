@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RatingsList } from '~components/Ratings/RatingsList'
+import { RatingsList } from '~components/Ratings/List'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 import { useOutletContext } from 'react-router-dom'
 

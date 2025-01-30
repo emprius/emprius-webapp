@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AddToolForm } from '~components/Tools/AddToolForm'
+import { AddTool } from '~components/Tools/Add'
 import { useOutletContext } from 'react-router-dom'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 import { useTranslation } from 'react-i18next'
@@ -12,5 +12,5 @@ export const Add = () => {
     setTitle(t('tools.add_tool'))
   }, [setTitle])
 
-  return <AddToolForm />
+  return <AddTool />
 }

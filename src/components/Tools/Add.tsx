@@ -3,11 +3,11 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useUploadImage } from '~components/Images/imagesQueries'
-import { ToolForm, ToolFormData } from './ToolForm'
-import { useCreateTool } from './toolsQueries'
+import { useUploadImage } from '~components/Images/queries'
+import { ToolForm, ToolFormData } from './Form'
+import { useCreateTool } from './queries'
 
-export const AddToolForm = () => {
+export const AddTool = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const navigate = useNavigate()

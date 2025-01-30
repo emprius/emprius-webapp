@@ -19,7 +19,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { IRegisterParams } from '~components/Auth/authQueries'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
-import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { AUTH_FORM } from '~utils/constants'
 import { ROUTES } from '~src/router/routes'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { SearchBar } from '~components/Search/SearchBar'
 import { Map } from '~components/Search/Map'
-import { SearchFilters, useSearchTools } from '~components/Search/searchQueries'
+import { SearchFilters, useSearchTools } from '~components/Search/queries'
 import { useAuth } from '~components/Auth/AuthContext'
 
 export const MAX_COST_MAX = 1000

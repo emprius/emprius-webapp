@@ -1,4 +1,4 @@
-import { Booking } from '~components/Bookings/bookingsQueries'
+import { Booking } from '~components/Bookings/queries'
 
 export type Rating = {} & Booking
 

@@ -1,6 +1,31 @@
 import React, { createContext, useContext } from 'react'
-import { useInfo as useInfoQuery } from './infoQueries'
-import { Category, Transport } from './infoTypes'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import api from '~src/services/api'
+
+export interface InfoData {
+  users: number
+  tools: number
+  categories: Category[]
+  transports: Transport[]
+}
+
+export interface Category {
+  id: number
+  name: string
+}
+
+export interface Transport {
+  id: number
+  name: string
+}
+
+export const useInfo = (options?: Omit<UseQueryOptions<InfoData>, 'queryKey' | 'queryFn'>) => {
+  return useQuery<InfoData>({
+    queryKey: ['info'],
+    queryFn: () => api.info.getInfo(),
+    ...options,
+  })
+}
 
 interface InfoContextType {
   isLoading: boolean
@@ -27,7 +52,7 @@ interface InfoProviderProps {
 }
 
 export const InfoProvider = ({ children }: InfoProviderProps) => {
-  const { data, isLoading, isError } = useInfoQuery()
+  const { data, isLoading, isError } = useInfo()
 
   const value: InfoContextType = {
     categories: data?.categories || [],

@@ -18,14 +18,14 @@ import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
-import { EditProfileFormData, EditProfileFormProps } from '~components/Users/userTypes'
+import { EditProfileFormData, EditProfileFormProps } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'
 import { ASSETS, AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, sizeToPixels } from '../Images/Avatar'
-import { useUpdateUserProfile } from './userQueries'
+import { useUpdateUserProfile } from './queries'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 
-export const EditProfileForm: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
+export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
   const toast = useToast()
   const updateProfile = useUpdateUserProfile()

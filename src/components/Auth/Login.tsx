@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ILoginParams } from '~components/Auth/authQueries'
-import FormSubmitMessage from '~components/Layout/FormSubmitMessage'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { AUTH_FORM } from '~utils/constants'
 import { ROUTES } from '~src/router/routes'
 

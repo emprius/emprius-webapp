@@ -1,20 +1,15 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
-import {InfoData} from '~components/Info/infoTypes'
-import {
-  Booking,
-  BookingActionsParams,
-  BookingActionsReturnType,
-  CreateBookingData,
-} from '~components/Bookings/bookingsQueries'
+import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
 import {ImageContent} from '~components/Images/ServerImage'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
-import {SearchFilters, SearchToolsResponse} from '~components/Search/searchQueries'
-import {createToolParams, UpdateToolParams} from '~components/Tools/toolsQueries'
+import {SearchFilters, SearchToolsResponse} from '~components/Search/queries'
+import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
 import {Tool} from '~components/Tools/types'
-import {EditProfileFormData, UserProfile} from '~components/Users/userTypes'
+import {EditProfileFormData, UserProfile} from '~components/Users/types'
 import {STORAGE_KEYS} from '~utils/constants'
-import {BookingPendings} from '~components/Layout/PendingActionsProvider'
+import {BookingPendings} from '~components/Providers/PendingActionsProvider'
+import {InfoData} from '~components/Providers/InfoContext'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { EditProfileForm } from '~components/Users/EditProfileForm'
+import { EditUser } from '~components/Users/Edit'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 
 export const Edit = () => {
@@ -14,7 +14,7 @@ export const Edit = () => {
   }, [setTitle])
 
   return (
-    <EditProfileForm
+    <EditUser
       initialData={{
         name: user?.name || '',
         email: user?.email || '',

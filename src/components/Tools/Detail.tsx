@@ -20,17 +20,17 @@ import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
 import { LuWeight } from 'react-icons/lu'
 import { HiOutlineTruck } from 'react-icons/hi2'
 import { MdDoneOutline } from 'react-icons/md'
-import { UserCard } from '~components/Users/UserCard'
-import { MapMarker } from '~components/Layout/Map'
+import { UserCard } from '~components/Users/Card'
+import { MapMarker } from '~components/Layout/MapMarker'
 import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
-import { ToolAvailabilityCalendar } from '~components/Tools/ToolAvailabilityCalendar'
-import { BookingForm } from '~components/Bookings/BookingForm'
+import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
+import { BookingForm } from '~components/Bookings/Form'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import React from 'react'
 import { Tool } from '~components/Tools/types'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useInfoContext } from '~components/Info/InfoContext'
+import { useInfoContext } from '~components/Providers/InfoContext'
 import { useTranslation } from 'react-i18next'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
@@ -127,7 +127,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
 
         <GridItem>
           <Stack spacing={4} position='sticky' top='20px'>
-            <ToolAvailabilityCalendar reservedDates={tool.reservedDates || []} />
+            <AvailabilityCalendar reservedDates={tool.reservedDates || []} />
             {isAuthenticated ? (
               tool.isAvailable ? (
                 <BookingForm tool={tool} />

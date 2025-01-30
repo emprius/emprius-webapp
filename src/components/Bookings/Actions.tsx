@@ -6,10 +6,10 @@ import {
   useCancelBooking,
   useDenyBooking,
   useReturnBooking,
-} from '~components/Bookings/bookingsQueries'
+} from '~components/Bookings/queries'
 import { Button, useDisclosure, useToast } from '@chakra-ui/react'
 import { FiCheck, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
-import { RatingModal } from '~components/Ratings/RatingModal'
+import { RatingModal } from '~components/Ratings/Modal'
 import React from 'react'
 import { icons } from '~utils/icons'
 

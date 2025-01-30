@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { EditProfileFormData, UserProfile } from '~components/Users/userTypes'
+import { EditProfileFormData, UserProfile } from '~components/Users/types'
 import api from '~src/services/api'
 
 export const useUpdateUserProfile = () => {

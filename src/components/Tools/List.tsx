@@ -2,14 +2,14 @@ import { Box, Button, Container, SimpleGrid } from '@chakra-ui/react'
 import { ROUTES } from '~src/router/routes'
 import { AddIcon } from '@chakra-ui/icons'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { ToolCard } from '~components/Tools/ToolCard'
+import { ToolCard } from '~components/Tools/Card'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Tool } from '~components/Tools/types'
 import { icons } from '~utils/icons'
 
-export const ToolsList = ({ tools }: { tools: Tool[] }) => {
+export const ToolList = ({ tools }: { tools: Tool[] }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 

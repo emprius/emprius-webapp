@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useOutletContext, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { EditToolForm } from '~components/Tools/EditToolForm'
-import { useTool } from '~components/Tools/toolsQueries'
+import { EditTool } from '~components/Tools/Edit'
+import { useTool } from '~components/Tools/queries'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 import { ROUTES } from '~src/router/routes'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -37,5 +37,5 @@ export const Edit = () => {
     return <Navigate to={ROUTES.TOOLS.DETAIL.replace(':id', id!)} replace />
   }
 
-  return <EditToolForm initialData={data} />
+  return <EditTool initialData={data} />
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useAuth } from '~components/Auth/AuthContext'
-import { UserInfo } from '~components/Users/UserProfile'
+import { UserProfile } from '~components/Users/Profile'
 
 export const View = () => {
   const { user } = useAuth()
-  return <UserInfo {...user} />
+  return <UserProfile {...user} />
 }

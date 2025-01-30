@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useUploadImage } from '~components/Images/imagesQueries'
-import { ToolForm, ToolFormData } from './ToolForm'
-import { UpdateToolParams, useUpdateTool } from './toolsQueries'
+import { useUploadImage } from '~components/Images/queries'
+import { ToolForm, ToolFormData } from './Form'
+import { UpdateToolParams, useUpdateTool } from './queries'
 import { Tool } from './types'
 import { ROUTES } from '~src/router/routes'
 
@@ -13,7 +13,7 @@ interface EditToolFormProps {
   initialData: Tool
 }
 
-export const EditToolForm: React.FC<EditToolFormProps> = ({ initialData: { images, ...initial } }) => {
+export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, ...initial } }) => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const toast = useToast()

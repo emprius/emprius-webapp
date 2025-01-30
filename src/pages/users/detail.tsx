@@ -1,9 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useUserProfile } from '~components/Users/userQueries'
+import { useUserProfile } from '~components/Users/queries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import ErrorComponent from '~components/Layout/ErrorComponent'
-import { UserInfo } from '~components/Users/UserProfile'
+import { UserProfile } from '~components/Users/Profile'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~utils/icons'
 import { useTranslation } from 'react-i18next'
@@ -21,5 +21,5 @@ export const Detail = () => {
   }
   if (isError) return <ErrorComponent error={error} />
 
-  return <UserInfo {...data} />
+  return <UserProfile {...data} />
 }
