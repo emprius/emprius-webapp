@@ -2,7 +2,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Footer } from '~components/Layout/Footer'
-import { Navbar } from '~components/Layout/Navbar'
+import { Navbar } from '~components/Navbar/Navbar'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { ErrorBoundary } from '~src/pages/ErrorBoundary'
 
