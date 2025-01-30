@@ -20,15 +20,13 @@ export const ToolList = ({ tools }: { tools: Tool[] }) => {
         top='6rem'
         left='50%'
         transform='translateX(-50%)'
-        colorScheme='blue'
-        size='lg'
-        borderRadius='full'
-        px={6}
-        boxShadow='lg'
         leftIcon={<AddIcon />}
         zIndex={2}
         as={RouterLink}
         to={ROUTES.TOOLS.NEW}
+        size='lg'
+        variant={'floating'}
+        colorScheme='blue'
       >
         {t('tools.add_tool')}
       </Button>
