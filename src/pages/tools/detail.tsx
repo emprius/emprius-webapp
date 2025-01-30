@@ -6,7 +6,7 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { useTool } from '~components/Tools/queries'
 import { ToolDetail } from '~components/Tools/Detail'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const Detail = () => {
   const { id } = useParams<{ id: string }>()

@@ -5,7 +5,7 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { UserProfile } from '~components/Users/Profile'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 import { useTranslation } from 'react-i18next'
 
 export const Detail = () => {

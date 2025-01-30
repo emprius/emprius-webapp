@@ -17,53 +17,6 @@ export const STORAGE_KEYS = {
 } as const
 
 /**
- * Tool categories
- */
-export const TOOL_CATEGORIES = [
-  'power_tools',
-  'hand_tools',
-  'garden_tools',
-  'construction',
-  'automotive',
-  'cleaning',
-  'other',
-] as const
-
-export type ToolCategory = (typeof TOOL_CATEGORIES)[number]
-
-/**
- * Tool status types
- */
-export const TOOL_STATUS = {
-  AVAILABLE: 'available',
-  UNAVAILABLE: 'unavailable',
-  BOOKED: 'booked',
-} as const
-
-export type ToolStatus = (typeof TOOL_STATUS)[keyof typeof TOOL_STATUS]
-
-/**
- * Booking status types
- */
-export const BOOKING_STATUS = {
-  PENDING: 'pending',
-  CONFIRMED: 'confirmed',
-  CANCELLED: 'cancelled',
-  COMPLETED: 'completed',
-} as const
-
-export type BookingStatus = (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS]
-
-/**
- * Image upload constraints
- */
-export const IMAGE_CONSTRAINTS = {
-  MAX_SIZE: 5 * 1024 * 1024, // 5MB
-  ACCEPTED_TYPES: ['image/jpeg', 'image/png', 'image/webp'],
-  MAX_FILES: 5,
-} as const
-
-/**
  * Map default settings
  */
 export const MAP_DEFAULTS = {
@@ -78,30 +31,6 @@ export const MAP_DEFAULTS = {
   TILE_LAYER: {
     URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-} as const
-
-/**
- * API endpoints
- */
-export const API_ENDPOINTS = {
-  AUTH: {
-    LOGIN: '/auth/login',
-    REGISTER: '/auth/register',
-    CURRENT_USER: '/auth/me',
-  },
-  TOOLS: {
-    BASE: '/tools',
-    SEARCH: '/tools/search',
-  },
-  BOOKINGS: {
-    BASE: '/bookings',
-    STATUS: (id: string) => `/bookings/${id}/status`,
-  },
-  USERS: {
-    PROFILE: '/users/profile',
-    TOOLS: (id: string) => `/users/${id}/tools`,
-    BOOKINGS: (id: string) => `/users/${id}/bookings`,
   },
 } as const
 

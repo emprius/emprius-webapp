@@ -23,7 +23,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { BadgeIcon } from './BadgeIcon'
 import { usePendingActions } from '~components/Providers/PendingActionsProvider'
 import { ROUTES } from '~src/router/routes'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const Navbar = () => {
   const { t } = useTranslation()

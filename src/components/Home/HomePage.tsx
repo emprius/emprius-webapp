@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
 
 import { ROUTES } from '~src/router/routes'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const HomePage = () => {
   const { t } = useTranslation()

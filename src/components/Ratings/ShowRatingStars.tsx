@@ -1,6 +1,6 @@
 import { HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 interface DisplayRatingProps {
   rating: number

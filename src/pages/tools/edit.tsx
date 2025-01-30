@@ -8,7 +8,7 @@ import { FormLayoutContext } from '~src/pages/FormLayout'
 import { ROUTES } from '~src/router/routes'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const Edit = () => {
   const { t } = useTranslation()

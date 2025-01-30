@@ -8,7 +8,7 @@ import { Rating } from './types'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const RatingsList = () => {
   const { t } = useTranslation()

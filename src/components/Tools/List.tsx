@@ -5,9 +5,9 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { ToolCard } from '~components/Tools/Card'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Tool } from '~components/Tools/types'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const ToolList = ({ tools }: { tools: Tool[] }) => {
   const { t } = useTranslation()
@@ -24,10 +24,11 @@ export const ToolList = ({ tools }: { tools: Tool[] }) => {
         size='lg'
         borderRadius='full'
         px={6}
-        onClick={() => navigate(ROUTES.TOOLS.NEW)}
         boxShadow='lg'
         leftIcon={<AddIcon />}
         zIndex={2}
+        as={RouterLink}
+        to={ROUTES.TOOLS.NEW}
       >
         {t('tools.add_tool')}
       </Button>

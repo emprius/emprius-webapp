@@ -7,7 +7,7 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { UserCard } from '~components/Users/Card'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 
 export const UsersList = () => {
   const { t } = useTranslation()

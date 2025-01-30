@@ -8,7 +8,7 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { usePendingActions } from '~components/Providers/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~utils/icons'
+import { icons } from '~theme/icons'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 
 export const UserBookings = () => {
