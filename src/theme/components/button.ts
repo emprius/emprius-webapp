@@ -8,7 +8,7 @@ const baseStyle = defineStyle({
 const floating = defineStyle((props) => {
   const { colorScheme } = props
   return {
-    borderRadius: 'lg',
+    borderRadius: 'xl',
     boxShadow: 'lg',
     bg: `${colorScheme}.500`,
     color: 'white',
