@@ -4,13 +4,20 @@ const baseStyle = defineStyle({
   focusBorderColor: 'primary.500',
 })
 
-const outline = defineStyle((props: { colorMode: string }) => ({
-  bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
-  color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+const outline = defineStyle({
+  bg: 'white',
+  color: 'gray.800',
   _placeholder: {
-    color: props.colorMode === 'dark' ? 'whiteAlpha.600' : 'gray.500',
+    color: 'gray.500',
   },
-}))
+  _dark: {
+    bg: 'whiteAlpha.100',
+    color: 'white',
+    _placeholder: {
+      color: 'whiteAlpha.600',
+    },
+  },
+})
 
 export const Textarea = defineStyleConfig({
   baseStyle,

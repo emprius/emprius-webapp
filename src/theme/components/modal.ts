@@ -3,22 +3,36 @@ import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(modalAnatomy.keys)
 
-const baseStyle = definePartsStyle((props: { colorMode: string }) => ({
+const baseStyle = definePartsStyle({
   dialog: {
-    bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+    bg: 'white',
+    borderColor: 'gray.200',
+    _dark: {
+      bg: 'gray.800',
+      borderColor: 'whiteAlpha.300',
+    },
   },
   header: {
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    borderColor: 'gray.200',
+    color: 'gray.800',
+    _dark: {
+      borderColor: 'whiteAlpha.300',
+      color: 'white',
+    },
   },
   body: {
-    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    color: 'gray.800',
+    _dark: {
+      color: 'white',
+    },
   },
   footer: {
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+    borderColor: 'gray.200',
+    _dark: {
+      borderColor: 'whiteAlpha.300',
+    },
   },
-}))
+})
 
 export const Modal = defineMultiStyleConfig({
   baseStyle,

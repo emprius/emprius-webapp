@@ -10,12 +10,16 @@ const baseStyle = definePartsStyle({
 })
 
 const variants = {
-  outline: definePartsStyle((props: { colorMode: string }) => ({
+  outline: definePartsStyle({
     field: {
-      bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
-      color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+      bg: 'white',
+      color: 'gray.800',
+      _dark: {
+        bg: 'whiteAlpha.100',
+        color: 'white',
+      },
     },
-  })),
+  }),
 }
 
 export const Select = defineMultiStyleConfig({

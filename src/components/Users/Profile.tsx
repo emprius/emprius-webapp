@@ -10,6 +10,7 @@ import { ROUTES } from '~src/router/routes'
 import { MapMarker } from '~components/Layout/MapMarker'
 import { UserProfile as UserProfileType } from '~components/Users/types'
 import { useAuth } from '~components/Auth/AuthContext'
+import { lightText } from '~theme/common'
 
 export const UserProfile = (user: UserProfileType) => {
   const { t } = useTranslation()
@@ -41,12 +42,12 @@ export const UserProfile = (user: UserProfileType) => {
                         {user.active ? t('user.active') : t('user.inactive')}
                       </Badge>
                     </Stack>
-                    <Stack direction='row' align='center' spacing={2}>
+                    <Stack direction='row' align='center' spacing={2} sx={lightText}>
                       <FiMail />
-                      <Text color='gray.500'>{user.email}</Text>
+                      <Text>{user.email}</Text>
                     </Stack>
                     <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
-                    <Text fontSize='sm' color='gray.500'>
+                    <Text fontSize='sm' sx={lightText}>
                       {t('user.member_since', {
                         date: new Date(user.createdAt).toLocaleDateString(),
                       })}

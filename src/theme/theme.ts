@@ -1,18 +1,18 @@
-import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
-import { Button } from './components/button';
-import { Input } from './components/input';
-import { Select } from './components/select';
-import { Textarea } from './components/textarea';
-import { Menu } from './components/menu';
-import { Popover } from './components/popover';
-import { Tooltip } from './components/tooltip';
-import { Modal } from './components/modal';
-import { Link } from './components/link';
+import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
+import { Button } from './components/button'
+import { Input } from './components/input'
+import { Select } from './components/select'
+import { Textarea } from './components/textarea'
+import { Menu } from './components/menu'
+import { Popover } from './components/popover'
+import { Tooltip } from './components/tooltip'
+import { Modal } from './components/modal'
+import { Link } from './components/link' // import { Text } from './components/text'
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: false,
-};
+}
 
 const theme = extendTheme({
   config,
@@ -106,6 +106,6 @@ const theme = extendTheme({
       'ultra-slow': '500ms',
     },
   },
-});
+})
 
-export default theme;
+export default theme

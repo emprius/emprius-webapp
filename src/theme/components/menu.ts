@@ -3,22 +3,36 @@ import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(menuAnatomy.keys)
 
-const baseStyle = definePartsStyle((props: { colorMode: string }) => ({
+const baseStyle = definePartsStyle({
   list: {
-    bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+    bg: 'white',
+    borderColor: 'gray.200',
+    _dark: {
+      bg: 'gray.700',
+      borderColor: 'whiteAlpha.300',
+    },
   },
   item: {
-    bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    bg: 'white',
+    color: 'gray.800',
     _hover: {
-      bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
+      bg: 'gray.100',
     },
     _focus: {
-      bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
+      bg: 'gray.100',
+    },
+    _dark: {
+      bg: 'gray.700',
+      color: 'white',
+      _hover: {
+        bg: 'whiteAlpha.200',
+      },
+      _focus: {
+        bg: 'whiteAlpha.200',
+      },
     },
   },
-}))
+})
 
 export const Menu = defineMultiStyleConfig({
   baseStyle,

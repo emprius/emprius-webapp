@@ -19,6 +19,10 @@
 //   const outlineHoverBg = useColorModeValue('primary.50', 'primary.900')
 //   const ghostColor = useColorModeValue('primary.500', 'primary.300')
 //   const ghostHoverBg = useColorModeValue('primary.50', 'primary.900')
+//   const floatingBg = useColorModeValue('white', 'gray.800')
+//   const floatingColor = useColorModeValue('primary.500', 'primary.300')
+//   const floatingHoverBg = useColorModeValue('gray.50', 'gray.700')
+//   const floatingShadow = useColorModeValue('lg', 'dark-lg')
 //
 //   const variantProps = {
 //     solid: {
@@ -42,6 +46,14 @@
 //       color: ghostColor,
 //       _hover: {
 //         bg: ghostHoverBg,
+//       },
+//     },
+//     floating: {
+//       bg: floatingBg,
+//       color: floatingColor,
+//       boxShadow: floatingShadow,
+//       _hover: {
+//         bg: floatingHoverBg,
 //       },
 //     },
 //   }

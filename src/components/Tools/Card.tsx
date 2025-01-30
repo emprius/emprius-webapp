@@ -7,6 +7,7 @@ import { ToolImage } from './shared/ToolImage'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { useTranslation } from 'react-i18next'
 import { ROUTES } from '~src/router/routes'
+import { lightText } from '~theme/common'
 
 interface ToolCardProps {
   tool: Tool
@@ -44,13 +45,13 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
               <Text fontWeight='semibold' fontSize='xl' _hover={{ color: 'primary.500', textDecoration: 'none' }}>
                 {tool.title}
               </Text>
-              <Text color='gray.600' fontSize='lg' fontWeight='bold'>
+              <Text fontSize='lg' fontWeight='bold' sx={lightText}>
                 {t('tools.cost_unit', { cost: tool.cost })}
               </Text>
             </Stack>
             <ToolBadges tool={tool} />
 
-            <Text color='gray.600' noOfLines={2} title={tool.description}>
+            <Text noOfLines={2} title={tool.description} sx={lightText}>
               {tool.description}
             </Text>
           </Stack>

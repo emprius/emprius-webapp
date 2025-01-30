@@ -21,6 +21,19 @@ const floating = defineStyle((props) => {
     _active: {
       bg: `${colorScheme}.700`,
     },
+    _dark: {
+      bg: `${colorScheme}.300`,
+      color: 'gray.800',
+      _hover: {
+        bg: `${colorScheme}.400`,
+        _disabled: {
+          bg: `${colorScheme}.300`,
+        },
+      },
+      _active: {
+        bg: `${colorScheme}.500`,
+      },
+    },
   }
 })
 

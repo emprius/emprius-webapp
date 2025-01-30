@@ -32,6 +32,7 @@ import { Tool } from '~components/Tools/types'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useInfoContext } from '~components/Providers/InfoContext'
 import { useTranslation } from 'react-i18next'
+import { lightText } from '~theme/common'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -52,7 +53,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                 <Stack spacing={4}>
                   <Stack spacing={1}>
                     <Stack direction='row' align='center' justify='space-between'>
-                      <Text color='gray.600' fontSize='2xl' fontWeight='bold'>
+                      <Text sx={lightText} fontSize='2xl' fontWeight='bold'>
                         {t('tools.cost_unit', { cost: tool.cost })}
                       </Text>
                       <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
@@ -60,7 +61,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       </Badge>
                     </Stack>
                   </Stack>
-                  {tool?.description && <Text color='gray.600'>{tool.description}</Text>}
+                  {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
                   <ToolBadges tool={tool} />
                   <Divider />
                   <SimpleGrid spacing={4} columns={{ base: 2 }}>

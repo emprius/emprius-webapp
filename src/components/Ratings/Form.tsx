@@ -83,7 +83,6 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
 
   const begin = new Date(rating.startDate * 1000)
   const end = new Date(rating.endDate * 1000)
-  const date = { begin, end }
 
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
@@ -99,7 +98,7 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
               {tool.title}
             </Heading>
             <Badge px={2} py={1} borderRadius='full'>
-              <Flex align={'center'} color='gray.700' wrap={'wrap'} fontSize='sm' fontWeight='medium'>
+              <Flex align={'center'} wrap={'wrap'} fontSize='sm' fontWeight='medium'>
                 <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
                 {t('rating.date_formatted', { date: rating.startDate * 1000, format: datef })}
                 <Icon as={FaArrowRight} mx={2} />

@@ -3,19 +3,30 @@ import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(popoverAnatomy.keys)
 
-const baseStyle = definePartsStyle((props: { colorMode: string }) => ({
+const baseStyle = definePartsStyle({
   content: {
-    bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    bg: 'white',
+    borderColor: 'gray.200',
+    color: 'gray.800',
+    _dark: {
+      bg: 'gray.700',
+      borderColor: 'whiteAlpha.300',
+      color: 'white',
+    },
   },
   header: {
-    borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
+    borderColor: 'gray.200',
+    _dark: {
+      borderColor: 'whiteAlpha.300',
+    },
   },
   body: {
-    color: props.colorMode === 'dark' ? 'white' : 'gray.800',
+    color: 'gray.800',
+    _dark: {
+      color: 'white',
+    },
   },
-}))
+})
 
 export const Popover = defineMultiStyleConfig({
   baseStyle,

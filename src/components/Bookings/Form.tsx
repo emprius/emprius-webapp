@@ -19,6 +19,7 @@ import { useCreateBooking } from '~components/Bookings/queries'
 import { DateRangePicker } from '~components/Layout/Form/DateRangePicker'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
+import { lightText } from '~theme/common'
 
 interface BookingFormProps {
   tool: Tool
@@ -141,7 +142,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             />
             {errors.comments && <FormErrorMessage>{errors.comments.message}</FormErrorMessage>}
           </FormControl>
-          <Text fontSize='sm' color='gray.600'>
+          <Text fontSize='sm' sx={lightText}>
             {t('tools.price_per_day')}: {tool.cost}€
           </Text>
           {tool.mayBeFree && (

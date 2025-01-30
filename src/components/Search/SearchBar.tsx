@@ -27,7 +27,7 @@ export const SearchBar = () => {
       <HStack>
         <InputGroup>
           <InputLeftElement pointerEvents='none'>
-            <SearchIcon color='gray.300' />
+            <SearchIcon color='gray.500' />
           </InputLeftElement>
           <Input
             {...register('term')}

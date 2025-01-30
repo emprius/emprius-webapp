@@ -14,6 +14,7 @@ import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { ROUTES } from '~src/router/routes'
+import { lightText } from '~theme/common'
 
 interface BookingDatesProps {
   booking: Booking
@@ -29,14 +30,14 @@ const BookingDates = ({ booking }: BookingDatesProps) => {
 
   return (
     <Stack spacing={1}>
-      <Flex align={'center'} fontSize='md' color='gray.700' wrap={'wrap'}>
+      <Flex align={'center'} fontSize='md' wrap={'wrap'} sx={lightText}>
         <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
         {t('bookings.date_formatted', { date: date.begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
         {t('bookings.date_formatted', { date: date.end, format: datef })}
       </Flex>
 
-      <Text fontSize='md' fontWeight='medium' color='gray.600'>
+      <Text fontSize='md' fontWeight='medium' sx={lightText}>
         {t('bookings.date_range_total', { date, format: datef })}
       </Text>
     </Stack>
@@ -110,22 +111,30 @@ const BookingComments = ({ booking, type }: BookingCommentsProps) => {
     <Flex direction='column' gap={1}>
       <Flex flex={1} gap={1} direction={'row'} align={'end'}>
         <Box w={'full'}>
-          <Stack spacing={3} bg='gray.100' p={4} borderRadius='lg'>
+          <Stack
+            spacing={3}
+            p={4}
+            borderRadius='lg'
+            sx={{
+              bg: 'gray.100',
+              color: 'gray.500',
+              _dark: {
+                bg: 'gray.600',
+                color: 'white',
+              },
+            }}
+          >
             <Stack direction='row' align='center' spacing={2}>
-              <Box color='gray.500'>
+              <Box>
                 <FiPhone size={16} />
               </Box>
-              <Text fontSize='sm' color='gray.700'>
-                {booking.contact}
-              </Text>
+              <Text fontSize='sm'>{booking.contact}</Text>
             </Stack>
             <Stack direction='row' align='flex-start' spacing={2}>
-              <Box color='gray.500' mt={1}>
+              <Box mt={1}>
                 <FiMessageCircle size={16} />
               </Box>
-              <Text fontSize='sm' color='gray.700'>
-                {booking.comments}
-              </Text>
+              <Text fontSize='sm'>{booking.comments}</Text>
             </Stack>
           </Stack>
         </Box>
@@ -179,7 +188,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
       <CardBody pl={4} py={4}>
         <Stack
           mb={4}
-          color='gray.600'
+          sx={lightText}
           justify={{ base: 'center', md: 'space-between' }}
           direction={{ base: 'column-reverse', md: 'row' }}
         >
@@ -246,7 +255,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                       </Link>
                       {!isRequest && (
                         <HStack wrap={'wrap'}>
-                          <Text color='gray.600' fontSize='lg' fontWeight='bold'>
+                          <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
                             {t('tools.cost_unit', { cost: tool.cost })}
                           </Text>
                           <ToolBadges tool={tool} />
