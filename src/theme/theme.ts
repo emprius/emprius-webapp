@@ -1,4 +1,13 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import { Button } from './components/button';
+import { Input } from './components/input';
+import { Select } from './components/select';
+import { Textarea } from './components/textarea';
+import { Menu } from './components/menu';
+import { Popover } from './components/popover';
+import { Tooltip } from './components/tooltip';
+import { Modal } from './components/modal';
+import { Link } from './components/link';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -34,125 +43,15 @@ const theme = extendTheme({
     }),
   },
   components: {
-    Button: {
-      baseStyle: {
-        fontWeight: 'medium',
-        borderRadius: 'md',
-      },
-      defaultProps: {
-        colorScheme: 'primary',
-      },
-    },
-    Input: {
-      variants: {
-        outline: (props: { colorMode: string }) => ({
-          field: {
-            bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
-            color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-            _placeholder: {
-              color: props.colorMode === 'dark' ? 'whiteAlpha.600' : 'gray.500',
-            },
-          },
-        }),
-      },
-      defaultProps: {
-        focusBorderColor: 'primary.500',
-      },
-    },
-    Select: {
-      variants: {
-        outline: (props: { colorMode: string }) => ({
-          field: {
-            bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
-            color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-          },
-        }),
-      },
-      defaultProps: {
-        focusBorderColor: 'primary.500',
-      },
-    },
-    Textarea: {
-      variants: {
-        outline: (props: { colorMode: string }) => ({
-          bg: props.colorMode === 'dark' ? 'whiteAlpha.100' : 'white',
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-          _placeholder: {
-            color: props.colorMode === 'dark' ? 'whiteAlpha.600' : 'gray.500',
-          },
-        }),
-      },
-      defaultProps: {
-        focusBorderColor: 'primary.500',
-      },
-    },
-    Menu: {
-      baseStyle: (props: { colorMode: string }) => ({
-        list: {
-          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-        },
-        item: {
-          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-          _hover: {
-            bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
-          },
-          _focus: {
-            bg: props.colorMode === 'dark' ? 'whiteAlpha.200' : 'gray.100',
-          },
-        },
-      }),
-    },
-    Popover: {
-      baseStyle: (props: { colorMode: string }) => ({
-        content: {
-          bg: props.colorMode === 'dark' ? 'gray.700' : 'white',
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-        },
-        header: {
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-        },
-        body: {
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-        },
-      }),
-    },
-    Tooltip: {
-      baseStyle: (props: { colorMode: string }) => ({
-        bg: props.colorMode === 'dark' ? 'gray.700' : 'gray.700',
-        color: props.colorMode === 'dark' ? 'white' : 'white',
-        borderRadius: 'md',
-        px: '2',
-        py: '1',
-      }),
-    },
-    Modal: {
-      baseStyle: (props: { colorMode: string }) => ({
-        dialog: {
-          bg: props.colorMode === 'dark' ? 'gray.800' : 'white',
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-        },
-        header: {
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-        },
-        body: {
-          color: props.colorMode === 'dark' ? 'white' : 'gray.800',
-        },
-        footer: {
-          borderColor: props.colorMode === 'dark' ? 'whiteAlpha.300' : 'gray.200',
-        },
-      }),
-    },
-    Link: {
-      baseStyle: {
-        _hover: {
-          textDecoration: 'none',
-        },
-      },
-    },
+    Button,
+    Input,
+    Select,
+    Textarea,
+    Menu,
+    Popover,
+    Tooltip,
+    Modal,
+    Link,
   },
   shadows: {
     outline: '0 0 0 3px rgba(9, 103, 210, 0.6)',
