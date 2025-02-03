@@ -14,7 +14,6 @@ export const Layout = () => {
       <ScrollToTop />
       <Navbar />
       <Box flex={1} px={0}>
-        {/*lalalala*/}
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>

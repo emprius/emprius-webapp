@@ -32,9 +32,8 @@ export const Map = ({ tools, center: { latitude, longitude } }: SearchMapProps) 
 
   return (
     <Box
-      height='91vh'
-      width='100%'
-      maxHeight='800px'
+      h='100%'
+      w='full'
       sx={{
         '.custom-home-marker': {
           display: 'flex',
@@ -44,12 +43,10 @@ export const Map = ({ tools, center: { latitude, longitude } }: SearchMapProps) 
           border: 'none',
         },
         '.leaflet-control-zoom': {
-          '@media (max-width: 48em)': {
-            position: 'fixed',
-            right: '16px',
-            bottom: '25px',
-            zIndex: 1000,
-          },
+          position: 'fixed',
+          right: '16px',
+          bottom: '25px',
+          zIndex: 1000,
         },
       }}
     >

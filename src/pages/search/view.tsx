@@ -1,6 +1,6 @@
 import React from 'react'
-import { SearchMap as MapView } from '~components/Search/SearchMap'
+import { SearchPage } from '~components/Search/SearchPage'
 
 export const View = () => {
-  return <MapView />
+  return <SearchPage />
 }
