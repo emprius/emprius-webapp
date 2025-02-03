@@ -36,6 +36,7 @@ export const SearchBar = ({ onToggleView, isMapView }: SearchBarProps) => {
           icon={<SettingsIcon />}
           onClick={onOpen}
           display={{ base: 'flex', lg: 'none' }}
+          colorScheme='blue'
         />
         <InputGroup>
           <InputLeftElement pointerEvents='none'>
