@@ -2,14 +2,14 @@ import { Box } from '@chakra-ui/react'
 import L, { LatLng } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
+import ReactDOMServer from 'react-dom/server'
+import { IoMdHome } from 'react-icons/io'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
 import { Tool } from '~components/Tools/types'
 import { EmpriusLocation } from '~components/Layout/types'
 import { useTranslation } from 'react-i18next'
-import ReactDOMServer from 'react-dom/server'
-import { IoMdHome } from 'react-icons/io'
 
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
@@ -65,7 +65,11 @@ export const Map = ({ tools, center: { latitude, longitude } }: SearchMapProps) 
         {tools.map(
           (tool) =>
             tool.location && (
-              <Marker key={tool.id} position={[tool.location.latitude / 1e6, tool.location.longitude / 1e6]}>
+              <Marker
+                key={tool.id}
+                position={[tool.location.latitude / 1e6, tool.location.longitude / 1e6]}
+                icon={MAP_DEFAULTS.MARKER}
+              >
                 <Popup>
                   <ToolTooltip tool={tool} />
                 </Popup>

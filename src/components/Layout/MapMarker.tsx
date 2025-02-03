@@ -22,7 +22,7 @@ export const MapMarker = ({ latitude, longitude, showMarker = true, ...rest }: M
       {...rest}
     >
       <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
-      {showMarker && <Marker position={latlng} />}
+      {showMarker && <Marker position={latlng} icon={MAP_DEFAULTS.MARKER} />}
     </MapContainer>
   )
 }

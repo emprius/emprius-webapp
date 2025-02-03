@@ -1,3 +1,5 @@
+import L from 'leaflet'
+
 export const AUTH_FORM = {
   EMAIL_REGEX: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   MIN_PASSWORD_LENGTH: 8,
@@ -32,6 +34,16 @@ export const MAP_DEFAULTS = {
     URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
+  MARKER: L.icon({
+    iconUrl: '/assets/markers/marker-icon.png',
+    iconRetinaUrl: '/assets/markers/marker-icon-2x.png',
+    shadowUrl: '/assets/markers/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41],
+  }),
 } as const
 
 /**

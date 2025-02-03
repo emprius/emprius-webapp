@@ -8,17 +8,7 @@ import { MAP_DEFAULTS } from '~utils/constants'
 import './LocationPicker.css'
 import { EmpriusLocation } from '~components/Layout/types'
 
-const DefaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
-})
-
-L.Marker.prototype.options.icon = DefaultIcon
+L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
 
 interface LocationPickerProps {
   onChange: (location: EmpriusLocation | null) => void
