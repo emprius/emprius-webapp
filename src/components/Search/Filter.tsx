@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Button,
   Drawer,
@@ -22,10 +21,12 @@ import {
   Stack,
   Switch,
 } from '@chakra-ui/react'
-import { useTranslation } from 'react-i18next'
-import { useFormContext } from 'react-hook-form'
-import { useInfoContext } from '~components/Providers/InfoContext'
 import { Select } from 'chakra-react-select'
+import React from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useInfoContext } from '~components/Providers/InfoContext'
+import { SearchFilters } from '~components/Providers/SearchContext'
 import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~components/Search/SearchPage'
 
 interface FilterMenuProps {
@@ -55,7 +56,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
 export const FiltersForm = () => {
   const { t } = useTranslation()
   const { categories, transports } = useInfoContext()
-  const { setValue, watch } = useFormContext()
+  const { setValue, watch } = useFormContext<SearchFilters>()
 
   const handleCategoryChange = (newValue: any) => {
     if (!newValue) {
@@ -68,11 +69,11 @@ export const FiltersForm = () => {
 
   const handleTransportChange = (newValue: any) => {
     if (!newValue) {
-      setValue('transports', undefined)
+      setValue('transportOptions', undefined)
       return
     }
     const transportIds = newValue.map((item: any) => parseInt(item.value))
-    setValue('transports', transportIds)
+    setValue('transportOptions', transportIds)
   }
 
   const handleDistanceChange = (value: number) => {
@@ -166,7 +167,7 @@ export const FiltersForm = () => {
         <FormLabel>{t('search.transport')}</FormLabel>
         <Select
           isMulti
-          value={watch('transports')?.map((id: number) => ({
+          value={watch('transportOptions')?.map((id: number) => ({
             value: id,
             label: transports.find((t) => t.id === id)?.name,
           }))}

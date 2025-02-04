@@ -1,13 +1,31 @@
 import { Box, Grid } from '@chakra-ui/react'
-import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~theme/icons'
-import { ToolCard } from '~components/Tools/Card'
 import React from 'react'
-import { Tool } from '~components/Tools/types'
 import { useTranslation } from 'react-i18next'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import ErrorComponent from '~components/Layout/ErrorComponent'
+import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { ToolCard } from '~components/Tools/Card'
+import { Tool } from '~components/Tools/types'
+import { icons } from '~theme/icons'
 
-export const SearchList = ({ tools }: { tools: Tool[] }) => {
+export const SearchList = ({
+  tools,
+  isLoading,
+  error,
+  isError,
+}: {
+  tools: Tool[]
+  isLoading: boolean
+  isError: boolean
+  error?: Error
+}) => {
   const { t } = useTranslation()
+
+  if (isLoading) return <LoadingSpinner />
+
+  if (isError) {
+    return <ErrorComponent error={error} />
+  }
 
   if (tools.length === 0) {
     return (

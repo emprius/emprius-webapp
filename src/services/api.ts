@@ -2,14 +2,14 @@ import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
 import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
 import {ImageContent} from '~components/Images/ServerImage'
+import {InfoData} from '~components/Providers/InfoContext'
+import {BookingPendings} from '~components/Providers/PendingActionsProvider'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
-import {SearchFilters, SearchToolsResponse} from '~components/Search/queries'
+import {SearchParams, SearchToolsResponse} from '~components/Search/queries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
 import {Tool} from '~components/Tools/types'
 import {EditProfileFormData, UserProfile} from '~components/Users/types'
 import {STORAGE_KEYS} from '~utils/constants'
-import {BookingPendings} from '~components/Providers/PendingActionsProvider'
-import {InfoData} from '~components/Providers/InfoContext'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -72,7 +72,7 @@ export const auth = {
 // Tools endpoints
 export const tools = {
   getUserTools: () => apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools')),
-  searchTools: (params: SearchFilters) =>
+  searchTools: (params: SearchParams) =>
     apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>

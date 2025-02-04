@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiLogOut, FiMoon, FiSearch, FiSettings, FiSun } from 'react-icons/fi'
+import { FiLogOut, FiMoon, FiSettings, FiSun } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -23,6 +23,7 @@ import { BadgeIcon } from '../Layout/BadgeIcon'
 import { usePendingActions } from '~components/Providers/PendingActionsProvider'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+import { SearchBar } from '~components/Search/SearchBar'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -110,20 +111,6 @@ export const Navbar = () => {
               </Link>
               <Link
                 as={RouterLink}
-                to={ROUTES.SEARCH}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
-              >
-                <Box as={FiSearch} aria-label={t('nav.find_tools')} color={iconColor} boxSize={5} />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.find_tools')}
-                </Text>
-              </Link>
-              <Link
-                as={RouterLink}
                 to={ROUTES.USERS.LIST}
                 display='flex'
                 alignItems='center'
@@ -139,6 +126,12 @@ export const Navbar = () => {
             </Stack>
           )}
         </Stack>
+
+        {isAuthenticated && (
+          <Box display={{ base: 'none', md: 'block' }} flex={1} mx={8}>
+            <SearchBar />
+          </Box>
+        )}
 
         <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
           <IconButton
@@ -208,9 +201,6 @@ export const Navbar = () => {
                       }
                     >
                       {t('nav.ratings')}
-                    </MenuItem>
-                    <MenuItem as={RouterLink} to={ROUTES.SEARCH} icon={<FiSearch />}>
-                      {t('nav.find_tools')}
                     </MenuItem>
                     <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                       {t('user.list_title')}

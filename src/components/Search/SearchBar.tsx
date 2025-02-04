@@ -1,66 +1,39 @@
-import { SearchIcon, SettingsIcon } from '@chakra-ui/icons'
-import { Box, Button, HStack, IconButton, Input, InputGroup, InputLeftElement, useDisclosure } from '@chakra-ui/react'
+import { SearchIcon } from '@chakra-ui/icons'
+import { Box, Button, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import React from 'react'
-import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { FiltersDrawer } from '~components/Search/Filter'
-import { FiMap } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+import { useSearch } from '~components/Providers/SearchContext'
+import { ROUTES } from '~src/router/routes'
 
-interface SearchBarProps {
-  onToggleView: () => void
-  isMapView: boolean
-}
-
-export const SearchBar = ({ onToggleView, isMapView }: SearchBarProps) => {
+export const SearchBar = () => {
   const { t } = useTranslation()
-  const { register } = useFormContext()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { performSearch, term, setTerm } = useSearch()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigate(ROUTES.SEARCH)
+    performSearch()
+  }
 
   return (
-    <Box
-      position='absolute'
-      top={2}
-      left='50%'
-      transform='translateX(-50%)'
-      zIndex={900}
-      width='90%'
-      maxWidth='600px'
-      bg='white'
-      borderRadius='lg'
-      boxShadow='lg'
-      p={2}
-    >
-      <HStack>
-        <IconButton
-          aria-label='Filters'
-          icon={<SettingsIcon />}
-          onClick={onOpen}
-          display={{ base: 'flex', lg: 'none' }}
-          colorScheme='blue'
+    <Box as='form' onSubmit={handleSubmit} display='flex' alignItems='center' maxW='600px' flex={1} mx={4}>
+      <InputGroup>
+        <InputLeftElement pointerEvents='none'>
+          <SearchIcon color='gray.500' />
+        </InputLeftElement>
+        <Input
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          placeholder={t('search.placeholder')}
+          bg='white'
+          _focus={{ boxShadow: 'outline' }}
         />
-        <InputGroup>
-          <InputLeftElement pointerEvents='none'>
-            <SearchIcon color='gray.500' />
-          </InputLeftElement>
-          <Input
-            {...register('term')}
-            placeholder={t('search.placeholder')}
-            bg='white'
-            _focus={{ boxShadow: 'outline' }}
-          />
-        </InputGroup>
-        <Button type='submit' colorScheme='blue'>
-          {t('search.submit')}
-        </Button>
-        <IconButton
-          aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
-          icon={<FiMap />}
-          onClick={onToggleView}
-          variant={isMapView ? 'solid' : 'outline'}
-          colorScheme='blue'
-        />
-      </HStack>
-      <FiltersDrawer isOpen={isOpen} onClose={onClose} />
+      </InputGroup>
+      <Button type='submit' colorScheme='blue' ml={2}>
+        {t('search.submit')}
+      </Button>
     </Box>
   )
 }
