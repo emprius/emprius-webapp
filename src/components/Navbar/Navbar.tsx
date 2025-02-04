@@ -18,12 +18,12 @@ import { FiLogOut, FiMoon, FiSettings, FiSun } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
-import { LanguageSwitcher } from './LanguageSwitcher'
-import { BadgeIcon } from '../Layout/BadgeIcon'
-import { usePendingActions } from '~components/Providers/PendingActionsProvider'
+import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
+import { SearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
-import { SearchBar } from '~components/Search/SearchBar'
+import { BadgeIcon } from '../Layout/BadgeIcon'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export const Navbar = () => {
   const { t } = useTranslation()

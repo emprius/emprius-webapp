@@ -25,8 +25,8 @@ import { Select } from 'chakra-react-select'
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useInfoContext } from '~components/Providers/InfoContext'
-import { SearchFilters, useSearch } from '~components/Providers/SearchContext'
+import { useInfoContext } from '~components/InfoProviders/InfoContext'
+import { SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~components/Search/SearchPage'
 
 interface FilterMenuProps {

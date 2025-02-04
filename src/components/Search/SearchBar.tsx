@@ -3,7 +3,7 @@ import { Box, Button, Input, InputGroup, InputLeftElement } from '@chakra-ui/rea
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useSearch } from '~components/Providers/SearchContext'
+import { useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
 
 export const SearchBar = () => {

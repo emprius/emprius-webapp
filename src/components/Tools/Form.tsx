@@ -27,13 +27,13 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useInfoContext } from '~components/Providers/InfoContext'
 import { Image, ServerImage } from '~components/Images/ServerImage'
+import { useInfoContext } from '~components/InfoProviders/InfoContext'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
-import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
-import { Tool } from './types'
 import { EmpriusLocation } from '~components/Layout/types'
+import { Tool } from './types'
 
 export interface ToolFormData {
   title: string

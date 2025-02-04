@@ -1,15 +1,15 @@
 import { Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
+import { UseQueryResult } from '@tanstack/react-query'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
-import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
-import { BookingCard, BookingCardType } from './Card'
-import { UseQueryResult } from '@tanstack/react-query'
-import { usePendingActions } from '~components/Providers/PendingActionsProvider'
+import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { icons } from '~theme/icons'
 import ErrorComponent from '~components/Layout/ErrorComponent'
+import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { icons } from '~theme/icons'
+import { BookingCard, BookingCardType } from './Card'
 
 export const UserBookings = () => {
   const { t } = useTranslation()
