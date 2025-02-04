@@ -39,7 +39,10 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const performSearch = () => {
     const searchFilters = {
       ...filters,
-      term,
+    }
+
+    if (term) {
+      searchFilters['term'] = term
     }
 
     mutate({

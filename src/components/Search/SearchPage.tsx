@@ -112,13 +112,7 @@ export const SearchPage = () => {
             )}
           </Flex>
         </Box>
-        <FiltersDrawer
-          isOpen={isOpen}
-          onClose={() => {
-            onClose()
-            methods.handleSubmit(onSubmit)()
-          }}
-        />
+        <FiltersDrawer isOpen={isOpen} onClose={onClose} />
       </Box>
     </FormProvider>
   )

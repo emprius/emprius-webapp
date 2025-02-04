@@ -26,7 +26,7 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useInfoContext } from '~components/Providers/InfoContext'
-import { SearchFilters } from '~components/Providers/SearchContext'
+import { SearchFilters, useSearch } from '~components/Providers/SearchContext'
 import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~components/Search/SearchPage'
 
 interface FilterMenuProps {
@@ -35,7 +35,14 @@ interface FilterMenuProps {
 }
 
 export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
+  const { handleSubmit } = useFormContext()
   const { t } = useTranslation()
+  const { filters, setFilters } = useSearch()
+
+  const onSubmit = (data: SearchFilters) => {
+    setFilters({ ...filters, ...data })
+  }
+
   return (
     <Drawer isOpen={isOpen} placement='bottom' onClose={onClose}>
       <DrawerOverlay />
@@ -44,9 +51,14 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
         <DrawerHeader>{t('search.filters')}</DrawerHeader>
         <DrawerBody>
           <FiltersForm />
-          <Button colorScheme='blue' size='lg' onClick={onClose} mt={4} w='full'>
-            {t('common.close')}
-          </Button>
+          <HStack>
+            <Button colorScheme='blue' size='lg' onClick={onClose} mt={4} w='full'>
+              {t('common.close')}
+            </Button>
+            <Button colorScheme='blue' size='lg' onClick={() => handleSubmit(onSubmit)()} mt={4} w='full'>
+              {t('search.apply_filters')}
+            </Button>
+          </HStack>
         </DrawerBody>
       </DrawerContent>
     </Drawer>
