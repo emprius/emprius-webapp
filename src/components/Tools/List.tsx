@@ -1,47 +1,56 @@
-import { Box, Button, Container, SimpleGrid } from '@chakra-ui/react'
-import { ROUTES } from '~src/router/routes'
-import { AddIcon } from '@chakra-ui/icons'
-import { ElementNotFound } from '~components/Layout/ElementNotFound'
-import { ToolCard } from '~components/Tools/Card'
+import { Box, Grid } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import ErrorComponent from '~components/Layout/ErrorComponent'
+import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { ToolCard } from '~components/Tools/Card'
 import { Tool } from '~components/Tools/types'
 import { icons } from '~theme/icons'
 
-export const ToolList = ({ tools }: { tools: Tool[] }) => {
+export const ToolList = ({
+  tools,
+  isLoading,
+  error,
+  isError,
+}: {
+  tools: Tool[]
+  isLoading?: boolean
+  isError?: boolean
+  error?: Error
+}) => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
-  return (
-    <Container maxW='container.xl' py={8} position='relative'>
-      <Button
-        position='fixed'
-        top='6rem'
-        left='50%'
-        transform='translateX(-50%)'
-        leftIcon={<AddIcon />}
-        zIndex={2}
-        as={RouterLink}
-        to={ROUTES.TOOLS.NEW}
-        size='lg'
-        variant={'floating'}
-        colorScheme='blue'
-      >
-        {t('tools.add_tool')}
-      </Button>
+  if (isLoading) return <LoadingSpinner />
 
-      <Box flex={1} mt={20}>
-        {tools.length === 0 ? (
-          <ElementNotFound icon={icons.tools} title={t('tools.no_tools_found')} desc={t('tools.no_tools_found_desc')} />
-        ) : (
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {tools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </SimpleGrid>
-        )}
+  if (isError) {
+    return <ErrorComponent error={error} />
+  }
+
+  if (tools.length === 0) {
+    return (
+      <Box textAlign='center' mt={8}>
+        <ElementNotFound icon={icons.tools} title={t('tools.no_tools_found')} desc={t('tools.no_tools_found_desc')} />
       </Box>
-    </Container>
+    )
+  }
+  return (
+    <Grid
+      templateColumns={{
+        base: 'repeat(1, 1fr)',
+        sm: 'repeat(2, 1fr)',
+        md: 'repeat(3, 1fr)',
+        lg: 'repeat(3, 1fr)',
+        xl: 'repeat(4, 1fr)',
+      }}
+      gap={6}
+      pb={8}
+      pt={30}
+      pl={6}
+    >
+      {tools.map((tool) => (
+        <ToolCard key={tool.id} tool={tool} />
+      ))}
+    </Grid>
   )
 }

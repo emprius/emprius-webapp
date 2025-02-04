@@ -3,8 +3,9 @@ import React from 'react'
 import { IconType } from 'react-icons'
 
 interface BadgeCounterProps extends BoxProps {
-  count: number
+  count?: number
   badgeProps?: BoxProps
+  emptyBadge?: boolean
 }
 
 interface BadgeIconProps extends BadgeCounterProps {
@@ -21,17 +22,17 @@ export const BadgeIcon = ({ icon: IconType, 'aria-label': ariaLabel, iconProps, 
   )
 }
 
-export const BadgeCounter = ({ children, count, badgeProps, ...props }: BadgeCounterProps) => {
+export const BadgeCounter = ({ children, count, badgeProps, emptyBadge, ...props }: BadgeCounterProps) => {
   return (
     <Box position='relative' {...props}>
       {children}
-      {count > 0 && (
+      {(count > 0 || emptyBadge) && (
         <Box
           position='absolute'
           top='-8px'
           right='-10px'
           px={2}
-          py={1}
+          py={emptyBadge ? 2 : 1}
           fontSize='xs'
           fontWeight='bold'
           lineHeight='none'

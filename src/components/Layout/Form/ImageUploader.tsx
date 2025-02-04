@@ -1,17 +1,18 @@
-import React, { useCallback, useState, useRef, forwardRef } from 'react'
+import { CloseIcon } from '@chakra-ui/icons'
 import {
   Box,
-  Image,
-  SimpleGrid,
-  IconButton,
-  Input,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  IconButton,
+  Image,
+  Input,
+  SimpleGrid,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import { CloseIcon, AddIcon } from '@chakra-ui/icons'
+import React, { forwardRef, useCallback, useRef, useState } from 'react'
+import { icons } from '~theme/icons'
 
 interface ImageUploaderProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -35,14 +36,14 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
         if (!newFiles) return
 
         const filesArray = Array.from(newFiles)
-        
+
         // Update files state and create DataTransfer object
-        setFiles(prev => {
+        setFiles((prev) => {
           const updatedFiles = [...prev, ...filesArray]
-          
+
           // Create a new DataTransfer object with all files
           const dataTransfer = new DataTransfer()
-          updatedFiles.forEach(file => dataTransfer.items.add(file))
+          updatedFiles.forEach((file) => dataTransfer.items.add(file))
 
           // Update the file input's files
           if (fileInputRef.current) {
@@ -64,7 +65,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
             type: 'change',
             bubbles: true,
             cancelable: true,
-            timeStamp: Date.now()
+            timeStamp: Date.now(),
           } as unknown as React.ChangeEvent<HTMLInputElement>
           onChange(syntheticEvent)
         }
@@ -75,12 +76,12 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
     const removeImage = useCallback(
       (index: number) => {
         // Update files array
-        setFiles(prev => {
+        setFiles((prev) => {
           const newFiles = prev.filter((_, i) => i !== index)
-          
+
           // Create a new DataTransfer object with remaining files
           const dataTransfer = new DataTransfer()
-          newFiles.forEach(file => dataTransfer.items.add(file))
+          newFiles.forEach((file) => dataTransfer.items.add(file))
 
           // Create a change event with the updated files
           if (fileInputRef.current) {
@@ -91,7 +92,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
               type: 'change',
               bubbles: true,
               cancelable: true,
-              timeStamp: Date.now()
+              timeStamp: Date.now(),
             } as unknown as React.ChangeEvent<HTMLInputElement>
             onChange(syntheticEvent)
           }
@@ -117,7 +118,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
     React.useEffect(() => {
       if (fileInputRef.current && files.length > 0) {
         const dataTransfer = new DataTransfer()
-        files.forEach(file => dataTransfer.items.add(file))
+        files.forEach((file) => dataTransfer.items.add(file))
         fileInputRef.current.files = dataTransfer.files
 
         // Trigger onChange to ensure form is aware of files
@@ -127,7 +128,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
           type: 'change',
           bubbles: true,
           cancelable: true,
-          timeStamp: Date.now()
+          timeStamp: Date.now(),
         } as unknown as React.ChangeEvent<HTMLInputElement>
         onChange(syntheticEvent)
       }
@@ -143,7 +144,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
     return (
       <FormControl isRequired={isRequired} isInvalid={!!error}>
         <FormLabel>{label}</FormLabel>
-        
+
         <VisuallyHidden>
           <Input
             type='file'
@@ -161,21 +162,16 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
                 ref.current = e
               }
             }}
-            aria-hidden="false"
+            aria-hidden='false'
           />
         </VisuallyHidden>
-        
-        <Button
-          leftIcon={<AddIcon />}
-          onClick={handleButtonClick}
-          colorScheme='blue'
-          mb={4}
-        >
+
+        <Button leftIcon={icons.add({})} onClick={handleButtonClick} colorScheme='blue' mb={4}>
           Add Images
         </Button>
 
         <FormErrorMessage>{error}</FormErrorMessage>
-        
+
         <SimpleGrid columns={[2, 3, 4]} spacing={4} mt={4}>
           {previews.map((preview, index) => (
             <Box key={preview} position='relative'>

@@ -17,7 +17,7 @@ import { FiMap } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { SearchFilters, useSearch } from '~components/Search/SearchContext'
-import { SearchList } from '~components/Search/SearchList'
+import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
 
 export const MAX_COST_MAX = 1000
@@ -106,7 +106,7 @@ export const SearchPage = () => {
                   borderColor='gray.200'
                 />
                 <Box flex={1} px={4} py={8} overflowY='auto'>
-                  <SearchList tools={tools} isLoading={isPending} error={error} isError={isError} />
+                  <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
                 </Box>
               </>
             )}

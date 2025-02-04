@@ -1,10 +1,11 @@
 import { lazy } from 'react'
-import { ProtectedRoute } from '~src/router/ProtectedRoute'
+import { DashboardLayout } from '~src/pages/DashboardLayout'
 import { FormLayout } from '~src/pages/FormLayout'
-import { TitlePageLayout } from '~src/pages/TitlePageLayout'
-import { SuspenseLoader } from '~src/router/SuspenseLoader'
-import { ROUTES } from '~src/router/routes/index'
 import { Layout } from '~src/pages/Layout'
+import { TitlePageLayout } from '~src/pages/TitlePageLayout'
+import { ProtectedRoute } from '~src/router/ProtectedRoute'
+import { ROUTES } from '~src/router/routes/index'
+import { SuspenseLoader } from '~src/router/SuspenseLoader'
 
 const SearchPage = lazy(() => import('~src/pages/search/view').then((m) => ({ default: m.View })))
 const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ default: m.View })))
@@ -31,80 +32,6 @@ const DashboardRoutesElements = [
         ),
       },
       {
-        path: ROUTES.PROFILE.VIEW,
-        element: (
-          <SuspenseLoader>
-            <Profile />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        element: <FormLayout />,
-        children: [
-          {
-            path: ROUTES.PROFILE.EDIT,
-            element: (
-              <SuspenseLoader>
-                <EditProfile />
-              </SuspenseLoader>
-            ),
-          },
-          {
-            path: ROUTES.TOOLS.NEW,
-            element: (
-              <SuspenseLoader>
-                <ToolAddPage />
-              </SuspenseLoader>
-            ),
-          },
-          {
-            path: ROUTES.TOOLS.EDIT,
-            element: (
-              <SuspenseLoader>
-                <ToolEditPage />
-              </SuspenseLoader>
-            ),
-          },
-        ],
-      },
-      {
-        element: <TitlePageLayout />,
-        children: [
-          {
-            path: ROUTES.BOOKINGS,
-            element: (
-              <SuspenseLoader>
-                <UserBookingsPage />
-              </SuspenseLoader>
-            ),
-          },
-          {
-            path: ROUTES.RATINGS,
-            element: (
-              <SuspenseLoader>
-                <UserRatingsPage />
-              </SuspenseLoader>
-            ),
-          },
-          {
-            path: ROUTES.USERS.LIST,
-            element: (
-              <SuspenseLoader>
-                <UsersListPage />
-              </SuspenseLoader>
-            ),
-          },
-        ],
-      },
-      {
-        path: ROUTES.TOOLS.LIST,
-        element: (
-          <SuspenseLoader>
-            <ToolsListPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
         path: ROUTES.TOOLS.DETAIL,
         element: (
           <SuspenseLoader>
@@ -119,6 +46,85 @@ const DashboardRoutesElements = [
             <UserDetail />
           </SuspenseLoader>
         ),
+      },
+      {
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: ROUTES.PROFILE.VIEW,
+            element: (
+              <SuspenseLoader>
+                <Profile />
+              </SuspenseLoader>
+            ),
+          },
+          {
+            element: <FormLayout />,
+            children: [
+              {
+                path: ROUTES.PROFILE.EDIT,
+                element: (
+                  <SuspenseLoader>
+                    <EditProfile />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.TOOLS.NEW,
+                element: (
+                  <SuspenseLoader>
+                    <ToolAddPage />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.TOOLS.EDIT,
+                element: (
+                  <SuspenseLoader>
+                    <ToolEditPage />
+                  </SuspenseLoader>
+                ),
+              },
+            ],
+          },
+          {
+            element: <TitlePageLayout />,
+            children: [
+              {
+                path: ROUTES.BOOKINGS,
+                element: (
+                  <SuspenseLoader>
+                    <UserBookingsPage />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.RATINGS,
+                element: (
+                  <SuspenseLoader>
+                    <UserRatingsPage />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.USERS.LIST,
+                element: (
+                  <SuspenseLoader>
+                    <UsersListPage />
+                  </SuspenseLoader>
+                ),
+              },
+            ],
+          },
+          {
+            path: ROUTES.TOOLS.LIST,
+            element: (
+              <SuspenseLoader>
+                <ToolsListPage />
+              </SuspenseLoader>
+            ),
+          },
+        ],
       },
     ],
   },

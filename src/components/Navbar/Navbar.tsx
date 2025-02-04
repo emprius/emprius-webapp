@@ -1,4 +1,3 @@
-import { AddIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -101,33 +100,14 @@ export const Navbar = () => {
                     {t('nav.ratings')}
                   </Text>
                 </Link>
-                <Button as={RouterLink} to={ROUTES.TOOLS.NEW} borderRadius='lg' leftIcon={<AddIcon />}>
+                <Button as={RouterLink} to={ROUTES.TOOLS.NEW} borderRadius='lg' leftIcon={icons.add({})}>
                   <Text>{t('tools.add_tool')}</Text>
                 </Button>
               </Stack>
               {/*Big screens menu*/}
-              <Menu>
-                <MenuButton display={{ base: 'none', md: 'block' }}>
-                  <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
-                    {t('nav.profile')}
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={icons.tools({})}>
-                    {t('nav.my_tools')}
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
-                    {t('nav.settings')}
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
-                    {t('user.list_title')}
-                  </MenuItem>
-                  <MenuItem icon={<FiLogOut />} onClick={logout}>
-                    {t('nav.logout')}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+              <Link display={{ base: 'none', md: 'block' }} as={RouterLink} to={ROUTES.PROFILE.VIEW}>
+                <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+              </Link>
 
               {/*Little screens menu*/}
               <Box display={{ base: 'block', md: 'none' }}>
@@ -136,48 +116,11 @@ export const Navbar = () => {
                     <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem as={RouterLink} to={ROUTES.TOOLS.NEW} icon={<AddIcon />}>
-                      {t('tools.add_tool')}
-                    </MenuItem>
-                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
-                      {t('nav.profile')}
-                    </MenuItem>
-                    <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={icons.tools({})}>
-                      {t('nav.my_tools')}
-                    </MenuItem>
-                    <MenuItem
-                      as={RouterLink}
-                      to={ROUTES.BOOKINGS}
-                      icon={
-                        <BadgeIcon
-                          icon={icons.bookings}
-                          aria-label={t('nav.my_bookings')}
-                          count={pendingRequestsCount}
-                          badgeProps={{ top: '-12px', right: '-12px' }}
-                        />
-                      }
-                    >
-                      {t('nav.my_bookings')}
-                    </MenuItem>
-                    <MenuItem
-                      as={RouterLink}
-                      to={ROUTES.RATINGS}
-                      icon={
-                        <BadgeIcon
-                          icon={icons.ratings}
-                          aria-label={t('nav.ratings')}
-                          count={pendingRatingsCount}
-                          badgeProps={{ top: '-12px', right: '-12px' }}
-                        />
-                      }
-                    >
-                      {t('nav.ratings')}
+                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
+                      {t('nav.settings')}
                     </MenuItem>
                     <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                       {t('user.list_title')}
-                    </MenuItem>
-                    <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
-                      {t('nav.settings')}
                     </MenuItem>
                     <MenuItem icon={<FiLogOut />} onClick={logout}>
                       {t('nav.logout')}
