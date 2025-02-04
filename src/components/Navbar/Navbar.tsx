@@ -1,7 +1,7 @@
+import { AddIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
-  IconButton,
   Link,
   Menu,
   MenuButton,
@@ -9,12 +9,11 @@ import {
   MenuList,
   Stack,
   Text,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiLogOut, FiMoon, FiSettings, FiSun } from 'react-icons/fi'
+import { FiLogOut, FiSettings } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -23,11 +22,9 @@ import { SearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeIcon } from '../Layout/BadgeIcon'
-import { LanguageSwitcher } from './LanguageSwitcher'
 
 export const Navbar = () => {
   const { t } = useTranslation()
-  const { colorMode, toggleColorMode } = useColorMode()
   const { isAuthenticated, logout, user } = useAuth()
   const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
 
@@ -47,104 +44,68 @@ export const Navbar = () => {
       borderColor={borderColor}
       shadow='sm'
     >
-      <Stack direction='row' justify='space-between' align='center' spacing={8} py={4} px={4}>
+      <Stack direction='row' justify='space-between' align='center' spacing={4} py={4} px={4}>
         <Stack direction='row' align='center' spacing={4}>
           <Link as={RouterLink} to={ROUTES.HOME} _hover={{ textDecoration: 'none' }}>
             <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
           </Link>
 
           {isAuthenticated && (
-            <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
-              <Link
-                as={RouterLink}
-                to={ROUTES.TOOLS.LIST}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
-              >
-                <Box as={icons.tools} aria-label={t('nav.my_tools')} color={iconColor} boxSize={5} />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.my_tools')}
-                </Text>
-              </Link>
-              <Link
-                as={RouterLink}
-                to={ROUTES.BOOKINGS}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
-              >
-                <BadgeIcon
-                  icon={icons.bookings}
-                  aria-label={t('nav.my_bookings')}
-                  count={pendingRequestsCount}
-                  color={iconColor}
-                  iconProps={{ boxSize: 5 }}
-                />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.my_bookings')}
-                </Text>
-              </Link>
-              <Link
-                as={RouterLink}
-                to={ROUTES.RATINGS}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
-              >
-                <BadgeIcon
-                  icon={icons.ratings}
-                  aria-label={t('nav.ratings')}
-                  count={pendingRatingsCount}
-                  color={iconColor}
-                  iconProps={{ boxSize: 5 }}
-                />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.ratings')}
-                </Text>
-              </Link>
-              <Link
-                as={RouterLink}
-                to={ROUTES.USERS.LIST}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
-              >
-                <Box as={icons.users} aria-label={t('user.list_title')} color={iconColor} boxSize={5} />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('user.list_title')}
-                </Text>
-              </Link>
-            </Stack>
+            <Box flex={1} mr={8}>
+              <SearchBar />
+            </Box>
           )}
         </Stack>
 
-        {isAuthenticated && (
-          <Box display={{ base: 'none', md: 'block' }} flex={1} mx={8}>
-            <SearchBar />
-          </Box>
-        )}
-
         <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
-          <IconButton
-            aria-label={t('common.toggle_theme')}
-            icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
-            onClick={toggleColorMode}
-            variant='ghost'
-          />
-
-          <LanguageSwitcher />
-
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <>
+              <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.BOOKINGS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <BadgeIcon
+                    icon={icons.bookings}
+                    aria-label={t('nav.my_bookings')}
+                    count={pendingRequestsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.my_bookings')}
+                  </Text>
+                </Link>
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.RATINGS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100' }}
+                >
+                  <BadgeIcon
+                    icon={icons.ratings}
+                    aria-label={t('nav.ratings')}
+                    count={pendingRatingsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.ratings')}
+                  </Text>
+                </Link>
+                <Button as={RouterLink} to={ROUTES.TOOLS.NEW} borderRadius='lg' leftIcon={<AddIcon />}>
+                  <Text>{t('tools.add_tool')}</Text>
+                </Button>
+              </Stack>
+              {/*Big screens menu*/}
               <Menu>
                 <MenuButton display={{ base: 'none', md: 'block' }}>
                   <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
@@ -153,8 +114,14 @@ export const Navbar = () => {
                   <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
                     {t('nav.profile')}
                   </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.TOOLS.LIST} icon={icons.tools({})}>
+                    {t('nav.my_tools')}
+                  </MenuItem>
                   <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
                     {t('nav.settings')}
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
+                    {t('user.list_title')}
                   </MenuItem>
                   <MenuItem icon={<FiLogOut />} onClick={logout}>
                     {t('nav.logout')}
@@ -162,12 +129,16 @@ export const Navbar = () => {
                 </MenuList>
               </Menu>
 
+              {/*Little screens menu*/}
               <Box display={{ base: 'block', md: 'none' }}>
                 <Menu>
                   <MenuButton>
                     <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
                   </MenuButton>
                   <MenuList>
+                    <MenuItem as={RouterLink} to={ROUTES.TOOLS.NEW} icon={<AddIcon />}>
+                      {t('tools.add_tool')}
+                    </MenuItem>
                     <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={icons.user({})}>
                       {t('nav.profile')}
                     </MenuItem>
@@ -215,7 +186,8 @@ export const Navbar = () => {
                 </Menu>
               </Box>
             </>
-          ) : (
+          )}
+          {!isAuthenticated && (
             <Stack direction='row' spacing={2}>
               <Button as={RouterLink} to={ROUTES.AUTH.LOGIN} variant='ghost'>
                 {t('nav.login')}

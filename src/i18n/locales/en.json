@@ -117,10 +117,10 @@
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
-    "my_bookings": "My Bookings",
+    "my_bookings": "Bookings",
     "my_tools": "My Tools",
     "profile": "Profile",
-    "ratings": "Pending Ratings",
+    "ratings": "Ratings",
     "register": "Register",
     "settings": "Settings"
   },

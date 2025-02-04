@@ -117,10 +117,10 @@
     "home": "Inicio",
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
-    "my_bookings": "Mis reservas",
+    "my_bookings": "Reservas",
     "my_tools": "Mis herramientas",
     "profile": "Perfil",
-    "ratings": "Valoraciones pendientes",
+    "ratings": "Valoraciones",
     "register": "Registrarse",
     "settings": "Ajustes"
   },
