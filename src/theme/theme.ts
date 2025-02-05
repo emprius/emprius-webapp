@@ -1,11 +1,14 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import { Button } from './components/button'
+import { Checkbox } from './components/checkbox'
 import { Input } from './components/input'
 import { Link } from './components/link' // import { Text } from './components/text'
 import { Menu } from './components/menu'
 import { Modal } from './components/modal'
 import { Popover } from './components/popover'
 import { Select } from './components/select'
+import { Slider } from './components/slider'
+import { Switch } from './components/switch'
 import { Textarea } from './components/textarea'
 import { Tooltip } from './components/tooltip'
 
@@ -44,8 +47,11 @@ const theme = extendTheme({
   },
   components: {
     Button,
+    Checkbox,
     Input,
     Select,
+    Slider,
+    Switch,
     Textarea,
     Menu,
     Popover,
