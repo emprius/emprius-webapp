@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Icon,
   Link,
   Menu,
   MenuButton,
@@ -15,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { FiLogOut, FiSettings } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { Avatar } from '~components/Images/Avatar'
+import { Avatar, avatarSizeToPixels } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
 import { SearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
@@ -50,7 +51,7 @@ export const Navbar = () => {
           </Link>
 
           {isAuthenticated && (
-            <Box flex={1} mr={8}>
+            <Box flex={1}>
               <SearchBar />
             </Box>
           )}
@@ -104,16 +105,12 @@ export const Navbar = () => {
                   <Text>{t('tools.add_tool')}</Text>
                 </Button>
               </Stack>
-              {/*Big screens menu*/}
-              <Link display={{ base: 'none', md: 'block' }} as={RouterLink} to={ROUTES.PROFILE.VIEW}>
-                <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
-              </Link>
 
               {/*Little screens menu*/}
               <Box display={{ base: 'block', md: 'none' }}>
                 <Menu>
                   <MenuButton>
-                    <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+                    <Icon as={icons.menu} />
                   </MenuButton>
                   <MenuList>
                     <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
@@ -128,6 +125,11 @@ export const Navbar = () => {
                   </MenuList>
                 </Menu>
               </Box>
+
+              {/*Big screens menu*/}
+              <Link as={RouterLink} to={ROUTES.PROFILE.VIEW} minW={avatarSizeToPixels['sm']}>
+                <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+              </Link>
             </>
           )}
           {!isAuthenticated && (

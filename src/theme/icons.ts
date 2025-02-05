@@ -1,4 +1,4 @@
-import { FiPlus, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import { FiMenu, FiPlus, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 
 export const icons = {
@@ -9,4 +9,5 @@ export const icons = {
   request: PiHandArrowDownBold,
   loan: PiHandHeartBold,
   add: FiPlus,
+  menu: FiMenu,
 }

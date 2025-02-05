@@ -6,7 +6,7 @@ import { ASSETS } from '~utils/constants'
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 // Map Chakra Avatar sizes to pixel values for consistent sizing
-export const sizeToPixels: Record<AvatarSize, string> = {
+export const avatarSizeToPixels: Record<AvatarSize, string> = {
   '2xs': '16px',
   xs: '24px',
   sm: '32px',
@@ -33,7 +33,7 @@ export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2x
       fallbackSrc={ASSETS.AVATAR_FALLBACK}
       alt='Avatar'
       borderRadius='full'
-      boxSize={sizeToPixels[size]}
+      boxSize={avatarSizeToPixels[size]}
       objectFit='cover'
     />
   )

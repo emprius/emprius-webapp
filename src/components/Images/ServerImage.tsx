@@ -3,7 +3,7 @@ import React from 'react'
 import { useImage } from '~components/Images/queries'
 import { ASSETS } from '~utils/constants'
 
-interface ServerImageProps extends Omit<ImageProps, 'src'> {
+export type ServerImageProps = Omit<ImageProps, 'src'> & {
   imageId: string
   fallbackSrc?: string
 }

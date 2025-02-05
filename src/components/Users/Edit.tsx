@@ -18,12 +18,12 @@ import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
+import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { EditProfileFormData, EditProfileFormProps } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'
 import { ASSETS, AUTH_FORM } from '~utils/constants'
-import { Avatar, AvatarProps, sizeToPixels } from '../Images/Avatar'
+import { Avatar, AvatarProps, avatarSizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './queries'
-import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
@@ -219,9 +219,9 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
   }
 
   return (
-    <Box position='relative' width={sizeToPixels[size]} height={sizeToPixels[size]}>
+    <Box position='relative' width={avatarSizeToPixels[size]} height={avatarSizeToPixels[size]}>
       {previewUrl ? (
-        <Image src={previewUrl} alt='Avatar' borderRadius='full' boxSize={sizeToPixels[size]} objectFit='cover' />
+        <Image src={previewUrl} alt='Avatar' borderRadius='full' boxSize={avatarSizeToPixels[size]} objectFit='cover' />
       ) : (
         <Avatar avatarHash={avatarHash} username={username} size={size} />
       )}
