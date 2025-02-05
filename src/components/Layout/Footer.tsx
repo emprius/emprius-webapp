@@ -15,7 +15,17 @@ export const Footer = () => {
   const textColor = useColorModeValue('gray.600', 'gray.400')
 
   return (
-    <Box as='footer' bg={bgColor} borderTop={1} borderStyle='solid' borderColor={borderColor} py={8} mt='auto'>
+    <Box 
+      as='footer' 
+      bg={bgColor} 
+      borderTop={1} 
+      borderStyle='solid' 
+      borderColor={borderColor} 
+      py={8} 
+      mt='auto'
+      position='relative'
+      zIndex={2}
+    >
       <Container maxW='container.xl'>
         <Stack spacing={6} align='center'>
           {/* First line: Theme and Language switchers */}

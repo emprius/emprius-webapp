@@ -47,6 +47,7 @@ const SideNav = () => {
       borderRight='1px'
       borderColor={borderColor}
       pt='80px' // Space for the main navbar
+      zIndex={1} // Add z-index to ensure proper layering
     >
       {menuItems.map((item) => (
         <Flex
