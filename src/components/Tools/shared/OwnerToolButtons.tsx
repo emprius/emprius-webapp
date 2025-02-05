@@ -50,7 +50,6 @@ export const EditToolButton = ({ toolId }: { toolId: number }) => {
       icon={<FiEdit2 />}
       aria-label={t('tools.edit')}
       size='md'
-      colorScheme='blue'
       onClick={(e) => {
         e.stopPropagation()
       }}
@@ -94,7 +93,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
 
   return (
     <>
-      <Switch size='lg' isChecked={tool.isAvailable} onChange={onOpen} colorScheme='green' />
+      <Switch size='lg' isChecked={tool.isAvailable} onChange={onOpen} />
 
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
         <AlertDialogOverlay>
@@ -113,7 +112,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
               <Button ref={cancelRef} onClick={onClose}>
                 {t('common.cancel')}
               </Button>
-              <Button colorScheme='blue' onClick={handleConfirmToggle} ml={3}>
+              <Button onClick={handleConfirmToggle} ml={3}>
                 {t('common.confirm')}
               </Button>
             </AlertDialogFooter>

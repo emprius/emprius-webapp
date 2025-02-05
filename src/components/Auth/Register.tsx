@@ -12,16 +12,16 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
-import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { IRegisterParams } from '~components/Auth/authQueries'
-import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
-import { AUTH_FORM } from '~utils/constants'
+import { LocationPicker } from '~components/Layout/Form/LocationPicker'
+import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { ROUTES } from '~src/router/routes'
+import { AUTH_FORM } from '~utils/constants'
 
 interface RegisterFormData extends IRegisterParams {
   confirmPassword: string
@@ -176,14 +176,7 @@ export const Register = () => {
 
           <FormSubmitMessage isError={isError} error={error} />
 
-          <Button
-            type='submit'
-            size='lg'
-            isLoading={isSubmitting}
-            loadingText={t('common.loading')}
-            colorScheme='primary'
-            w='100%'
-          >
+          <Button type='submit' size='lg' isLoading={isSubmitting} loadingText={t('common.loading')} w='100%'>
             {t('auth.register')}
           </Button>
         </Stack>

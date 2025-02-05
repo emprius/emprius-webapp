@@ -52,10 +52,10 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
         <DrawerBody>
           <FiltersForm />
           <HStack>
-            <Button colorScheme='blue' size='lg' onClick={onClose} mt={4} w='full'>
+            <Button size='lg' onClick={onClose} mt={4} w='full'>
               {t('common.close')}
             </Button>
-            <Button colorScheme='blue' size='lg' onClick={() => handleSubmit(onSubmit)()} mt={4} w='full'>
+            <Button size='lg' onClick={() => handleSubmit(onSubmit)()} mt={4} w='full'>
               {t('search.apply_filters')}
             </Button>
           </HStack>

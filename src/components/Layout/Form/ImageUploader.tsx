@@ -166,7 +166,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
           />
         </VisuallyHidden>
 
-        <Button leftIcon={icons.add({})} onClick={handleButtonClick} colorScheme='blue' mb={4}>
+        <Button leftIcon={icons.add({})} onClick={handleButtonClick} mb={4}>
           Add Images
         </Button>
 

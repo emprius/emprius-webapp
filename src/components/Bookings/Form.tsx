@@ -146,7 +146,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             {t('tools.price_per_day')}: {tool.cost}€
           </Text>
           {tool.mayBeFree && (
-            <Text fontSize='sm' color='blue.500'>
+            <Text fontSize='sm' color='primary.500'>
               {t('tools.may_be_free_note')}
             </Text>
           )}

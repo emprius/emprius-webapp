@@ -13,8 +13,8 @@ const SideNav = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const location = useLocation()
-  const selectedBg = useColorModeValue('blue.50', 'blue.900')
-  const selectedColor = useColorModeValue('blue.600', 'blue.200')
+  const selectedBg = useColorModeValue('primary.50', 'primary.900')
+  const selectedColor = useColorModeValue('primary.600', 'primary.200')
   const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
 
   const menuItems = useMemo(
@@ -93,7 +93,7 @@ const BottomNav = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const location = useLocation()
-  const selectedColor = useColorModeValue('blue.600', 'blue.200')
+  const selectedColor = useColorModeValue('primary.600', 'primary.200')
   const menuItems = useMemo(
     () => [
       { icon: icons.user, path: ROUTES.PROFILE.VIEW },

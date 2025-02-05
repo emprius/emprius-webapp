@@ -1,13 +1,13 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import { Button } from './components/button'
 import { Input } from './components/input'
+import { Link } from './components/link' // import { Text } from './components/text'
+import { Menu } from './components/menu'
+import { Modal } from './components/modal'
+import { Popover } from './components/popover'
 import { Select } from './components/select'
 import { Textarea } from './components/textarea'
-import { Menu } from './components/menu'
-import { Popover } from './components/popover'
 import { Tooltip } from './components/tooltip'
-import { Modal } from './components/modal'
-import { Link } from './components/link' // import { Text } from './components/text'
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -18,16 +18,16 @@ const theme = extendTheme({
   config,
   colors: {
     primary: {
-      50: '#E6F6FF',
-      100: '#BAE3FF',
-      200: '#7CC4FA',
-      300: '#47A3F3',
-      400: '#2186EB',
-      500: '#0967D2',
-      600: '#0552B5',
-      700: '#03449E',
-      800: '#01337D',
-      900: '#002159',
+      50: '#F0FFF4',
+      100: '#C6F6D5',
+      200: '#9AE6B4',
+      300: '#68D391',
+      400: '#48BB78',
+      500: '#38A169',
+      600: '#2F855A',
+      700: '#276749',
+      800: '#22543D',
+      900: '#1C4532',
     },
   },
   fonts: {

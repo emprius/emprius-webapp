@@ -173,7 +173,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
           <Button onClick={onSuccess} variant='ghost'>
             {t('common.cancel')}
           </Button>
-          <Button type='submit' colorScheme='blue' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
+          <Button type='submit' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
             {t('common.save')}
           </Button>
         </Stack>
@@ -232,7 +232,6 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
           position='absolute'
           bottom='0'
           right='0'
-          colorScheme='blue'
           rounded='full'
           size={size === '2xl' ? 'sm' : 'xs'}
           onClick={() => inputRef.current?.click()}

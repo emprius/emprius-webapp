@@ -65,7 +65,7 @@ export const SearchPage = () => {
                 {t('search.filters', { defaultValue: 'Filters' })}
               </Text>
               <FiltersForm />
-              <Button colorScheme='blue' size='lg' onClick={() => methods.handleSubmit(onSubmit)()} mt={4} w='full'>
+              <Button size='lg' onClick={() => methods.handleSubmit(onSubmit)()} mt={4} w='full'>
                 {t('search.apply_filters')}
               </Button>
             </Box>
@@ -77,14 +77,12 @@ export const SearchPage = () => {
                   icon={<FaFilter />}
                   onClick={onOpen}
                   display={{ base: 'flex', lg: 'none' }}
-                  colorScheme='blue'
                 />
                 <IconButton
                   aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
                   icon={<FiMap />}
                   onClick={toggleView}
                   variant={isMapView ? 'solid' : 'outline'}
-                  colorScheme='blue'
                 />
               </HStack>
             </Box>

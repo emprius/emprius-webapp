@@ -67,7 +67,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
       break
     case BookingStatus.ACCEPTED:
       text = t(`bookings.status.ACCEPTED`)
-      colorScheme = 'blue'
+      colorScheme = 'primary'
       break
     case BookingStatus.PENDING:
       text = t(`bookings.status.PENDING`)

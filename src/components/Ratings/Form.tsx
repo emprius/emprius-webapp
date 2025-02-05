@@ -13,13 +13,13 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { ServerImage } from '~components/Images/ServerImage'
 import { SetRatingStars } from '~components/Ratings/SetRatingStars'
-import { useSubmitRating } from './queries'
 import { Rating } from '~components/Ratings/types'
 import { useTool } from '~components/Tools/queries'
 import { UserCard } from '~components/Users/Card'
-import { ServerImage } from '~components/Images/ServerImage'
-import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { useSubmitRating } from './queries'
 
 interface RatingFormProps {
   rating: Rating
@@ -146,7 +146,6 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
 
           <Button
             type='submit'
-            colorScheme='blue'
             isLoading={submitRating.status === 'pending'}
             loadingText={t('rating.submitting')}
             isDisabled={!userRating}

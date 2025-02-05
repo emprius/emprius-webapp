@@ -31,7 +31,7 @@ export const SearchBar = () => {
           _focus={{ boxShadow: 'outline' }}
         />
       </InputGroup>
-      <Button type='submit' colorScheme='blue' ml={2}>
+      <Button type='submit' ml={2}>
         {t('search.submit')}
       </Button>
     </Box>

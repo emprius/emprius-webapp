@@ -25,7 +25,7 @@ export const ServerErrorPage = () => {
         <Heading>{t('error.server_error')}</Heading>
         <Text color='gray.600'>{t('error.cannot_reach_server')}</Text>
         <Box>
-          <Button onClick={handleRetry} colorScheme='primary' mr={4}>
+          <Button onClick={handleRetry} mr={4}>
             {t('error.retry')}
           </Button>
           <Button onClick={handleGoHome} variant='ghost'>
