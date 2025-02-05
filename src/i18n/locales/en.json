@@ -41,7 +41,7 @@
     "end_date": "End Date",
     "error": "Booking failed",
     "mark_as_returned": "Mark as Returned",
-    "my_petitions": "My Petitions",
+    "my_petitions": "Requested tools",
     "return_error": "Failed to mark tool as returned",
     "return_success": "Tool marked as returned successfully",
     "start_date": "Start Date",
@@ -55,7 +55,7 @@
     "success": "Booking successful",
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
-    "tool_requests": "Tool Requests",
+    "tool_requests": "Your loans",
     "try_again": "Please try again later"
   },
   "common": {

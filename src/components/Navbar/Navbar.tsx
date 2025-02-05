@@ -62,7 +62,7 @@ export const Navbar = () => {
               <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
                 <Link
                   as={RouterLink}
-                  to={ROUTES.BOOKINGS}
+                  to={ROUTES.BOOKINGS.REQUESTS}
                   display='flex'
                   alignItems='center'
                   p={2}
@@ -70,7 +70,7 @@ export const Navbar = () => {
                   _hover={{ bg: 'gray.100' }}
                 >
                   <BadgeIcon
-                    icon={icons.bookings}
+                    icon={icons.loan}
                     aria-label={t('nav.my_bookings')}
                     count={pendingRequestsCount}
                     color={iconColor}

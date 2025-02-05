@@ -30,7 +30,7 @@ export const BadgeCounter = ({ children, count, badgeProps, emptyBadge, ...props
         <Box
           position='absolute'
           top='-8px'
-          right='-10px'
+          right='-16px'
           px={2}
           py={emptyBadge ? 2 : 1}
           fontSize='xs'

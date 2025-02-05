@@ -41,7 +41,7 @@
     "end_date": "Data de fi",
     "error": "Error en la reserva",
     "mark_as_returned": "Marcar com retornat",
-    "my_petitions": "Les meves peticions",
+    "my_petitions": "Eines demanades",
     "return_error": "Error al marcar l'eina com retornada",
     "return_success": "Eina marcada com retornada amb èxit",
     "start_date": "Data d'inici",
@@ -55,7 +55,7 @@
     "success": "Reserva exitosa",
     "tool_petition_title": "Estàs sol·licitant una eina",
     "tool_request_title": "La teva eina és necessària",
-    "tool_requests": "Sol·licituds d'eines",
+    "tool_requests": "Els teus préstecs",
     "try_again": "Si us plau, torna-ho a provar més tard"
   },
   "common": {

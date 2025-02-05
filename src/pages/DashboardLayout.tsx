@@ -22,7 +22,13 @@ const SideNav = () => {
       { icon: icons.user, label: t('nav.profile'), path: ROUTES.PROFILE.VIEW },
       { icon: icons.tools, label: t('nav.my_tools'), path: ROUTES.TOOLS.LIST },
       { icon: icons.add, label: t('tools.add_tool'), path: ROUTES.TOOLS.NEW },
-      { icon: icons.bookings, label: t('nav.my_bookings'), path: ROUTES.BOOKINGS, count: pendingRequestsCount },
+      { icon: icons.request, label: t('bookings.my_petitions'), path: ROUTES.BOOKINGS.PETITIONS },
+      {
+        icon: icons.loan,
+        label: t('bookings.tool_requests'),
+        path: ROUTES.BOOKINGS.REQUESTS,
+        count: pendingRequestsCount,
+      },
       { icon: icons.ratings, label: t('nav.ratings'), path: ROUTES.RATINGS, count: pendingRatingsCount },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
@@ -92,8 +98,8 @@ const BottomNav = () => {
     () => [
       { icon: icons.user, path: ROUTES.PROFILE.VIEW },
       { icon: icons.tools, path: ROUTES.TOOLS.LIST },
-      { icon: icons.add, path: ROUTES.TOOLS.NEW },
-      { icon: icons.bookings, path: ROUTES.BOOKINGS, count: pendingRequestsCount },
+      { icon: icons.add, path: ROUTES.TOOLS.NEW, central: true },
+      { icon: icons.loan, path: ROUTES.BOOKINGS.REQUESTS, count: pendingRequestsCount },
       { icon: icons.ratings, path: ROUTES.RATINGS, count: pendingRatingsCount },
     ],
     [t]
@@ -123,6 +129,19 @@ const BottomNav = () => {
             badgeProps={{ top: '-12px', right: '-12px' }}
             color={location.pathname === item.path ? selectedColor : 'inherit'}
             fontSize='24px'
+            iconProps={
+              item?.central
+                ? {
+                    boxSize: 9,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 'full',
+                    border: '3px solid',
+                    borderColor: location.pathname === item.path ? selectedColor : 'black',
+                  }
+                : {}
+            }
           />
         </Box>
       ))}

@@ -11,7 +11,10 @@ export const ROUTES = {
     VIEW: '/profile',
     EDIT: '/profile/edit',
   },
-  BOOKINGS: '/bookings',
+  BOOKINGS: {
+    PETITIONS: '/bookings/petitions',
+    REQUESTS: '/bookings/requests',
+  },
   RATINGS: '/ratings',
   USERS: {
     LIST: '/users',

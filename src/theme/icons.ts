@@ -1,10 +1,12 @@
-import { FiBookmark, FiPlus, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import { FiPlus, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 
 export const icons = {
   user: FiUser,
   users: FiUsers,
   tools: FiTool,
   ratings: FiStar,
-  bookings: FiBookmark,
+  request: PiHandArrowDownBold,
+  loan: PiHandHeartBold,
   add: FiPlus,
 }
