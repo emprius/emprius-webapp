@@ -1,4 +1,4 @@
-import { Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
+import { Icon, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,9 +41,15 @@ export const UserBookings = () => {
   return (
     <Tabs isLazy index={tabIndex} onChange={handleTabChange} display={{ base: 'block', md: 'none' }}>
       <TabList>
-        <Tab>{t('bookings.my_petitions')}</Tab>
         <Tab>
-          <BadgeCounter count={pendingRequestsCount}>{t('bookings.tool_requests')}</BadgeCounter>
+          <Icon as={icons.request} mr={2} />
+          {t('bookings.my_petitions')}
+        </Tab>
+        <Tab>
+          <BadgeCounter count={pendingRequestsCount}>
+            <Icon as={icons.loan} mr={2} />
+            {t('bookings.tool_requests')}
+          </BadgeCounter>
         </Tab>
       </TabList>
       <TabPanels>
