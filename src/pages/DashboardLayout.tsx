@@ -99,7 +99,12 @@ const BottomNav = () => {
       { icon: icons.user, path: ROUTES.PROFILE.VIEW },
       { icon: icons.tools, path: ROUTES.TOOLS.LIST },
       { icon: icons.add, path: ROUTES.TOOLS.NEW, central: true },
-      { icon: icons.loan, path: ROUTES.BOOKINGS.REQUESTS, count: pendingRequestsCount },
+      {
+        icon: icons.loan,
+        path: ROUTES.BOOKINGS.REQUESTS,
+        count: pendingRequestsCount,
+        additionalPath: ROUTES.BOOKINGS.PETITIONS, // This menu item can be selected on two different paths
+      },
       { icon: icons.ratings, path: ROUTES.RATINGS, count: pendingRatingsCount },
     ],
     [t]
@@ -120,31 +125,35 @@ const BottomNav = () => {
       px={4}
       zIndex={99}
     >
-      {menuItems.map((item, index) => (
-        <Box key={index} as={RouterLink} to={item.path} p={3}>
-          <BadgeIcon
-            icon={item.icon}
-            aria-label={t('nav.my_bookings')}
-            count={item?.count}
-            badgeProps={{ top: '-12px', right: '-12px' }}
-            color={location.pathname === item.path ? selectedColor : 'inherit'}
-            fontSize='24px'
-            iconProps={
-              item?.central
-                ? {
-                    boxSize: 9,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 'full',
-                    border: '3px solid',
-                    borderColor: location.pathname === item.path ? selectedColor : 'black',
-                  }
-                : {}
-            }
-          />
-        </Box>
-      ))}
+      {menuItems.map((item, index) => {
+        const isSelected =
+          location.pathname === item.path || location.pathname === item?.additionalPath ? selectedColor : 'inherit'
+        return (
+          <Box key={index} as={RouterLink} to={item.path} p={3}>
+            <BadgeIcon
+              icon={item.icon}
+              aria-label={t('nav.my_bookings')}
+              count={item?.count}
+              badgeProps={{ top: '-12px', right: '-12px' }}
+              color={isSelected}
+              fontSize='24px'
+              iconProps={
+                item?.central
+                  ? {
+                      boxSize: 9,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 'full',
+                      border: '3px solid',
+                      borderColor: location.pathname === item.path ? selectedColor : 'black',
+                    }
+                  : {}
+              }
+            />
+          </Box>
+        )
+      })}
     </Flex>
   )
 }

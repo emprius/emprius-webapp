@@ -12,8 +12,7 @@ const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ defa
 const EditProfile = lazy(() => import('~src/pages/profile/edit').then((m) => ({ default: m.Edit })))
 const ToolAddPage = lazy(() => import('~src/pages/tools/add').then((m) => ({ default: m.Add })))
 const ToolEditPage = lazy(() => import('~src/pages/tools/edit').then((m) => ({ default: m.Edit })))
-const BookingPetitionsPage = lazy(() => import('~src/pages/bookings/petitions').then((m) => ({ default: m.Petitions })))
-const BookingRequestsPage = lazy(() => import('~src/pages/bookings/requests').then((m) => ({ default: m.Requests })))
+const BookingsPage = lazy(() => import('~src/pages/bookings/view').then((m) => ({ default: m.View })))
 const UserRatingsPage = lazy(() => import('~src/pages/ratings/view').then((m) => ({ default: m.View })))
 const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
@@ -95,7 +94,7 @@ const DashboardRoutesElements = [
                 path: ROUTES.BOOKINGS.PETITIONS,
                 element: (
                   <SuspenseLoader>
-                    <BookingPetitionsPage />
+                    <BookingsPage />
                   </SuspenseLoader>
                 ),
               },
@@ -103,7 +102,7 @@ const DashboardRoutesElements = [
                 path: ROUTES.BOOKINGS.REQUESTS,
                 element: (
                   <SuspenseLoader>
-                    <BookingRequestsPage />
+                    <BookingsPage />
                   </SuspenseLoader>
                 ),
               },
