@@ -1,5 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
+import { PWABanner } from '~components/Layout/PWABanner'
 import { Outlet } from 'react-router-dom'
 import { Footer } from '~components/Layout/Footer'
 import { Navbar } from '~components/Navbar/Navbar'
@@ -12,6 +13,7 @@ export const Layout = () => {
   return (
     <Box minH='100vh' px={0} display='flex' flexDirection='column' bg={bgColor}>
       <ScrollToTop />
+      <PWABanner />
       <Navbar />
       <Box flex={1} px={0}>
         <ErrorBoundary>

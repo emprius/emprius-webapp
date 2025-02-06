@@ -124,7 +124,7 @@ const BottomNav = () => {
       justify='space-around'
       align='center'
       px={4}
-      zIndex={99}
+      zIndex={999}
     >
       {menuItems.map((item, index) => {
         const isSelected =

@@ -1,4 +1,9 @@
 {
+  "pwa": {
+    "installMessage": "Install our app for a better experience!",
+    "installButton": "Install",
+    "notNowButton": "Not now"
+  },
   "auth": {
     "community": "Community",
     "confirm_password": "Confirm Password",
