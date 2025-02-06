@@ -110,7 +110,7 @@ export const Navbar = () => {
               <Box display={{ base: 'block', md: 'none' }}>
                 <Menu>
                   <MenuButton>
-                    <Icon as={icons.menu} />
+                    <Icon boxSize={6} as={icons.menu} mt={1} />
                   </MenuButton>
                   <MenuList>
                     <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>

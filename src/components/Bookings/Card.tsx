@@ -9,12 +9,13 @@ import { ActionButtons } from '~components/Bookings/Actions'
 import { useUserProfile } from '~components/Users/queries'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { Avatar } from '~components/Images/Avatar'
-import { UserCard } from '~components/Users/Card'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
+import { lighterText, lightText } from '~theme/common'
+import { UserCard } from '~components/Users/Card'
+import { PropsWithChildren } from 'react'
+import { icons } from '~theme/icons'
 
 interface BookingDatesProps {
   booking: Booking
@@ -30,8 +31,11 @@ const BookingDates = ({ booking }: BookingDatesProps) => {
 
   return (
     <Stack spacing={1}>
+      <HStack sx={lighterText}>
+        <Icon as={FaRegCalendarAlt} fontSize='sm' />
+        <Text fontSize='sm'> {t('bookings.dates', { defaultValue: 'Dates' })}</Text>
+      </HStack>
       <Flex align={'center'} fontSize='md' wrap={'wrap'} sx={lightText}>
-        <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
         {t('bookings.date_formatted', { date: date.begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
         {t('bookings.date_formatted', { date: date.end, format: datef })}
@@ -158,6 +162,13 @@ const BookingComments = ({ booking, type }: BookingCommentsProps) => {
   )
 }
 
+const TitleAndComponent = ({ title, children }: { title: string } & PropsWithChildren) => (
+  <Stack spacing={1}>
+    <Text sx={lighterText}>{title}</Text>
+    {children}
+  </Stack>
+)
+
 export type BookingCardType = 'request' | 'petition'
 
 interface BookingCardProps {
@@ -186,26 +197,10 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
   return (
     <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
       <CardBody pl={4} py={4}>
-        <Stack
-          mb={4}
-          sx={lightText}
-          justify={{ base: 'center', md: 'space-between' }}
-          direction={{ base: 'column-reverse', md: 'row' }}
-        >
-          <HStack>
-            <Icon as={data.icon} fontSize='xl' />
-            <Text fontSize='xl' fontWeight={'extrabold'}>
-              {data.title}
-            </Text>
-          </HStack>
-          <Box right={6}>
-            <StatusBadge status={booking.bookingStatus} />
-          </Box>
-        </Stack>
-
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 4 }} align='stretch'>
+        {/*<Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 4 }} align='stretch'>*/}
+        <Stack direction={'row'} spacing={{ base: 4 }} align='stretch'>
           {/* Left side - Tool Image */}
-          <Box flex={{ base: '1', md: '0 0 350px' }} position='relative'>
+          <Box flex={'0 0 140px'} position='relative'>
             {isLoading ? (
               <Skeleton height='100%' />
             ) : (
@@ -215,68 +210,80 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                     imageHash={tool?.images[0]}
                     title={tool?.title}
                     isAvailable={tool?.isAvailable}
-                    height='100%'
-                    maxH={64}
+                    w={'100%'}
+                    maxW={'140px'}
+                    maxH={'160px'}
+                    minH={'160px'}
+                    h={'100%'}
                   />
                 </Link>
-                {!isRequest && (
-                  <UserCard
-                    p={2}
-                    gap={2}
-                    direction={'row'}
-                    fontSize={'sm'}
-                    avatarSize={'sm'}
-                    userId={booking.toUserId}
-                    justify={'center'}
-                  />
-                )}
               </Box>
             )}
           </Box>
-
           {/* Right side content */}
-          <Stack spacing={6} flex='1' position='relative'>
+          <Stack spacing={0} flex='1' position='relative'>
+            <Box position='relative'>
+              <Box position='absolute' top={-2} right={-3} zIndex={1}>
+                <StatusBadge status={booking.bookingStatus} />
+              </Box>
+            </Box>
             {/* Booking Summary Section */}
             <Stack spacing={2}>
               {isLoading ? (
                 <Skeleton height='24px' width='200px' />
               ) : (
-                <Stack spacing={2}>
-                  <Stack spacing={3}>
-                    <Stack spacing={1}>
-                      <Link
-                        as={RouterLink}
-                        to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
-                        fontWeight='semibold'
-                        fontSize='xl'
-                        _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                      >
-                        {tool.title}
-                      </Link>
-                      {!isRequest && (
-                        <HStack wrap={'wrap'}>
-                          <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
-                            {t('tools.cost_unit', { cost: tool.cost })}
-                          </Text>
-                          <ToolBadges tool={tool} />
-                        </HStack>
-                      )}
-                    </Stack>
+                <Stack mt={1} direction={'row'} spacing={4} wrap={'wrap'} justify={'space-between'}>
+                  <Stack spacing={1}>
+                    <HStack sx={lighterText}>
+                      <Icon as={data.icon} fontSize='sm' />
+                      <Text fontSize='sm'>{data.title}</Text>
+                    </HStack>
+                    <Link
+                      as={RouterLink}
+                      to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+                      fontWeight='semibold'
+                      fontSize='xl'
+                      _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                    >
+                      {tool.title}
+                    </Link>
+                    <HStack wrap={'wrap'}>
+                      <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
+                        {t('tools.cost_unit', { cost: tool.cost })}
+                      </Text>
+                    </HStack>
                   </Stack>
                   <BookingDates booking={booking} />
+                  <Stack spacing={1}>
+                    <HStack sx={lighterText}>
+                      <Icon as={icons.user} fontSize='sm' />
+                      <Text fontSize='sm'>
+                        {isRequest
+                          ? t('bookings.tool_requester', { defaultValue: 'Applicant' })
+                          : t('bookings.tool_owner', { defaultValue: 'Owner' })}
+                      </Text>
+                    </HStack>
+                    <UserCard
+                      p={0}
+                      mr={4}
+                      gap={2}
+                      direction={'column'}
+                      fontSize={'sm'}
+                      avatarSize={'sm'}
+                      userId={isRequest ? booking.fromUserId : booking.toUserId}
+                      justify={'start'}
+                      borderWidth={0}
+                    />
+                  </Stack>
                 </Stack>
               )}
+              <HStack spacing={4} justify={'end'}>
+                <ActionButtons booking={booking} type={type} />
+              </HStack>
             </Stack>
 
             {/* Comments Section */}
-            <BookingComments type={type} booking={booking} />
-
-            {/* Action Buttons */}
-            <Box mt='auto'>
-              <HStack spacing={4} justify='flex-end'>
-                <ActionButtons booking={booking} type={type} />
-              </HStack>
-            </Box>
+            {/*<BookingComments type={type} booking={booking} />*/}
           </Stack>
         </Stack>
       </CardBody>

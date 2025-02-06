@@ -8,7 +8,7 @@ import {
   useReturnBooking,
 } from '~components/Bookings/queries'
 import { Button, useDisclosure, useToast } from '@chakra-ui/react'
-import { FiCheck, FiThumbsDown, FiThumbsUp } from 'react-icons/fi'
+import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
 import { RatingModal } from '~components/Ratings/Modal'
 import React from 'react'
 import { icons } from '~theme/icons'
@@ -120,13 +120,7 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
   }
 
   return (
-    <Button
-      leftIcon={<FiThumbsDown />}
-      isLoading={isPending}
-      colorScheme='red'
-      variant='outline'
-      onClick={handleCancel}
-    >
+    <Button leftIcon={<FiXCircle />} isLoading={isPending} colorScheme='red' variant='outline' onClick={handleCancel}>
       {t('bookings.cancel')}
     </Button>
   )
