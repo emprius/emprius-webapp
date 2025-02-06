@@ -1,4 +1,5 @@
-import { Badge, Box, ImageProps } from '@chakra-ui/react'
+import { Badge, Box, ImageProps, Icon, Tooltip } from '@chakra-ui/react'
+import { CheckCircleIcon, WarningIcon } from '@chakra-ui/icons'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ServerImage } from '~components/Images/ServerImage'
@@ -13,24 +14,29 @@ type ToolImageProps = {
 export const ToolImage = ({ imageHash, title, isAvailable, height = '200px', ...rest }: ToolImageProps) => {
   const { t } = useTranslation()
 
-  let badge = t(`tools.unavailable`)
-  if (isAvailable) {
-    badge = t(`tools.available`)
-  }
+  const tooltipLabel = isAvailable ? t('tools.available') : t('tools.unavailable')
+  
   return (
     <Box position='relative'>
       <ServerImage imageId={imageHash} alt={title} height={height} width='100%' objectFit='cover' {...rest} />
-      <Badge
-        position='absolute'
-        top={2}
-        right={2}
-        colorScheme={isAvailable ? 'green' : 'gray'}
-        px={2}
-        py={1}
-        borderRadius='full'
-      >
-        {badge}
-      </Badge>
+      <Tooltip label={tooltipLabel} hasArrow>
+        <Badge
+          position='absolute'
+          top={2}
+          right={2}
+          colorScheme={isAvailable ? 'green' : 'gray'}
+          p={1}
+          borderRadius='full'
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+        >
+          <Icon
+            as={isAvailable ? CheckCircleIcon : WarningIcon}
+            boxSize={4}
+          />
+        </Badge>
+      </Tooltip>
     </Box>
   )
 }
