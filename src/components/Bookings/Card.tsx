@@ -40,6 +40,32 @@ interface BookingCardProps {
   type: BookingCardType
 }
 
+const UserInfo = ({ userId, isRequest }: { userId: string; isRequest: boolean }) => {
+  const { t } = useTranslation()
+  return (
+    <Stack spacing={1}>
+      <HStack sx={lighterText}>
+        <Icon as={icons.user} fontSize='sm' />
+        <Text fontSize='sm'>
+          {isRequest
+            ? t('bookings.tool_requester', { defaultValue: 'Applicant' })
+            : t('bookings.tool_owner', { defaultValue: 'Owner' })}
+        </Text>
+      </HStack>
+      <UserCard
+        p={0}
+        gap={2}
+        direction={'column'}
+        fontSize={'sm'}
+        avatarSize={'sm'}
+        userId={userId}
+        justify={'start'}
+        borderWidth={0}
+      />
+    </Stack>
+  )
+}
+
 export const BookingCard = ({ booking, type }: BookingCardProps) => {
   const { data: tool, isLoading } = useTool(booking.toolId)
   const { t } = useTranslation()
@@ -64,27 +90,29 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
     <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
       <CardBody pl={4} py={4}>
         <Stack direction={'row'} spacing={{ base: 4 }} align='stretch'>
-          {/* Left side - Tool Image */}
-          <Box flex={'0 0 140px'} position='relative'>
-            {isLoading ? (
-              <Skeleton height='100%' />
-            ) : (
-              <Box>
-                <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-                  <ToolImage
-                    imageHash={tool?.images[0]}
-                    title={tool?.title}
-                    isAvailable={tool?.isAvailable}
-                    w={'100%'}
-                    maxW={'140px'}
-                    maxH={'160px'}
-                    minH={'160px'}
-                    h={'100%'}
-                  />
-                </Link>
-              </Box>
-            )}
-          </Box>
+          {/* Left side - Tool Image and User Card (on small screens) */}
+          <Stack flex={'0 0 140px'} position='relative' spacing={4}>
+            <Box>
+              {isLoading ? (
+                <Skeleton height='100%' />
+              ) : (
+                <Box>
+                  <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+                    <ToolImage
+                      imageHash={tool?.images[0]}
+                      title={tool?.title}
+                      isAvailable={tool?.isAvailable}
+                      w={'100%'}
+                      maxW={'140px'}
+                      maxH={'160px'}
+                      minH={'160px'}
+                      h={'100%'}
+                    />
+                  </Link>
+                </Box>
+              )}
+            </Box>
+          </Stack>
           {/* Right side content */}
           <Stack spacing={0} flex='1' position='relative'>
             <Box position='relative'>
@@ -97,60 +125,77 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
               {isLoading ? (
                 <Skeleton height='24px' width='200px' />
               ) : (
-                <Stack mt={1} direction={'row'} spacing={4} wrap={'wrap'} justify={'space-between'}>
-                  <Stack spacing={1}>
-                    <HStack sx={lighterText}>
-                      <Icon as={data.icon} fontSize='sm' />
-                      <Text fontSize='sm'>{data.title}</Text>
-                    </HStack>
-                    <Link
-                      as={RouterLink}
-                      to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
-                      fontWeight='semibold'
-                      fontSize='xl'
-                      _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                    >
-                      {tool.title}
-                    </Link>
-                    <HStack wrap={'wrap'}>
-                      <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
-                        {t('tools.cost_unit', { cost: tool.cost })}
-                      </Text>
-                    </HStack>
+                <>
+                  <Stack
+                    mt={{ base: 6, sm: 2 }}
+                    direction={'row'}
+                    spacing={{ base: 2, lg: 4 }}
+                    wrap={'wrap'}
+                    justify={'space-between'}
+                  >
+                    <Stack spacing={1}>
+                      <HStack sx={lighterText}>
+                        <Icon as={data.icon} fontSize='sm' />
+                        <Text fontSize='sm'>{data.title}</Text>
+                      </HStack>
+                      <Link
+                        as={RouterLink}
+                        to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+                        fontWeight='semibold'
+                        fontSize='xl'
+                        _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                      >
+                        {tool.title}
+                      </Link>
+                      <HStack wrap={'wrap'}>
+                        <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
+                          {t('tools.cost_unit', { cost: tool.cost })}
+                        </Text>
+                      </HStack>
+                    </Stack>
+                    <Box display={{ base: 'none', sm: 'block' }}>
+                      <BookingDates booking={booking} />
+                    </Box>
+                    {/* User Card - Hidden on small screens, visible on md and up */}
+                    <Box display={{ base: 'none', sm: 'block' }}>
+                      <UserInfo userId={userId} isRequest={isRequest} />
+                    </Box>
                   </Stack>
-                  <BookingDates booking={booking} />
-                  <Stack spacing={1}>
-                    <HStack sx={lighterText}>
-                      <Icon as={icons.user} fontSize='sm' />
-                      <Text fontSize='sm'>
-                        {isRequest
-                          ? t('bookings.tool_requester', { defaultValue: 'Applicant' })
-                          : t('bookings.tool_owner', { defaultValue: 'Owner' })}
-                      </Text>
-                    </HStack>
-                    <UserCard
-                      p={0}
-                      mr={4}
-                      gap={2}
-                      direction={'column'}
-                      fontSize={'sm'}
-                      avatarSize={'sm'}
-                      userId={userId}
-                      justify={'start'}
-                      borderWidth={0}
-                    />
+                  <Stack
+                    direction={'row'}
+                    spacing={3}
+                    justify={'end'}
+                    wrap={'wrap'}
+                    mt={4}
+                    display={{ base: 'none', lg: 'flex' }}
+                    align={'end'}
+                  >
+                    <Button leftIcon={<Icon as={FiInfo} />} variant='outline' onClick={onOpen}>
+                      {t('bookings.view_details')}
+                    </Button>
+                    <ActionButtons booking={booking} type={type} />
                   </Stack>
-                </Stack>
+                </>
               )}
-              <HStack spacing={4} justify={'end'} wrap={'wrap'}>
-                <Button leftIcon={<Icon as={FiInfo} />} variant='outline' onClick={onOpen} size='sm'>
-                  {t('bookings.view_details')}
-                </Button>
-                <ActionButtons booking={booking} type={type} />
-              </HStack>
             </Stack>
           </Stack>
         </Stack>
+
+        {/* Visible on small screens */}
+        <Stack mt={4} spacing={4} display={{ base: 'block', sm: 'none' }}>
+          <Box>
+            <BookingDates booking={booking} />
+          </Box>
+          <Box>
+            <UserInfo userId={userId} isRequest={isRequest} />
+          </Box>
+        </Stack>
+        <HStack spacing={3} justify={'end'} wrap={'wrap'} mt={4} display={{ base: 'flex', lg: 'none' }}>
+          <Button leftIcon={<Icon as={FiInfo} />} variant='outline' onClick={onOpen}>
+            {t('bookings.view_details')}
+          </Button>
+          <ActionButtons booking={booking} type={type} />
+        </HStack>
       </CardBody>
 
       {/* Details Modal */}
