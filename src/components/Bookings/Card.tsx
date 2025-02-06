@@ -157,7 +157,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                       <BookingDates booking={booking} />
                     </Box>
                     {/* User Card - Hidden on small screens, visible on md and up */}
-                    <Box display={{ base: 'none', sm: 'block' }}>
+                    <Box display={{ base: 'none', sm: 'block' }} mr={8}>
                       <UserInfo userId={userId} isRequest={isRequest} />
                     </Box>
                   </Stack>

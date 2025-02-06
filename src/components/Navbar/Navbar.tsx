@@ -101,7 +101,7 @@ export const Navbar = () => {
                     {t('nav.ratings')}
                   </Text>
                 </Link>
-                <Button as={RouterLink} to={ROUTES.TOOLS.NEW} borderRadius='lg' leftIcon={icons.add({})}>
+                <Button as={RouterLink} to={ROUTES.TOOLS.NEW} leftIcon={icons.add({})}>
                   <Text>{t('tools.add_tool')}</Text>
                 </Button>
               </Stack>

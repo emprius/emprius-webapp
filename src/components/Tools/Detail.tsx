@@ -95,7 +95,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       </Stack>
                     )}
                   </SimpleGrid>
-                  {tool.transportOptions.length > 0 && (
+                  {tool?.transportOptions?.length > 0 && (
                     <Stack direction={{ base: 'column', sm: 'row' }} align='start' wrap='wrap'>
                       <Stack direction={'row'}>
                         <HiOutlineTruck size={20} />

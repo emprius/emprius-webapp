@@ -6,28 +6,17 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 const baseStyle = definePartsStyle({
   field: {
     focusBorderColor: 'primary.500',
+    borderRadius: '2xl',
+    transition: 'all 0.2s ease-in-out',
+    _focus: {
+      boxShadow: '0 0 0 2px rgba(56, 161, 105, 0.3)', // primary.500 with opacity
+      borderColor: 'primary.500',
+    },
   },
 })
 
-const variants = {
-  outline: definePartsStyle({
-    field: {
-      bg: 'white',
-      color: 'gray.800',
-      _placeholder: {
-        color: 'gray.500',
-      },
-      _dark: {
-        bg: 'whiteAlpha.100',
-        color: 'white',
-      },
-    },
-  }),
-}
-
 export const Input = defineMultiStyleConfig({
   baseStyle,
-  variants,
   defaultProps: {
     variant: 'outline',
   },

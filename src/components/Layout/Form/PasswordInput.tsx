@@ -8,8 +8,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, re
 
   return (
     <InputGroup size='md'>
-      <Input ref={ref} pr='4.5rem' type={show ? 'text' : 'password'} {...props} />
-      <InputRightElement width='4.5rem'>
+      <Input ref={ref} type={show ? 'text' : 'password'} {...props} />
+      <InputRightElement>
         <IconButton
           size='sm'
           onClick={handleClick}

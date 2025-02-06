@@ -28,7 +28,6 @@ export const SearchBar = () => {
           onChange={(e) => setTerm(e.target.value)}
           placeholder={t('search.placeholder')}
           bg='white'
-          _focus={{ boxShadow: 'outline' }}
         />
       </InputGroup>
       <Button type='submit' ml={2}>
