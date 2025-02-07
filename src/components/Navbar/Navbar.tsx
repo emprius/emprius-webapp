@@ -25,7 +25,7 @@ import { SearchBar } from '~components/Search/SearchBar'
 
 export const Navbar = () => {
   const { t } = useTranslation()
-  const { isAuthenticated, logout, user } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -118,9 +118,6 @@ export const Navbar = () => {
                     </MenuItem>
                     <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                       {t('user.list_title')}
-                    </MenuItem>
-                    <MenuItem icon={<FiLogOut />} onClick={logout}>
-                      {t('nav.logout')}
                     </MenuItem>
                   </MenuList>
                 </Menu>
