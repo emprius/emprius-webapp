@@ -6,7 +6,27 @@ const queryClient = new QueryClient({
     queries: {
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
       staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 2,
+      retry: (failureCount, error: any) => {
+        // Don't retry if we're offline
+        if (!navigator.onLine) return false
+        // Don't retry on 4xx errors except 408 (timeout)
+        if (error?.response?.status && error.response.status >= 400 && error.response.status < 500 && error.response.status !== 408) {
+          return false
+        }
+        // Otherwise retry twice
+        return failureCount < 2
+      },
+      // Return cached data when offline
+      networkMode: 'always',
+    },
+    mutations: {
+      retry: (failureCount, error: any) => {
+        if (!navigator.onLine) return false
+        if (error?.response?.status && error.response.status >= 400 && error.response.status < 500 && error.response.status !== 408) {
+          return false
+        }
+        return failureCount < 2
+      },
     },
   },
 })

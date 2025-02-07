@@ -9,6 +9,9 @@
     "installMessageIOS": "Add to Home Screen for a better experience!",
     "installButtonIOS": "How to Install"
   },
+  "app": {
+    "offlineMessage": "You are currently offline. Some features may be limited."
+  },
   "auth": {
     "community": "Community",
     "confirm_password": "Confirm Password",
