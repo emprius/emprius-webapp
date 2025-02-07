@@ -5,6 +5,7 @@ import {
   Divider,
   Grid,
   GridItem,
+  Heading,
   Link,
   SimpleGrid,
   Stack,
@@ -36,7 +37,6 @@ import { lightText } from '~theme/common'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
-  const { isAuthenticated, user } = useAuth()
   const { categories, transports } = useInfoContext()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -121,7 +121,6 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   )}
                 </Stack>
               </Stack>
-              <OwnerToolButtons tool={tool} />
             </Box>
           </Stack>
         </GridItem>
@@ -129,32 +128,54 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
         <GridItem>
           <Stack spacing={4} position='sticky' top='20px'>
             <AvailabilityCalendar reservedDates={tool.reservedDates || []} />
-            {isAuthenticated ? (
-              tool.isAvailable ? (
-                <BookingForm tool={tool} />
-              ) : (
-                <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-                  <Text color='gray.600' mb={4}>
-                    {t('tools.not_available')}
-                  </Text>
-                  <Link as={RouterLink} to={ROUTES.TOOLS.LIST} color='primary.500' fontWeight='medium'>
-                    {t('tools.find_other')}
-                  </Link>
-                </Box>
-              )
-            ) : (
-              <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-                <Text color='gray.600' mb={4}>
-                  {t('tools.login_to_book')}
-                </Text>
-                <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
-                  {t('nav.login')}
-                </Link>
-              </Box>
-            )}
+            <BookingFormComponent tool={tool} />
           </Stack>
         </GridItem>
       </Grid>
     </Container>
   )
+}
+
+const BookingFormComponent = ({ tool }: { tool: Tool }) => {
+  const { t } = useTranslation()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const { isAuthenticated, user } = useAuth()
+  if (!isAuthenticated) {
+    return (
+      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+        <Text color='gray.600' mb={4}>
+          {t('tools.login_to_book')}
+        </Text>
+        <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
+          {t('nav.login')}
+        </Link>
+      </Box>
+    )
+  }
+
+  if (!tool.isAvailable) {
+    return (
+      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+        <Text color='gray.600' mb={4}>
+          {t('tools.not_available')}
+        </Text>
+        <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
+          {t('tools.find_other')}
+        </Link>
+      </Box>
+    )
+  }
+
+  if (user?.id === tool.userId) {
+    return (
+      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
+        <Heading size='md' mb={4}>
+          {t('tools.edittool', { defaultValue: 'Edit tool' })}
+        </Heading>
+
+        <OwnerToolButtons tool={tool} />
+      </Box>
+    )
+  }
+  return <BookingForm tool={tool} />
 }

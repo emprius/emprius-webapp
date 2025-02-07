@@ -8,6 +8,7 @@ import {
   Button,
   IconButton,
   Stack,
+  StackProps,
   Switch,
   useDisclosure,
   useToast,
@@ -22,7 +23,7 @@ import { Tool } from '~components/Tools/types'
 
 import { ROUTES } from '~src/router/routes'
 
-export const OwnerToolButtons = ({ tool }: { tool: Tool }) => {
+export const OwnerToolButtons = ({ tool, ...rest }: { tool: Tool } & StackProps) => {
   const { user } = useAuth()
 
   const isOwner = user?.id === tool.userId
@@ -32,7 +33,17 @@ export const OwnerToolButtons = ({ tool }: { tool: Tool }) => {
   }
 
   return (
-    <Stack direction='row' pb={4} pr={4} spacing={2} align='center' justify='flex-end' width='fit-content' ml='auto'>
+    <Stack
+      direction='row'
+      pb={4}
+      pr={4}
+      spacing={2}
+      align='center'
+      justify='flex-end'
+      width='fit-content'
+      ml='auto'
+      {...rest}
+    >
       <AvailabilityToggle tool={tool} />
       <EditToolButton toolId={tool.id} />
       <DeleteToolButton tool={tool} />
