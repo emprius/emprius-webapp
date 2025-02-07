@@ -83,14 +83,9 @@ export const SearchPage = () => {
               </Button>
             </Stack>
             {/*Floating buttons to open filters and switch view*/}
-            <Box display={'block'} position='fixed' top={20} right={4} zIndex={2}>
+            <Box position='fixed' top={20} right={4} zIndex={2} display={{ base: 'flex', lg: 'none' }}>
               <HStack spacing={2}>
-                <IconButton
-                  aria-label='Filters'
-                  icon={<FaFilter />}
-                  onClick={onOpen}
-                  display={{ base: 'flex', lg: 'none' }}
-                />
+                <IconButton aria-label='Filters' icon={<FaFilter />} onClick={onOpen} />
                 <IconButton
                   aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
                   icon={isMapView ? <FaRegRectangleList /> : <FiMap />}
