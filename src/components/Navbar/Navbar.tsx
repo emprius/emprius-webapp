@@ -18,10 +18,10 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar, avatarSizeToPixels } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
-import { SearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeIcon } from '../Layout/BadgeIcon'
+import { SearchBar } from '~components/Search/SearchBar'
 
 export const Navbar = () => {
   const { t } = useTranslation()

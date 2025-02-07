@@ -53,3 +53,6 @@ export const ASSETS = {
   TOOL_FALLBACK: '/assets/tools/tool-fallback.svg',
   AVATAR_FALLBACK: '/assets/avatars/fallback.png',
 } as const
+
+// MS intervall to update the PWA
+export const UPDATE_PWA_INTERVAL = 1000 * 60 * 30 // 30 minutes
