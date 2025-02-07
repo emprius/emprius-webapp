@@ -5,6 +5,7 @@ import {
   Flex,
   HStack,
   IconButton,
+  Stack,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -19,6 +20,7 @@ import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
+import { FaRegRectangleList } from 'react-icons/fa6'
 
 export const MAX_COST_MAX = 1000
 export const MAX_COST_DEFAULT = MAX_COST_MAX
@@ -60,7 +62,18 @@ export const SearchPage = () => {
         <Box h='100vh' bg={bgColor} position='relative'>
           <Flex gap={2} h='100vh' bg='white'>
             {/*Filters side nav*/}
-            <Box display={{ base: 'none', lg: 'block' }} w='300px' px={4} pt={5}>
+            <Stack display={{ base: 'none', lg: 'block' }} w='300px' px={4} pt={5}>
+              <Button
+                aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
+                rightIcon={<FiMap />}
+                onClick={toggleView}
+                variant={'outline'}
+                mb={4}
+              >
+                {isMapView
+                  ? t('search.switch_to_list_view', { defaultValue: 'Switch to list view' })
+                  : t('search.switch_to_map_view', { defaultValue: 'Switch to map view' })}
+              </Button>
               <Text fontSize='xl' fontWeight='bold' mb={4}>
                 {t('search.filters', { defaultValue: 'Filters' })}
               </Text>
@@ -68,7 +81,7 @@ export const SearchPage = () => {
               <Button size='lg' onClick={() => methods.handleSubmit(onSubmit)()} mt={4} w='full'>
                 {t('search.apply_filters')}
               </Button>
-            </Box>
+            </Stack>
             {/*Floating buttons to open filters and switch view*/}
             <Box display={'block'} position='fixed' top={20} right={4} zIndex={2}>
               <HStack spacing={2}>
@@ -80,9 +93,9 @@ export const SearchPage = () => {
                 />
                 <IconButton
                   aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
-                  icon={<FiMap />}
+                  icon={isMapView ? <FaRegRectangleList /> : <FiMap />}
                   onClick={toggleView}
-                  variant={isMapView ? 'solid' : 'outline'}
+                  variant={'solid'}
                 />
               </HStack>
             </Box>
