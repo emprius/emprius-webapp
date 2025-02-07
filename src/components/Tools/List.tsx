@@ -35,22 +35,24 @@ export const ToolList = ({
     )
   }
   return (
-    <Grid
-      templateColumns={{
-        base: 'repeat(1, 1fr)',
-        sm: 'repeat(2, 1fr)',
-        md: 'repeat(3, 1fr)',
-        lg: 'repeat(3, 1fr)',
-        xl: 'repeat(4, 1fr)',
-      }}
-      gap={6}
-      pb={8}
-      pt={30}
-      pl={6}
-    >
-      {tools.map((tool) => (
-        <ToolCard key={tool.id} tool={tool} />
-      ))}
-    </Grid>
+    <Box>
+      <Grid
+        templateColumns={{
+          base: 'repeat(1, 1fr)',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(3, 1fr)',
+          lg: 'repeat(3, 1fr)',
+          xl: 'repeat(4, 1fr)',
+        }}
+        gap={6}
+        pb={8}
+        pt={30}
+        pl={6}
+      >
+        {tools.map((tool) => (
+          <ToolCard key={tool.id} tool={tool} />
+        ))}
+      </Grid>
+    </Box>
   )
 }

@@ -99,8 +99,9 @@ export const PWABanner = () => {
         bgGradient: 'linear(to-r, whiteAlpha.100, whiteAlpha.200)',
         pointerEvents: 'none',
       }}
+      zIndex={900}
     >
-      <Flex justify='space-between' align='center' maxW='container.xl' mx='auto'>
+      <Flex justify='center' align='center' maxW='container.xl' mx='auto' gap={4}>
         <Flex align='center' gap={2}>
           <Icon as={HiOutlineRocketLaunch} boxSize={8} />
           <Text>

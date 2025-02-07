@@ -36,7 +36,7 @@ export const Navbar = () => {
     <Box
       as='nav'
       position='sticky'
-      top={0}
+      top='auto'
       zIndex={1000}
       bg={bgColor}
       borderBottom={1}

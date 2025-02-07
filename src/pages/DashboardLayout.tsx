@@ -37,17 +37,18 @@ const SideNav = () => {
 
   return (
     <Box
-      position='fixed'
-      left={0}
-      p={5}
-      w='250px'
-      top={0}
-      h='100vh'
+      // position='fixed'
+      // left={0}
+      // p={5}
+      // top={0}
+      w='300px'
+      // h='100vh'
       bg={bgColor}
+      px={4}
+      pt={5}
       borderRight='1px'
       borderColor={borderColor}
-      pt='80px' // Space for the main navbar
-      zIndex={1} // Add z-index to ensure proper layering
+      // zIndex={800} // Below navbar but above content
     >
       {menuItems.map((item) => (
         <Flex
@@ -161,12 +162,14 @@ const BottomNav = () => {
 
 export const DashboardLayout = () => {
   return (
-    <Box>
+    <Flex>
       <Show above='md'>
-        <SideNav />
-        <Box ml='250px'>
-          <Outlet />
-        </Box>
+        <Flex gap={2} w={'full'} minH={'100vh'}>
+          <SideNav />
+          <Flex w={'full'}>
+            <Outlet />
+          </Flex>
+        </Flex>
       </Show>
       <Hide above='md'>
         <Box mb='60px'>
@@ -174,6 +177,6 @@ export const DashboardLayout = () => {
         </Box>
         <BottomNav />
       </Hide>
-    </Box>
+    </Flex>
   )
 }
