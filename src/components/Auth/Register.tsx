@@ -115,10 +115,11 @@ export const Register = () => {
               id='password'
               {...registerField('password', {
                 required: t('validation.required'),
-                pattern: {
-                  value: AUTH_FORM.PASSWORD_REGEX,
-                  message: t('auth.password_requirements'),
-                },
+                // todo(kon): which regex we want to implement
+                // pattern: {
+                //   value: AUTH_FORM.PASSWORD_REGEX,
+                //   message: t('auth.password_requirements'),
+                // },
                 minLength: {
                   value: AUTH_FORM.MIN_PASSWORD_LENGTH,
                   message: t('auth.password_too_short'),
@@ -145,7 +146,7 @@ export const Register = () => {
             <Input
               id='invitationToken'
               {...registerField('invitationToken', {
-                required: t('validation.required'),
+                required: t('validation.required', { field: 'Token' }),
               })}
             />
             <FormErrorMessage>{errors.invitationToken && errors.invitationToken.message}</FormErrorMessage>
