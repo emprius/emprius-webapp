@@ -113,7 +113,7 @@ export const users = {
 
 // images
 export const images = {
-  uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
+  uploadImage: (hash: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { hash })),
   getImage: (hash: string) => apiRequest(api.get<ApiResponse<ImageContent>>(`/images/${hash}`)),
 }
 
