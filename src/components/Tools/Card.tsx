@@ -1,13 +1,14 @@
-import { Box, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Center, Divider, Flex, HStack, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool } from '~components/Tools/types'
 import { ToolImage } from './shared/ToolImage'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { useTranslation } from 'react-i18next'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
+import { useAuth } from '~components/Auth/AuthContext'
+import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 
 interface ToolCardProps {
   tool: Tool
@@ -17,6 +18,8 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const { user } = useAuth()
+  const isOwner = user?.id === tool.userId
 
   return (
     <Box
@@ -57,7 +60,19 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
           </Stack>
         </Stack>
       </Link>
-      <OwnerToolButtons tool={tool} />
+      {isOwner && (
+        <HStack justify={'space-between'} borderTop={'1px solid'} borderColor={'gray.200'}>
+          <Flex align={'center'} justify={'center'} flex={1} py={1}>
+            <EditToolButton toolId={tool.id} />
+          </Flex>
+          <Center height='50px'>
+            <Divider orientation={'vertical'} />
+          </Center>
+          <Flex align={'center'} justify={'center'} flex={1} py={1}>
+            <AvailabilityToggle tool={tool} />
+          </Flex>
+        </HStack>
+      )}
     </Box>
   )
 }

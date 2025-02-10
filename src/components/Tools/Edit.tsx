@@ -118,6 +118,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       error={error}
       existingImages={existingImages}
       onDeleteExistingImage={handleDeleteExistingImage}
+      isEdit
     />
   )
 }

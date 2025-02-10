@@ -34,6 +34,7 @@ import { ImageUploader } from '~components/Layout/Form/ImageUploader'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import { EmpriusLocation } from '~components/Layout/types'
 import { Tool } from './types'
+import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
 
 export interface ToolFormData {
   title: string
@@ -60,6 +61,7 @@ interface ToolFormProps {
   error?: any
   existingImages?: Image[]
   onDeleteExistingImage?: (index: number) => void
+  isEdit?: boolean
 }
 
 export const ToolForm: React.FC<ToolFormProps> = ({
@@ -71,6 +73,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   error,
   existingImages = [],
   onDeleteExistingImage,
+  isEdit,
 }) => {
   const { t } = useTranslation()
   const toast = useToast()
@@ -329,6 +332,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <Button type='submit' colorScheme='primary' isLoading={isLoading}>
           {submitButtonText}
         </Button>
+        {isEdit && <DeleteToolButton toolId={initialData.id} />}
       </Stack>
 
       <FormSubmitMessage isError={isError} error={error} />

@@ -5,10 +5,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
   IconButton,
-  Stack,
-  StackProps,
+  IconButtonProps,
   Switch,
   useDisclosure,
   useToast,
@@ -17,41 +17,13 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { useAuth } from '~components/Auth/AuthContext'
 import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/queries'
 import { Tool } from '~components/Tools/types'
-
 import { ROUTES } from '~src/router/routes'
 
-export const OwnerToolButtons = ({ tool, ...rest }: { tool: Tool } & StackProps) => {
-  const { user } = useAuth()
+type ToolButtonProps = { toolId: number } & Omit<IconButtonProps, 'aria-label'>
 
-  const isOwner = user?.id === tool.userId
-
-  if (!isOwner) {
-    return null
-  }
-
-  return (
-    <Stack
-      direction='row'
-      pb={4}
-      pr={4}
-      spacing={2}
-      align='center'
-      justify='flex-end'
-      width='fit-content'
-      ml='auto'
-      {...rest}
-    >
-      <AvailabilityToggle tool={tool} />
-      <EditToolButton toolId={tool.id} />
-      <DeleteToolButton tool={tool} />
-    </Stack>
-  )
-}
-
-export const EditToolButton = ({ toolId }: { toolId: number }) => {
+export const EditToolButton = ({ toolId, ...props }: ToolButtonProps) => {
   const { t } = useTranslation()
 
   return (
@@ -60,10 +32,12 @@ export const EditToolButton = ({ toolId }: { toolId: number }) => {
       to={ROUTES.TOOLS.EDIT.replace(':id', toolId.toString())}
       icon={<FiEdit2 />}
       aria-label={t('tools.edit')}
-      size='md'
+      size='sm'
+      variant={'outline'}
       onClick={(e) => {
         e.stopPropagation()
       }}
+      {...props}
     />
   )
 }
@@ -104,7 +78,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
 
   return (
     <>
-      <Switch size='lg' isChecked={tool.isAvailable} onChange={onOpen} />
+      <Switch size='md' isChecked={tool.isAvailable} onChange={onOpen} />
 
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
         <AlertDialogOverlay>
@@ -134,7 +108,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
   )
 }
 
-export const DeleteToolButton = ({ tool }: { tool: Tool }) => {
+export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
   const { t } = useTranslation()
   const toast = useToast()
   const deleteTool = useDeleteTool()
@@ -143,7 +117,7 @@ export const DeleteToolButton = ({ tool }: { tool: Tool }) => {
 
   const handleDelete = useCallback(async () => {
     try {
-      await deleteTool.mutateAsync(tool.id.toString())
+      await deleteTool.mutateAsync(toolId.toString())
       toast({
         title: t('tools.deleted'),
         status: 'success',
@@ -160,11 +134,13 @@ export const DeleteToolButton = ({ tool }: { tool: Tool }) => {
         isClosable: true,
       })
     }
-  }, [tool.id, deleteTool, toast, t, onClose])
+  }, [toolId, deleteTool, toast, t, onClose])
 
   return (
-    <>
-      <IconButton icon={<FiTrash2 />} aria-label={t('tools.delete')} size='md' colorScheme='red' onClick={onOpen} />
+    <Box>
+      <Button leftIcon={<FiTrash2 />} aria-label={t('tools.delete')} size='md' colorScheme='red' onClick={onOpen}>
+        {t('tools.delete')}
+      </Button>
 
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
@@ -186,6 +162,6 @@ export const DeleteToolButton = ({ tool }: { tool: Tool }) => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </>
+    </Box>
   )
 }

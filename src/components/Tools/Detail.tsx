@@ -5,7 +5,6 @@ import {
   Divider,
   Grid,
   GridItem,
-  Heading,
   Link,
   SimpleGrid,
   Stack,
@@ -28,18 +27,19 @@ import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import { ImageCarousel } from '~components/Layout/ImageCarousel'
 import { MapMarker } from '~components/Layout/MapMarker'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
-import { OwnerToolButtons } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
+import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
   const { categories, transports } = useInfoContext()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
+  const { isAuthenticated, user } = useAuth()
 
   return (
     <Container maxW='container.xl' py={8}>
@@ -127,6 +127,24 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
 
         <GridItem>
           <Stack spacing={4} position='sticky' top='20px'>
+            {user?.id === tool.userId && (
+              <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+                <SimpleGrid columns={2} spacing={4}>
+                  <Box textAlign='center'>
+                    <Text fontSize='sm' color='gray.600' mb={1}>
+                      {t('tools.edit')}
+                    </Text>
+                    <EditToolButton toolId={tool.id} />
+                  </Box>
+                  <Box textAlign='center'>
+                    <Text fontSize='sm' color='gray.600' mb={2}>
+                      {t('tools.toggle_availability', { defaultValue: 'Toggle availability' })}
+                    </Text>
+                    <AvailabilityToggle tool={tool} />
+                  </Box>
+                </SimpleGrid>
+              </Box>
+            )}
             <AvailabilityCalendar reservedDates={tool.reservedDates || []} />
             <BookingFormComponent tool={tool} />
           </Stack>
@@ -167,15 +185,7 @@ const BookingFormComponent = ({ tool }: { tool: Tool }) => {
   }
 
   if (user?.id === tool.userId) {
-    return (
-      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
-        <Heading size='md' mb={4}>
-          {t('tools.edittool', { defaultValue: 'Edit tool' })}
-        </Heading>
-
-        <OwnerToolButtons tool={tool} />
-      </Box>
-    )
+    return null
   }
   return <BookingForm tool={tool} />
 }
