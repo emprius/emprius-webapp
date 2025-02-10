@@ -7,6 +7,7 @@ import { UserProfile } from '~components/Users/Profile'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { useTranslation } from 'react-i18next'
+import { MainContainer } from '~components/Layout/LayoutComponents'
 
 export const Detail = () => {
   const { t } = useTranslation()
@@ -21,5 +22,9 @@ export const Detail = () => {
   }
   if (isError) return <ErrorComponent error={error} />
 
-  return <UserProfile {...data} />
+  return (
+    <MainContainer>
+      <UserProfile {...data} />
+    </MainContainer>
+  )
 }

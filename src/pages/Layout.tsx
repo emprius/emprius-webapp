@@ -17,7 +17,7 @@ export const Layout = () => {
       <PWABanner />
       <OfflineBanner />
       <Navbar />
-      <Box flex={1} px={0}>
+      <Box flex={1}>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>

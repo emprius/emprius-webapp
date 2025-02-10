@@ -1,6 +1,7 @@
-import { Container, Heading, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Heading, Stack, useColorModeValue } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { MainContainer } from '~components/Layout/LayoutComponents'
 
 export type FormLayoutContext = {
   setTitle: (title: string) => void
@@ -11,8 +12,8 @@ export const FormLayout = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
 
   return (
-    <Container maxW='container.md' py={8}>
-      <Stack bg={bgColor} p={8} borderRadius='lg' boxShadow='sm' spacing={4}>
+    <MainContainer>
+      <Stack bg={bgColor} px={{ base: 4, md: 8 }} py={8} borderRadius='lg' boxShadow='sm' spacing={4}>
         {title && (
           <Heading size='lg' mb={4}>
             {title}
@@ -20,6 +21,6 @@ export const FormLayout = () => {
         )}
         <Outlet context={{ setTitle } satisfies FormLayoutContext} />
       </Stack>
-    </Container>
+    </MainContainer>
   )
 }

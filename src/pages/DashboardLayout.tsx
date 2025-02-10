@@ -166,15 +166,13 @@ export const DashboardLayout = () => {
       <Show above='md'>
         <Flex gap={2} w={'full'} minH={'100vh'}>
           <SideNav />
-          <Flex w={'full'}>
-            <Outlet />
-          </Flex>
+          <Outlet />
         </Flex>
       </Show>
       <Hide above='md'>
-        <Box mb='60px'>
+        <Flex w={'full'}>
           <Outlet />
-        </Box>
+        </Flex>
         <BottomNav />
       </Hide>
     </Flex>

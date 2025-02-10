@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { Button, HStack, SimpleGrid, Text } from '@chakra-ui/react'
+import { Button, HStack, Text } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { users } from '~src/services/api'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -8,6 +8,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { UserCard } from '~components/Users/Card'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
+import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 
 export const UsersList = () => {
   const { t } = useTranslation()
@@ -28,11 +29,11 @@ export const UsersList = () => {
         <ElementNotFound icon={icons.users} title={t('user.no_users_found')} desc={t('user.no_users_found_desc')} />
       ) : (
         <>
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+          <ResponsiveSimpleGrid>
             {usersList.map((user) => (
               <UserCard key={user.id} userId={user.id} placeholderData={user} />
             ))}
-          </SimpleGrid>
+          </ResponsiveSimpleGrid>
 
           <HStack justify='center' mt={6} spacing={4}>
             <Button

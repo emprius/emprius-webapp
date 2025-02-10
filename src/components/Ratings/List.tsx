@@ -1,4 +1,3 @@
-import { SimpleGrid } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +8,7 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
+import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 
 export const RatingsList = () => {
   const { t } = useTranslation()
@@ -33,10 +33,10 @@ export const RatingsList = () => {
   }
 
   return (
-    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} autoRows='auto'>
+    <ResponsiveSimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 3 }}>
       {pendingRatings.map((rating: Rating, index) => (
         <RatingCard key={index} {...rating} />
       ))}
-    </SimpleGrid>
+    </ResponsiveSimpleGrid>
   )
 }

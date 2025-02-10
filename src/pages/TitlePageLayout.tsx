@@ -1,6 +1,7 @@
-import { Box, Container, Heading, useColorModeValue } from '@chakra-ui/react'
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { MainContainer } from '~components/Layout/LayoutComponents'
 
 export type TitlePageLayoutContext = {
   setTitle: (title: string) => void
@@ -11,8 +12,8 @@ export const TitlePageLayout = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
 
   return (
-    <Container maxW='container.xl' p={{ base: 3, md: 6 }}>
-      <Box bg={bgColor} borderRadius='lg' mx={0} p={{ base: 3, md: 6 }} boxShadow='sm'>
+    <MainContainer>
+      <Box bg={bgColor} borderRadius='lg' p={{ base: 3, md: 6 }} boxShadow='sm'>
         {title && (
           <Heading size='md' mb={4}>
             {title}
@@ -20,6 +21,6 @@ export const TitlePageLayout = () => {
         )}
         <Outlet context={{ setTitle } satisfies TitlePageLayoutContext} />
       </Box>
-    </Container>
+    </MainContainer>
   )
 }

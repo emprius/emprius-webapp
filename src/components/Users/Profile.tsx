@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Container, Heading, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -23,58 +23,48 @@ export const UserProfile = (user: UserProfileType) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   return (
-    <Container maxW='container.xl' py={8}>
-      <Box position='relative' bg={tabBg} borderRadius='lg' p={6} boxShadow='sm'>
-        <Stack spacing={8}>
-          <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
-            <Stack spacing={6}>
-              <HStack justify={'space-between'} align={'start'}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  spacing={6}
-                  align={{ base: 'center', sm: 'flex-start' }}
-                >
-                  <Avatar username={user.name} avatarHash={user.avatarHash} />
-                  <Stack spacing={3}>
-                    <Stack direction='row' align='center' spacing={2}>
-                      <Heading size='lg'>{user.name}</Heading>
-                      <Badge colorScheme={user.active ? 'green' : 'gray'} ml={2}>
-                        {user.active ? t('user.active') : t('user.inactive')}
-                      </Badge>
-                    </Stack>
-                    <Stack direction='row' align='center' spacing={2} sx={lightText}>
-                      <FiMail />
-                      <Text>{user.email}</Text>
-                    </Stack>
-                    <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
-                    <Text fontSize='sm' sx={lightText}>
-                      {t('user.member_since', {
-                        date: new Date(user.createdAt).toLocaleDateString(),
-                      })}
-                    </Text>
-                  </Stack>
-                </Stack>
-                {isCurrentUser && (
-                  <Button
-                    aria-label={t('common.edit')}
-                    rightIcon={<EditIcon />}
-                    size='md'
-                    variant='ghost'
-                    onClick={() => navigate(ROUTES.PROFILE.EDIT)}
-                  >
-                    {t('user.edit_profile')}
-                  </Button>
-                )}
-              </HStack>
-              {user.location && (
-                <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
-                  <MapMarker {...user.location} />
-                </Box>
-              )}
+    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
+      <Stack spacing={6}>
+        <HStack justify={'space-between'} align={'start'}>
+          <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
+            <Avatar username={user.name} avatarHash={user.avatarHash} />
+            <Stack spacing={3}>
+              <Stack direction='row' align='center' spacing={2}>
+                <Heading size='lg'>{user.name}</Heading>
+                <Badge colorScheme={user.active ? 'green' : 'gray'} ml={2}>
+                  {user.active ? t('user.active') : t('user.inactive')}
+                </Badge>
+              </Stack>
+              <Stack direction='row' align='center' spacing={2} sx={lightText}>
+                <FiMail />
+                <Text>{user.email}</Text>
+              </Stack>
+              <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
+              <Text fontSize='sm' sx={lightText}>
+                {t('user.member_since', {
+                  date: new Date(user.createdAt).toLocaleDateString(),
+                })}
+              </Text>
             </Stack>
+          </Stack>
+          {isCurrentUser && (
+            <Button
+              aria-label={t('common.edit')}
+              rightIcon={<EditIcon />}
+              size='md'
+              variant='ghost'
+              onClick={() => navigate(ROUTES.PROFILE.EDIT)}
+            >
+              {t('user.edit_profile')}
+            </Button>
+          )}
+        </HStack>
+        {user.location && (
+          <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
+            <MapMarker {...user.location} />
           </Box>
-        </Stack>
-      </Box>
-    </Container>
+        )}
+      </Stack>
+    </Box>
   )
 }

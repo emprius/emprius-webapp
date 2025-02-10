@@ -60,7 +60,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
     >
       <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />
       <Stack direction={direction} spacing={1}>
-        <Text fontWeight='bold'>{user.name}</Text>
+        <Text fontWeight='bold' wordBreak='break-word'>{user.name}</Text>
         <ShowRatingStars rating={user.rating} size='sm' ratingCount={user.ratingCount} />
       </Stack>
     </Flex>
