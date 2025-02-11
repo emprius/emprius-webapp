@@ -52,7 +52,7 @@ const useAuthProvider = () => {
     localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.EXPIRITY)
     setBearer(null)
-    queryClient.setQueryData(['user'], null)
+    queryClient.removeQueries()
   }
 
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
