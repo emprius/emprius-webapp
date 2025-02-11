@@ -48,14 +48,20 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
 
         <Stack p={4} spacing={3}>
           <Stack spacing={1}>
-            <Stack direction='row' align='center' justify='space-between'>
-              <Text fontWeight='semibold' fontSize='xl' _hover={{ color: 'primary.500', textDecoration: 'none' }}>
+            <Flex align='top' justify='space-between' gap={2}>
+              <Text
+                fontWeight='semibold'
+                fontSize='lg'
+                _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                noOfLines={2}
+                flex='1'
+              >
                 {tool.title}
               </Text>
-              <Text fontSize='lg' fontWeight='bold' sx={lightText}>
+              <Text fontSize='lg' fontWeight='bold' sx={lightText} whiteSpace='nowrap'>
                 {t('tools.cost_unit', { cost: tool.cost })}
               </Text>
-            </Stack>
+            </Flex>
             <ToolBadges tool={tool} />
 
             <Text noOfLines={2} title={tool.description} sx={lightText}>

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import { MAP_DEFAULTS } from '~utils/constants'
-import './LocationPicker.css'
+import '../Leaflet.css'
 import { EmpriusLocation } from '~components/Layout/types'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
