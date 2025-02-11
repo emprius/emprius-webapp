@@ -1,7 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
 import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
-import {ImageContent} from '~components/Images/ServerImage'
 import {InfoData} from '~components/InfoProviders/InfoContext'
 import {BookingPendings} from '~components/InfoProviders/PendingActionsProvider'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
@@ -115,7 +114,7 @@ export const users = {
 // images
 export const images = {
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
-  getImage: (hash: string) => apiRequest(api.get<ApiResponse<ImageContent>>(`/images/${hash}`)),
+  getImage: (hash: string) => `${api.defaults.baseURL}/images/${hash}`,
 }
 
 // Info endpoints

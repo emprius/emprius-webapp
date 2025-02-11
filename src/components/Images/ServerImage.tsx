@@ -1,6 +1,6 @@
 import { Image, ImageProps } from '@chakra-ui/react'
 import React from 'react'
-import { useImage } from '~components/Images/queries'
+import api from '~src/services/api'
 import { ASSETS } from '~utils/constants'
 
 export type ServerImageProps = Omit<ImageProps, 'src'> & {
@@ -9,19 +9,11 @@ export type ServerImageProps = Omit<ImageProps, 'src'> & {
 }
 
 export const ServerImage: React.FC<ServerImageProps> = ({ imageId, fallbackSrc = ASSETS.TOOL_FALLBACK, ...props }) => {
-  const { data: image, isLoading } = useImage(imageId)
-
-  if (isLoading || !image?.content) {
+  if (!imageId) {
     return <Image src={fallbackSrc} {...props} />
   }
 
-  return <Image src={`data:image/jpeg;base64,${image.content}`} fallbackSrc={fallbackSrc} {...props} />
+  return <Image src={api.images.getImage(imageId)} fallbackSrc={fallbackSrc} {...props} />
 }
 
 export type Image = string
-
-export type ImageContent = {
-  hash: Image
-  content: string
-  name: string
-}
