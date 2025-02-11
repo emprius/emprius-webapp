@@ -20,7 +20,6 @@ export const ToolList = ({
   isError?: boolean
   error?: Error
 }) => {
-  console.log('AAA', tools)
   const { t } = useTranslation()
 
   if (isLoading) return <LoadingSpinner />

@@ -16,7 +16,7 @@ import {
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/queries'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
@@ -114,6 +114,7 @@ export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
   const deleteTool = useDeleteTool()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef<HTMLButtonElement>(null)
+  const navigate = useNavigate()
 
   const handleDelete = useCallback(async () => {
     try {
@@ -125,6 +126,7 @@ export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
         isClosable: true,
       })
       onClose()
+      navigate(ROUTES.TOOLS.LIST)
     } catch (error) {
       toast({
         title: t('common.error'),
