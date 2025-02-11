@@ -22,7 +22,7 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
   const isOwner = user?.id === tool.userId
 
   return (
-    <Box
+    <Flex
       bg={bgColor}
       borderWidth={1}
       borderColor={borderColor}
@@ -30,6 +30,8 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
       overflow='hidden'
       transition='transform 0.2s'
       _hover={{ transform: 'translateY(-4px)', cursor: 'pointer' }}
+      justify={'space-between'}
+      direction={'column'}
     >
       <Link
         as={RouterLink}
@@ -64,7 +66,7 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
             </Flex>
             <ToolBadges tool={tool} />
 
-            <Text noOfLines={2} title={tool.description} sx={lightText}>
+            <Text fontSize='md' noOfLines={2} title={tool.description} sx={lightText}>
               {tool.description}
             </Text>
           </Stack>
@@ -83,6 +85,6 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
           </Flex>
         </HStack>
       )}
-    </Box>
+    </Flex>
   )
 }
