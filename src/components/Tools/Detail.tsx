@@ -47,7 +47,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
         <GridItem>
           <Stack spacing={8}>
             <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' overflow='hidden'>
-              {tool.images.length > 0 && <ImageCarousel imageIds={tool.images} height='400px' width='100%' />}
+              {tool?.images?.length > 0 && <ImageCarousel imageIds={tool.images} height='400px' width='100%' />}
 
               <Stack p={6} spacing={6}>
                 <Stack spacing={4}>
@@ -76,26 +76,26 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       )}
                     </Stack>
 
-                    {tool.height && (
+                    {!!tool.height && (
                       <Stack direction='row' align='center'>
                         <FiBox size={20} />
                         <Text>{tool.height && `${tool.height}cm`}</Text>
                       </Stack>
                     )}
-                    {tool.weight && (
+                    {!!tool.weight && (
                       <Stack direction='row' align='center'>
                         <LuWeight size={20} />
                         <Text>{tool.weight && `${tool.weight}kg`}</Text>
                       </Stack>
                     )}
-                    {tool.toolCategory && (
+                    {!!tool.toolCategory && (
                       <Stack direction='row' align='center'>
                         <FiTag size={20} />
                         <Text>{categories.find((c) => c.id === tool.toolCategory)?.name}</Text>
                       </Stack>
                     )}
                   </SimpleGrid>
-                  {tool?.transportOptions?.length > 0 && (
+                  {!!tool?.transportOptions?.length && (
                     <Stack direction={{ base: 'column', sm: 'row' }} align='start' wrap='wrap'>
                       <Stack direction={'row'}>
                         <HiOutlineTruck size={20} />
