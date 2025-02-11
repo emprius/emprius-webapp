@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { icons } from '~theme/icons'
+import { filterBySupportedTypes, INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 
 interface ImageUploaderProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -23,7 +24,7 @@ interface ImageUploaderProps {
   label?: string
 }
 
-export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
+export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderProps>(
   ({ onChange, onBlur, name, error, isRequired = false, label = 'Images' }, ref) => {
     const [previews, setPreviews] = useState<string[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -35,7 +36,9 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
         const newFiles = event.target.files
         if (!newFiles) return
 
-        const filesArray = Array.from(newFiles)
+        const filesArray = filterBySupportedTypes(newFiles)
+
+        if (filesArray.length === 0) return
 
         // Update files state and create DataTransfer object
         setFiles((prev) => {
@@ -148,7 +151,7 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
         <VisuallyHidden>
           <Input
             type='file'
-            accept='image/*'
+            accept={INPUT_ACCEPTED_IMAGE_TYPES}
             multiple
             name={name}
             onChange={handleFileChange}
@@ -202,4 +205,4 @@ export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
   }
 )
 
-ImageUploader.displayName = 'ImageUploader'
+MultipleImageSelector.displayName = 'ImageUploader'

@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router-dom'
 import { Image, ServerImage } from '~components/Images/ServerImage'
 import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
-import { ImageUploader } from '~components/Layout/Form/ImageUploader'
+import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import { EmpriusLocation } from '~components/Layout/types'
 import { Tool } from './types'
@@ -197,7 +197,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </Box>
       )}
 
-      <ImageUploader label={t('tools.images')} error={errors.images?.message} {...register('images')} />
+      <MultipleImageSelector label={t('tools.images')} error={errors.images?.message} {...register('images')} />
 
       {/* Optional Fields Toggle Button */}
       <Button

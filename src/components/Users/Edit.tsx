@@ -24,6 +24,7 @@ import { getB64FromFile } from '~src/utils'
 import { ASSETS, AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, avatarSizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './queries'
+import { filterBySupportedTypes, INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
   const { t } = useTranslation()
@@ -193,7 +194,7 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
   const [previewUrl, setPreviewUrl] = useState<string | undefined>()
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = filterBySupportedTypes(event.target.files)?.[0]
     if (!file) return
 
     try {
@@ -248,7 +249,13 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
           onClick={handleOnAvatarDelete}
         />
       </>
-      <input type='file' ref={inputRef} onChange={handleImageChange} accept='image/*' style={{ display: 'none' }} />
+      <input
+        type='file'
+        accept={INPUT_ACCEPTED_IMAGE_TYPES}
+        ref={inputRef}
+        onChange={handleImageChange}
+        style={{ display: 'none' }}
+      />
     </Box>
   )
 }
