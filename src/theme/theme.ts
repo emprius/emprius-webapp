@@ -43,6 +43,28 @@ const theme = extendTheme({
         bg: props.colorMode === 'dark' ? 'gray.800' : 'gray.50',
         color: props.colorMode === 'dark' ? 'white' : 'gray.800',
       },
+      '.leaflet-container': {
+        width: '100%',
+        height: '100%',
+        'z-index': 1,
+      },
+      '.leaflet-container a.chakra-button': {
+        color: 'white',
+      },
+      '.leaflet-popup-content, .leaflet-popup-content-wrapper': {
+        margin: 0,
+        padding: 0,
+      },
+      '.leaflet-popup-content p': {
+        margin: 0,
+      },
+      '.map-container': {
+        height: '300px',
+        width: '100%',
+        position: 'relative',
+        borderRadius: '0.375rem',
+        overflow: 'hidden',
+      },
     }),
   },
   components: {
