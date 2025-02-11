@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { SearchParams, useSearchTools } from '~components/Search/queries'
+import { ROUTES } from '~src/router/routes'
 
 interface SearchContextType {
   filters: SearchParams
@@ -53,6 +54,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Perform search on filters change
   useEffect(() => {
+    // Perform only if is on search route
+    if (window.location.pathname !== ROUTES.SEARCH) return
     performSearch()
   }, [filters])
 
