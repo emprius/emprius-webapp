@@ -166,7 +166,9 @@ export const DashboardLayout = () => {
       <Show above='md'>
         <Flex gap={2} w={'full'} minH={'100vh'}>
           <SideNav />
-          <Outlet />
+          <Box w={'100vw'}>
+            <Outlet />
+          </Box>
         </Flex>
       </Show>
       <Hide above='md'>
