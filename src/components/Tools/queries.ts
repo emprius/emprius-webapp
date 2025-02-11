@@ -1,7 +1,7 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { EmpriusLocation } from '~components/Layout/types'
 import api, { tools } from '~src/services/api'
-import { Tool } from './types'
+import { Tool, ToolsListResponse } from './types'
 
 export interface createToolParams {
   title: string
@@ -55,6 +55,17 @@ export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>,
     queryKey: ['tool', id],
     queryFn: () => api.tools.getById(id),
     enabled: !!id,
+    ...options,
+  })
+
+export const useUserTools = (
+  userId: string,
+  options?: Omit<UseQueryOptions<ToolsListResponse, Error>, 'queryKey' | 'queryFn'>
+) =>
+  useQuery({
+    queryKey: ['userTools', userId],
+    queryFn: () => api.tools.getUserToolsById(userId),
+    enabled: !!userId,
     ...options,
   })
 

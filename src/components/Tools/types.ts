@@ -21,3 +21,7 @@ export interface Tool {
   weight?: number
   reservedDates: DateRange[] | null
 }
+
+export interface ToolsListResponse {
+  tools: Tool[]
+}

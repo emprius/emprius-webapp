@@ -5,9 +5,9 @@ import {ImageContent} from '~components/Images/ServerImage'
 import {InfoData} from '~components/InfoProviders/InfoContext'
 import {BookingPendings} from '~components/InfoProviders/PendingActionsProvider'
 import type {RateSubmission, Rating} from '~components/Ratings/types'
-import {SearchParams, SearchToolsResponse} from '~components/Search/queries'
+import {SearchParams} from '~components/Search/queries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
-import {Tool} from '~components/Tools/types'
+import {Tool, ToolsListResponse} from '~components/Tools/types'
 import {EditProfileFormData, UserProfile} from '~components/Users/types'
 import {STORAGE_KEYS} from '~utils/constants'
 
@@ -71,9 +71,10 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getUserTools: () => apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools')),
+  getUserTools: () => apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools')),
+  getUserToolsById: (userId: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/tools/user/${userId}`)),
   searchTools: (params: SearchParams) =>
-    apiRequest(api.get<ApiResponse<SearchToolsResponse>>('/tools/search', { params })),
+    apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
   create: (data: createToolParams) =>
     apiRequest(
