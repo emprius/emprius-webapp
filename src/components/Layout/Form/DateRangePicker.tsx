@@ -31,6 +31,7 @@ export const DateRangePicker = ({
 }: DateRangePickerProps) => {
   const { t } = useTranslation()
   const borderColor = useColorModeValue('gray.200', 'gray.600')
+  const [overlapError, setOverlapError] = React.useState<string | null>(null)
 
   const isDateRangeOverlapping = (start: Date, end: Date) => {
     if (!reservedDates) return false
@@ -47,6 +48,22 @@ export const DateRangePicker = ({
         (start <= reservationStart && end >= reservationEnd)
       )
     })
+  }
+
+  const checkOverlap = (start: string | null, end: string | null) => {
+    if (!start || !end) {
+      setOverlapError(null)
+      return
+    }
+
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+
+    if (isDateRangeOverlapping(startDate, endDate)) {
+      setOverlapError(t('bookings.date_conflict'))
+    } else {
+      setOverlapError(null)
+    }
   }
 
   const {
@@ -77,10 +94,6 @@ export const DateRangePicker = ({
           return t('validation.end_date_after_start')
         }
 
-        if (isDateRangeOverlapping(start, end)) {
-          return t('bookings.date_conflict')
-        }
-
         return true
       },
     },
@@ -91,15 +104,26 @@ export const DateRangePicker = ({
   }
 
   const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    startField.onChange(e.target.value)
+    const newStart = e.target.value
+    startField.onChange(newStart)
+    
     // Reset end date if it's before new start date
-    if (endField.value && new Date(endField.value) <= new Date(e.target.value)) {
+    if (endField.value && new Date(endField.value) <= new Date(newStart)) {
       endField.onChange('')
+      setOverlapError(null)
+    } else if (endField.value) {
+      checkOverlap(newStart, endField.value)
     }
   }
 
+  const handleEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEnd = e.target.value
+    endField.onChange(newEnd)
+    checkOverlap(startField.value, newEnd)
+  }
+
   return (
-    <FormControl isInvalid={!!startError || !!endError} isRequired={isRequired}>
+    <FormControl isInvalid={!!startError || !!endError || !!overlapError} isRequired={isRequired}>
       {label && <FormLabel>{label}</FormLabel>}
       <Stack direction={{ base: 'column', sm: 'row' }} spacing={4}>
         <Box flex={1}>
@@ -111,19 +135,21 @@ export const DateRangePicker = ({
             max={maxDate ? formatDate(maxDate) : undefined}
             borderColor={borderColor}
           />
-          {startError && <FormErrorMessage>{startError.message}</FormErrorMessage>}
         </Box>
         <Box flex={1}>
           <Input
             type='date'
             {...endField}
+            onChange={handleEndChange}
             min={startField.value || formatDate(minDate)}
             max={maxDate ? formatDate(maxDate) : undefined}
             borderColor={borderColor}
           />
-          {endError && <FormErrorMessage>{endError.message}</FormErrorMessage>}
         </Box>
       </Stack>
+      {startError && <FormErrorMessage>{startError.message}</FormErrorMessage>}
+      {endError && <FormErrorMessage>{endError.message}</FormErrorMessage>}
+      {overlapError && <FormErrorMessage>{overlapError}</FormErrorMessage>}
     </FormControl>
   )
 }

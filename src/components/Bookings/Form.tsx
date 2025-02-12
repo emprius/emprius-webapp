@@ -20,6 +20,7 @@ import { DateRangePicker } from '~components/Layout/Form/DateRangePicker'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
+import { TOOL_MAX_DATE_BOOKING } from '~utils/constants'
 
 interface BookingFormProps {
   tool: Tool
@@ -92,12 +93,9 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
 
   // Get today's date for minDate since there's no availability in the Tool model
   const minDate = new Date()
-  // Set maxDate to 6 months from now as a reasonable default
+  // Set maxDate
   const maxDate = new Date()
-  maxDate.setMonth(maxDate.getMonth() + 6)
-
-  // If tool has reservedDates, we could use that to disable specific dates
-  // but it's currently typed as any | null in the Tool model
+  maxDate.setMonth(maxDate.getMonth() + TOOL_MAX_DATE_BOOKING)
 
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>

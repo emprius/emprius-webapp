@@ -18,6 +18,10 @@ export const AvailabilityCalendar = ({ reservedDates }: ToolAvailabilityCalendar
     return reservedDates.some((range) => {
       const fromDate = new Date(range.from * 1000)
       const toDate = new Date(range.to * 1000)
+      // Set dates time to 00:00:00 to avoid timezone issues
+      fromDate.setHours(0, 0, 0, 0)
+      toDate.setHours(0, 0, 0, 0)
+
       return date >= fromDate && date <= toDate
     })
   }
