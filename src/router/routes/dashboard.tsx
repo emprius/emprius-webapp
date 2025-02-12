@@ -107,7 +107,23 @@ const DashboardRoutesElements = [
                 ),
               },
               {
-                path: ROUTES.RATINGS,
+                path: ROUTES.RATINGS.PENDING,
+                element: (
+                  <SuspenseLoader>
+                    <UserRatingsPage />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.RATINGS.SUBMITTED,
+                element: (
+                  <SuspenseLoader>
+                    <UserRatingsPage />
+                  </SuspenseLoader>
+                ),
+              },
+              {
+                path: ROUTES.RATINGS.RECEIVED,
                 element: (
                   <SuspenseLoader>
                     <UserRatingsPage />

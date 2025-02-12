@@ -81,9 +81,6 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
 
   const datef = t('rating.datef')
 
-  const begin = new Date(rating.startDate * 1000)
-  const end = new Date(rating.endDate * 1000)
-
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
       {tool && (
@@ -93,12 +90,12 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
               <ServerImage imageId={tool.images[0]} alt={tool.title} width='100%' height='100%' objectFit='cover' />
             </Box>
           )}
-          <VStack align={'start'}>
+          <VStack align='start'>
             <Heading size='md' noOfLines={2}>
               {tool.title}
             </Heading>
             <Badge px={2} py={1} borderRadius='full'>
-              <Flex align={'center'} wrap={'wrap'} fontSize='sm' fontWeight='medium'>
+              <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
                 <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
                 {t('rating.date_formatted', { date: rating.startDate * 1000, format: datef })}
                 <Icon as={FaArrowRight} mx={2} />
@@ -106,12 +103,12 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
               </Flex>
             </Badge>
             <UserCard
-              direction={'row'}
-              avatarSize={'sm'}
+              direction='row'
+              avatarSize='sm'
               userId={rating.toUserId}
               gap={2}
               p={0}
-              fontSize={'sm'}
+              fontSize='sm'
               borderWidth={0}
             />
           </VStack>

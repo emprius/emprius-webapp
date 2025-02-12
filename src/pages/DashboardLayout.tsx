@@ -29,27 +29,14 @@ const SideNav = () => {
         path: ROUTES.BOOKINGS.REQUESTS,
         count: pendingRequestsCount,
       },
-      { icon: icons.ratings, label: t('nav.ratings'), path: ROUTES.RATINGS, count: pendingRatingsCount },
+      { icon: icons.ratings, label: t('nav.ratings'), path: ROUTES.RATINGS.PENDING, count: pendingRatingsCount },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
     [t]
   )
 
   return (
-    <Box
-      // position='fixed'
-      // left={0}
-      // p={5}
-      // top={0}
-      w='300px'
-      // h='100vh'
-      bg={bgColor}
-      px={4}
-      pt={5}
-      borderRight='1px'
-      borderColor={borderColor}
-      // zIndex={800} // Below navbar but above content
-    >
+    <Box w='300px' bg={bgColor} px={4} pt={5} borderRight='1px' borderColor={borderColor}>
       {menuItems.map((item) => (
         <Flex
           key={item.label}
@@ -107,7 +94,7 @@ const BottomNav = () => {
         count: pendingRequestsCount,
         additionalPath: ROUTES.BOOKINGS.PETITIONS, // This menu item can be selected on two different paths
       },
-      { icon: icons.ratings, path: ROUTES.RATINGS, count: pendingRatingsCount },
+      { icon: icons.ratings, path: ROUTES.RATINGS.PENDING, count: pendingRatingsCount },
     ],
     [t]
   )

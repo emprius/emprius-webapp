@@ -1,6 +1,10 @@
 import { Booking } from '~components/Bookings/queries'
 
-export type Rating = {} & Booking
+export interface Rating extends Booking {
+  isRated: boolean
+  rating?: number
+  ratingComment?: string
+}
 
 export interface RateSubmission {
   bookingId: string

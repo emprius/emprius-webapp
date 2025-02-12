@@ -98,7 +98,12 @@ export const bookings = {
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
-  submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>('/bookings/rates', data)),
+  getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
+  getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
+  submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, {
+    rating: data.rating,
+    comment: data.comment
+  })),
   getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
 }
 
