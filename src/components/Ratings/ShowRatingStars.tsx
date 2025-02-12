@@ -40,7 +40,9 @@ const Star = ({ rating, position, size }: { rating: number; position: number; si
   const starColor = useColorModeValue('yellow.400', 'yellow.200')
 
   // Convert rating from 0-100 scale to 0-5 scale
-  const normalizedRating = (rating / 100) * 5
+  // Uncoment for rating on %
+  // const normalizedRating = (rating / 100) * 5
+  const normalizedRating = rating
   if (normalizedRating >= position + 1) {
     // Full star
     return <Icon as={FaStar} fontSize={sizes[size].fontSize} color={starColor} />

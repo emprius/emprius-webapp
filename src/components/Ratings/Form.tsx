@@ -1,25 +1,10 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Icon,
-  Textarea,
-  useToast,
-  VStack,
-} from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
-import { ServerImage } from '~components/Images/ServerImage'
 import { SetRatingStars } from '~components/Ratings/SetRatingStars'
 import { Rating } from '~components/Ratings/types'
-import { useTool } from '~components/Tools/queries'
-import { UserCard } from '~components/Users/Card'
 import { useSubmitRating } from './queries'
+import { RatingCardHeader } from '~components/Ratings/Card'
 
 interface RatingFormProps {
   rating: Rating
@@ -35,7 +20,6 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()
-  const { data: tool } = useTool(rating.toolId)
   const { handleSubmit, setValue, watch } = useForm<RatingFormData>({
     defaultValues: {
       userRating: 0,
@@ -79,42 +63,9 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
     }
   }
 
-  const datef = t('rating.datef')
-
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
-      {tool && (
-        <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
-          {tool.images?.[0] && (
-            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ServerImage imageId={tool.images[0]} alt={tool.title} width='100%' height='100%' objectFit='cover' />
-            </Box>
-          )}
-          <VStack align='start'>
-            <Heading size='md' noOfLines={2}>
-              {tool.title}
-            </Heading>
-            <Badge px={2} py={1} borderRadius='full'>
-              <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
-                <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-                {t('rating.date_formatted', { date: rating.startDate * 1000, format: datef })}
-                <Icon as={FaArrowRight} mx={2} />
-                {t('rating.date_formatted', { date: rating.endDate * 1000, format: datef })}
-              </Flex>
-            </Badge>
-            <UserCard
-              direction='row'
-              avatarSize='sm'
-              userId={rating.toUserId}
-              gap={2}
-              p={0}
-              fontSize='sm'
-              borderWidth={0}
-            />
-          </VStack>
-        </Flex>
-      )}
-
+      <RatingCardHeader rating={rating} />
       <Box borderTopWidth='1px' pt={4} mt={4}>
         <VStack spacing={4} align='stretch'>
           <FormControl>

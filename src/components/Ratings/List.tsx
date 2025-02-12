@@ -1,4 +1,4 @@
-import { Icon, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
+import { Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -11,75 +11,6 @@ import { icons } from '~theme/icons'
 import { RatingCard } from './Card'
 import { useGetPendingRatings, useGetReceivedRatings, useGetSubmittedRatings } from './queries'
 import { Rating } from './types'
-
-const RatingSection = ({
-  data,
-  isLoading,
-  error,
-  emptyTitle,
-  emptyDesc,
-}: {
-  data: Rating[] | undefined
-  isLoading: boolean
-  error: Error | string | null
-  emptyTitle: string
-  emptyDesc: string
-}) => {
-  const { t } = useTranslation()
-
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
-
-  if (error) {
-    return <ErrorComponent error={error} />
-  }
-
-  if (!data?.length) {
-    return <ElementNotFound icon={icons.ratings} title={t(emptyTitle)} desc={t(emptyDesc)} />
-  }
-
-  return (
-    <ResponsiveSimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 3 }}>
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-    </ResponsiveSimpleGrid>
-  )
-}
-
-const PendingRatings = () => {
-  const query = useGetPendingRatings()
-  return (
-    <RatingSection
-      {...query}
-      emptyTitle="rating.no_pending_ratings"
-      emptyDesc="rating.no_pending_ratings_desc"
-    />
-  )
-}
-
-const SubmittedRatings = () => {
-  const query = useGetSubmittedRatings()
-  return (
-    <RatingSection
-      {...query}
-      emptyTitle="rating.no_submitted_ratings"
-      emptyDesc="rating.no_submitted_ratings_desc"
-    />
-  )
-}
-
-const ReceivedRatings = () => {
-  const query = useGetReceivedRatings()
-  return (
-    <RatingSection
-      {...query}
-      emptyTitle="rating.no_received_ratings"
-      emptyDesc="rating.no_received_ratings_desc"
-    />
-  )
-}
 
 export const RatingsList = () => {
   const { t } = useTranslation()
@@ -121,18 +52,9 @@ export const RatingsList = () => {
   return (
     <Tabs isLazy index={tabIndex} onChange={handleTabChange}>
       <TabList>
-        <Tab>
-          <Icon as={icons.ratings} mr={2} />
-          {t('rating.pending')}
-        </Tab>
-        <Tab>
-          <Icon as={icons.ratings} mr={2} />
-          {t('rating.submitted')}
-        </Tab>
-        <Tab>
-          <Icon as={icons.ratings} mr={2} />
-          {t('rating.received')}
-        </Tab>
+        <Tab>{t('rating.pending')}</Tab>
+        <Tab>{t('rating.submitted')}</Tab>
+        <Tab>{t('rating.received')}</Tab>
       </TabList>
 
       <TabPanels>
@@ -147,5 +69,85 @@ export const RatingsList = () => {
         </TabPanel>
       </TabPanels>
     </Tabs>
+  )
+}
+
+const PendingRatings = () => {
+  const query = useGetPendingRatings()
+  return <RatingSection {...query} emptyTitle='rating.no_pending_ratings' emptyDesc='rating.no_pending_ratings_desc' />
+}
+
+const SubmittedRatings = () => {
+  const query = useGetSubmittedRatings()
+  return (
+    <RatingSection {...query} emptyTitle='rating.no_submitted_ratings' emptyDesc='rating.no_submitted_ratings_desc' />
+  )
+}
+
+const ReceivedRatings = () => {
+  const query = useGetReceivedRatings()
+  return (
+    <RatingSection {...query} emptyTitle='rating.no_received_ratings' emptyDesc='rating.no_received_ratings_desc' />
+  )
+}
+
+const RatingSection = ({
+  data,
+  isLoading,
+  error,
+  emptyTitle,
+  emptyDesc,
+}: {
+  data: Rating[] | undefined
+  isLoading: boolean
+  error: Error | string | null
+  emptyTitle: string
+  emptyDesc: string
+}) => {
+  const { t } = useTranslation()
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (error) {
+    return <ErrorComponent error={error} />
+  }
+
+  if (!data?.length) {
+    return <ElementNotFound icon={icons.ratings} title={t(emptyTitle)} desc={t(emptyDesc)} />
+  }
+
+  return (
+    <ResponsiveSimpleGrid>
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+      {data.map((rating: Rating, index) => (
+        <RatingCard key={index} {...rating} />
+      ))}
+    </ResponsiveSimpleGrid>
   )
 }

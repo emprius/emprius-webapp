@@ -28,6 +28,9 @@ export interface Booking {
   bookingStatus: BookingStatus
   createdAt: string
   updatedAt: string
+  isRated: boolean
+  rating?: number
+  ratingComment?: string
 }
 
 export const useBookingRequests = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>

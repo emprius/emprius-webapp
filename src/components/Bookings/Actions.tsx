@@ -163,10 +163,16 @@ const ReturnedBookingActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const isRated = booking.isRated
+  let text = t('rating.rate_user')
+  if (!isRated) {
+    text = t('rating.already_rated')
+  }
+
   return (
     <>
-      <Button leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
-        {t('rating.rate_user')}
+      <Button disabled={!isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
+        {text}
       </Button>
       <RatingModal
         isOpen={isOpen}
