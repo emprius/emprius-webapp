@@ -54,7 +54,7 @@
     "end_date": "End Date",
     "error": "Booking failed",
     "mark_as_returned": "Mark as Returned",
-    "my_petitions": "Requested tools",
+    "my_petitions": "Requests",
     "return_error": "Failed to mark tool as returned",
     "return_success": "Tool marked as returned successfully",
     "start_date": "Start Date",
@@ -68,7 +68,7 @@
     "success": "Booking successful",
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
-    "tool_requests": "Your loans",
+    "0": "Loans",
     "try_again": "Please try again later"
   },
   "common": {
@@ -131,7 +131,7 @@
     "login": "Login",
     "logout": "Logout",
     "my_bookings": "Bookings",
-    "my_tools": "My Tools",
+    "my_tools": "Tools",
     "profile": "Profile",
     "ratings": "Ratings",
     "register": "Register",

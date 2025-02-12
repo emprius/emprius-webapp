@@ -36,15 +36,15 @@ const SideNav = () => {
   )
 
   return (
-    <Box w='300px' bg={bgColor} px={4} pt={5} borderRight='1px' borderColor={borderColor}>
+    <Flex direction={'column'} w='250px' bg={bgColor} px={2} pt={5} borderRight='1px' borderColor={borderColor}>
       {menuItems.map((item) => (
         <Flex
           key={item.label}
           as={RouterLink}
           to={item.path}
           align='center'
-          p={3}
-          mx={-3}
+          p={2}
+          mx={0}
           borderRadius='lg'
           role='group'
           cursor='pointer'
@@ -54,13 +54,9 @@ const SideNav = () => {
             bg: location.pathname === item.path ? selectedBg : useColorModeValue('gray.100', 'gray.700'),
           }}
           mb={2}
+          fontSize={18}
         >
-          <Icon
-            mr={4}
-            fontSize='16'
-            as={item.icon}
-            color={location.pathname === item.path ? selectedColor : 'inherit'}
-          />
+          <Icon mr={4} as={item.icon} color={location.pathname === item.path ? selectedColor : 'inherit'} />
           <BadgeCounter
             count={item?.count}
             badgeProps={{
@@ -72,7 +68,7 @@ const SideNav = () => {
           </BadgeCounter>
         </Flex>
       ))}
-    </Box>
+    </Flex>
   )
 }
 
@@ -151,7 +147,7 @@ export const DashboardLayout = () => {
   return (
     <Flex>
       <Show above='md'>
-        <Flex gap={2} w={'full'} minH={'100vh'}>
+        <Flex w={'full'} minH={'100vh'}>
           <SideNav />
           <Box w={'100vw'}>
             <Outlet />

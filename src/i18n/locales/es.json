@@ -41,7 +41,7 @@
     "end_date": "Fecha de fin",
     "error": "Error en la reserva",
     "mark_as_returned": "Marcar como devuelto",
-    "my_petitions": "Herramientas pedidas",
+    "my_petitions": "Peticiones",
     "return_error": "Error al marcar la herramienta como devuelta",
     "return_success": "Herramienta marcada como devuelta con éxito",
     "start_date": "Fecha de inicio",
@@ -55,7 +55,7 @@
     "success": "Reserva exitosa",
     "tool_petition_title": "Estás solicitando una herramienta",
     "tool_request_title": "Tu herramienta es necesaria",
-    "tool_requests": "Tus préstamos",
+    "tool_requests": "Préstamos",
     "try_again": "Por favor, inténtalo más tarde"
   },
   "common": {
@@ -118,7 +118,7 @@
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
     "my_bookings": "Reservas",
-    "my_tools": "Mis herramientas",
+    "my_tools": "Herramientas",
     "profile": "Perfil",
     "ratings": "Valoraciones",
     "register": "Registrarse",
