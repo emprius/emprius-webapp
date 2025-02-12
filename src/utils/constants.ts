@@ -23,10 +23,12 @@ export const STORAGE_KEYS = {
  */
 export const MAP_DEFAULTS = {
   CENTER: {
-    lat: 41.3851,
-    lng: 2.1734,
+    // lat: 41.3851,
+    // lng: 2.1734,
+    lat: 41.8094627,
+    lng: 1.3330306,
   },
-  ZOOM: 12,
+  ZOOM: 10,
   MIN_ZOOM: 3,
   MAX_ZOOM: 18,
   DEFAULT_RADIUS: 10, // km
