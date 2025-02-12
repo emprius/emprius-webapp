@@ -1,8 +1,19 @@
-import { Box, Container, IconButton, Link, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Link,
+  Stack,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiGithub, FiMoon, FiSun } from 'react-icons/fi'
+import { FiGithub, FiLogOut, FiMoon, FiSun } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '~components/Auth/AuthContext'
 import { LanguageSwitcher } from '~components/Navbar/LanguageSwitcher'
 
 import { ROUTES } from '~src/router/routes'
@@ -10,18 +21,19 @@ import { ROUTES } from '~src/router/routes'
 export const Footer = () => {
   const { t } = useTranslation()
   const { colorMode, toggleColorMode } = useColorMode()
+  const { logout } = useAuth()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const textColor = useColorModeValue('gray.600', 'gray.400')
 
   return (
-    <Box 
-      as='footer' 
-      bg={bgColor} 
-      borderTop={1} 
-      borderStyle='solid' 
-      borderColor={borderColor} 
-      py={8} 
+    <Box
+      as='footer'
+      bg={bgColor}
+      borderTop={1}
+      borderStyle='solid'
+      borderColor={borderColor}
+      py={8}
       mt='auto'
       position='relative'
       zIndex={2}
@@ -37,6 +49,9 @@ export const Footer = () => {
               variant='ghost'
             />
             <LanguageSwitcher />
+            <Button aria-label={t('common.logout')} leftIcon={<FiLogOut />} onClick={logout} variant='ghost'>
+              {t('nav.logout')}
+            </Button>
           </Stack>
 
           {/* Second line: Links, copyright and github */}

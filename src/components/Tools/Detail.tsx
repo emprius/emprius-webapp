@@ -65,16 +65,20 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   <ToolBadges tool={tool} />
                   <Divider />
                   <SimpleGrid spacing={4} columns={{ base: 2 }}>
-                    <Stack direction='row' align='center' spacing={4}>
-                      {tool.estimatedValue && (
-                        <Stack direction='row' align='center'>
-                          <FiDollarSign size={20} />
-                          <Text>
-                            {t('tools.estimated_value')}: {tool.estimatedValue}
-                          </Text>
-                        </Stack>
-                      )}
-                    </Stack>
+                    {!!tool.toolCategory && (
+                      <Stack direction='row' align='center'>
+                        <FiTag size={20} />
+                        <Text>{categories.find((c) => c.id === tool.toolCategory)?.name}</Text>
+                      </Stack>
+                    )}
+                    {!!tool.estimatedValue && (
+                      <Stack direction='row' align='center'>
+                        <FiDollarSign size={20} />
+                        <Text>
+                          {t('tools.estimated_value')}: {tool.estimatedValue}
+                        </Text>
+                      </Stack>
+                    )}
 
                     {!!tool.height && (
                       <Stack direction='row' align='center'>
@@ -86,12 +90,6 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       <Stack direction='row' align='center'>
                         <LuWeight size={20} />
                         <Text>{tool.weight && `${tool.weight}kg`}</Text>
-                      </Stack>
-                    )}
-                    {!!tool.toolCategory && (
-                      <Stack direction='row' align='center'>
-                        <FiTag size={20} />
-                        <Text>{categories.find((c) => c.id === tool.toolCategory)?.name}</Text>
                       </Stack>
                     )}
                   </SimpleGrid>
