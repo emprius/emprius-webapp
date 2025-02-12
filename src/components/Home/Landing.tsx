@@ -8,7 +8,7 @@ import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scr
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 
-export const HomePage = () => {
+export const Landing = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const bgColor = useColorModeValue('white', 'gray.800')
