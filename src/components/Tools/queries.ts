@@ -11,7 +11,7 @@ export interface createToolParams {
   cost?: number // uint64
   images: string[]
   transportOptions?: number[] // []uint
-  category?: number // uint
+  toolCategory?: number // uint
   location: EmpriusLocation
   estimatedValue?: number // uint64
   height?: number // uint64

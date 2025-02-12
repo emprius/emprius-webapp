@@ -30,11 +30,11 @@ import { useNavigate } from 'react-router-dom'
 import { Image, ServerImage } from '~components/Images/ServerImage'
 import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
-import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
+import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
 import { EmpriusLocation } from '~components/Layout/types'
-import { Tool } from './types'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
+import { Tool } from './types'
 
 export interface ToolFormData {
   title: string
@@ -43,7 +43,7 @@ export interface ToolFormData {
   askWithFee: boolean
   cost: number
   transportOptions: number[]
-  category?: number
+  toolCategory?: number
   estimatedValue: number
   height: number
   weight: number
@@ -129,24 +129,24 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </FormControl>
       </Stack>
 
-      <FormControl isInvalid={!!errors.category} isRequired>
-        <FormLabel>{t('tools.category')}</FormLabel>
+      <FormControl isInvalid={!!errors.toolCategory} isRequired>
+        <FormLabel>{t('tools.toolCategory')}</FormLabel>
         <Select
-          name='category'
+          name='toolCategory'
           options={categories.map((category) => ({
             value: category.id,
             label: category.name,
           }))}
           value={
-            watch('category')
+            watch('toolCategory')
               ? {
-                  value: watch('category'),
-                  label: categories.find((c) => c.id === watch('category'))?.name || '',
+                  value: watch('toolCategory'),
+                  label: categories.find((c) => c.id === watch('toolCategory'))?.name || '',
                 }
               : null
           }
           onChange={(newValue: any) => {
-            setValue('category', newValue?.value, { shouldValidate: true })
+            setValue('toolCategory', newValue?.value, { shouldValidate: true })
           }}
           placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
           required
@@ -161,7 +161,13 @@ export const ToolForm: React.FC<ToolFormProps> = ({
             }),
           }}
         />
-        <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.toolCategory?.message}</FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.description}>
+        <FormLabel>{t('tools.description')}</FormLabel>
+        <Textarea {...register('description', {})} />
+        <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired>
@@ -212,12 +218,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       {/* Optional Fields */}
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing={6}>
-          <FormControl isInvalid={!!errors.description}>
-            <FormLabel>{t('tools.description')}</FormLabel>
-            <Textarea {...register('description', {})} />
-            <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
-          </FormControl>
-
           <FormControl>
             <Checkbox {...register('mayBeFree')}>{t('tools.may_be_free', { defaultValue: 'May Be Free' })}</Checkbox>
           </FormControl>

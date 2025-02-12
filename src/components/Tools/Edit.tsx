@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/queries'
+import { ROUTES } from '~src/router/routes'
 import { ToolForm, ToolFormData } from './Form'
 import { UpdateToolParams, useUpdateTool } from './queries'
 import { Tool } from './types'
-import { ROUTES } from '~src/router/routes'
 
 interface EditToolFormProps {
   initialData: Tool
@@ -23,7 +23,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   const [existingImages, setExistingImages] = useState(images || [])
 
   const {
-    mutateAsync: createTool,
+    mutateAsync,
     isPending: updateToolIsPending,
     isError,
     error,
@@ -86,8 +86,8 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       mayBeFree: data.mayBeFree,
       askWithFee: data.askWithFee,
       cost: Number(data.cost),
-      transportOptions: data.transportOptions.map(Number),
-      category: data.category,
+      transportOptions: data.transportOptions?.map(Number) ?? null,
+      toolCategory: data.toolCategory,
       estimatedValue: Number(data.estimatedValue),
       height: Number(data.height),
       weight: Number(data.weight),
@@ -96,7 +96,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       isAvailable: data.isAvailable,
     }
 
-    await createTool({
+    await mutateAsync({
       id: initial.id.toString(),
       ...updatedFields,
     })
@@ -104,7 +104,6 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
 
   const initialData = {
     ...initial,
-    category: initial.toolCategory,
   }
   const isLoading = updateToolIsPending || uploadImageIsPending
 
