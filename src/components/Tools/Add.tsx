@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/queries'
-import { ToolForm, ToolFormData } from './Form'
+import { ToolForm, ToolFormData } from './BookingForm'
 import { useCreateTool } from './queries'
 
 export const AddTool = () => {

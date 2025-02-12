@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/queries'
 import { ROUTES } from '~src/router/routes'
-import { ToolForm, ToolFormData } from './Form'
+import { ToolForm, ToolFormData } from './BookingForm'
 import { UpdateToolParams, useUpdateTool } from './queries'
 import { Tool } from './types'
 

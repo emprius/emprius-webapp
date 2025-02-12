@@ -27,12 +27,12 @@ import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import { ImageCarousel } from '~components/Layout/ImageCarousel'
 import { MapMarker } from '~components/Layout/MapMarker'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
+import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
-import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -146,7 +146,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
               </Box>
             )}
             <AvailabilityCalendar reservedDates={tool.reservedDates || []} />
-            <BookingFormComponent tool={tool} />
+            <BookingFormWrapper tool={tool} />
           </Stack>
         </GridItem>
       </Grid>
@@ -154,7 +154,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   )
 }
 
-const BookingFormComponent = ({ tool }: { tool: Tool }) => {
+const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
