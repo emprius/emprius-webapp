@@ -1,25 +1,26 @@
-import { Box, IconButton, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
+import { SearchIcon } from '@chakra-ui/icons'
+import { Box, BoxProps, IconButton, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { RiCloseCircleFill } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
-import { SearchIcon } from '@chakra-ui/icons'
-import { RiCloseCircleFill } from 'react-icons/ri'
 
-export const SearchBar = () => {
+export const SearchBar = ({
+  onSubmit,
+  term,
+  setTerm,
+  ...rest
+}: {
+  onSubmit: (e: React.FormEvent) => void
+  term: string
+  setTerm: (term: string) => void
+} & BoxProps) => {
   const { t } = useTranslation()
-  const { performSearch, term, setTerm } = useSearch()
-  const navigate = useNavigate()
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    navigate(ROUTES.SEARCH)
-    performSearch()
-  }
 
   return (
-    <Box as='form' onSubmit={handleSubmit} display='flex' alignItems='center' maxW='600px' flex={1} mx={4}>
+    <Box as='form' onSubmit={onSubmit} display='flex' alignItems='center' maxW='600px' flex={1} mx={4} {...rest}>
       <InputGroup>
         {!term && (
           <InputLeftElement pointerEvents='none'>
@@ -58,4 +59,17 @@ export const SearchBar = () => {
       </InputGroup>
     </Box>
   )
+}
+
+export const ContextSearchBar = () => {
+  const { performSearch, term, setTerm } = useSearch()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigate(ROUTES.SEARCH)
+    performSearch()
+  }
+
+  return <SearchBar onSubmit={handleSubmit} term={term} setTerm={setTerm} />
 }

@@ -26,14 +26,16 @@ export const useSearch = () => {
 
 export type SearchFilters = Omit<SearchParams, 'term'>
 
+export const defaultSearchParams: SearchFilters = {
+  categories: undefined,
+  transportOptions: undefined,
+  distance: 50,
+  maxCost: 1000,
+  mayBeFree: false,
+}
+
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [filters, setFilters] = useState<SearchFilters>({
-    categories: undefined,
-    transportOptions: undefined,
-    distance: 50,
-    maxCost: 1000,
-    mayBeFree: false,
-  })
+  const [filters, setFilters] = useState<SearchFilters>(defaultSearchParams)
   const [term, setTerm] = useState<string>('')
   const { data, mutate, isPending, error, isError } = useSearchTools()
 

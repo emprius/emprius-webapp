@@ -15,11 +15,11 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar, avatarSizeToPixels } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
-import { SearchBar } from '~components/Search/SearchBar'
+import { ContextSearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeIcon } from '../Layout/BadgeIcon'
@@ -28,6 +28,7 @@ export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
   const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
+  const location = useLocation()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -53,9 +54,9 @@ export const Navbar = () => {
           <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
         </Link>
 
-        {isAuthenticated && (
+        {isAuthenticated && location.pathname !== ROUTES.HOME && (
           <Box flex={1}>
-            <SearchBar />
+            <ContextSearchBar />
           </Box>
         )}
       </Stack>
