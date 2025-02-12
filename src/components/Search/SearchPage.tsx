@@ -10,17 +10,17 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FaFilter } from 'react-icons/fa'
+import { FaRegRectangleList } from 'react-icons/fa6'
 import { FiMap } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
-import { FaRegRectangleList } from 'react-icons/fa6'
 
 export const MAX_COST_MAX = 1000
 export const MAX_COST_DEFAULT = MAX_COST_MAX
@@ -51,6 +51,13 @@ export const SearchPage = () => {
   const onSubmit = (data: SearchFilters) => {
     setFilters({ ...filters, ...data })
   }
+
+  // Do a search on load
+  useEffect(() => {
+    if (!result) {
+      setFilters({ ...filters })
+    }
+  }, [])
 
   const toggleView = () => setIsMapView(!isMapView)
   const tools = result?.tools || []

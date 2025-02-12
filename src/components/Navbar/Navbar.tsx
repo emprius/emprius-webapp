@@ -15,6 +15,7 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
+import { TbMapSearch } from 'react-icons/tb'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar, avatarSizeToPixels } from '~components/Images/Avatar'
@@ -55,9 +56,20 @@ export const Navbar = () => {
         </Link>
 
         {isAuthenticated && location.pathname !== ROUTES.HOME && (
-          <Box flex={1}>
+          <Flex flex={1} align={'center'}>
             <ContextSearchBar />
-          </Box>
+            <Link
+              as={RouterLink}
+              to={ROUTES.SEARCH}
+              display='flex'
+              alignItems='center'
+              p={2}
+              borderRadius='md'
+              _hover={{ bg: 'gray.100' }}
+            >
+              <Icon as={TbMapSearch} boxSize={5} />
+            </Link>
+          </Flex>
         )}
       </Stack>
 
