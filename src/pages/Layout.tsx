@@ -1,11 +1,12 @@
-import { Box, useColorModeValue } from '@chakra-ui/react'
+import { Box, Hide, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { PWABanner } from '~components/Layout/PWABanner'
-import { OfflineBanner } from '~components/Layout/OfflineBanner'
 import { Outlet } from 'react-router-dom'
 import { Footer } from '~components/Layout/Footer'
-import { Navbar } from '~components/Navbar/Navbar'
+import { OfflineBanner } from '~components/Layout/OfflineBanner'
+import { PWABanner } from '~components/Layout/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
+import { Navbar } from '~components/Navbar/Navbar'
+import { BottomNav } from '~src/pages/BottomNav'
 import { ErrorBoundary } from '~src/pages/ErrorBoundary'
 
 export const Layout = () => {
@@ -20,6 +21,9 @@ export const Layout = () => {
       <Box flex={1}>
         <ErrorBoundary>
           <Outlet />
+          <Hide above='md'>
+            <BottomNav />
+          </Hide>
         </ErrorBoundary>
       </Box>
       <Footer />
