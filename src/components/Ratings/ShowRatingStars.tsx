@@ -1,7 +1,7 @@
 import { HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
-import { icons } from '~theme/icons'
 import { lightText } from '~theme/common'
+import { icons } from '~theme/icons'
 
 interface DisplayRatingProps {
   rating: number
@@ -28,8 +28,7 @@ export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingC
       </HStack>
       {showCount && (
         <Text fontSize={size === 'sm' ? 'sm' : 'md'} sx={lightText}>
-          {rating.toFixed(1)}
-          {ratingCount !== undefined && ` (${ratingCount})`}
+          {rating.toFixed(0)}%{ratingCount !== undefined && ` (${ratingCount})`}
         </Text>
       )}
     </HStack>
@@ -41,8 +40,7 @@ const Star = ({ rating, position, size }: { rating: number; position: number; si
 
   // Convert rating from 0-100 scale to 0-5 scale
   // Uncoment for rating on %
-  // const normalizedRating = (rating / 100) * 5
-  const normalizedRating = rating
+  const normalizedRating = (rating / 100) * 5
   if (normalizedRating >= position + 1) {
     // Full star
     return <Icon as={FaStar} fontSize={sizes[size].fontSize} color={starColor} />

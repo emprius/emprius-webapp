@@ -1,12 +1,12 @@
 import { Badge, Box, Flex, Heading, Icon, Text, VStack } from '@chakra-ui/react'
-import { Rating } from './types'
-import { RatingsForm } from '~components/Ratings/Form'
-import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
-import { useTool } from '~components/Tools/queries'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { ServerImage } from '~components/Images/ServerImage'
-import { UserCard } from '~components/Users/Card'
+import { RatingsForm } from '~components/Ratings/Form'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
+import { useTool } from '~components/Tools/queries'
+import { UserCard } from '~components/Users/Card'
+import { Rating } from './types'
 
 export const RatingCardHeader = ({ rating }: { rating: Rating }) => {
   const { t } = useTranslation()
@@ -61,7 +61,7 @@ export const RatingCard = (rating: Rating) => {
         <Box px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
           <RatingCardHeader rating={rating} />
           <Box mt={2}>
-            <ShowRatingStars rating={rating.rating} size='md' />
+            <ShowRatingStars rating={(rating.rating * 100) / 5} size='md' showCount={false} />
             {rating.ratingComment && (
               <Text mt={2} fontSize='sm' color='gray.600'>
                 "{rating.ratingComment}"
