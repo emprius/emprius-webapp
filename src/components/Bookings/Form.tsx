@@ -59,6 +59,14 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
     return Math.floor(new Date(date).getTime() / 1000)
   }
 
+  const calculateTotalDays = (startDate: string, endDate: string): number => {
+    if (!startDate || !endDate) return 0
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const diffTime = Math.abs(end.getTime() - start.getTime())
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 // +1 to include both start and end days
+  }
+
   const createBooking = useCreateBooking()
 
   const onSubmit = async (formData: BookingFormData) => {
@@ -140,13 +148,22 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             />
             {errors.comments && <FormErrorMessage>{errors.comments.message}</FormErrorMessage>}
           </FormControl>
-          <Text fontSize='sm' sx={lightText}>
-            {t('tools.price_per_day_desc', { cost: tool.cost, defaultValue: 'Price per day: {{cost}}/ECO' })}
-          </Text>
-          {tool.cost === 0 && (
-            <Text fontSize='sm' color='primary.500'>
-              {t('tools.tool_is_free', { defaultValue: 'This tool is free' })}
+          {tool.cost === 0 ? (
+            <Text fontSize='md' color='primary.500'>
+              {t('tools.tool_is_free', { defaultValue: 'This tool is free!' })}
             </Text>
+          ) : (
+            <Stack spacing={1}>
+              <Text fontSize='sm' sx={lightText}>
+                {t('tools.price_per_day_desc', { cost: tool.cost, defaultValue: 'Price per day {{cost}}/ECO' })}
+              </Text>
+              <Text fontSize='lg' fontWeight='bold' color='primary.500'>
+                {t('tools.total_cost', {
+                  total: calculateTotalDays(control._formValues.startDate, control._formValues.endDate) * tool.cost,
+                  defaultValue: 'Request for {{total}} ECO',
+                })}
+              </Text>
+            </Stack>
           )}
         </Stack>
 
