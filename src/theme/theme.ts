@@ -43,10 +43,77 @@ const theme = extendTheme({
         bg: props.colorMode === 'dark' ? 'gray.800' : 'gray.50',
         color: props.colorMode === 'dark' ? 'white' : 'gray.800',
       },
+      // Map styles
       '.leaflet-container': {
         width: '100%',
         height: '100%',
         'z-index': 1,
+      },
+      // Custom marker with badge
+      '.custom-div-icon': {
+        background: 'none',
+        border: 'none',
+      },
+      '.custom-marker': {
+        position: 'relative',
+        width: '25px',
+        height: '41px',
+      },
+      '.custom-marker img': {
+        width: '100%',
+        height: '100%',
+      },
+      '.marker-badge': {
+        position: 'absolute',
+        top: '-8px',
+        right: '-8px',
+        backgroundColor: '#E53E3E',
+        color: 'white',
+        borderRadius: '50%',
+        width: '20px',
+        height: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        border: '2px solid white',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+      },
+      // Marker cluster styles
+      '.marker-cluster-small': {
+        backgroundColor: 'rgba(181, 226, 140, 0.6)',
+      },
+      '.marker-cluster-small div': {
+        backgroundColor: 'rgba(110, 204, 57, 0.6)',
+      },
+      '.marker-cluster-medium': {
+        backgroundColor: 'rgba(241, 211, 87, 0.6)',
+      },
+      '.marker-cluster-medium div': {
+        backgroundColor: 'rgba(240, 194, 12, 0.6)',
+      },
+      '.marker-cluster-large': {
+        backgroundColor: 'rgba(253, 156, 115, 0.6)',
+      },
+      '.marker-cluster-large div': {
+        backgroundColor: 'rgba(241, 128, 23, 0.6)',
+      },
+      '.marker-cluster': {
+        backgroundClip: 'padding-box',
+        borderRadius: '20px',
+      },
+      '.marker-cluster div': {
+        width: '30px',
+        height: '30px',
+        marginLeft: '5px',
+        marginTop: '5px',
+        textAlign: 'center',
+        borderRadius: '15px',
+        font: '12px "Helvetica Neue", Arial, Helvetica, sans-serif',
+      },
+      '.marker-cluster span': {
+        lineHeight: '30px',
       },
       '.leaflet-container a.chakra-button': {
         color: 'white',
