@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
   Box,
   Center,
@@ -12,6 +11,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react'
+import React, { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { ServerImage } from '~components/Images/ServerImage'
 
@@ -62,7 +62,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
 
           <Center width='100%' height='100%' overflow='hidden'>
             <Box as='div' cursor='pointer' onClick={() => handleImageClick(currentIndex)} height='100%' width='100%'>
-              <ServerImage imageId={imageIds[currentIndex]} objectFit='cover' height='100%' width='100%' />
+              <ServerImage imageId={imageIds[currentIndex]} objectFit='cover' height='100%' width='100%' thumbnail />
             </Box>
           </Center>
 
@@ -83,13 +83,13 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
         </Flex>
 
         {imageIds.length > 1 && (
-          <HStack 
-            spacing={2} 
-            justify='center' 
-            position='absolute' 
-            bottom={4} 
-            left={0} 
-            right={0} 
+          <HStack
+            spacing={2}
+            justify='center'
+            position='absolute'
+            bottom={4}
+            left={0}
+            right={0}
             zIndex={2}
             py={2}
             bg='blackAlpha.300'

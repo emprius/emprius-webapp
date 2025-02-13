@@ -35,6 +35,7 @@ export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2x
       borderRadius='full'
       boxSize={avatarSizeToPixels[size]}
       objectFit='cover'
+      thumbnail
     />
   )
 }

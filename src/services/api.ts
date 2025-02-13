@@ -119,7 +119,7 @@ export const users = {
 // images
 export const images = {
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
-  getImage: (hash: string) => `${api.defaults.baseURL}/images/${hash}`,
+  getImage: (hash: string, thumbnail?: boolean) => `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}`,
 }
 
 // Info endpoints

@@ -169,7 +169,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <SimpleGrid columns={[2, 3, 4]} spacing={4}>
             {existingImages.map((image, index) => (
               <Box key={image} position='relative'>
-                <ServerImage imageId={image} objectFit='cover' w='100%' h='100px' borderRadius='md' />
+                <ServerImage imageId={image} objectFit='cover' w='100%' h='100px' borderRadius='md' thumbnail />
                 {onDeleteExistingImage && (
                   <IconButton
                     aria-label='Delete image'
