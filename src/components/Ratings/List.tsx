@@ -123,31 +123,6 @@ const RatingSection = ({
       {data.map((rating: Rating, index) => (
         <RatingCard key={index} {...rating} />
       ))}
-
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
-      {data.map((rating: Rating, index) => (
-        <RatingCard key={index} {...rating} />
-      ))}
     </ResponsiveSimpleGrid>
   )
 }
