@@ -30,7 +30,6 @@ export const defaultSearchParams: SearchFilters = {
   categories: undefined,
   distance: 50,
   maxCost: 1000,
-  mayBeFree: false,
 }
 
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

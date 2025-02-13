@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/queries'
 import { ROUTES } from '~src/router/routes'
-import { ToolForm, ToolFormData } from './BookingForm'
+import { ToolForm } from './Form'
 import { UpdateToolParams, useUpdateTool } from './queries'
-import { Tool } from './types'
+import { Tool, ToolFormData } from './types'
 
 interface EditToolFormProps {
   initialData: Tool
@@ -83,10 +83,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
       title: data.title,
       description: data.description,
-      mayBeFree: data.mayBeFree,
-      askWithFee: data.askWithFee,
       cost: Number(data.cost),
-      transportOptions: data.transportOptions?.map(Number) ?? null,
       toolCategory: data.toolCategory,
       estimatedValue: Number(data.estimatedValue),
       height: Number(data.height),

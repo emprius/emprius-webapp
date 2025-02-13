@@ -2,7 +2,6 @@ import { ChevronDownIcon, ChevronUpIcon, CloseIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
-  Checkbox,
   Collapse,
   FormControl,
   FormErrorMessage,
@@ -23,8 +22,8 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Image, ServerImage } from '~components/Images/ServerImage'
@@ -32,25 +31,9 @@ import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
-import { EmpriusLocation } from '~components/Layout/types'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { Tool } from './types'
-
-export interface ToolFormData {
-  title: string
-  description: string
-  mayBeFree: boolean
-  askWithFee: boolean
-  cost: number
-  transportOptions: number[]
-  toolCategory?: number
-  estimatedValue: number
-  height: number
-  weight: number
-  images: FileList | any[]
-  location?: EmpriusLocation
-  isAvailable: boolean
-}
+import { lighterText } from '~theme/common'
+import { Tool, ToolFormData } from './types'
 
 interface ToolFormProps {
   initialData?: Partial<Tool>
@@ -84,6 +67,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
     setValue,
   } = useForm<ToolFormData>({
@@ -170,6 +154,8 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </FormControl>
 
+      <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
+
       <FormControl isRequired>
         <LocationPicker onChange={(location) => setValue('location', location)} value={watch('location')} />
         <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
@@ -218,45 +204,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       {/* Optional Fields */}
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing={6}>
-          <FormControl>
-            <Checkbox {...register('mayBeFree')}>{t('tools.may_be_free', { defaultValue: 'May Be Free' })}</Checkbox>
-          </FormControl>
-
-          <FormControl>
-            <Checkbox {...register('askWithFee')}>{t('tools.ask_with_fee', { defaultValue: 'Ask With Fee' })}</Checkbox>
-          </FormControl>
-
-          <FormControl isInvalid={!!errors.cost}>
-            <FormLabel>{t('tools.cost_per_day', { defaultValue: 'Cost per day' })}</FormLabel>
-            <NumberInput min={0} precision={0}>
-              <NumberInputField
-                {...register('cost', {
-                  valueAsNumber: true,
-                })}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!!errors.estimatedValue}>
-            <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
-            <NumberInput min={0} precision={0}>
-              <NumberInputField
-                {...register('estimatedValue', {
-                  valueAsNumber: true,
-                })}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.height}>
             <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
             <NumberInput min={0} precision={0}>
@@ -303,6 +250,83 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </Stack>
 
       <FormSubmitMessage isError={isError} error={error} />
+    </Stack>
+  )
+}
+
+interface MaybeFreeProps {
+  control: any
+  setValue: (name: keyof ToolFormData, value: any) => void
+  watch: (name: keyof ToolFormData) => any
+  errors: any
+}
+
+const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors }) => {
+  const { t } = useTranslation()
+  const [isFree, setIsFree] = useState(false)
+
+  useEffect(() => {
+    // Check initial value and set switch state
+    const value = watch('estimatedValue')
+    if (value === 0) {
+      setIsFree(true)
+    }
+  }, [])
+
+  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked
+    setIsFree(checked)
+    if (checked) {
+      setValue('estimatedValue', 0)
+    }
+  }
+
+  return (
+    <Stack spacing={2}>
+      <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
+        <FormControl display='flex' flexDirection={'column'} alignItems='start' width='auto' gap={1}>
+          <FormLabel htmlFor='isFree' mr={3}>
+            {t('tools.is_free')}
+          </FormLabel>
+          <Text fontSize='sm' sx={lighterText}>
+            {t('tools.tool_is_free_description', {
+              defaultValue: 'No cost associated for loan the tool',
+            })}
+          </Text>
+          <Switch mt={4} id='isFree' isChecked={isFree} onChange={handleSwitchChange} size={'lg'} />
+        </FormControl>
+        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.estimatedValue} isRequired={!isFree}>
+          <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
+          <Text fontSize='sm' sx={lighterText}>
+            {t('tools.tool_estimated_value_description', {
+              defaultValue:
+                'Set the estimated value of your tool. If the tool is not free, this value will be used to calculate the cost per day.',
+            })}
+          </Text>
+          <Controller
+            name='estimatedValue'
+            control={control}
+            rules={{
+              validate: (value) => {
+                if (!isFree && (!value || value <= 0)) {
+                  return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
+                }
+                return true
+              },
+            }}
+            render={({ field }) => (
+              <NumberInput min={0} precision={0} isDisabled={isFree} {...field}>
+                <NumberInputField placeholder={t('tools.enter_estimated_value')} />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            )}
+          />
+          <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
+        </FormControl>
+      </Stack>
     </Stack>
   )
 }

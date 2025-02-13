@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImage } from '~components/Images/queries'
-import { ToolForm, ToolFormData } from './BookingForm'
+import { ToolFormData } from '~components/Tools/types'
+import { ToolForm } from './Form'
 import { useCreateTool } from './queries'
 
 export const AddTool = () => {
@@ -60,14 +61,11 @@ export const AddTool = () => {
     await createTool({
       title: data.title,
       description: data.description,
-      mayBeFree: data.mayBeFree,
-      askWithFee: data.askWithFee,
       cost: Number(data.cost),
       images: imageHashes,
-      transportOptions: data.transportOptions || [],
       toolCategory: data.toolCategory,
       location: data.location,
-      estimatedValue: Number(data.estimatedValue),
+      estimatedValue: Number(data.estimatedValue) || 0,
       height: Number(data.height),
       weight: Number(data.weight),
     })
@@ -82,7 +80,7 @@ export const AddTool = () => {
       isLoading={isLoading}
       isError={isError}
       error={error}
-      initialData={{ location: user.location }}
+      initialData={{ location: user.location, estimatedValue: 0 }}
     />
   )
 }

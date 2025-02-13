@@ -11,10 +11,7 @@ export const ToolBadges = ({ tool, ...rest }: ToolBadgesProps) => {
   const { t } = useTranslation()
   return (
     <Stack direction='row' spacing={2} wrap='wrap' {...rest}>
-      {tool.mayBeFree && <Badge colorScheme='primary'>{t('tools.may_be_free', { defaultValue: 'Maybe Free' })}</Badge>}
-      {tool.askWithFee && (
-        <Badge colorScheme='purple'>{t('tools.ask_with_fee', { defaultValue: 'Ask with Fee' })}</Badge>
-      )}
+      {tool.cost === 0 && <Badge colorScheme='primary'>{t('tools.may_be_free', { defaultValue: 'Maybe Free' })}</Badge>}
     </Stack>
   )
 }

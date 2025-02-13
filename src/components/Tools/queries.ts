@@ -6,8 +6,6 @@ import { Tool, ToolsListResponse } from './types'
 export interface createToolParams {
   title: string
   description?: string
-  mayBeFree?: boolean
-  askWithFee?: boolean
   cost?: number // uint64
   images: string[]
   toolCategory?: number // uint

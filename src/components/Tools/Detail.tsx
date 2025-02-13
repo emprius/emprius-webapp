@@ -48,13 +48,16 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                 <Stack spacing={4}>
                   <Stack spacing={1}>
                     <Stack direction='row' align='center' justify='space-between'>
-                      <Text sx={lightText} fontSize='2xl' fontWeight='bold'>
-                        {t('tools.cost_unit', { cost: tool.cost })}
+                      <Text fontSize='3xl' fontWeight='bold' color={'primary.500'}>
+                        {tool.title}
                       </Text>
                       <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                         {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                       </Badge>
                     </Stack>
+                    <Text sx={lightText} fontSize='2xl' fontWeight='bold'>
+                      {t('tools.cost_unit', { cost: tool.cost })}
+                    </Text>
                   </Stack>
                   {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
                   <ToolBadges tool={tool} />

@@ -7,8 +7,6 @@ export interface Tool {
   title: string
   description?: string
   isAvailable?: boolean
-  mayBeFree: boolean
-  askWithFee: boolean
   cost?: number
   userId: string
   images: Image[]
@@ -23,4 +21,17 @@ export interface Tool {
 
 export interface ToolsListResponse {
   tools: Tool[]
+}
+
+export interface ToolFormData {
+  title: string
+  description: string
+  cost: number
+  toolCategory?: number
+  estimatedValue: number
+  height: number
+  weight: number
+  images: FileList | any[]
+  location?: EmpriusLocation
+  isAvailable: boolean
 }
