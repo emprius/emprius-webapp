@@ -37,15 +37,16 @@ export const AuthenticatedLanding = () => {
               alignItems: 'center',
               justifyContent: 'center',
               background: 'rgba(0, 0, 0, 0.3)',
+              paddingTop: '5rem',
             }}
           >
-            <Stack alignItems='center' w='full' maxW='container.xl' mx='auto' px={4} gap={0}>
+            <Stack alignSelf={'start'} alignItems='center' w='full' maxW='container.xl' mx='auto' px={4} gap={4}>
               <Box
                 as='img'
-                src='/assets/extra/emprius_logo.png'
+                src='/assets/logos/banner.png'
                 alt='Emprius'
                 w='full'
-                maxW='400px'
+                maxW='250px'
                 h='auto'
                 mx='auto'
                 filter='drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))'

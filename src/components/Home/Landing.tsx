@@ -105,7 +105,7 @@ export const Landing = () => {
                   </Stack>
                 </Stack>
                 <Box
-                  maxW={{ base: '300px', lg: '400px' }}
+                  maxW={{ base: '200px', sm: '350px', lg: '400px' }}
                   w='full'
                   h='auto'
                   position='relative'
@@ -115,12 +115,13 @@ export const Landing = () => {
                 >
                   <Box
                     as='img'
-                    src='/assets/extra/emprius_logo.png'
+                    src='/assets/logos/banner.png'
                     alt='Emprius'
                     w='full'
                     h='auto'
                     objectFit='contain'
                     filter='drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))'
+                    maxW={{ base: '150px', sm: '300px', lg: '350px' }}
                   />
                 </Box>
               </Stack>
