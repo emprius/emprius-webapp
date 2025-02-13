@@ -141,16 +141,11 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             {errors.comments && <FormErrorMessage>{errors.comments.message}</FormErrorMessage>}
           </FormControl>
           <Text fontSize='sm' sx={lightText}>
-            {t('tools.price_per_day')}: {tool.cost}€
+            {t('tools.price_per_day_desc', { cost: tool.cost, defaultValue: 'Price per day: {{cost}}/ECO' })}
           </Text>
-          {tool.mayBeFree && (
+          {tool.cost === 0 && (
             <Text fontSize='sm' color='primary.500'>
-              {t('tools.may_be_free_note')}
-            </Text>
-          )}
-          {tool.askWithFee && (
-            <Text fontSize='sm' color='purple.500'>
-              {t('tools.ask_with_fee_note')}
+              {t('tools.tool_is_free', { defaultValue: 'This tool is free' })}
             </Text>
           )}
         </Stack>
