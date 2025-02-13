@@ -3,11 +3,10 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GrNext, GrPrevious } from 'react-icons/gr'
 import { Link as RouterLink } from 'react-router-dom'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
+import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import type { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
 
 interface ToolTooltipProps {
   tools: Tool[]
@@ -50,11 +49,11 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
           >
             {tool.title}
           </Text>
-          <Text fontSize='lg' fontWeight='bold' sx={lightText} whiteSpace='nowrap'>
-            {t('tools.cost_unit', { cost: tool.cost })}
-          </Text>
+          {/*<Text fontSize='lg' fontWeight='bold' sx={lightText} whiteSpace='nowrap'>*/}
+          {/*  {t('tools.cost_unit', { cost: tool.cost })}*/}
+          {/*</Text>*/}
+          <CostDay tool={tool} />
         </Flex>
-        <ToolBadges tool={tool} px={4} />
         <Box fontSize='sm' color='gray.600' noOfLines={2} px={4}>
           {tool.description}
         </Box>

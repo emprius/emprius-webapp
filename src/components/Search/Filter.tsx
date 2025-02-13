@@ -19,7 +19,6 @@ import {
   SliderThumb,
   SliderTrack,
   Stack,
-  Switch,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
 import React from 'react'
@@ -93,11 +92,6 @@ export const FiltersForm = () => {
 
   return (
     <Stack spacing={6} pb={6}>
-      <FormControl display='flex' alignItems='center'>
-        <FormLabel mb={0}>{t('search.may_be_free')}</FormLabel>
-        <Switch isChecked={watch('mayBeFree')} onChange={handleMayBeFreeChange} />
-      </FormControl>
-
       <FormControl>
         <FormLabel>{t('search.distance')} (km)</FormLabel>
         <HStack spacing={4}>

@@ -22,8 +22,8 @@ import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import { ImageCarousel } from '~components/Layout/ImageCarousel'
 import { MapMarker } from '~components/Layout/MapMarker'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
+import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
@@ -55,12 +55,18 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                         {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                       </Badge>
                     </Stack>
-                    <Text sx={lightText} fontSize='2xl' fontWeight='bold'>
-                      {t('tools.cost_unit', { cost: tool.cost })}
-                    </Text>
+                    <CostDay
+                      tool={tool}
+                      sx={lightText}
+                      fontSize='2xl'
+                      fontWeight='bold'
+                      badgeProps={{
+                        fontSize: '2xl',
+                        fontWeight: 'bold',
+                      }}
+                    />
                   </Stack>
                   {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
-                  <ToolBadges tool={tool} />
                   <Divider />
                   <SimpleGrid spacing={4} columns={{ base: 2 }}>
                     {!!tool.toolCategory && (

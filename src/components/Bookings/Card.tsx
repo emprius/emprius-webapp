@@ -17,21 +17,23 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiInfo } from 'react-icons/fi'
-import { Link as RouterLink } from 'react-router-dom'
-import { Booking } from './queries'
-import { ToolImage } from '~components/Tools/shared/ToolImage'
-import { useTool } from '~components/Tools/queries'
-import { ActionButtons } from '~components/Bookings/Actions'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
+import { Link as RouterLink } from 'react-router-dom'
+import { ActionButtons } from '~components/Bookings/Actions'
+import { BookingDates } from '~components/Bookings/BookingDates'
+import { StatusBadge } from '~components/Bookings/StatusBage'
+import { useTool } from '~components/Tools/queries'
+import { CostDay } from '~components/Tools/shared/CostDay'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
-import { UserCard } from '~components/Users/Card'
 import { icons } from '~theme/icons'
 import { BookingDetails } from './Details'
-import { StatusBadge } from '~components/Bookings/StatusBage'
-import { BookingDates } from '~components/Bookings/BookingDates'
+import { Booking } from './queries'
 
 export type BookingCardType = 'request' | 'petition'
 
@@ -147,11 +149,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                       >
                         {tool.title}
                       </Link>
-                      <HStack wrap={'wrap'}>
-                        <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
-                          {t('tools.cost_unit', { cost: tool.cost })}
-                        </Text>
-                      </HStack>
+                      <CostDay tool={tool} />
                     </Stack>
                     <Box display={{ base: 'none', sm: 'block' }}>
                       <BookingDates booking={booking} />

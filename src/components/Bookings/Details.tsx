@@ -1,17 +1,18 @@
 import { Box, Divider, Flex, HStack, Icon, Link, Stack, Text } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiMessageCircle, FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
-import { Booking } from './queries'
-import { Tool } from '~components/Tools/types'
-import { lighterText } from '~theme/common'
-import { icons } from '~theme/icons'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
-import { ToolImage } from '~components/Tools/shared/ToolImage'
-import { ROUTES } from '~src/router/routes'
-import { UserCard } from '~components/Users/Card'
-import { StatusBadge } from '~components/Bookings/StatusBage'
 import { BookingDates } from '~components/Bookings/BookingDates'
+import { StatusBadge } from '~components/Bookings/StatusBage'
+import { CostDay } from '~components/Tools/shared/CostDay'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { Tool } from '~components/Tools/types'
+import { UserCard } from '~components/Users/Card'
+import { ROUTES } from '~src/router/routes'
+import { lighterText, lightText } from '~theme/common'
+import { icons } from '~theme/icons'
+import { Booking } from './queries'
 
 interface BookingDetailsProps {
   booking: Booking
@@ -99,14 +100,10 @@ const ToolInfo = ({ tool }: { tool: Tool }) => {
             {tool.title}
           </Link>
         </Stack>
-        <Stack spacing={2}>
-          <HStack wrap={'wrap'}>
-            <Text variant={'muted'} fontSize='lg' fontWeight='bold'>
-              {t('tools.cost_unit', { cost: tool.cost })}
-            </Text>
-          </HStack>
-          <ToolBadges tool={tool} />
-        </Stack>
+        <CostDay tool={tool} />
+        <Text fontSize='md' noOfLines={2} title={tool.description} sx={lightText}>
+          {tool.description}
+        </Text>
       </Stack>
     </Stack>
   )

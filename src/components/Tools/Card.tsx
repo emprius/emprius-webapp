@@ -1,14 +1,14 @@
 import { Box, Center, Divider, Flex, HStack, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import { Tool } from '~components/Tools/types'
-import { ToolImage } from './shared/ToolImage'
-import { ToolBadges } from '~components/Tools/shared/ToolBadges'
 import { useTranslation } from 'react-i18next'
+import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '~components/Auth/AuthContext'
+import { CostDay } from '~components/Tools/shared/CostDay'
+import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
+import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
-import { useAuth } from '~components/Auth/AuthContext'
-import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
+import { ToolImage } from './shared/ToolImage'
 
 interface ToolCardProps {
   tool: Tool
@@ -60,11 +60,8 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
               >
                 {tool.title}
               </Text>
-              <Text fontSize='lg' fontWeight='bold' sx={lightText} whiteSpace='nowrap'>
-                {t('tools.cost_unit', { cost: tool.cost })}
-              </Text>
+              <CostDay tool={tool} />
             </Flex>
-            <ToolBadges tool={tool} />
 
             <Text fontSize='md' noOfLines={2} title={tool.description} sx={lightText}>
               {tool.description}
