@@ -155,7 +155,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
           ) : (
             <Stack spacing={1}>
               <Text fontSize='sm' sx={lightText}>
-                {t('tools.price_per_day_desc', { cost: tool.cost, defaultValue: 'Price per day {{cost}}/ECO' })}
+                {t('tools.price_per_day_desc', { cost: tool.cost, defaultValue: 'Price per day {{cost}} ECO/Day' })}
               </Text>
               <Text fontSize='lg' fontWeight='bold' color='primary.500'>
                 {t('tools.total_cost', {
