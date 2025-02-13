@@ -5,13 +5,15 @@ export interface UserProfile {
   name: string
   email: string
   avatarHash?: string
-  bio?: string
   rating: number
-  ratingCount: number
-  createdAt: string
-  updatedAt: string
   location?: EmpriusLocation
   active: boolean
+  tokens: number
+  // notExists
+  // ratingCount: number
+  // createdAt: string
+  // updatedAt: string
+  // bio?: string
 }
 
 export interface EditProfileFormData {
