@@ -10,37 +10,6 @@ type FiltersProps = {
   filters: SearchParams
 }
 
-export const TransportFilter = ({ filters, setFilters }: FiltersProps) => {
-  const { t } = useTranslation()
-  const { transports } = useInfoContext()
-
-  const handleTransportChange = (newValue: any) => {
-    if (!newValue) {
-      setFilters({ ...filters, transportOptions: undefined })
-      return
-    }
-    const transportIds = newValue.map((item: any) => parseInt(item.value))
-    setFilters({ ...filters, transportOptions: transportIds })
-  }
-
-  return (
-    <FormControl>
-      <Select
-        isMulti
-        value={filters.transportOptions?.map((id: number) => ({
-          value: id,
-          label: transports.find((t) => t.id === id)?.name,
-        }))}
-        onChange={handleTransportChange}
-        options={transports.map((transport) => ({
-          value: transport.id,
-          label: transport.name,
-        }))}
-        placeholder={t('tools.select_transport', { defaultValue: 'Select transport' })}
-      />
-    </FormControl>
-  )
-}
 export const CategoryFilter = ({ filters, setFilters }: FiltersProps) => {
   const { t } = useTranslation()
   const { categories } = useInfoContext()

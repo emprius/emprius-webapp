@@ -8,18 +8,13 @@ import {
   Link,
   SimpleGrid,
   Stack,
-  Tag,
-  TagLabel,
-  TagLeftIcon,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
-import { HiOutlineTruck } from 'react-icons/hi2'
 import { LuWeight } from 'react-icons/lu'
-import { MdDoneOutline } from 'react-icons/md'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { BookingForm } from '~components/Bookings/Form'
@@ -93,24 +88,6 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       </Stack>
                     )}
                   </SimpleGrid>
-                  {!!tool?.transportOptions?.length && (
-                    <Stack direction={{ base: 'column', sm: 'row' }} align='start' wrap='wrap'>
-                      <Stack direction={'row'}>
-                        <HiOutlineTruck size={20} />
-                        <Text>{t('tools.transport_options')}:</Text>
-                      </Stack>
-                      <Stack direction={'row'} wrap='wrap'>
-                        {tool.transportOptions
-                          .map((transport) => transports.find((t) => t.id === transport)?.name)
-                          .map((name) => (
-                            <Tag key={name} variant='subtle' colorScheme='cyan'>
-                              <TagLeftIcon boxSize='12px' as={MdDoneOutline} />
-                              <TagLabel>{name}</TagLabel>
-                            </Tag>
-                          ))}
-                      </Stack>
-                    </Stack>
-                  )}
                   <UserCard userId={tool.userId} />
                   {tool.location && (
                     <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>

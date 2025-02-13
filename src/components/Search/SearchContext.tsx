@@ -28,7 +28,6 @@ export type SearchFilters = Omit<SearchParams, 'term'>
 
 export const defaultSearchParams: SearchFilters = {
   categories: undefined,
-  transportOptions: undefined,
   distance: 50,
   maxCost: 1000,
   mayBeFree: false,

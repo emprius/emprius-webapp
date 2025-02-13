@@ -79,15 +79,6 @@ export const FiltersForm = () => {
     setValue('categories', categoryIds)
   }
 
-  const handleTransportChange = (newValue: any) => {
-    if (!newValue) {
-      setValue('transportOptions', undefined)
-      return
-    }
-    const transportIds = newValue.map((item: any) => parseInt(item.value))
-    setValue('transportOptions', transportIds)
-  }
-
   const handleDistanceChange = (value: number) => {
     setValue('distance', value)
   }
@@ -175,22 +166,6 @@ export const FiltersForm = () => {
         </HStack>
       </FormControl>
 
-      <FormControl>
-        <FormLabel>{t('search.transport')}</FormLabel>
-        <Select
-          isMulti
-          value={watch('transportOptions')?.map((id: number) => ({
-            value: id,
-            label: transports.find((t) => t.id === id)?.name,
-          }))}
-          onChange={handleTransportChange}
-          options={transports.map((transport) => ({
-            value: transport.id,
-            label: transport.name,
-          }))}
-          placeholder={t('tools.select_transport', { defaultValue: 'Select transport' })}
-        />
-      </FormControl>
       <FormControl>
         <FormLabel>{t('search.category')}</FormLabel>
         <Select

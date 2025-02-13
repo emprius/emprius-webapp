@@ -241,39 +241,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
             </NumberInput>
             <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
           </FormControl>
-
-          <FormControl isInvalid={!!errors.transportOptions}>
-            <FormLabel>{t('tools.transport_options', { defaultValue: 'Transport Options' })}</FormLabel>
-            <Select
-              isMulti
-              name='transportOptions'
-              options={transports.map((transport) => ({
-                value: transport.id,
-                label: transport.name,
-              }))}
-              value={watch('transportOptions')?.map((id) => ({
-                value: id,
-                label: transports.find((t) => t.id === id)?.name || '',
-              }))}
-              onChange={(newValue) => {
-                setValue(
-                  'transportOptions',
-                  newValue.map((option: any) => option.value),
-                  { shouldValidate: true }
-                )
-              }}
-              placeholder={t('tools.select_transport', { defaultValue: 'Select transport options' })}
-              closeMenuOnSelect={false}
-              chakraStyles={{
-                container: (provided) => ({
-                  ...provided,
-                  width: '100%',
-                }),
-              }}
-            />
-            <FormErrorMessage>{errors.transportOptions?.message}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.estimatedValue}>
             <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
             <NumberInput min={0} precision={0}>

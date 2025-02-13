@@ -12,7 +12,6 @@ export interface Tool {
   cost?: number
   userId: string
   images: Image[]
-  transportOptions?: number[] // Array of transport IDs
   toolCategory?: number // Category ID
   location?: EmpriusLocation
   rating: number

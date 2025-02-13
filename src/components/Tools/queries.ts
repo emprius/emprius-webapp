@@ -10,7 +10,6 @@ export interface createToolParams {
   askWithFee?: boolean
   cost?: number // uint64
   images: string[]
-  transportOptions?: number[] // []uint
   toolCategory?: number // uint
   location: EmpriusLocation
   estimatedValue?: number // uint64

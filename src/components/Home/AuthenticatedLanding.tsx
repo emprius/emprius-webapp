@@ -1,14 +1,13 @@
 import { Box, Container, Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
-import { CategoryFilter, TransportFilter } from '~components/Home/AuthComponents/Filters'
+import { CategoryFilter } from '~components/Home/AuthComponents/Filters'
 import { LandingSearchBar } from '~components/Home/AuthComponents/SearchBar'
 import { useSearchTools } from '~components/Search/queries'
 import { defaultSearchParams, SearchFilters } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 
 export const AuthenticatedLanding = () => {
-  // const { filters, setFilters } = useSearch()
   const { data: tools, isPending, isError, error, mutate } = useSearchTools()
   const [searchParams, setSearchParams] = useState<SearchFilters>({ ...defaultSearchParams, distance: 250000 })
 
@@ -64,7 +63,6 @@ export const AuthenticatedLanding = () => {
                 <LandingSearchBar />
                 <Stack direction={{ base: 'column', md: 'row' }} spacing={4} w='full' px={4}>
                   <CategoryFilter setFilters={setSearchParams} filters={searchParams} />
-                  <TransportFilter setFilters={setSearchParams} filters={searchParams} />
                 </Stack>
               </Stack>
             </Stack>
