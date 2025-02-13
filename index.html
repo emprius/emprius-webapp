@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <!-- commit sha: <%- commit %> -->
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <link href="/assets/logos/logo.png" rel="icon" type="image/png">
-    <title>&lt;%- title %&gt;</title>
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta content="#319795" name="theme-color">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Emprius">
-    <link href="/manifest.json" rel="manifest">
-    <link href="https://app.emprius.io" rel="canonical">
-    <meta content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration." name="description">
-    <meta content="Emprius, App, Share, Tools, Resources, Knowledge, Community, Platform, Organizations, Local Governments, Cooperatives, Engage, Members, Decisions, Together" name="keywords">
-    <meta content="index, follow" name="robots">
-    <meta content="Emprius" name="author">
+<head>
+  <meta charset="utf-8">
+  <link href="/assets/logos/logo.png" rel="icon" type="image/png">
+  <title><%- title %></title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="#319795" name="theme-color">
+  <meta content="yes" name="mobile-web-app-capable">
+  <meta content="default" name="apple-mobile-web-app-status-bar-style">
+  <meta content="Emprius" name="apple-mobile-web-app-title">
+  <link href="/manifest.json" rel="manifest">
+  <link href="https://app.emprius.io" rel="canonical">
+  <meta
+    content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration."
+    name="description">
+  <meta
+    content="Emprius, App, Share, Tools, Resources, Knowledge, Community, Platform, Organizations, Local Governments, Cooperatives, Engage, Members, Decisions, Together"
+    name="keywords">
+  <meta content="index, follow" name="robots">
+  <meta content="Emprius" name="author">
 
-    <!-- Open Graph Protocol for Facebook -->
-    <meta content="Emprius App: share tools with your community" property="og:title">
-    <meta content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration." property="og:description">
-    <meta content="/assets/opengraph.png" property="og:image">
-    <meta content="https://emprius.cat" property="og:url">
-    <meta content="website" property="og:type">
-    <meta content="Emprius App: share tools with your community" property="og:site_name">
+  <!-- Open Graph Protocol for Facebook -->
+  <meta content="Emprius App: share tools with your community" property="og:title">
+  <meta
+    content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration."
+    property="og:description">
+  <meta content="/assets/opengraph.png" property="og:image">
+  <meta content="https://emprius.cat" property="og:url">
+  <meta content="website" property="og:type">
+  <meta content="Emprius App: share tools with your community" property="og:site_name">
 
-    <!-- Telegram -->
-    <meta content="https://emprius.cat" property="telegram:domain">
-    <meta content="Emprius App: share tools with your community" property="telegram:title">
-    <meta content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration. " property="telegram:description">
-    <meta content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration." property="og:telegram">
+  <!-- Telegram -->
+  <meta content="https://emprius.cat" property="telegram:domain">
+  <meta content="Emprius App: share tools with your community" property="telegram:title">
+  <meta
+    content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration. "
+    property="telegram:description">
+  <meta
+    content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration."
+    property="og:telegram">
 
-    <!-- WhatsApp -->
-    <meta content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration." property="og:whatsapp">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="/assets/pwa/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-icon" href="public/assets/pwa/apple-icon-180.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script src="/src/main.tsx" type="module"></script>
-  </body>
+  <!-- WhatsApp -->
+  <meta
+    content="Emprius App - Share tools and resources with your community. Emprius is a platform for organizations, local governments, and cooperatives to engage collaboration."
+    property="og:whatsapp">
+  <link href="/assets/pwa/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="/assets/pwa/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="/assets/pwa/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="/assets/pwa/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="/assets/pwa/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="/assets/pwa/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        rel="apple-touch-startup-image">
+  <link href="public/assets/pwa/apple-icon-180.png" rel="apple-touch-icon">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<script src="/src/main.tsx" type="module"></script>
+</body>
 </html>
