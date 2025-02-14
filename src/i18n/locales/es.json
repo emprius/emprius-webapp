@@ -61,7 +61,7 @@
     "tool_petition_title": "Estás solicitando una herramienta",
     "tool_request_title": "Tu herramienta es necesaria",
     "tool_requester": "Solicitante",
-    "tool_requests": "Préstamos de herramientas",
+    "tool_requests": "Préstamos",
     "total_earned": "Total ganado: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total gastado: {{amount}} {{,tokenSymbol}}",
     "try_again": "Por favor, inténtalo más tarde",

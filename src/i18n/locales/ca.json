@@ -61,7 +61,7 @@
     "tool_petition_title": "Estàs sol·licitant una eina",
     "tool_request_title": "La teva eina és necessària",
     "tool_requester": "Sol·licitant",
-    "tool_requests": "Préstecs d'eines",
+    "tool_requests": "Préstecs",
     "total_earned": "Total guanyat: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total gastat: {{amount}} {{,tokenSymbol}}",
     "try_again": "Si us plau, torna-ho a provar més tard",
