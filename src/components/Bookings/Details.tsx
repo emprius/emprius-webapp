@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, HStack, Icon, Link, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiMessageCircle, FiPhone } from 'react-icons/fi'
+import { FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
@@ -38,7 +38,7 @@ const BookingComments = ({ booking }: { booking: Booking }) => {
       </Stack>
       <Stack direction='row' align='flex-start' spacing={2}>
         <Box mt={1}>
-          <FiMessageCircle size={16} />
+          <Icon as={icons.messageBubble} size={16} />
         </Box>
         <Text fontSize='sm'>{booking.comments}</Text>
       </Stack>

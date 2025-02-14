@@ -177,9 +177,11 @@
     "comment_placeholder": "Comparte tu experiencia con esta herramienta y su propietario...",
     "date_formatted": "{{ date, format }}",
     "datef": "PP",
-    "pending": "Pendiente",
+    "no_pending_ratings": "Sin valoraciones pendientes",
+    "no_pending_ratings_desc": "No tienes ninguna valoración pendiente por enviar",
     "pending_ratings": "Valoraciones pendientes",
     "rate_user": "Valorar usuario",
+    "ratings": "Valoraciones",
     "received": "Recibidas",
     "submit": "Enviar valoración",
     "submit_error": "Error al enviar la valoración",
@@ -187,7 +189,9 @@
     "submit_success": "Valoración enviada",
     "submit_success_description": "Valoración enviada con éxito",
     "submitted": "Enviadas",
-    "submitting": "Enviando..."
+    "submitting": "Enviando...",
+    "you_got_the_tool_from": "Has solicitado",
+    "you_lent_the_tool": "Has prestado"
   },
   "search": {
     "apply_filters": "Aplicar filtros",

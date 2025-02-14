@@ -177,9 +177,11 @@
     "comment_placeholder": "Comparteix la teva experiència amb aquesta eina i el seu propietari...",
     "date_formatted": "{{ date, format }}",
     "datef": "PP",
-    "pending": "Pendent",
+    "no_pending_ratings": "Cap valoració pendent",
+    "no_pending_ratings_desc": "No tens cap valoració pendent per enviar",
     "pending_ratings": "Valoracions pendents",
     "rate_user": "Valorar usuari",
+    "ratings": "Valoracions",
     "received": "Rebudes",
     "submit": "Enviar valoració",
     "submit_error": "Error al enviar la valoració",
@@ -187,7 +189,9 @@
     "submit_success": "Valoració enviada",
     "submit_success_description": "Valoració enviada amb èxit",
     "submitted": "Enviades",
-    "submitting": "Enviant..."
+    "submitting": "Enviant...",
+    "you_got_the_tool_from": "Has sol·licitat",
+    "you_lent_the_tool": "Has prestat"
   },
   "search": {
     "apply_filters": "Aplicar filtres",

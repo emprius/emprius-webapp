@@ -14,6 +14,7 @@ type UserMiniCardProps = {
   avatarSize?: AvatarSize
   direction?: StackProps['direction']
   placeholderData?: UseQueryOptions<UserProfile>['placeholderData']
+  showRating?: boolean
 } & FlexProps
 
 export const UserCard: React.FC<UserMiniCardProps> = ({
@@ -21,6 +22,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   avatarSize = 'md',
   direction = 'column',
   placeholderData,
+  showRating = true,
   ...flexProps
 }) => {
   const { data: user, isLoading } = useUserProfile(userId, {
@@ -63,7 +65,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
         <Text fontWeight='bold' wordBreak='break-word'>
           {user.name}
         </Text>
-        <ShowRatingStars rating={user.rating} size='sm' />
+        {showRating && <ShowRatingStars rating={user.rating} size='sm' />}
       </Stack>
     </Flex>
   )
