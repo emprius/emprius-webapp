@@ -46,7 +46,7 @@ export const AuthenticatedLanding = () => {
                 src='/assets/logos/banner.png'
                 alt='Emprius'
                 w='full'
-                maxW='250px'
+                maxW='400px'
                 h='auto'
                 mx='auto'
                 filter='drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))'
