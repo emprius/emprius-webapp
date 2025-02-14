@@ -45,7 +45,7 @@
     "contact_placeholder": "How would you like to be contacted?",
     "date_conflict": "Selected dates overlap with existing bookings",
     "date_formatted": "{{ date, format }}",
-    "date_range_total": "(Total of {{ date, duration }})",
+    "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
     "dates": "Dates",
     "deny": "Deny",
@@ -68,6 +68,8 @@
     "success": "Booking successful",
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
+    "total_earned": "Total Earned: {{amount}} {{tokenSymbol}}",
+    "total_spent": "Total Spent: {{amount}} {{tokenSymbol}}",
     "0": "Loans",
     "try_again": "Please try again later"
   },
@@ -93,6 +95,7 @@
     "something_went_wrong": "Something went wrong",
     "success": "Success",
     "toggle_theme": "Toggle theme",
+    "token_symbol": "ECO",
     "view_details": "View Details"
   },
   "error": {

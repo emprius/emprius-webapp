@@ -150,6 +150,21 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                         {tool.title}
                       </Link>
                       <CostDay tool={tool} />
+                      {tool.cost > 0 && (
+                        <Text fontSize='sm' sx={lighterText}>
+                          {isRequest
+                            ? t('bookings.total_earned', {
+                                defaultValue: 'Total Earned: {{amount}} {{tokenSymbol}}',
+                                amount: tool.cost * Math.ceil((booking.endDate - booking.startDate) / (24 * 60 * 60)),
+                                tokenSymbol: t('common.token_symbol'),
+                              })
+                            : t('bookings.total_spent', {
+                                defaultValue: 'Total Spent: {{amount}} {{tokenSymbol}}',
+                                amount: tool.cost * Math.ceil((booking.endDate - booking.startDate) / (24 * 60 * 60)),
+                                tokenSymbol: t('common.token_symbol'),
+                              })}
+                        </Text>
+                      )}
                     </Stack>
                     <Box display={{ base: 'none', sm: 'block' }}>
                       <BookingDates booking={booking} />

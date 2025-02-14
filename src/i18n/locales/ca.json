@@ -32,7 +32,7 @@
     "contact_placeholder": "Com prefereixes ser contactat?",
     "date_conflict": "Les dates seleccionades es solapen amb reserves existents",
     "date_formatted": "{{ date, format }}",
-    "date_range_total": "(Total de {{ date, duration }})",
+    "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
     "dates": "Dates",
     "deny": "Rebutjar",

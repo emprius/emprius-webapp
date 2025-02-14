@@ -32,7 +32,7 @@
     "contact_placeholder": "¿Cómo prefieres ser contactado?",
     "date_conflict": "Las fechas seleccionadas se solapan con reservas existentes",
     "date_formatted": "{{ date, format }}",
-    "date_range_total": "(Total de {{ date, duration }})",
+    "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
     "dates": "Fechas",
     "deny": "Rechazar",
