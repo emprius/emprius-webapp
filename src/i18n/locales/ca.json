@@ -1,4 +1,7 @@
 {
+  "app": {
+    "offlineMessage": "Actualment estàs fora de línia. Algunes funcions poden estar limitades."
+  },
   "auth": {
     "community": "Comunitat",
     "confirm_password": "Confirmar Contrasenya",
@@ -53,22 +56,32 @@
       "RETURNED": "RETORNAT"
     },
     "success": "Reserva exitosa",
+    "tool_info": "Informació de l'eina",
+    "tool_owner": "Propietari",
     "tool_petition_title": "Estàs sol·licitant una eina",
     "tool_request_title": "La teva eina és necessària",
-    "tool_requests": "Préstecs",
-    "try_again": "Si us plau, torna-ho a provar més tard"
+    "tool_requester": "Sol·licitant",
+    "tool_requests": "Préstecs d'eines",
+    "total_earned": "Total guanyat: {{amount}} {{,tokenSymbol}}",
+    "total_spent": "Total gastat: {{amount}} {{,tokenSymbol}}",
+    "try_again": "Si us plau, torna-ho a provar més tard",
+    "user_info": "Informació de l'usuari",
+    "view_details": "Veure detalls"
   },
   "common": {
+    "additional_options": "Opcions addicionals",
     "back_to_home": "Tornar a l'inici",
     "cancel": "Cancel·lar",
     "close": "Tancar",
     "confirm": "Confirmar",
     "delete": "Eliminar",
+    "details": "Detalls",
     "edit": "Editar",
     "email": "Correu electrònic",
     "error": "Error",
     "loading": "Carregant...",
     "location": "Ubicació",
+    "logout": "Tancar sessió",
     "name": "Nom",
     "next": "Següent",
     "page": "Pàgina",
@@ -80,11 +93,12 @@
     "something_went_wrong": "Alguna cosa ha anat malament",
     "success": "Èxit",
     "toggle_theme": "Canviar tema",
-    "view_details": "Veure detalls"
+    "token_symbol": "{{, tokenSymbol}}"
   },
   "error": {
     "cannot_reach_server": "No podem connectar amb els nostres servidors en aquest moment. Això podria ser degut a manteniment o problemes de connectivitat.",
     "go_home": "Anar a la pàgina d'inici",
+    "loading_page": "Carregant pàgina...",
     "page_not_found": "Pàgina no trobada",
     "page_not_found_desc": "La pàgina que busques no existeix.",
     "retry": "Tornar a provar",
@@ -108,12 +122,12 @@
     "subtitle": "Uneix-te a l'economia col·laborativa i ajuda a construir un futur sostenible",
     "title": "Comparteix i demana prestades eines a la teva comunitat"
   },
+  "loading": "Carregant...",
   "map": {
     "you_are_here": "Ets aquí"
   },
   "nav": {
     "about": "Sobre",
-    "find_tools": "Trobar eines",
     "home": "Inici",
     "login": "Iniciar sessió",
     "logout": "Tancar sessió",
@@ -124,42 +138,74 @@
     "register": "Registrar-se",
     "settings": "Configuració"
   },
+  "pages": {
+    "auth": {
+      "login": "Iniciar sessió",
+      "register": "Registrar-se"
+    },
+    "bookings": {
+      "petitions": "Peticions de reserva",
+      "requests": "Sol·licituds de reserva"
+    },
+    "profile": {
+      "edit": "Editar perfil",
+      "view": "Perfil"
+    },
+    "ratings": {
+      "pending": "Valoracions pendents",
+      "received": "Valoracions rebudes",
+      "submitted": "Valoracions enviades"
+    },
+    "search": "Cercar",
+    "tools": {
+      "list": "Eines"
+    },
+    "users": {
+      "list": "Usuaris"
+    }
+  },
+  "pwa": {
+    "installButton": "Instal·lar",
+    "installButtonIOS": "Com instal·lar",
+    "installMessage": "Instal·la per una millor experiència",
+    "installMessageIOS": "Afegeix a la pantalla d'inici per una millor experiència!",
+    "notNowButton": "Ara no"
+  },
   "rating": {
+    "already_rated": "Ja valorat",
     "comment": "Comentaris",
     "comment_placeholder": "Comparteix la teva experiència amb aquesta eina i el seu propietari...",
     "date_formatted": "{{ date, format }}",
     "datef": "PP",
-    "error": "Error al carregar les valoracions",
-    "no_ratings": "No hi ha valoracions pendents",
+    "pending": "Pendent",
     "pending_ratings": "Valoracions pendents",
     "rate_user": "Valorar usuari",
+    "received": "Rebudes",
     "submit": "Enviar valoració",
     "submit_error": "Error al enviar la valoració",
     "submit_error_description": "Hi ha hagut un error al enviar la teva valoració. Si us plau, torna-ho a provar.",
     "submit_success": "Valoració enviada",
     "submit_success_description": "Valoració enviada amb èxit",
+    "submitted": "Enviades",
     "submitting": "Enviant..."
   },
   "search": {
+    "apply_filters": "Aplicar filtres",
     "category": "Categoria",
+    "delete_search_term": "Esborrar cerca",
     "distance": "Distància",
     "filters": "Filtres",
     "max_cost": "Cost màxim",
-    "may_be_free": "Pot ser gratuït",
     "placeholder": "Cercar eines...",
-    "submit": "Cercar",
-    "transport": "Transport"
+    "switch_to_list_view": "Canviar a vista de llista",
+    "switch_to_map_view": "Canviar a vista de mapa"
   },
   "tools": {
     "add_tool": "Afegir eina",
-    "ask_with_fee": "Demanar amb tarifa",
-    "ask_with_fee_note": "Pots demanar una tarifa al prestar aquesta eina",
     "availability": "Disponibilitat",
     "availability_confirmation_title": "Actualitzar disponibilitat de l'eina",
     "availability_updated": "Disponibilitat de l'eina actualitzada amb èxit",
     "available": "Disponible",
-    "category": "Categoria",
-    "cost_per_day": "Cost per dia",
     "cost_unit": "{{ cost }} {{,tokenSymbol}}/dia",
     "create": "Crear eina",
     "create_error": "Error al crear l'eina",
@@ -172,28 +218,36 @@
     "description": "Descripció",
     "edit": "Editar eina",
     "edit_tool": "Editar eina",
+    "enter_estimated_value": "Introdueix el valor estimat",
     "estimated_value": "Valor estimat",
     "existing_images": "Imatges actuals",
     "find_other": "Trobar altres eines",
+    "free_badge": "Gratuït",
     "height": "Alçada (cm)",
     "images": "Imatges",
-    "is_available": "Disponible per llogar",
-    "login_to_book": "Si us plau, inicia sessió per reservar aquesta eina",
-    "make_available_confirmation_message": "Estàs segur que vols fer aquesta eina disponible per llogar?",
-    "make_unavailable_confirmation_message": "Estàs segur que vols fer aquesta eina no disponible per llogar?",
-    "may_be_free": "Pot ser gratuït",
-    "may_be_free_note": "Aquesta eina pot estar disponible gratuïtament",
+    "is_available": "Disponible per préstec",
+    "is_free": "Eina gratuïta",
+    "login_to_book": "Si us plau, inicia sessió per demanar aquesta eina",
+    "make_available_confirmation_message": "Estàs segur que vols fer aquesta eina disponible per préstec?",
+    "make_unavailable_confirmation_message": "Estàs segur que vols fer aquesta eina no disponible per préstec?",
     "name": "Nom de l'eina",
+    "no_tools_found": "No s'han trobat eines",
+    "no_tools_found_desc": "No hi ha eines que coincideixin amb els teus criteris de cerca. Prova d'ajustar els filtres.",
     "not_available": "Aquesta eina no està disponible actualment",
+    "not_found": "Eina no trobada",
     "not_owner": "No ets el propietari d'aquesta eina",
-    "price_per_day": "Preu per dia",
     "select_category": "Seleccionar categoria",
-    "select_transport": "Seleccionar transport",
-    "transport_options": "Opcions de transport",
+    "toggle_availability": "Canviar disponibilitat",
+    "tool_estimated_value_description": "Estableix el valor estimat de la teva eina. Si l'eina no és gratuïta, aquest valor s'utilitzarà per calcular el cost per dia.",
+    "tool_is_free": "Aquesta eina és gratuïta!",
+    "tool_is_free_description": "No hi ha cost associat al préstec de l'eina",
+    "toolCategory": "Categoria d'eina",
+    "total_cost": "Sol·licitud per {{total}} {{,tokenSymbol}}",
     "unavailable": "No disponible",
     "update_error": "Error al actualitzar l'eina",
     "update_failed": "Error al actualitzar l'eina",
     "update_success": "Eina actualitzada amb èxit",
+    "value_must_be_greater_than_zero": "El valor ha de ser major que 0",
     "weight": "Pes (kg)"
   },
   "user": {
@@ -204,12 +258,13 @@
     "error_uploading_image": "Error al pujar la imatge",
     "inactive": "Inactiu",
     "list_title": "Membres",
-    "member_since": "Membre des de",
     "no_bookings": "No s'han trobat reserves",
-    "no_tools": "Encara no s'han afegit eines",
+    "no_bookings_desc": "Encara no tens cap reserva. Explora les eines disponibles per fer la teva primera reserva.",
     "no_users_found": "No s'han trobat membres de la comunitat",
     "no_users_found_desc": "Actualment no hi ha membres a la comunitat. Torna més tard!",
-    "profile_updated": "Perfil actualitzat amb èxit"
+    "profile_updated": "Perfil actualitzat amb èxit",
+    "user_not_found": "Usuari no trobat",
+    "user_not_found_desc": "L'usuari que busques no existeix o ha estat eliminat."
   },
   "users": {
     "list_title": "Usuaris"

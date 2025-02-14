@@ -1,14 +1,4 @@
 {
-  "pwa": {
-    "installMessage": "Install for a better experience",
-    "installButton": "Install",
-    "notNowButton": "Not now",
-    "updateMessage": "New version available!",
-    "updateButton": "Update",
-    "offlineReady": "App ready to work offline",
-    "installMessageIOS": "Add to Home Screen for a better experience!",
-    "installButtonIOS": "How to Install"
-  },
   "app": {
     "offlineMessage": "You are currently offline. Some features may be limited."
   },
@@ -66,24 +56,32 @@
       "RETURNED": "RETURNED"
     },
     "success": "Booking successful",
+    "tool_info": "Tool Information",
+    "tool_owner": "Owner",
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
+    "tool_requester": "Applicant",
+    "tool_requests": "Tool Loans",
     "total_earned": "Total Earned: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total Spent: {{amount}} {{,tokenSymbol}}",
-    "0": "Loans",
-    "try_again": "Please try again later"
+    "try_again": "Please try again later",
+    "user_info": "User Information",
+    "view_details": "View Details"
   },
   "common": {
+    "additional_options": "Additional Options",
     "back_to_home": "Back to Home",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
     "delete": "Delete",
+    "details": "Details",
     "edit": "Edit",
     "email": "Email",
     "error": "Error",
     "loading": "Loading...",
     "location": "Location",
+    "logout": "Logout",
     "name": "Name",
     "next": "Next",
     "page": "Page",
@@ -95,12 +93,12 @@
     "something_went_wrong": "Something went wrong",
     "success": "Success",
     "toggle_theme": "Toggle theme",
-    "token_symbol": "{{, tokenSymbol}}",
-    "view_details": "View Details"
+    "token_symbol": "{{, tokenSymbol}}"
   },
   "error": {
     "cannot_reach_server": "We're unable to reach our servers at the moment. This could be due to maintenance or connectivity issues.",
     "go_home": "Go to Homepage",
+    "loading_page": "Loading page...",
     "page_not_found": "Page Not Found",
     "page_not_found_desc": "The page you're looking for doesn't exist.",
     "retry": "Try Again",
@@ -124,12 +122,12 @@
     "subtitle": "Join the sharing economy and help build a sustainable future",
     "title": "Share and Borrow Tools in Your Community"
   },
+  "loading": "Loading...",
   "map": {
     "you_are_here": "You are here"
   },
   "nav": {
     "about": "About",
-    "find_tools": "Find Tools",
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
@@ -140,42 +138,74 @@
     "register": "Register",
     "settings": "Settings"
   },
+  "pages": {
+    "auth": {
+      "login": "Login",
+      "register": "Register"
+    },
+    "bookings": {
+      "petitions": "Booking Petitions",
+      "requests": "Booking Requests"
+    },
+    "profile": {
+      "edit": "Edit Profile",
+      "view": "Profile"
+    },
+    "ratings": {
+      "pending": "Pending Ratings",
+      "received": "Received Ratings",
+      "submitted": "Submitted Ratings"
+    },
+    "search": "Search",
+    "tools": {
+      "list": "Tools"
+    },
+    "users": {
+      "list": "Users"
+    }
+  },
+  "pwa": {
+    "installButton": "Install",
+    "installButtonIOS": "How to Install",
+    "installMessage": "Install for a better experience",
+    "installMessageIOS": "Add to Home Screen for a better experience!",
+    "notNowButton": "Not now"
+  },
   "rating": {
+    "already_rated": "Already rated",
     "comment": "Comments",
     "comment_placeholder": "Share your experience with this tool and its owner...",
     "date_formatted": "{{ date, format }}",
     "datef": "PP",
-    "error": "Error loading ratings",
-    "no_ratings": "No pending ratings",
+    "pending": "Pending",
     "pending_ratings": "Pending Ratings",
     "rate_user": "Rate User",
+    "received": "Received",
     "submit": "Submit Rating",
     "submit_error": "Error Submitting Rating",
     "submit_error_description": "There was an error submitting your rating. Please try again.",
     "submit_success": "Rating Submitted",
     "submit_success_description": "Successfully submitted rating",
+    "submitted": "Submitted",
     "submitting": "Submitting..."
   },
   "search": {
+    "apply_filters": "Apply Filters",
     "category": "Category",
+    "delete_search_term": "Clear search",
     "distance": "Distance",
     "filters": "Filters",
     "max_cost": "Maximum Cost",
-    "may_be_free": "May be free",
     "placeholder": "Search for tools...",
-    "submit": "Search",
-    "transport": "Transport"
+    "switch_to_list_view": "Switch to list view",
+    "switch_to_map_view": "Switch to map view"
   },
   "tools": {
     "add_tool": "Add Tool",
-    "ask_with_fee": "Ask With Fee",
-    "ask_with_fee_note": "You can ask for a fee when lending this tool",
     "availability": "Availability",
     "availability_confirmation_title": "Update Tool Availability",
     "availability_updated": "Tool availability updated successfully",
     "available": "Available",
-    "category": "Category",
-    "cost_per_day": "Cost per day",
     "cost_unit": "{{ cost }} {{,tokenSymbol}}/day",
     "create": "Create Tool",
     "create_error": "Failed to create tool",
@@ -188,29 +218,36 @@
     "description": "Description",
     "edit": "Edit Tool",
     "edit_tool": "Edit Tool",
+    "enter_estimated_value": "Enter estimated value",
     "estimated_value": "Estimated Value",
     "existing_images": "Current Images",
     "find_other": "Find other tools",
+    "free_badge": "Free",
     "height": "Height (cm)",
     "images": "Images",
-    "is_available": "Available for rent",
-    "login_to_book": "Please login to book this tool",
-    "make_available_confirmation_message": "Are you sure you want to make this tool available for rent?",
-    "make_unavailable_confirmation_message": "Are you sure you want to make this tool unavailable for rent?",
-    "may_be_free": "May Be Free",
-    "may_be_free_note": "This tool may be available for free",
+    "is_available": "Available for loan",
+    "is_free": "Free tool",
+    "login_to_book": "Please login to borrow this tool",
+    "make_available_confirmation_message": "Are you sure you want to make this tool available for loan?",
+    "make_unavailable_confirmation_message": "Are you sure you want to make this tool unavailable for loan?",
     "name": "Tool Name",
+    "no_tools_found": "No tools found",
+    "no_tools_found_desc": "No tools match your search criteria. Try adjusting your filters.",
     "not_available": "This tool is currently not available",
     "not_found": "Tool not found",
     "not_owner": "You are not the owner of this tool",
-    "price_per_day": "Price per day",
     "select_category": "Select category",
-    "select_transport": "Select transport",
-    "transport_options": "Transport Options",
+    "toggle_availability": "Toggle availability",
+    "tool_estimated_value_description": "Set the estimated value of your tool. If the tool is not free, this value will be used to calculate the cost per day.",
+    "tool_is_free": "This tool is free!",
+    "tool_is_free_description": "No cost associated for loan the tool",
+    "toolCategory": "Tool Category",
+    "total_cost": "Request for {{total}} {{,tokenSymbol}}",
     "unavailable": "Unavailable",
     "update_error": "Error updating tool",
     "update_failed": "Failed to update tool",
     "update_success": "Tool updated successfully",
+    "value_must_be_greater_than_zero": "Value must be greater than 0",
     "weight": "Weight (kg)"
   },
   "user": {
@@ -221,45 +258,16 @@
     "error_uploading_image": "Error uploading image",
     "inactive": "Inactive",
     "list_title": "Members",
-    "member_since": "Member since",
     "no_bookings": "No bookings found",
-    "no_tools": "No tools added yet",
+    "no_bookings_desc": "You don't have any bookings yet. Browse available tools to make your first booking.",
     "no_users_found": "No community members found",
     "no_users_found_desc": "There are currently no members in the community. Check back later!",
-    "profile_updated": "Profile updated successfully"
+    "profile_updated": "Profile updated successfully",
+    "user_not_found": "User not found",
+    "user_not_found_desc": "The user you're looking for doesn't exist or has been removed."
   },
   "users": {
     "list_title": "Users"
-  },
-  "pages": {
-    "home": "Home",
-    "search": "Search",
-    "tools": {
-      "list": "Tools",
-      "detail": "Tool Details",
-      "edit": "Edit Tool"
-    },
-    "profile": {
-      "view": "Profile",
-      "edit": "Edit Profile"
-    },
-    "bookings": {
-      "petitions": "Booking Petitions",
-      "requests": "Booking Requests"
-    },
-    "ratings": {
-      "pending": "Pending Ratings",
-      "submitted": "Submitted Ratings",
-      "received": "Received Ratings"
-    },
-    "users": {
-      "list": "Users",
-      "detail": "User Details"
-    },
-    "auth": {
-      "login": "Login",
-      "register": "Register"
-    }
   },
   "validation": {
     "email": "Invalid email address",
