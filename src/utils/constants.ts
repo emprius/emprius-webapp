@@ -52,7 +52,7 @@ export const MAP_DEFAULTS = {
  * Asset paths
  */
 export const ASSETS = {
-  TOOL_FALLBACK: '/assets/tools/tool-fallback.svg',
+  TOOL_FALLBACK: '/assets/logos/tool-fallback.svg',
   AVATAR_FALLBACK: '/assets/avatars/fallback.png',
 } as const
 
