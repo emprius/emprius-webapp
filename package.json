@@ -45,7 +45,7 @@
     "lint": "tsc && prettier --check src",
     "lint:fix": "prettier --write src",
     "translations": "i18next",
-    "generate-pwa-assets": "pwa-asset-generator public/assets/logos/logo.png public/assets/pwa --background \"#ffffff\" --manifest public/manifest.json --index index.html --maskable --icon-only"
+    "generate-pwa-assets": "pwa-asset-generator public/assets/logos/pwa_logo.png public/assets/pwa --background \"#ffffff\" --manifest public/manifest.json --index index.html --maskable --icon-only"
   },
   "eslintConfig": {
     "extends": "react-app"
