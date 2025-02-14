@@ -112,7 +112,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
         )}
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
+      <Modal isOpen={isOpen} onClose={onClose} size='6xl' closeOnOverlayClick={true}>
         <ModalOverlay />
         <ModalContent bg='transparent' boxShadow='none'>
           <ModalCloseButton color='white' />
