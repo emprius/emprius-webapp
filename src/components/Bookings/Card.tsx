@@ -32,6 +32,7 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
+import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingDetails } from './Details'
 import { Booking } from './queries'
 
@@ -150,21 +151,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                         {tool.title}
                       </Link>
                       <CostDay tool={tool} />
-                      {tool.cost > 0 && (
-                        <Text fontSize='sm' sx={lighterText}>
-                          {isRequest
-                            ? t('bookings.total_earned', {
-                                defaultValue: 'Total Earned: {{amount}} {{tokenSymbol}}',
-                                amount: tool.cost * Math.ceil((booking.endDate - booking.startDate) / (24 * 60 * 60)),
-                                tokenSymbol: t('common.token_symbol'),
-                              })
-                            : t('bookings.total_spent', {
-                                defaultValue: 'Total Spent: {{amount}} {{tokenSymbol}}',
-                                amount: tool.cost * Math.ceil((booking.endDate - booking.startDate) / (24 * 60 * 60)),
-                                tokenSymbol: t('common.token_symbol'),
-                              })}
-                        </Text>
-                      )}
+                      {tool.cost > 0 && <Earned booking={booking} cost={tool.cost} isRequest={isRequest} />}
                     </Stack>
                     <Box display={{ base: 'none', sm: 'block' }}>
                       <BookingDates booking={booking} />
@@ -226,5 +213,22 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
         </ModalContent>
       </Modal>
     </Card>
+  )
+}
+
+export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: number; isRequest: boolean }) => {
+  const { t } = useTranslation()
+  const amount = cost * getDaysBetweenDates(booking.startDate, addDayToDate(booking.endDate))
+
+  return (
+    <Text fontSize='sm' sx={lighterText}>
+      {isRequest
+        ? t('bookings.total_earned', {
+            amount,
+          })
+        : t('bookings.total_spent', {
+            amount,
+          })}
+    </Text>
   )
 }

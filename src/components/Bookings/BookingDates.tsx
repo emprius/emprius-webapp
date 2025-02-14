@@ -1,8 +1,10 @@
-import { Booking } from '~components/Bookings/queries'
-import { useTranslation } from 'react-i18next'
 import { Flex, HStack, Icon, Stack, Text } from '@chakra-ui/react'
-import { lighterText, lightText } from '~theme/common'
+import { useTranslation } from 'react-i18next'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { Booking } from '~components/Bookings/queries'
+import { DateRangeTotal } from '~components/Layout/Dates'
+import { lighterText, lightText } from '~theme/common'
+import { addDayToDate } from '~utils/dates'
 
 interface BookingDatesProps {
   booking: Booking
@@ -13,7 +15,6 @@ export const BookingDates = ({ booking }: BookingDatesProps) => {
 
   const begin = new Date(booking.startDate * 1000)
   const end = new Date(booking.endDate * 1000)
-  const date = { begin, end }
   const datef = t('bookings.datef')
 
   return (
@@ -23,13 +24,11 @@ export const BookingDates = ({ booking }: BookingDatesProps) => {
         <Text fontSize='sm'> {t('bookings.dates', { defaultValue: 'Dates' })}</Text>
       </HStack>
       <Flex align={'center'} fontSize='md' wrap={'wrap'} sx={lightText}>
-        {t('bookings.date_formatted', { date: date.begin, format: datef })}
+        {t('bookings.date_formatted', { date: begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
-        {t('bookings.date_formatted', { date: date.end, format: datef })}
+        {t('bookings.date_formatted', { date: end, format: datef })}
       </Flex>
-      <Text fontSize='md' sx={lightText}>
-        {t('bookings.date_range_total', { date, format: datef })}
-      </Text>
+      <DateRangeTotal begin={begin} end={addDayToDate(end)} />
     </Stack>
   )
 }

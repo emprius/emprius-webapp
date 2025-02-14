@@ -68,8 +68,8 @@
     "success": "Booking successful",
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
-    "total_earned": "Total Earned: {{amount}} {{tokenSymbol}}",
-    "total_spent": "Total Spent: {{amount}} {{tokenSymbol}}",
+    "total_earned": "Total Earned: {{amount}} {{,tokenSymbol}}",
+    "total_spent": "Total Spent: {{amount}} {{,tokenSymbol}}",
     "0": "Loans",
     "try_again": "Please try again later"
   },

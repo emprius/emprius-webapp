@@ -90,7 +90,7 @@ export const DateRangePicker = ({
         const start = new Date(startField.value)
         const end = new Date(value)
 
-        if (end <= start) {
+        if (end < start) {
           return t('validation.end_date_after_start')
         }
 
@@ -106,7 +106,7 @@ export const DateRangePicker = ({
   const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newStart = e.target.value
     startField.onChange(newStart)
-    
+
     // Reset end date if it's before new start date
     if (endField.value && new Date(endField.value) <= new Date(newStart)) {
       endField.onChange('')

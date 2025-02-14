@@ -1,9 +1,9 @@
+import { format, formatDistance, Locale } from 'date-fns'
 import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
 import BrowserLanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
 import { LanguagesSlice } from '~i18n/languages.mjs'
 import { dateLocales, translations } from '~i18n/locales'
-import { format, formatDistance, Locale } from 'date-fns'
 import { currency, ucfirst } from '~utils/strings'
 
 const i18n = i18next.createInstance()
@@ -106,4 +106,10 @@ i18n.services.formatter?.add('ucfirst', (value: string, lng: string | undefined)
  * Currency
  */
 i18n.services.formatter?.add('currency', (amount: number, lng?: string | undefined) => currency(amount, lng))
+
+/**
+ * Token symbol
+ */
+i18n.services.formatter?.add('tokensymbol', () => 'ECO')
+
 export default i18n
