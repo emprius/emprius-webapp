@@ -147,6 +147,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                         fontWeight='semibold'
                         fontSize='xl'
                         _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                        maxW={'300px'}
                       >
                         {tool.title}
                       </Link>
