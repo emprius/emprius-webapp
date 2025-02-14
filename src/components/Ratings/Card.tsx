@@ -104,70 +104,57 @@ export const RatingCard = ({ rating, userId }: { rating: Rating; userId: string 
   }
 
   return (
-    <Box
-      borderWidth='1px'
-      borderRadius='lg'
-      overflow='hidden'
-      transition='all 0.2s'
-      _hover={{ shadow: 'lg' }}
-      position='relative'
-    >
-      <Skeleton
-        isLoaded={!!tool}
-        position='absolute'
-        top={2}
-        right={2}
-        width='50px'
-        height='50px'
-        borderRadius='md'
-        overflow='hidden'
-      >
-        {tool?.images?.[0] && (
-          <ServerImage
-            imageId={tool.images[0]}
-            alt={tool.title}
-            width='100%'
-            height='100%'
-            objectFit='cover'
-            thumbnail
-          />
-        )}
-      </Skeleton>
-      <Box px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
-        <VStack align='start' spacing={2} pl={2}>
-          <Box mr={'50px'} display={'flex'}>
-            <Box fontSize='sm'>
-              {titleText}
-              {tool && (
-                <Link pl={1} as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-                  {tool.title}
-                </Link>
-              )}
-            </Box>
-            {!tool && <Skeleton ml={1} isLoaded={!!tool} w={10} h={4} mt={1} />}
+    <>
+      <Box width='100%' py={4} borderBottomWidth='1px' _hover={{ bg: 'gray.50' }} transition='background 0.2s'>
+        <Flex gap={4} align='start'>
+          <Skeleton isLoaded={!!tool} width='80px' height='80px' borderRadius='md' overflow='hidden' flexShrink={0}>
+            {tool?.images?.[0] && (
+              <ServerImage
+                imageId={tool.images[0]}
+                alt={tool.title}
+                width='100%'
+                height='100%'
+                objectFit='cover'
+                thumbnail
+              />
+            )}
+          </Skeleton>
+
+          <Box flex='1'>
+            <Flex justify='space-between' align='start' mb={2} direction={{ base: 'column', sm: 'row' }} gap={2}>
+              <Box>
+                <Box fontSize='sm' mb={1}>
+                  {titleText}
+                  {tool && (
+                    <Link pl={1} as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+                      {tool.title}
+                    </Link>
+                  )}
+                  {!tool && <Skeleton ml={1} isLoaded={!!tool} w={10} h={4} display='inline-block' />}
+                </Box>
+                <UserCard userId={userId} py={0} pl={0} borderWidth={0} showRating={false} avatarSize={'sm'} />
+              </Box>
+              <ShowRatingStars rating={(rating.rating * 100) / 5} size='md' showCount={false} />
+            </Flex>
+
+            {rating.ratingComment && (
+              <Box bg='gray.50' p={3} borderRadius='md' mb={2}>
+                <Flex align='start' gap={2}>
+                  <Icon as={icons.messageBubble} mt={1} color='gray.500' flexShrink={0} />
+                  <Text fontSize='sm' color='gray.600'>
+                    {rating.ratingComment}
+                  </Text>
+                </Flex>
+              </Box>
+            )}
+
+            <Flex justify='flex-end'>
+              <Button leftIcon={<Icon as={FaInfoCircle} />} size='sm' variant='ghost' onClick={onOpen}>
+                {t('common.details')}
+              </Button>
+            </Flex>
           </Box>
-
-          <UserCard userId={userId} py={0} pl={0} borderWidth={0} showRating={false} avatarSize={'md'} />
-
-          <ShowRatingStars rating={(rating.rating * 100) / 5} size='md' showCount={false} />
-
-          {rating.ratingComment && (
-            <Box bg='gray.100' p={3} borderRadius='md' mt={2} w={'full'}>
-              <Flex align='start' gap={2}>
-                <Icon as={icons.messageBubble} mt={1} color='gray.500' />
-                <Text fontSize='sm' color='gray.600'>
-                  {rating.ratingComment}
-                </Text>
-              </Flex>
-            </Box>
-          )}
-
-          <Flex width='100%' justify='flex-end'>
-            <Button leftIcon={<Icon as={FaInfoCircle} />} size='sm' variant='outline' onClick={onOpen}>
-              {t('common.details')}
-            </Button>
-          </Flex>
-        </VStack>
+        </Flex>
       </Box>
 
       {/* Booking Details Modal */}
@@ -180,6 +167,6 @@ export const RatingCard = ({ rating, userId }: { rating: Rating; userId: string 
           </ModalBody>
         </ModalContent>
       </Modal>
-    </Box>
+    </>
   )
 }
