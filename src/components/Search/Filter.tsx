@@ -127,7 +127,9 @@ export const FiltersForm = () => {
       </FormControl>
 
       <FormControl>
-        <FormLabel>{t('search.max_cost')} (€)</FormLabel>
+        <FormLabel>
+          {t('search.max_cost')} ({t('common.token_symbol')})
+        </FormLabel>
         <HStack spacing={4}>
           <Slider
             flex='1'

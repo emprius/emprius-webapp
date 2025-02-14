@@ -4,6 +4,7 @@ import BrowserLanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 import { LanguagesSlice } from '~i18n/languages.mjs'
 import { dateLocales, translations } from '~i18n/locales'
+import { TOKEN_SYMBOL } from '~utils/constants'
 import { currency, ucfirst } from '~utils/strings'
 
 const i18n = i18next.createInstance()
@@ -110,6 +111,6 @@ i18n.services.formatter?.add('currency', (amount: number, lng?: string | undefin
 /**
  * Token symbol
  */
-i18n.services.formatter?.add('tokensymbol', () => 'ECO')
+i18n.services.formatter?.add('tokensymbol', () => TOKEN_SYMBOL)
 
 export default i18n

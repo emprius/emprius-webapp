@@ -43,7 +43,9 @@ export const UserProfile = (user: UserProfileType) => {
               </Stack>
               <Stack direction='row' align='center' spacing={2} sx={lightText}>
                 <BiWallet />
-                <Text>{user.tokens} ECO</Text>
+                <Text>
+                  {user.tokens} {t('common.token_symbol')}
+                </Text>
               </Stack>
             </Stack>
           </Stack>

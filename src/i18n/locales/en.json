@@ -95,7 +95,7 @@
     "something_went_wrong": "Something went wrong",
     "success": "Success",
     "toggle_theme": "Toggle theme",
-    "token_symbol": "ECO",
+    "token_symbol": "{{, tokenSymbol}}",
     "view_details": "View Details"
   },
   "error": {
@@ -176,7 +176,7 @@
     "available": "Available",
     "category": "Category",
     "cost_per_day": "Cost per day",
-    "cost_unit": "{{ cost }} €/day",
+    "cost_unit": "{{ cost }} {{,tokenSymbol}}/day",
     "create": "Create Tool",
     "create_error": "Failed to create tool",
     "create_success": "Tool created successfully",

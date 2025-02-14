@@ -160,7 +160,7 @@
     "available": "Disponible",
     "category": "Categoría",
     "cost_per_day": "Coste por día",
-    "cost_unit": "{{ cost }} €/día",
+    "cost_unit": "{{ cost }} {{,tokenSymbol}}/día",
     "create": "Crear herramienta",
     "create_error": "Error al crear la herramienta",
     "create_success": "Herramienta creada con éxito",

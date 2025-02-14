@@ -160,7 +160,7 @@
     "available": "Disponible",
     "category": "Categoria",
     "cost_per_day": "Cost per dia",
-    "cost_unit": "{{ cost }} €/dia",
+    "cost_unit": "{{ cost }} {{,tokenSymbol}}/dia",
     "create": "Crear eina",
     "create_error": "Error al crear l'eina",
     "create_success": "Eina creada amb èxit",
