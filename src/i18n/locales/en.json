@@ -228,6 +228,36 @@
   "users": {
     "list_title": "Users"
   },
+  "pages": {
+    "home": "Home",
+    "search": "Search",
+    "tools": {
+      "list": "Tools",
+      "detail": "Tool Details",
+      "edit": "Edit Tool"
+    },
+    "profile": {
+      "view": "Profile",
+      "edit": "Edit Profile"
+    },
+    "bookings": {
+      "petitions": "Booking Petitions",
+      "requests": "Booking Requests"
+    },
+    "ratings": {
+      "pending": "Pending Ratings",
+      "submitted": "Submitted Ratings",
+      "received": "Received Ratings"
+    },
+    "users": {
+      "list": "Users",
+      "detail": "User Details"
+    },
+    "auth": {
+      "login": "Login",
+      "register": "Register"
+    }
+  },
   "validation": {
     "email": "Invalid email address",
     "end_date_after_start": "End date must be after start date",

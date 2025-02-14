@@ -1,4 +1,6 @@
+import { TFunction } from 'i18next'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 
@@ -10,36 +12,37 @@ const TitleContext = createContext<TitleContextType | undefined>(undefined)
 
 const baseTitle = import.meta.env.title
 
-const getDefaultTitle = (pathname: string): string => {
+const getDefaultTitle = (pathname: string, t: TFunction): string => {
   // Map routes to titles
   switch (pathname) {
     case ROUTES.HOME:
       return baseTitle
     case ROUTES.SEARCH:
-      return `Search | ${baseTitle}`
+      return `${t('pages.search')} | ${baseTitle}`
     case ROUTES.TOOLS.LIST:
-      return `Tools | ${baseTitle}`
+      return `${t('pages.tools.list')} | ${baseTitle}`
     case ROUTES.PROFILE.VIEW:
-      return `Profile | ${baseTitle}`
+      return `${t('pages.profile.view')} | ${baseTitle}`
     case ROUTES.PROFILE.EDIT:
-      return `Edit Profile | ${baseTitle}`
+      return `${t('pages.profile.edit')} | ${baseTitle}`
     case ROUTES.BOOKINGS.PETITIONS:
-      return `Booking Petitions | ${baseTitle}`
+      return `${t('pages.bookings.petitions')} | ${baseTitle}`
     case ROUTES.BOOKINGS.REQUESTS:
-      return `Booking Requests | ${baseTitle}`
+      return `${t('pages.bookings.requests')} | ${baseTitle}`
     case ROUTES.RATINGS.PENDING:
-      return `Pending Ratings | ${baseTitle}`
+      return `${t('pages.ratings.pending')} | ${baseTitle}`
     case ROUTES.RATINGS.SUBMITTED:
-      return `Submitted Ratings | ${baseTitle}`
+      return `${t('pages.ratings.submitted')} | ${baseTitle}`
     case ROUTES.RATINGS.RECEIVED:
-      return `Received Ratings | ${baseTitle}`
+      return `${t('pages.ratings.received')} | ${baseTitle}`
     case ROUTES.USERS.LIST:
-      return `Users | ${baseTitle}`
+      return `${t('pages.users.list')} | ${baseTitle}`
     case ROUTES.AUTH.LOGIN:
-      return `Login | ${baseTitle}`
+      return `${t('pages.auth.login')} | ${baseTitle}`
     case ROUTES.AUTH.REGISTER:
-      return `Register | ${baseTitle}`
+      return `${t('pages.auth.register')} | ${baseTitle}`
     default:
+      // todo(kon): use matchPath https://github.com/remix-run/react-router/blob/a3e4b8ed875611637357647fcf862c2bc61f4e11/packages/react-router/lib/hooks.tsx#L173
       // Handle dynamic routes
       if (pathname.match(/^\/tools\/\d+$/)) {
         return `Tool Details | ${baseTitle}`
@@ -57,15 +60,15 @@ const getDefaultTitle = (pathname: string): string => {
 export const TitleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [title, setTitle] = useState<string>('')
   const location = useLocation()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (title) {
-      // let prepend = 'Vocdoni'
       document.title = `${title} | ${baseTitle}`
     } else {
-      document.title = getDefaultTitle(location.pathname)
+      document.title = getDefaultTitle(location.pathname, t)
     }
-  }, [location, title])
+  }, [location, title, t])
 
   return <TitleContext.Provider value={{ setTitle }}>{children}</TitleContext.Provider>
 }

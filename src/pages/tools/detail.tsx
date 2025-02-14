@@ -15,7 +15,7 @@ export const Detail = () => {
   const { data, isLoading, isError } = useTool(id!)
 
   // Set tool name when on page title when loaded
-  useCustomPageTitle(data?.title ?? '')
+  useCustomPageTitle(data?.title)
 
   if (isLoading) {
     return <LoadingSpinner />
