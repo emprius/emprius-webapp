@@ -1,4 +1,7 @@
+import { Button, useDisclosure, useToast } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
 import {
   Booking,
   BookingStatus,
@@ -7,10 +10,7 @@ import {
   useDenyBooking,
   useReturnBooking,
 } from '~components/Bookings/queries'
-import { Button, useDisclosure, useToast } from '@chakra-ui/react'
-import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
 import { RatingModal } from '~components/Ratings/Modal'
-import React from 'react'
 import { icons } from '~theme/icons'
 
 interface ActionsProps {
@@ -126,7 +126,7 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
   )
 }
 
-const AcceptedBookingActions = ({ booking }: ActionsProps) => {
+const AcceptedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
@@ -149,19 +149,21 @@ const AcceptedBookingActions = ({ booking }: ActionsProps) => {
         status: 'success',
         isClosable: true,
       })
+      onOpen() // Open rating modal after successful return
     })
   }
 
   return (
-    <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={handleReturn}>
-      {t('bookings.mark_as_returned')}
-    </Button>
+    <>
+      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={handleReturn}>
+        {t('bookings.mark_as_returned')}
+      </Button>
+    </>
   )
 }
 
-const ReturnedBookingActions = ({ booking }: ActionsProps) => {
+const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & ActionsProps) => {
   const { t } = useTranslation()
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const isRated = booking.isRated
   let text = t('rating.rate_user')
@@ -174,13 +176,6 @@ const ReturnedBookingActions = ({ booking }: ActionsProps) => {
       <Button disabled={!isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
         {text}
       </Button>
-      <RatingModal
-        isOpen={isOpen}
-        onClose={() => {
-          onClose()
-        }}
-        booking={booking}
-      />
     </>
   )
 }
@@ -191,21 +186,29 @@ interface ActionButtonsProps {
 }
 
 export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  let component = null
+
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
-    return <PendingRequestActions booking={booking} />
+    component = <PendingRequestActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
-    return <PendingPetitionActions booking={booking} />
+    component = <PendingPetitionActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
-    return <AcceptedBookingActions booking={booking} />
+    component = <AcceptedBookingActions booking={booking} onOpen={onOpen} />
   }
 
   if (booking.bookingStatus === BookingStatus.RETURNED) {
-    return <ReturnedBookingActions booking={booking} />
+    component = <ReturnedBookingActions booking={booking} onOpen={onOpen} />
   }
 
-  return null
+  return (
+    <>
+      {component}
+      <RatingModal isOpen={isOpen} onClose={onClose} booking={booking} />
+    </>
+  )
 }
