@@ -37,15 +37,15 @@ export const PWABanner = () => {
       return
     }
 
-    // Check if it's iOS or Firefox
+    // Check if it's iOS or Firefox on Android
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
-    const isFirefoxBrowser = navigator.userAgent.toLowerCase().includes('firefox')
-
+    const isFirefoxAndroid = navigator.userAgent.toLowerCase().includes('firefox') && navigator.userAgent.toLowerCase().includes('android')
+    
     setIsIOS(isIOSDevice)
-    setIsFirefox(isFirefoxBrowser)
+    setIsFirefox(isFirefoxAndroid)
 
-    if (isIOSDevice || isFirefoxBrowser) {
-      console.log(isIOSDevice ? 'iOS device detected' : 'Firefox browser detected')
+    if (isIOSDevice || isFirefoxAndroid) {
+      console.log(isIOSDevice ? 'iOS device detected' : 'Firefox Android detected')
       setIsInstallable(true)
       return
     }
