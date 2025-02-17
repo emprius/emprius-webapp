@@ -37,6 +37,17 @@ export const CategoryFilter = ({ filters, setFilters }: FiltersProps) => {
           label: category.name,
         }))}
         placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
+        chakraStyles={{
+          menuList: (provided) => ({
+            ...provided,
+            zIndex: 9999,
+          }),
+          menu: (provided) => ({
+            ...provided,
+            zIndex: 9999,
+          }),
+        }}
+        menuPortalTarget={document.body}
       />
     </FormControl>
   )

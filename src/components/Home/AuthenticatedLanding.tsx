@@ -46,7 +46,7 @@ export const AuthenticatedLanding = () => {
                 src='/assets/logos/banner.png'
                 alt='Emprius'
                 w='full'
-                maxW='400px'
+                maxW='250px'
                 h='auto'
                 mx='auto'
                 filter='drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))'
@@ -60,9 +60,18 @@ export const AuthenticatedLanding = () => {
                 borderRadius='lg'
                 boxShadow='xl'
                 align={'center'}
+                position='relative'
+                zIndex={999}
               >
                 <LandingSearchBar />
-                <Stack direction={{ base: 'column', md: 'row' }} spacing={4} w='full' px={4}>
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  spacing={4}
+                  w='full'
+                  px={4}
+                  position='relative'
+                  zIndex={9999}
+                >
                   <CategoryFilter setFilters={setSearchParams} filters={searchParams} />
                 </Stack>
               </Stack>
