@@ -169,6 +169,11 @@
     "installButtonIOS": "Com instal·lar",
     "installMessage": "Instal·la per una millor experiència",
     "installMessageIOS": "Afegeix a la pantalla d'inici per una millor experiència!",
+    "ios_install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
+    "ios_install_title": "Install Progressier",
+    "ios_step1": "1. Tap on",
+    "ios_step2": "2. Select",
+    "ios_step2_button": "Add to Home Screen",
     "notNowButton": "Ara no"
   },
   "rating": {

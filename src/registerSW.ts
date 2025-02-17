@@ -11,7 +11,7 @@ export function registerServiceWorker() {
         // Handle offline ready notification through PWAContext toast
         console.log('App ready to work offline')
       },
-      onRegistered(registration) {
+      onRegisteredSW(swScriptUrl, registration) {
         if (registration) {
           setInterval(() => {
             console.log('Interval!')
