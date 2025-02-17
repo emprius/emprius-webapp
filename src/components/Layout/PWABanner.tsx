@@ -26,7 +26,12 @@ export const PWABanner = () => {
   const [isInstallable, setIsInstallable] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
   const [isFirefox, setIsFirefox] = useState(false)
-  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true })
+  const { isOpen, onClose: originalOnClose } = useDisclosure({ defaultIsOpen: !localStorage.getItem('pwaBannerDismissed') })
+  
+  const onClose = () => {
+    localStorage.setItem('pwaBannerDismissed', 'true')
+    originalOnClose()
+  }
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure()
 
   // Handle browser events to check if is installable
@@ -101,8 +106,8 @@ export const PWABanner = () => {
     }
   }
 
-  // Don't show if not installable or already dismissed
-  if (!isOpen || (!isInstallable && !isIOS && !isFirefox) || (!deferredPrompt && !isIOS && !isFirefox)) return null
+  // Don't show if not installable, already dismissed, or stored as dismissed
+  if (!isOpen || (!isInstallable && !isIOS && !isFirefox) || (!deferredPrompt && !isIOS && !isFirefox) || localStorage.getItem('pwaBannerDismissed')) return null
 
   let title = t('pwa.installMessage')
   if (isIOS) {
