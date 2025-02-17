@@ -21,6 +21,18 @@ can list their tools, search for available tools, manage bookings, and build tru
 - Node.js >= 20.x
 - Yarn ^1.19.x
 
+## Environment Variables
+
+The following environment variables can be configured:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ENVIRONMENT` | Environment mode | `dev` |
+| `BUILD_PATH` | Output directory for build | - |
+| `BASE_URL` | Base URL for the application | `/` |
+| `APP_TITLE` | Application title | `Emprius App` |
+| `API_URL` | API endpoint URL | `https://app-api.emprius.cat` |
+
 ## Build and Run
 
 1. Clone the repository
