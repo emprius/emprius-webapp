@@ -165,16 +165,18 @@
     }
   },
   "pwa": {
+    "firefox_step1": "1. Abre el menú",
+    "install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
+    "install_instructions_title": "Install Emprius",
     "installButton": "Instalar",
     "installButtonIOS": "Cómo instalar",
     "installMessage": "Instala para una mejor experiencia",
+    "installMessageFirefox": "¡Instala nuestra aplicación para una mejor experiencia!",
     "installMessageIOS": "¡Añade a la pantalla de inicio para una mejor experiencia!",
-    "ios_install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
-    "ios_install_title": "Install Progressier",
-    "ios_step1": "1. Tap on",
-    "ios_step2": "2. Select",
-    "ios_step2_button": "Add to Home Screen",
-    "notNowButton": "Ahora no"
+    "ios_step1": "1. Toca en",
+    "notNowButton": "Ahora no",
+    "step2": "2. Select",
+    "step2_button": "Add to Home Screen"
   },
   "rating": {
     "already_rated": "Ya valorado",
