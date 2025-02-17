@@ -21,6 +21,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   const navigate = useNavigate()
   const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
   const [existingImages, setExistingImages] = useState(images || [])
+  const [hadInitialImages] = useState(!!images?.length)
 
   const {
     mutateAsync,
@@ -53,6 +54,13 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
 
   const handleDeleteExistingImage = (index: number) => {
     setExistingImages((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const validateImages = (images: FileList) => {
+    if (hadInitialImages && !existingImages.length && !images.length) {
+      return t('tools.cannot_delete_all_images')
+    }
+    return true
   }
 
   const handleSubmit = async (data: ToolFormData) => {
@@ -106,7 +114,10 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
 
   return (
     <ToolForm
-      initialData={initialData}
+      initialData={{
+        ...initialData,
+        images: undefined // Remove images from initial data as they're handled separately
+      }}
       onSubmit={handleSubmit}
       submitButtonText={t('common.save')}
       isLoading={isLoading}
@@ -115,6 +126,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       existingImages={existingImages}
       onDeleteExistingImage={handleDeleteExistingImage}
       isEdit
+      validateImages={validateImages}
     />
   )
 }

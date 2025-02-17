@@ -256,6 +256,8 @@
     "total_cost": "Request for {{total}} {{,tokenSymbol}}",
     "unavailable": "Unavailable",
     "update_error": "Error updating tool",
+    "images_required": "Images Required",
+    "cannot_delete_all_images": "You cannot delete all images when editing a tool that had images",
     "update_failed": "Failed to update tool",
     "update_success": "Tool updated successfully",
     "value_must_be_greater_than_zero": "Value must be greater than 0",

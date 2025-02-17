@@ -45,6 +45,7 @@ interface ToolFormProps {
   existingImages?: Image[]
   onDeleteExistingImage?: (index: number) => void
   isEdit?: boolean
+  validateImages?: (images: FileList) => string | true
 }
 
 export const ToolForm: React.FC<ToolFormProps> = ({
@@ -57,11 +58,12 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   existingImages = [],
   onDeleteExistingImage,
   isEdit,
+  validateImages,
 }) => {
   const { t } = useTranslation()
   const toast = useToast()
   const navigate = useNavigate()
-  const { categories, transports } = useInfoContext()
+  const { categories } = useInfoContext()
 
   const {
     register,
@@ -186,7 +188,13 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </Box>
       )}
 
-      <MultipleImageSelector label={t('tools.images')} error={errors.images?.message} {...register('images')} />
+      <MultipleImageSelector 
+        label={t('tools.images')} 
+        error={errors.images?.message} 
+        {...register('images', validateImages ? {
+          validate: validateImages
+        } : {})} 
+      />
 
       {/* Optional Fields Toggle Button */}
       <Button
