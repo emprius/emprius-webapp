@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -234,17 +234,18 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
           size={size === '2xl' ? 'sm' : 'xs'}
           onClick={() => inputRef.current?.click()}
         />
-        <IconButton
-          aria-label='Delete avatar'
-          icon={<DeleteIcon />}
-          position='absolute'
-          top='0'
-          right='0'
-          colorScheme='red'
-          rounded='full'
-          size={size === '2xl' ? 'sm' : 'xs'}
-          onClick={handleOnAvatarDelete}
-        />
+        {/*Delete avatar is not yet API supported*/}
+        {/*<IconButton*/}
+        {/*  aria-label='Delete avatar'*/}
+        {/*  icon={<DeleteIcon />}*/}
+        {/*  position='absolute'*/}
+        {/*  top='0'*/}
+        {/*  right='0'*/}
+        {/*  colorScheme='red'*/}
+        {/*  rounded='full'*/}
+        {/*  size={size === '2xl' ? 'sm' : 'xs'}*/}
+        {/*  onClick={handleOnAvatarDelete}*/}
+        {/*/>*/}
       </>
       <input
         type='file'
