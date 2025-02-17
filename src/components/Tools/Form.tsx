@@ -156,10 +156,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
 
       <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
 
-      <FormControl isRequired>
-        <LocationPicker onChange={(location) => setValue('location', location)} value={watch('location')} />
-        <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
-      </FormControl>
+      <LocationPicker name='location' control={control} isRequired={true} />
 
       {existingImages.length > 0 && (
         <Box mb={6}>

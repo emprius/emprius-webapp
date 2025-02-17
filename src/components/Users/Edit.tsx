@@ -33,6 +33,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
   const [newAvatar, setNewAvatar] = useState<File | ''>()
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, dirtyFields },
@@ -164,11 +165,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
           <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
         </FormControl>
 
-        <LocationPicker
-          value={watch('location')}
-          onChange={(location) => setValue('location', location)}
-          error={errors.location?.message}
-        />
+        <LocationPicker name='location' control={control} isRequired={true} />
 
         <Stack direction='row' spacing={4} justify='flex-end'>
           <Button onClick={onSuccess} variant='ghost'>

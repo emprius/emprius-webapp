@@ -36,6 +36,7 @@ export const Register = () => {
   } = useAuth()
 
   const {
+    control,
     register: registerField,
     handleSubmit,
     watch,
@@ -83,7 +84,7 @@ export const Register = () => {
             <Input
               id='name'
               {...registerField('name', {
-                required: t('validation.required'),
+                required: t('validation.required', { field: 'Name' }),
                 minLength: {
                   value: 2,
                   message: t('validation.name_length'),
@@ -99,7 +100,7 @@ export const Register = () => {
               id='email'
               type='email'
               {...registerField('email', {
-                required: t('validation.required'),
+                required: t('validation.required', { field: 'Email' }),
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: t('validation.email'),
@@ -114,12 +115,7 @@ export const Register = () => {
             <PasswordInput
               id='password'
               {...registerField('password', {
-                required: t('validation.required'),
-                // todo(kon): which regex we want to implement
-                // pattern: {
-                //   value: AUTH_FORM.PASSWORD_REGEX,
-                //   message: t('auth.password_requirements'),
-                // },
+                required: t('validation.required', { field: 'Password' }),
                 minLength: {
                   value: AUTH_FORM.MIN_PASSWORD_LENGTH,
                   message: t('auth.password_too_short'),
@@ -134,7 +130,6 @@ export const Register = () => {
             <PasswordInput
               id='confirmPassword'
               {...registerField('confirmPassword', {
-                required: t('validation.required'),
                 validate: (value) => value === password || t('validation.password_match'),
               })}
             />
@@ -158,22 +153,7 @@ export const Register = () => {
             <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.location}>
-            <FormLabel>Location</FormLabel>
-            <LocationPicker
-              onChange={(location) => {
-                const event = {
-                  target: {
-                    name: 'location',
-                    value: location,
-                  },
-                }
-                registerField('location').onChange(event)
-              }}
-              value={watch('location')}
-            />
-            <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
-          </FormControl>
+          <LocationPicker name='location' control={control} isRequired={true} />
 
           <FormSubmitMessage isError={isError} error={error} />
 
