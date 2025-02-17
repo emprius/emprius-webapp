@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react'
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export interface InfoData {
   users: number
@@ -52,7 +53,8 @@ interface InfoProviderProps {
 }
 
 export const InfoProvider = ({ children }: InfoProviderProps) => {
-  const { data, isLoading, isError } = useInfo()
+  const { isAuthenticated } = useAuth()
+  const { data, isLoading, isError } = useInfo({ enabled: isAuthenticated })
 
   const value: InfoContextType = {
     categories: data?.categories || [],
