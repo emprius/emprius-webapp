@@ -167,13 +167,13 @@ const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
 
   const isRated = booking.isRated
   let text = t('rating.rate_user')
-  if (!isRated) {
+  if (isRated) {
     text = t('rating.already_rated')
   }
 
   return (
     <>
-      <Button disabled={!isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
+      <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
         {text}
       </Button>
     </>
