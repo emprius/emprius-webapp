@@ -50,22 +50,6 @@ const gradient = defineStyle((props) => {
   }
 })
 
-// const gradient = defineStyle((props) => {
-//   const { colorScheme } = props
-//   return {
-//     bgGradient: `linear-gradient(135deg, ${colorScheme}.400 0%, ${colorScheme}.600 100%)`,
-//     color: 'white',
-//     transition: 'all 0.3s ease',
-//     _hover: {
-//       transform: 'scale(1.02)',
-//       boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-//     },
-//     _active: {
-//       transform: 'scale(0.98)',
-//     },
-//   }
-// })
-
 const outline = defineStyle((props) => {
   const { colorScheme } = props
   return {
@@ -100,17 +84,57 @@ const iconButton = defineStyle({
   },
 })
 
+const cta = defineStyle({
+  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3), 0 4px 12px rgba(147, 51, 234, 0.3)',
+  color: 'white',
+  bgGradient: 'linear(to-r, blue.600, purple.600)',
+  _hover: {
+    bgGradient: 'linear(to-r, blue.500, purple.500)',
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.5), 0 0 20px rgba(147, 51, 234, 0.5)',
+    _disabled: {
+      bgGradient: 'linear(to-r, blue.600, purple.600)',
+      opacity: 0.6,
+      transform: 'none',
+      cursor: 'not-allowed',
+    },
+  },
+  _active: {
+    bgGradient: 'linear(to-r, blue.400, purple.400)',
+    boxShadow: '0 0 25px rgba(59, 130, 246, 0.6), 0 0 25px rgba(147, 51, 234, 0.6)',
+  },
+  _disabled: {
+    bgGradient: 'linear(to-r, blue.600, purple.600)',
+    opacity: 0.6,
+    cursor: 'not-allowed',
+  },
+  _dark: {
+    bgGradient: 'linear(to-r, blue.500, purple.500)',
+    boxShadow: '0 4px 12px rgba(96, 165, 250, 0.3), 0 4px 12px rgba(168, 85, 247, 0.3)',
+    _hover: {
+      bgGradient: 'linear(to-r, blue.400, purple.400)',
+      boxShadow: '0 0 20px rgba(96, 165, 250, 0.5), 0 0 20px rgba(168, 85, 247, 0.5)',
+      _disabled: {
+        bgGradient: 'linear(to-r, blue.500, purple.500)',
+        opacity: 0.6,
+      },
+    },
+    _active: {
+      bgGradient: 'linear(to-r, blue.300, purple.300)',
+      boxShadow: '0 0 25px rgba(96, 165, 250, 0.6), 0 0 25px rgba(168, 85, 247, 0.6)',
+    },
+  },
+})
+
 export const Button = defineStyleConfig({
   baseStyle,
   variants: {
-    // floating,
     gradient,
     outline,
     iconButton,
+    cta,
   },
   defaultProps: {
     variant: 'gradient',
     colorScheme: 'primary',
-    // size: 'md',
   },
 })

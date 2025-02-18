@@ -59,6 +59,19 @@ export const Navbar = () => {
             <ContextSearchBar />
           </Flex>
         )}
+        <Button
+          as={RouterLink}
+          to={'https://emprius.cat/collabora/'}
+          leftIcon={icons.donate({})}
+          variant={'cta'}
+          sx={{
+            '& .chakra-button__icon': {
+              marginEnd: { base: '0', md: '0.5rem' },
+            },
+          }}
+        >
+          <Text display={{ base: 'none', md: 'block' }}>{t('donate', { defaultValue: 'Donate' })}</Text>
+        </Button>
       </Stack>
 
       <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>

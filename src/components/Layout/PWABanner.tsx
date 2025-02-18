@@ -26,8 +26,10 @@ export const PWABanner = () => {
   const [isInstallable, setIsInstallable] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
   const [isFirefox, setIsFirefox] = useState(false)
-  const { isOpen, onClose: originalOnClose } = useDisclosure({ defaultIsOpen: !localStorage.getItem('pwaBannerDismissed') })
-  
+  const { isOpen, onClose: originalOnClose } = useDisclosure({
+    defaultIsOpen: !localStorage.getItem('pwaBannerDismissed'),
+  })
+
   const onClose = () => {
     localStorage.setItem('pwaBannerDismissed', 'true')
     originalOnClose()
@@ -44,8 +46,9 @@ export const PWABanner = () => {
 
     // Check if it's iOS or Firefox on Android
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
-    const isFirefoxAndroid = navigator.userAgent.toLowerCase().includes('firefox') && navigator.userAgent.toLowerCase().includes('android')
-    
+    const isFirefoxAndroid =
+      navigator.userAgent.toLowerCase().includes('firefox') && navigator.userAgent.toLowerCase().includes('android')
+
     setIsIOS(isIOSDevice)
     setIsFirefox(isFirefoxAndroid)
 
@@ -107,7 +110,13 @@ export const PWABanner = () => {
   }
 
   // Don't show if not installable, already dismissed, or stored as dismissed
-  if (!isOpen || (!isInstallable && !isIOS && !isFirefox) || (!deferredPrompt && !isIOS && !isFirefox) || localStorage.getItem('pwaBannerDismissed')) return null
+  if (
+    !isOpen ||
+    (!isInstallable && !isIOS && !isFirefox) ||
+    (!deferredPrompt && !isIOS && !isFirefox) ||
+    localStorage.getItem('pwaBannerDismissed')
+  )
+    return null
 
   let title = t('pwa.installMessage')
   if (isIOS) {
