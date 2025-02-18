@@ -33,7 +33,7 @@
     "comments_placeholder": "Afegeix requisits especials o notes...",
     "contact": "Contacte",
     "contact_placeholder": "Com prefereixes ser contactat?",
-    "date_conflict": "Les dates seleccionades es solapen amb reserves existents",
+    "date_conflict": "Les dates seleccionades es solapen amb préstecs existents",
     "date_formatted": "{{ date, format }}",
     "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
@@ -144,8 +144,8 @@
       "register": "Registrar-se"
     },
     "bookings": {
-      "petitions": "Peticions de reserva",
-      "requests": "Sol·licituds de reserva"
+      "petitions": "Préstecs",
+      "requests": "Sol·licituds"
     },
     "profile": {
       "edit": "Editar perfil",
@@ -269,8 +269,8 @@
     "error_uploading_image": "Error al pujar la imatge",
     "inactive": "Inactiu",
     "list_title": "Membres",
-    "no_bookings": "No s'han trobat reserves",
-    "no_bookings_desc": "Encara no tens cap reserva. Explora les eines disponibles per fer la teva primera reserva.",
+    "no_bookings": "No s'han trobat préstecs",
+    "no_bookings_desc": "Encara no tens cap préstec. Explora les eines disponibles per fer la teva primera reserva.",
     "no_users_found": "No s'han trobat membres de la comunitat",
     "no_users_found_desc": "Actualment no hi ha membres a la comunitat. Torna més tard!",
     "profile_updated": "Perfil actualitzat amb èxit",

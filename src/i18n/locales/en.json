@@ -33,7 +33,7 @@
     "comments_placeholder": "Add any special requirements or notes...",
     "contact": "Contact",
     "contact_placeholder": "How would you like to be contacted?",
-    "date_conflict": "Selected dates overlap with existing bookings",
+    "date_conflict": "Selected dates overlap with existing loans",
     "date_formatted": "{{ date, format }}",
     "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
@@ -61,7 +61,7 @@
     "tool_petition_title": "You are requesting a Tool",
     "tool_request_title": "Your tool is needed",
     "tool_requester": "Applicant",
-    "tool_requests": "Tool Loans",
+    "tool_requests": "Loans",
     "total_earned": "Total Earned: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total Spent: {{amount}} {{,tokenSymbol}}",
     "try_again": "Please try again later",
@@ -131,7 +131,7 @@
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
-    "my_bookings": "Bookings",
+    "my_bookings": "Loans",
     "my_tools": "Tools",
     "profile": "Profile",
     "ratings": "Ratings",
@@ -144,8 +144,8 @@
       "register": "Register"
     },
     "bookings": {
-      "petitions": "Booking Petitions",
-      "requests": "Booking Requests"
+      "petitions": "Loans",
+      "requests": "Requests"
     },
     "profile": {
       "edit": "Edit Profile",
@@ -271,8 +271,8 @@
     "error_uploading_image": "Error uploading image",
     "inactive": "Inactive",
     "list_title": "Members",
-    "no_bookings": "No bookings found",
-    "no_bookings_desc": "You don't have any bookings yet. Browse available tools to make your first booking.",
+    "no_bookings": "No loans found",
+    "no_bookings_desc": "You don't have any loans yet. Browse available tools to make your first booking.",
     "no_users_found": "No community members found",
     "no_users_found_desc": "There are currently no members in the community. Check back later!",
     "profile_updated": "Profile updated successfully",

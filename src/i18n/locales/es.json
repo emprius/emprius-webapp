@@ -33,7 +33,7 @@
     "comments_placeholder": "Añade requisitos especiales o notas...",
     "contact": "Contacto",
     "contact_placeholder": "¿Cómo prefieres ser contactado?",
-    "date_conflict": "Las fechas seleccionadas se solapan con reservas existentes",
+    "date_conflict": "Las fechas seleccionadas se solapan con préstamos existentes",
     "date_formatted": "{{ date, format }}",
     "date_range_total": "({{ date, duration }})",
     "datef": "PPP",
@@ -144,8 +144,8 @@
       "register": "Registrarse"
     },
     "bookings": {
-      "petitions": "Peticiones de reserva",
-      "requests": "Solicitudes de reserva"
+      "petitions": "Préstamos",
+      "requests": "Solicitudes"
     },
     "profile": {
       "edit": "Editar perfil",
@@ -269,8 +269,8 @@
     "error_uploading_image": "Error al subir la imagen",
     "inactive": "Inactivo",
     "list_title": "Miembros",
-    "no_bookings": "No se encontraron reservas",
-    "no_bookings_desc": "Aún no tienes ninguna reserva. Explora las herramientas disponibles para hacer tu primera reserva.",
+    "no_bookings": "No se encontraron préstamos",
+    "no_bookings_desc": "Aún no tienes ninguna préstamo. Explora las herramientas disponibles para hacer tu primera reserva.",
     "no_users_found": "No se encontraron miembros de la comunidad",
     "no_users_found_desc": "Actualmente no hay miembros en la comunidad. ¡Vuelve más tarde!",
     "profile_updated": "Perfil actualizado con éxito",
