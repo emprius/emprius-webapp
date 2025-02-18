@@ -95,6 +95,7 @@
     "toggle_theme": "Canviar tema",
     "token_symbol": "{{, tokenSymbol}}"
   },
+  "donate": "Donar",
   "error": {
     "cannot_reach_server": "No podem connectar amb els nostres servidors en aquest moment. Això podria ser degut a manteniment o problemes de connectivitat.",
     "go_home": "Anar a la pàgina d'inici",
@@ -166,8 +167,8 @@
   },
   "pwa": {
     "firefox_step1": "1. Obre el menú",
-    "install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
-    "install_instructions_title": "Install Emprius",
+    "install_instructions": "Instal·la l'aplicació al teu dispositiu per accedir fàcilment en qualsevol moment. Sense botiga d'aplicacions. Sense descàrregues. Sense complicacions.",
+    "install_instructions_title": "Instal·lar Emprius",
     "installButton": "Instal·lar",
     "installButtonIOS": "Com instal·lar",
     "installMessage": "Instal·la per una millor experiència",
@@ -175,8 +176,8 @@
     "installMessageIOS": "Afegeix a la pantalla d'inici per una millor experiència!",
     "ios_step1": "1. Toca a",
     "notNowButton": "Ara no",
-    "step2": "2. Select",
-    "step2_button": "Add to Home Screen"
+    "step2": "2. Seleccionar",
+    "step2_button": "Afegir a la pantalla d'inici"
   },
   "rating": {
     "already_rated": "Ja valorat",
@@ -186,6 +187,10 @@
     "datef": "PP",
     "no_pending_ratings": "Cap valoració pendent",
     "no_pending_ratings_desc": "No tens cap valoració pendent per enviar",
+    "no_received_ratings": "Sense valoracions rebudes",
+    "no_received_ratings_desc": "Encara no has rebut cap valoració",
+    "no_submitted_ratings": "Sense valoracions enviades",
+    "no_submitted_ratings_desc": "Encara no has enviat cap valoració",
     "pending_ratings": "Valoracions pendents",
     "rate_user": "Valorar usuari",
     "ratings": "Valoracions",
@@ -207,9 +212,7 @@
     "distance": "Distància",
     "filters": "Filtres",
     "max_cost": "Cost màxim",
-    "placeholder": "Cercar eines...",
-    "switch_to_list_view": "Canviar a vista de llista",
-    "switch_to_map_view": "Canviar a vista de mapa"
+    "placeholder": "Cercar eines..."
   },
   "tools": {
     "add_tool": "Afegir eina",
@@ -217,6 +220,7 @@
     "availability_confirmation_title": "Actualitzar disponibilitat de l'eina",
     "availability_updated": "Disponibilitat de l'eina actualitzada amb èxit",
     "available": "Disponible",
+    "cannot_delete_all_images": "No pots eliminar totes les imatges en editar una eina que tenia imatges",
     "cost_unit": "{{ cost }} {{,tokenSymbol}}/dia",
     "create": "Crear eina",
     "create_error": "Error al crear l'eina",

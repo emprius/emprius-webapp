@@ -95,6 +95,7 @@
     "toggle_theme": "Cambiar tema",
     "token_symbol": "{{, tokenSymbol}}"
   },
+  "donate": "Donar",
   "error": {
     "cannot_reach_server": "No podemos conectar con nuestros servidores en este momento. Esto podría deberse a mantenimiento o problemas de conectividad.",
     "go_home": "Ir a la página de inicio",
@@ -166,8 +167,8 @@
   },
   "pwa": {
     "firefox_step1": "1. Abre el menú",
-    "install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
-    "install_instructions_title": "Install Emprius",
+    "install_instructions": "Instala la aplicación en tu dispositivo para acceder fácilmente en cualquier momento. Sin tienda de aplicaciones. Sin descargas. Sin complicaciones.",
+    "install_instructions_title": "Instalar Emprius",
     "installButton": "Instalar",
     "installButtonIOS": "Cómo instalar",
     "installMessage": "Instala para una mejor experiencia",
@@ -175,8 +176,8 @@
     "installMessageIOS": "¡Añade a la pantalla de inicio para una mejor experiencia!",
     "ios_step1": "1. Toca en",
     "notNowButton": "Ahora no",
-    "step2": "2. Select",
-    "step2_button": "Add to Home Screen"
+    "step2": "2. Seleccionar",
+    "step2_button": "Añadir a la pantalla de inicio"
   },
   "rating": {
     "already_rated": "Ya valorado",
@@ -186,6 +187,10 @@
     "datef": "PP",
     "no_pending_ratings": "Sin valoraciones pendientes",
     "no_pending_ratings_desc": "No tienes ninguna valoración pendiente por enviar",
+    "no_received_ratings": "Sin valoraciones recibidas",
+    "no_received_ratings_desc": "Aún no has recibido ninguna valoración",
+    "no_submitted_ratings": "Sin valoraciones enviadas",
+    "no_submitted_ratings_desc": "Aún no has enviado ninguna valoración",
     "pending_ratings": "Valoraciones pendientes",
     "rate_user": "Valorar usuario",
     "ratings": "Valoraciones",
@@ -207,9 +212,7 @@
     "distance": "Distancia",
     "filters": "Filtros",
     "max_cost": "Coste máximo",
-    "placeholder": "Buscar herramientas...",
-    "switch_to_list_view": "Cambiar a vista de lista",
-    "switch_to_map_view": "Cambiar a vista de mapa"
+    "placeholder": "Buscar herramientas..."
   },
   "tools": {
     "add_tool": "Añadir herramienta",
@@ -217,6 +220,7 @@
     "availability_confirmation_title": "Actualizar disponibilidad de la herramienta",
     "availability_updated": "Disponibilidad de la herramienta actualizada con éxito",
     "available": "Disponible",
+    "cannot_delete_all_images": "No puedes eliminar todas las imágenes al editar una herramienta que tenía imágenes",
     "cost_unit": "{{ cost }} {{,tokenSymbol}}/día",
     "create": "Crear herramienta",
     "create_error": "Error al crear la herramienta",

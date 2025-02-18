@@ -24,8 +24,6 @@ const RatingSection = ({
   emptyDesc: string
   isSubmited?: boolean
 }) => {
-  const { t } = useTranslation()
-
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -35,11 +33,11 @@ const RatingSection = ({
   }
 
   if (!data?.length) {
-    return <ElementNotFound icon={icons.ratings} title={t(emptyTitle)} desc={t(emptyDesc)} />
+    return <ElementNotFound icon={icons.ratings} title={emptyTitle} desc={emptyDesc} />
   }
 
   return (
-    <VStack spacing={0} align="stretch" divider={<Box borderBottomWidth="1px" borderColor="gray.200" />}>
+    <VStack spacing={0} align='stretch' divider={<Box borderBottomWidth='1px' borderColor='gray.200' />}>
       {data.map((rating: Rating, index) => (
         <RatingCard key={index} rating={rating} userId={isSubmited ? rating.fromUserId : rating.toUserId} />
       ))}
@@ -74,19 +72,25 @@ export const UserRatings = () => {
   )
 }
 const SubmittedRatings = () => {
+  const { t } = useTranslation()
   const query = useGetSubmittedRatings()
   return (
     <RatingSection
       {...query}
-      emptyTitle='rating.no_submitted_ratings'
-      emptyDesc='rating.no_submitted_ratings_desc'
+      emptyTitle={t('rating.no_submitted_ratings')}
+      emptyDesc={t('rating.no_submitted_ratings_desc')}
       isSubmited
     />
   )
 }
 const ReceivedRatings = () => {
+  const { t } = useTranslation()
   const query = useGetReceivedRatings()
   return (
-    <RatingSection {...query} emptyTitle='rating.no_received_ratings' emptyDesc='rating.no_received_ratings_desc' />
+    <RatingSection
+      {...query}
+      emptyTitle={t('rating.no_received_ratings')}
+      emptyDesc={t('rating.no_received_ratings_desc')}
+    />
   )
 }
