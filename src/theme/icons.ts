@@ -1,4 +1,4 @@
-import { FiMenu, FiMessageCircle, FiPlus, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import { FiMenu, FiMessageCircle, FiPlus, FiSearch, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 
 export const icons = {
@@ -11,4 +11,5 @@ export const icons = {
   add: FiPlus,
   menu: FiMenu,
   messageBubble: FiMessageCircle,
+  search: FiSearch,
 }

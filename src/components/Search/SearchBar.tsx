@@ -1,4 +1,3 @@
-import { SearchIcon } from '@chakra-ui/icons'
 import { Box, BoxProps, IconButton, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,6 +5,7 @@ import { RiCloseCircleFill } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
+import { icons } from '~theme/icons'
 
 export const SearchBar = ({
   onSubmit,
@@ -24,7 +24,7 @@ export const SearchBar = ({
       <InputGroup>
         {!term && (
           <InputLeftElement pointerEvents='none'>
-            <SearchIcon color='gray.500' />
+            <icons.search />
           </InputLeftElement>
         )}
         <Input

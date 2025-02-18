@@ -16,7 +16,7 @@ export const BottomNav = () => {
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
   const menuItems = useMemo(
     () => [
-      { icon: icons.user, path: ROUTES.PROFILE.VIEW },
+      { icon: icons.search, path: ROUTES.SEARCH },
       { icon: icons.tools, path: ROUTES.TOOLS.LIST },
       { icon: icons.add, path: ROUTES.TOOLS.NEW, central: true },
       {

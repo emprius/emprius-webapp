@@ -19,6 +19,7 @@ const SideNav = () => {
 
   const menuItems = useMemo(
     () => [
+      { icon: icons.search, label: t('pages.search'), path: ROUTES.SEARCH },
       { icon: icons.user, label: t('nav.profile'), path: ROUTES.PROFILE.VIEW },
       { icon: icons.tools, label: t('nav.my_tools'), path: ROUTES.TOOLS.LIST },
       { icon: icons.add, label: t('tools.add_tool'), path: ROUTES.TOOLS.NEW },
@@ -36,7 +37,16 @@ const SideNav = () => {
   )
 
   return (
-    <Flex direction={'column'} w='250px' bg={bgColor} px={2} pt={5} borderRight='1px' borderColor={borderColor}>
+    <Flex
+      direction={'column'}
+      w='250px'
+      bg={bgColor}
+      px={2}
+      pt={5}
+      borderRight='1px'
+      borderColor={borderColor}
+      zIndex={4}
+    >
       {menuItems.map((item) => (
         <Flex
           key={item.label}

@@ -24,14 +24,6 @@ const DashboardRoutesElements = [
     element: <ProtectedRoute />,
     children: [
       {
-        path: ROUTES.SEARCH,
-        element: (
-          <SuspenseLoader>
-            <SearchPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
         path: ROUTES.TOOLS.DETAIL,
         element: (
           <SuspenseLoader>
@@ -50,6 +42,14 @@ const DashboardRoutesElements = [
       {
         element: <DashboardLayout />,
         children: [
+          {
+            path: ROUTES.SEARCH,
+            element: (
+              <SuspenseLoader>
+                <SearchPage />
+              </SuspenseLoader>
+            ),
+          },
           {
             path: ROUTES.PROFILE.VIEW,
             element: (

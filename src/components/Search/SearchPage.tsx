@@ -1,12 +1,13 @@
 import {
   Box,
   Button,
-  Divider,
   Flex,
   HStack,
   IconButton,
+  IconButtonProps,
   Stack,
   Text,
+  useBreakpointValue,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -67,38 +68,13 @@ export const SearchPage = () => {
     <FormProvider {...methods}>
       <Box h='100vh'>
         <Box h='100vh' bg={bgColor} position='relative'>
-          <Flex gap={2} h='100vh' bg='white'>
-            {/*Filters side nav*/}
-            <Stack display={{ base: 'none', lg: 'block' }} w='300px' px={4} pt={5}>
-              <Button
-                aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
-                rightIcon={<FiMap />}
-                onClick={toggleView}
-                variant={'outline'}
-                mb={4}
-              >
-                {isMapView
-                  ? t('search.switch_to_list_view', { defaultValue: 'Switch to list view' })
-                  : t('search.switch_to_map_view', { defaultValue: 'Switch to map view' })}
-              </Button>
-              <Text fontSize='xl' fontWeight='bold' mb={4}>
-                {t('search.filters', { defaultValue: 'Filters' })}
-              </Text>
-              <FiltersForm />
-              <Button size='lg' onClick={() => methods.handleSubmit(onSubmit)()} mt={4} w='full'>
-                {t('search.apply_filters')}
-              </Button>
-            </Stack>
+          <Flex h='100vh' bg='white'>
+            <SideNav isMapView={isMapView} toggleView={toggleView} methods={methods} onSubmit={onSubmit} />
             {/*Floating buttons to open filters and switch view*/}
             <Box position='fixed' top={20} right={4} zIndex={2} display={{ base: 'flex', lg: 'none' }}>
               <HStack spacing={2}>
-                <IconButton aria-label='Filters' icon={<FaFilter />} onClick={onOpen} />
-                <IconButton
-                  aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
-                  icon={isMapView ? <FaRegRectangleList /> : <FiMap />}
-                  onClick={toggleView}
-                  variant={'solid'}
-                />
+                <ToggleFiltersButton onClick={onOpen} />
+                <ToggleMapButton isMapView={isMapView} onClick={toggleView} />
               </HStack>
             </Box>
             {/*Map View*/}
@@ -109,24 +85,94 @@ export const SearchPage = () => {
             )}
             {/*List View*/}
             {!isMapView && (
-              <>
-                <Divider
-                  display={{ base: 'none', lg: 'block' }}
-                  orientation='vertical'
-                  borderLeftWidth='2px'
-                  h='auto'
-                  alignSelf='stretch'
-                  borderColor='gray.200'
-                />
-                <Box flex={1} px={4} py={8} overflowY='auto'>
-                  <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
-                </Box>
-              </>
+              <Box flex={1} px={4} pb={8} pt={{ base: 14, lg: 8 }} overflowY='auto'>
+                <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
+              </Box>
             )}
           </Flex>
         </Box>
         <FiltersDrawer isOpen={isOpen} onClose={onClose} />
       </Box>
     </FormProvider>
+  )
+}
+
+type ToggleButtonProps = Omit<IconButtonProps, 'aria-label' | 'icon'>
+const ToggleMapButton = ({ isMapView, ...rest }: { isMapView: boolean } & ToggleButtonProps) => (
+  <IconButton
+    aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
+    icon={isMapView ? <FaRegRectangleList /> : <FiMap />}
+    variant={'solid'}
+    {...rest}
+  />
+)
+
+const ToggleFiltersButton = (props: ToggleButtonProps) => (
+  <IconButton aria-label='Filters' icon={<FaFilter />} {...props} />
+)
+
+interface SideNavProps {
+  isMapView: boolean
+  toggleView: () => void
+  methods: any
+  onSubmit: (data: SearchFilters) => void
+}
+
+const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSubmit }) => {
+  const { t } = useTranslation()
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false })
+  const isMobile = useBreakpointValue({ base: true, lg: false })
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  if (isMobile) return null
+
+  return (
+    <Stack position={'relative'} mr={!isMapView ? 3 : 0}>
+      <Stack
+        w={isOpen ? '250px' : 0}
+        px={isOpen ? 4 : 0}
+        pt={isOpen ? 5 : 0}
+        h='100vh'
+        bg='white'
+        transform={isOpen ? 'translateX(0)' : 'translateX(-100%)'}
+        transition='transform 0.3s ease'
+        zIndex={3}
+        borderRight='1px'
+        borderColor={borderColor}
+      >
+        <Stack display={isOpen ? 'flex' : 'none'}>
+          <Text fontSize='xl' fontWeight='bold' mb={4}>
+            {t('search.filters', { defaultValue: 'Filters' })}
+          </Text>
+          <FiltersForm />
+          <Button size='lg' onClick={() => methods.handleSubmit(onSubmit)()} mt={4} w='full'>
+            {t('search.apply_filters')}
+          </Button>
+        </Stack>
+      </Stack>
+      <ToggleFiltersButton
+        position='absolute'
+        right='-14px'
+        top='5'
+        onClick={onToggle}
+        zIndex={999}
+        variant='outline'
+        bg={'white'}
+        borderRadius={'sm'}
+        size={'sm'}
+      />
+      <ToggleMapButton
+        position='absolute'
+        right='-14px'
+        top={16}
+        onClick={toggleView}
+        isMapView={isMapView}
+        zIndex={999}
+        variant='outline'
+        bg={'white'}
+        borderRadius={'sm'}
+        size={'sm'}
+      />
+    </Stack>
   )
 }
