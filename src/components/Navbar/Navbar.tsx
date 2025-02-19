@@ -23,6 +23,7 @@ import { ContextSearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeIcon } from '../Layout/BadgeIcon'
+import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -33,6 +34,8 @@ export const Navbar = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
+
+  const isDashboardLayout = useIsDashboardLayout()
 
   return (
     <Flex
@@ -141,7 +144,11 @@ export const Navbar = () => {
             </Box>
 
             {/*Big screens menu*/}
-            <Link as={RouterLink} to={ROUTES.PROFILE.VIEW} minW={avatarSizeToPixels['sm']}>
+            <Link
+              as={RouterLink}
+              to={isDashboardLayout ? ROUTES.SEARCH : ROUTES.PROFILE.VIEW}
+              minW={avatarSizeToPixels['sm']}
+            >
               <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
             </Link>
           </>

@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Show, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, Icon, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom'
@@ -83,12 +83,11 @@ const SideNav = () => {
 }
 
 export const DashboardLayout = () => {
+  const isDashboardLayout = useIsDashboardLayout()
   return (
     <Flex>
       <Flex w={'full'} minH={'100vh'}>
-        <Show above='md'>
-          <SideNav />
-        </Show>
+        {isDashboardLayout && <SideNav />}
         <Box w={'100vw'}>
           <Outlet />
         </Box>
@@ -96,3 +95,5 @@ export const DashboardLayout = () => {
     </Flex>
   )
 }
+
+export const useIsDashboardLayout = () => useBreakpointValue({ base: false, md: true })
