@@ -1,40 +1,23 @@
-import {Box} from '@chakra-ui/react'
+import { Box, Text, VStack } from '@chakra-ui/react'
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster'
 import '@changey/react-leaflet-markercluster/dist/styles.min.css'
-import L, {LatLng} from 'leaflet'
+import L, { LatLng, LatLngExpression } from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useAuth } from '~components/Auth/AuthContext'
 import ReactDOMServer from 'react-dom/server'
-import {useTranslation} from 'react-i18next'
-import {IoMdHome} from 'react-icons/io'
-import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
-import {EmpriusLocation} from '~components/Layout/types'
-import {Tool} from '~components/Tools/types'
-import {MAP_DEFAULTS} from '~utils/constants'
-import {ToolTooltip} from './ToolTooltip'
-
-// Create a function to generate marker icon with badge
-const createMarkerIcon = (count: number) => {
-  let markerHtml = `<div class="custom-marker">
-         <img src="/assets/markers/marker-icon.png" />
-       </div>`
-  if (count > 1) {
-    markerHtml = `<div class="custom-marker">
-         <img src="/assets/markers/marker-icon.png" />
-         <div class="marker-badge">${count}</div>
-       </div>`
-  }
-
-  return L.divIcon({
-    html: markerHtml,
-    className: 'custom-div-icon',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  })
-}
+import { useTranslation } from 'react-i18next'
+import { IoMdHome } from 'react-icons/io'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { EmpriusLocation } from '~components/Layout/types'
+import { Tool } from '~components/Tools/types'
+import { MAP_DEFAULTS } from '~utils/constants'
+import { ToolTooltip } from './ToolTooltip'
+import { Avatar } from '~components/Images/Avatar'
+import { EmpriusCircle, EmpriusMarker } from '~components/Layout/Map'
+import { getLatLngExpression } from '~src/utils'
 
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
@@ -56,6 +39,23 @@ const DEFAULT_CENTER = new LatLng(41.3851, 2.1734) // Barcelona coordinates as d
 export const Map = ({ tools, center }: SearchMapProps) => {
   const latlng = center ? new LatLng(center.latitude / 1000000, center.longitude / 1000000) : DEFAULT_CENTER
   const { t } = useTranslation()
+  const { user } = useAuth()
+
+  const groupedTools = useMemo(
+    () =>
+      tools.reduce(
+        (acc, tool) => {
+          if (!tool.location) return acc
+          const loc = getLatLngExpression(tool.location)
+          const key = `${loc[0]}-${loc[1]}`
+          if (!acc[key]) acc[key] = []
+          acc[key].push(tool)
+          return acc
+        },
+        {} as Record<string, Tool[]>
+      ),
+    [tools]
+  )
 
   return (
     <Box
@@ -89,31 +89,33 @@ export const Map = ({ tools, center }: SearchMapProps) => {
       >
         <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
         <Marker position={latlng} icon={HomeIcon}>
-          <Popup>{t('map.you_are_here', { defaultValue: 'You are here' })}</Popup>
+          <Popup>
+            <VStack p={4}>
+              <Avatar username={user.name} avatarHash={user.avatarHash} size={'sm'} />
+              <Text>{t('map.you_are_here', { defaultValue: 'You are here' })}</Text>
+            </VStack>
+          </Popup>
         </Marker>
         <MarkerClusterGroup chunkedLoading showCoverageOnHover={false} maxClusterRadius={50} spiderfyOnMaxZoom={true}>
-          {Object.entries(
-            tools.reduce(
-              (acc, tool) => {
-                if (!tool.location) return acc
-                const key = `${tool.location.latitude}-${tool.location.longitude}`
-                if (!acc[key]) acc[key] = []
-                acc[key].push(tool)
-                return acc
-              },
-              {} as Record<string, Tool[]>
-            )
-          ).map(([key, groupedTools]) => {
-            const [lat, lng] = key.split('-').map(Number)
+          {Object.entries(groupedTools).map(([key, groupedTools]) => {
+            const loc = key.split('-').map(Number) as LatLngExpression
+
             return (
-              <Marker key={key} position={[lat / 1e6, lng / 1e6]} icon={createMarkerIcon(groupedTools.length)}>
+              <EmpriusMarker position={loc} count={groupedTools.length}>
                 <Popup>
                   <ToolTooltip tools={groupedTools} />
                 </Popup>
-              </Marker>
+              </EmpriusMarker>
             )
           })}
         </MarkerClusterGroup>
+        {/*Circle markers must be outside MarkerClusterGroup to do not be grouped with the other marker*/}
+        {Object.entries(groupedTools).map(([key, groupedTools]) => {
+          const isOwner = groupedTools.some((tool) => tool.userId === user?.id)
+          if (isOwner) return null
+          const loc = key.split('-').map(Number) as LatLngExpression
+          return <EmpriusCircle key={key} center={loc} />
+        })}
       </MapContainer>
     </Box>
   )

@@ -7,7 +7,7 @@ import { FiMail } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
-import { MapMarker } from '~components/Layout/MapMarker'
+import { MapWithMarker } from '~components/Layout/Map'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { UserRatings } from '~components/Ratings/UserRatings'
 import { UserProfile as UserProfileType } from '~components/Users/types'
@@ -64,7 +64,7 @@ export const UserProfile = (user: UserProfileType) => {
         </HStack>
         {user.location && (
           <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
-            <MapMarker {...user.location} />
+            <MapWithMarker {...user.location} markerProps={{ showExactLocation: isCurrentUser }} />
           </Box>
         )}
       </Stack>

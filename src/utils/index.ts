@@ -1,3 +1,6 @@
+import { EmpriusLocation } from '~components/Layout/types'
+import { LatLngExpression } from 'leaflet'
+
 export const getB64FromFile = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -10,3 +13,10 @@ export const getB64FromFile = (file: File): Promise<string> => {
     reader.readAsDataURL(file)
   })
 }
+
+/**
+ * From an emprius location return
+ * @param loc
+ */
+export const getLatLngExpression = (loc: EmpriusLocation): LatLngExpression =>
+  [loc.latitude / 1e6, loc.longitude / 1e6] as [number, number]

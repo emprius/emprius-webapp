@@ -11,6 +11,7 @@ import { Slider } from './components/slider'
 import { Switch } from './components/switch'
 import { Textarea } from './components/textarea'
 import { Tooltip } from './components/tooltip'
+import { colors } from '~theme/colors'
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -19,20 +20,7 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
-  colors: {
-    primary: {
-      50: '#F0FFF4',
-      100: '#C6F6D5',
-      200: '#9AE6B4',
-      300: '#68D391',
-      400: '#48BB78',
-      500: '#38A169',
-      600: '#2F855A',
-      700: '#276749',
-      800: '#22543D',
-      900: '#1C4532',
-    },
-  },
+  colors,
   fonts: {
     heading: 'Montserrat, system-ui, sans-serif',
     body: 'Roboto, system-ui, sans-serif',
@@ -49,24 +37,36 @@ const theme = extendTheme({
         height: '100%',
         'z-index': 1,
       },
+
       // Custom marker with badge
       '.custom-div-icon': {
         background: 'none',
         border: 'none',
+        ml: '-17px !important', // Must be the half of icon w/h
+        mt: '-17px !important',
       },
       '.custom-marker': {
         position: 'relative',
-        width: '25px',
-        height: '41px',
+        width: '34px',
+        height: '34px',
+        backgroundColor: 'secondary.500',
+        borderRadius: '50% 50% 0',
+        transform: 'rotate(45deg)',
       },
-      '.custom-marker img': {
-        width: '100%',
-        height: '100%',
+      '.custom-marker::after': {
+        content: '""',
+        position: 'absolute',
+        width: '50%',
+        height: '50%',
+        backgroundColor: 'rgba(0, 0, 0, .1)',
+        top: '25%',
+        left: '25%',
+        borderRadius: '50%',
       },
       '.marker-badge': {
         position: 'absolute',
-        top: '-8px',
-        right: '-8px',
+        top: '-5px',
+        right: '-14px',
         backgroundColor: '#E53E3E',
         color: 'white',
         borderRadius: '50%',

@@ -3,9 +3,10 @@ import L, { LatLng } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MAP_DEFAULTS } from '~utils/constants'
+import { EmpriusMarker } from '~components/Layout/Map'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
 
@@ -88,7 +89,7 @@ export const LocationPicker = <T extends FieldValues>({
               >
                 <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
                 <MapController onLocationSelect={handleLocationSelect} position={position} />
-                {position && <Marker position={position} />}
+                {position && <EmpriusMarker position={position} />}
               </MapContainer>
             </div>
             <FormErrorMessage>{error?.message}</FormErrorMessage>

@@ -20,7 +20,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { BookingForm } from '~components/Bookings/Form'
 import { useInfoContext } from '~components/InfoProviders/InfoContext'
 import { ImageCarousel } from '~components/Layout/ImageCarousel'
-import { MapMarker } from '~components/Layout/MapMarker'
+import { MapWithMarker } from '~components/Layout/Map'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
@@ -100,7 +100,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   <UserCard userId={tool.userId} />
                   {tool.location && (
                     <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
-                      <MapMarker {...tool.location} />
+                      <MapWithMarker {...tool.location} markerProps={{ showExactLocation: user?.id === tool.userId }} />
                     </Box>
                   )}
                 </Stack>
