@@ -33,7 +33,7 @@ export const RatingModal = ({ isOpen, onClose, booking }: RatingModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t('rating.pending_ratings')}</ModalHeader>
+        <ModalHeader>{t('rating.rate')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <RatingsForm rating={booking} onSuccess={onClose} />

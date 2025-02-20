@@ -29,6 +29,7 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { Rating } from './types'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export const RatingCardHeader = ({ rating }: { rating: Rating }) => {
   const { t } = useTranslation()
@@ -93,14 +94,18 @@ export const PendingRatingCard = (rating: Rating) => {
   )
 }
 
-export const RatingCard = ({ rating, userId }: { rating: Rating; userId: string }) => {
+export const RatingCard = ({ rating }: { rating: Rating }) => {
+  const { user } = useAuth()
   const { t } = useTranslation()
   const { data: tool } = useTool(rating.toolId)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const isSent = rating.fromUserId === userId
+
+  const isLoan = rating.toUserId === user.id // toUserId is the owner
+  let userId = rating.toUserId
   let titleText = t('rating.you_got_the_tool_from', { defaultValue: 'You requested' })
-  if (isSent) {
+  if (isLoan) {
     titleText = t('rating.you_lent_the_tool', { defaultValue: 'You lent' })
+    userId = rating.fromUserId
   }
 
   return (
@@ -163,7 +168,7 @@ export const RatingCard = ({ rating, userId }: { rating: Rating; userId: string 
         <ModalContent>
           <ModalCloseButton />
           <ModalBody py={6}>
-            <BookingDetails booking={rating} tool={tool} userId={isSent ? rating.toUserId : rating.fromUserId} />
+            <BookingDetails booking={rating} tool={tool} userId={userId} />
           </ModalBody>
         </ModalContent>
       </Modal>

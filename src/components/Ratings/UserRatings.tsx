@@ -14,7 +14,6 @@ const RatingSection = ({
   isLoading,
   error,
   emptyTitle,
-  isSubmited = false,
   emptyDesc,
 }: {
   data: Rating[] | undefined
@@ -22,7 +21,6 @@ const RatingSection = ({
   error: Error | string | null
   emptyTitle: string
   emptyDesc: string
-  isSubmited?: boolean
 }) => {
   if (isLoading) {
     return <LoadingSpinner />
@@ -39,7 +37,7 @@ const RatingSection = ({
   return (
     <VStack spacing={0} align='stretch' divider={<Box borderBottomWidth='1px' borderColor='gray.200' />}>
       {data.map((rating: Rating, index) => (
-        <RatingCard key={index} rating={rating} userId={isSubmited ? rating.fromUserId : rating.toUserId} />
+        <RatingCard key={index} rating={rating} />
       ))}
     </VStack>
   )
@@ -79,7 +77,6 @@ const SubmittedRatings = () => {
       {...query}
       emptyTitle={t('rating.no_submitted_ratings')}
       emptyDesc={t('rating.no_submitted_ratings_desc')}
-      isSubmited
     />
   )
 }
