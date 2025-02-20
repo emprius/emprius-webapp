@@ -2,6 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { SearchParams, useSearchTools } from '~components/Search/queries'
 import { ROUTES } from '~src/router/routes'
 
+export const DISTANCE_MAX = 250
+export const DISTANCE_DEFAULT = DISTANCE_MAX
+export const MAX_COST_MAX = 1000
+export const MAX_COST_DEFAULT = MAX_COST_MAX
+
 interface SearchContextType {
   filters: SearchParams
   setFilters: (filters: SearchParams) => void
@@ -26,14 +31,15 @@ export const useSearch = () => {
 
 export type SearchFilters = Omit<SearchParams, 'term'>
 
-export const defaultSearchParams: SearchFilters = {
+export const defaultFilterValues: Partial<SearchFilters> = {
   categories: undefined,
-  distance: 50,
-  maxCost: 1000,
+  transportOptions: undefined,
+  distance: DISTANCE_DEFAULT,
+  maxCost: MAX_COST_DEFAULT,
+  mayBeFree: false,
 }
-
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [filters, setFilters] = useState<SearchFilters>(defaultSearchParams)
+  const [filters, setFilters] = useState<SearchFilters>(defaultFilterValues)
   const [term, setTerm] = useState<string>('')
   const { data, mutate, isPending, error, isError } = useSearchTools()
 

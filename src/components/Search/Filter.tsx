@@ -25,8 +25,14 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useInfoContext } from '~components/InfoProviders/InfoContext'
-import { SearchFilters, useSearch } from '~components/Search/SearchContext'
-import { DISTANCE_DEFAULT, DISTANCE_MAX, MAX_COST_DEFAULT, MAX_COST_MAX } from '~components/Search/SearchPage'
+import {
+  DISTANCE_DEFAULT,
+  DISTANCE_MAX,
+  MAX_COST_DEFAULT,
+  MAX_COST_MAX,
+  SearchFilters,
+  useSearch,
+} from '~components/Search/SearchContext'
 
 interface FilterMenuProps {
   isOpen: boolean
@@ -66,7 +72,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
 
 export const FiltersForm = () => {
   const { t } = useTranslation()
-  const { categories, transports } = useInfoContext()
+  const { categories } = useInfoContext()
   const { setValue, watch } = useFormContext<SearchFilters>()
 
   const handleCategoryChange = (newValue: any) => {
@@ -86,10 +92,6 @@ export const FiltersForm = () => {
     setValue('maxCost', value)
   }
 
-  const handleMayBeFreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue('mayBeFree', e.target.checked)
-  }
-
   return (
     <Stack spacing={6} pb={6}>
       <FormControl>
@@ -101,7 +103,7 @@ export const FiltersForm = () => {
             min={1}
             max={DISTANCE_MAX}
             step={1}
-            value={watch('distance') || 10}
+            value={watch('distance')}
             onChange={handleDistanceChange}
           >
             <SliderTrack>
@@ -114,7 +116,7 @@ export const FiltersForm = () => {
             min={1}
             max={DISTANCE_MAX}
             step={1}
-            value={watch('distance') || 10}
+            value={watch('distance') || DISTANCE_MAX}
             onChange={(_, value) => handleDistanceChange(value)}
           >
             <NumberInputField />

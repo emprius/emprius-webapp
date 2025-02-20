@@ -19,25 +19,11 @@ import { FaRegRectangleList } from 'react-icons/fa6'
 import { FiMap } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
-import { SearchFilters, useSearch } from '~components/Search/SearchContext'
+import { defaultFilterValues, SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
 
-export const MAX_COST_MAX = 1000
-export const MAX_COST_DEFAULT = MAX_COST_MAX
-export const DISTANCE_MAX = 250
-export const DISTANCE_DEFAULT = 50
-
-const defaultValues: Partial<SearchFilters> = {
-  categories: undefined,
-  transportOptions: undefined,
-  distance: DISTANCE_DEFAULT,
-  maxCost: MAX_COST_DEFAULT,
-  mayBeFree: false,
-}
-
 export const SearchPage = () => {
-  const { t } = useTranslation()
   const { user } = useAuth()
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,7 +32,7 @@ export const SearchPage = () => {
   const { filters, setFilters, result, isPending, error, isError } = useSearch()
 
   const methods = useForm<SearchFilters>({
-    defaultValues: { ...defaultValues, ...filters },
+    defaultValues: { ...defaultFilterValues, ...filters },
   })
 
   const onSubmit = (data: SearchFilters) => {
