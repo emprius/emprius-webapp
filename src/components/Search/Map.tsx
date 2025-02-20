@@ -1,7 +1,7 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster'
 import '@changey/react-leaflet-markercluster/dist/styles.min.css'
-import L, { LatLng, LatLngExpression } from 'leaflet'
+import L, { LatLngExpression } from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
@@ -17,7 +17,7 @@ import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
 import { Avatar } from '~components/Images/Avatar'
 import { EmpriusCircle, EmpriusMarker } from '~components/Layout/Map'
-import { getLatLngExpression } from '~src/utils'
+import { toLatLng } from '~src/utils'
 
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
@@ -34,20 +34,18 @@ export interface SearchMapProps {
   center: EmpriusLocation
 }
 
-const DEFAULT_CENTER = new LatLng(41.3851, 2.1734) // Barcelona coordinates as default
-
 export const Map = ({ tools, center }: SearchMapProps) => {
-  const latlng = center ? new LatLng(center.latitude / 1000000, center.longitude / 1000000) : DEFAULT_CENTER
-  const { t } = useTranslation()
   const { user } = useAuth()
+  const latlngCenter = center ? toLatLng(center) : MAP_DEFAULTS.CENTER
+  const { t } = useTranslation()
 
   const groupedTools = useMemo(
     () =>
       tools.reduce(
         (acc, tool) => {
           if (!tool.location) return acc
-          const loc = getLatLngExpression(tool.location)
-          const key = `${loc[0]}-${loc[1]}`
+          const loc = toLatLng(tool.location)
+          const key = `${loc.lat}-${loc.lng}`
           if (!acc[key]) acc[key] = []
           acc[key].push(tool)
           return acc
@@ -80,7 +78,7 @@ export const Map = ({ tools, center }: SearchMapProps) => {
       }}
     >
       <MapContainer
-        center={latlng || MAP_DEFAULTS.CENTER}
+        center={latlngCenter}
         zoom={MAP_DEFAULTS.ZOOM}
         scrollWheelZoom={true}
         style={{ height: '100%', width: '100%', zIndex: 0 }}
@@ -88,7 +86,7 @@ export const Map = ({ tools, center }: SearchMapProps) => {
         maxZoom={MAP_DEFAULTS.MAX_ZOOM}
       >
         <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
-        <Marker position={latlng} icon={HomeIcon}>
+        <Marker position={latlngCenter} icon={HomeIcon}>
           <Popup>
             <VStack p={4}>
               <Avatar username={user.name} avatarHash={user.avatarHash} size={'sm'} />
@@ -99,9 +97,8 @@ export const Map = ({ tools, center }: SearchMapProps) => {
         <MarkerClusterGroup chunkedLoading showCoverageOnHover={false} maxClusterRadius={50} spiderfyOnMaxZoom={true}>
           {Object.entries(groupedTools).map(([key, groupedTools]) => {
             const loc = key.split('-').map(Number) as LatLngExpression
-
             return (
-              <EmpriusMarker position={loc} count={groupedTools.length}>
+              <EmpriusMarker key={key} position={loc} count={groupedTools.length}>
                 <Popup>
                   <ToolTooltip tools={groupedTools} />
                 </Popup>
@@ -114,7 +111,7 @@ export const Map = ({ tools, center }: SearchMapProps) => {
           const isOwner = groupedTools.some((tool) => tool.userId === user?.id)
           if (isOwner) return null
           const loc = key.split('-').map(Number) as LatLngExpression
-          return <EmpriusCircle key={key} center={loc} />
+          return <EmpriusCircle key={`${key}circle`} center={loc} />
         })}
       </MapContainer>
     </Box>

@@ -4,7 +4,7 @@ import React, { PropsWithChildren, useMemo } from 'react'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { EmpriusLocation } from '~components/Layout/types'
 import { colors } from '~theme/colors'
-import { getLatLngExpression } from '~src/utils'
+import { toLatLng } from '~src/utils'
 
 type EmpriusMarkerProps = {
   position: LatLngExpression
@@ -17,7 +17,7 @@ type MapMarkerProps = { showMarker?: boolean; markerProps?: Omit<EmpriusMarkerPr
   MapContainerProps
 
 export const MapWithMarker = ({ latitude, longitude, showMarker = true, markerProps, ...rest }: MapMarkerProps) => {
-  const latlng = useMemo(() => getLatLngExpression({ latitude, longitude }), [latitude, longitude])
+  const latlng = useMemo(() => toLatLng({ latitude, longitude }), [latitude, longitude])
 
   return (
     <MapContainer

@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { EmpriusMarker } from '~components/Layout/Map'
+import { toLatLng } from '~src/utils'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
 
@@ -64,9 +65,7 @@ export const LocationPicker = <T extends FieldValues>({
         ...rules,
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        const [position, setPosition] = useState<LatLng | null>(
-          value ? new LatLng(value.latitude / 1000000, value.longitude / 1000000) : null
-        )
+        const [position, setPosition] = useState<LatLng | null>(value ? toLatLng(value) : null)
 
         const handleLocationSelect = (latLng: LatLng) => {
           setPosition(latLng)
@@ -81,7 +80,7 @@ export const LocationPicker = <T extends FieldValues>({
             <FormLabel>{t('common.location')}</FormLabel>
             <div className='map-container'>
               <MapContainer
-                center={new LatLng(MAP_DEFAULTS.CENTER.lat, MAP_DEFAULTS.CENTER.lng)}
+                center={position || MAP_DEFAULTS.CENTER}
                 zoom={MAP_DEFAULTS.ZOOM}
                 scrollWheelZoom={true}
                 minZoom={MAP_DEFAULTS.MIN_ZOOM}
