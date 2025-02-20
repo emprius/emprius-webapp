@@ -10,7 +10,7 @@ import {
   useDenyBooking,
   useReturnBooking,
 } from '~components/Bookings/queries'
-import { RatingModal } from '~components/Ratings/Modal'
+import { RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
 import { icons } from '~theme/icons'
 
 interface ActionsProps {
@@ -126,11 +126,12 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
   )
 }
 
-const AcceptedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & ActionsProps) => {
+const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen: () => void } & ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
-  const { mutateAsync } = useReturnBooking({
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { mutateAsync, isPending } = useReturnBooking({
     onError: (error) => {
       // Show toast error
       toast({
@@ -143,21 +144,33 @@ const AcceptedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
   })
 
   const handleReturn = () => {
-    mutateAsync(bookingId).then(() => {
-      toast({
-        title: t('bookings.return_success'),
-        status: 'success',
-        isClosable: true,
+    mutateAsync(bookingId)
+      .then(() => {
+        toast({
+          title: t('bookings.return_success'),
+          status: 'success',
+          isClosable: true,
+        })
+        onClose()
+        onOpenRatingModal() // Open rating modal after successful return
       })
-      onOpen() // Open rating modal after successful return
-    })
+      .catch(() => {
+        onClose()
+      })
   }
 
   return (
     <>
-      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={handleReturn}>
+      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={onOpen}>
         {t('bookings.mark_as_returned')}
       </Button>
+      <ReturnAlertDialog
+        isLoading={isPending}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={handleReturn}
+        endDate={booking.endDate}
+      />
     </>
   )
 }
@@ -172,11 +185,9 @@ const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
   }
 
   return (
-    <>
-      <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
-        {text}
-      </Button>
-    </>
+    <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
+      {text}
+    </Button>
   )
 }
 
