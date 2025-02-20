@@ -21,8 +21,8 @@ const SideNav = () => {
     () => [
       { icon: icons.search, label: t('pages.search'), path: ROUTES.SEARCH },
       { icon: icons.user, label: t('nav.profile'), path: ROUTES.PROFILE.VIEW },
-      { icon: icons.tools, label: t('nav.my_tools'), path: ROUTES.TOOLS.LIST },
       { icon: icons.add, label: t('tools.add_tool'), path: ROUTES.TOOLS.NEW },
+      { icon: icons.tools, label: t('nav.my_tools'), path: ROUTES.TOOLS.LIST },
       { icon: icons.request, label: t('bookings.my_petitions'), path: ROUTES.BOOKINGS.PETITIONS },
       {
         icon: icons.loan,
