@@ -4,12 +4,12 @@ import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scr
 import { CategoryFilter } from '~components/Home/AuthComponents/Filters'
 import { LandingSearchBar } from '~components/Home/AuthComponents/SearchBar'
 import { useSearchTools } from '~components/Search/queries'
-import { defaultSearchParams, SearchFilters } from '~components/Search/SearchContext'
+import { defaultFilterValues, SearchFilters } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 
 export const AuthenticatedLanding = () => {
   const { data: tools, isPending, isError, error, mutate } = useSearchTools()
-  const [searchParams, setSearchParams] = useState<SearchFilters>({ ...defaultSearchParams, distance: 250000 })
+  const [searchParams, setSearchParams] = useState<SearchFilters>({ ...defaultFilterValues, distance: 250000 })
 
   // Perform search when filters change
   useEffect(() => {
