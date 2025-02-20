@@ -188,12 +188,17 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </Box>
       )}
 
-      <MultipleImageSelector 
-        label={t('tools.images')} 
-        error={errors.images?.message} 
-        {...register('images', validateImages ? {
-          validate: validateImages
-        } : {})} 
+      <MultipleImageSelector
+        label={t('tools.images')}
+        error={errors.images?.message}
+        {...register(
+          'images',
+          validateImages
+            ? {
+                validate: validateImages,
+              }
+            : {}
+        )}
       />
 
       {/* Optional Fields Toggle Button */}
@@ -211,7 +216,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <Stack spacing={6}>
           <FormControl isInvalid={!!errors.height}>
             <FormLabel>{t('tools.height', { defaultValue: 'Height (cm)' })}</FormLabel>
-            <NumberInput min={0} precision={0}>
+            <NumberInput min={1} precision={0}>
               <NumberInputField
                 {...register('height', {
                   valueAsNumber: true,
@@ -227,7 +232,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
 
           <FormControl isInvalid={!!errors.weight}>
             <FormLabel>{t('tools.weight', { defaultValue: 'Weight (kg)' })}</FormLabel>
-            <NumberInput min={0} precision={0}>
+            <NumberInput min={1} precision={0}>
               <NumberInputField
                 {...register('weight', {
                   valueAsNumber: true,

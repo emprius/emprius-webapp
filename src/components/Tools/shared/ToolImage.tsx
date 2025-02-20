@@ -1,8 +1,9 @@
-import { CheckCircleIcon, WarningIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import { Badge, Box, Icon, ImageProps, Tooltip } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ServerImage } from '~components/Images/ServerImage'
+import { TiCancel } from 'react-icons/ti'
 
 type ToolImageProps = {
   imageHash?: string
@@ -24,14 +25,14 @@ export const ToolImage = ({ imageHash, title, isAvailable, height = '200px', ...
           position='absolute'
           top={2}
           right={2}
-          colorScheme={isAvailable ? 'green' : 'gray'}
+          colorScheme={isAvailable ? 'green' : 'orange'}
           p={1}
           borderRadius='full'
           display='flex'
           alignItems='center'
           justifyContent='center'
         >
-          <Icon as={isAvailable ? CheckCircleIcon : WarningIcon} boxSize={4} />
+          <Icon as={isAvailable ? CheckCircleIcon : TiCancel} boxSize={4} />
         </Badge>
       </Tooltip>
     </Box>

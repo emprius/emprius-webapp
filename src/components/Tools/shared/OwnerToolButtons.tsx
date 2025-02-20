@@ -45,7 +45,7 @@ export const EditToolButton = ({ toolId, ...props }: ToolButtonProps) => {
 export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
   const toast = useToast()
-  const updateTool = useUpdateTool()
+  const { mutateAsync, isPending } = useUpdateTool()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef<HTMLButtonElement>(null)
   const newAvailability = !tool.isAvailable
@@ -56,7 +56,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
         id: tool.id.toString(),
         isAvailable: newAvailability,
       }
-      await updateTool.mutateAsync(updateParams)
+      await mutateAsync(updateParams)
       toast({
         title: t('tools.availability_updated'),
         status: 'success',
@@ -74,7 +74,7 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
         isClosable: true,
       })
     }
-  }, [tool, newAvailability, updateTool, toast, t, onClose])
+  }, [tool, newAvailability, mutateAsync, toast, t, onClose])
 
   return (
     <>
@@ -94,10 +94,10 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button ref={cancelRef} onClick={onClose} disabled={isPending}>
                 {t('common.cancel')}
               </Button>
-              <Button onClick={handleConfirmToggle} ml={3}>
+              <Button onClick={handleConfirmToggle} ml={3} isLoading={isPending}>
                 {t('common.confirm')}
               </Button>
             </AlertDialogFooter>

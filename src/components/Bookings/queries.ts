@@ -71,8 +71,8 @@ export const useDenyBooking = (options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.deny(bookingId),
-    onSuccess: (res) => {
-      invalidateQueries(client, res.toolId)
+    onSuccess: (res, params) => {
+      invalidateQueries(client, params)
     },
     ...options,
   })
