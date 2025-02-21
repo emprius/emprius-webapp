@@ -208,8 +208,8 @@
     "submit_success_description": "Successfully submitted rating",
     "submitted": "Submitted",
     "submitting": "Submitting...",
-    "you_got_the_tool_from": "You requested",
-    "you_lent_the_tool": "You lent"
+    "you_got_the_tool_from": "You requested <toolName />",
+    "you_lent_the_tool": "You lent <toolName />"
   },
   "search": {
     "apply_filters": "Apply Filters",

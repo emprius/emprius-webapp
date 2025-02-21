@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Button,
   Flex,
   Heading,
   Icon,
@@ -17,9 +16,10 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaArrowRight, FaInfoCircle, FaRegCalendarAlt } from 'react-icons/fa'
+import { Trans, useTranslation } from 'react-i18next'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '~components/Auth/AuthContext'
 import { BookingDetails } from '~components/Bookings/Details'
 import { ServerImage } from '~components/Images/ServerImage'
 import { RatingsForm } from '~components/Ratings/Form'
@@ -29,7 +29,6 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { Rating } from './types'
-import { useAuth } from '~components/Auth/AuthContext'
 
 export const RatingCardHeader = ({ rating }: { rating: Rating }) => {
   const { t } = useTranslation()
@@ -102,9 +101,25 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
 
   const isLoan = rating.toUserId === user.id // toUserId is the owner
   let userId = rating.toUserId
-  let titleText = t('rating.you_got_the_tool_from', { defaultValue: 'You requested' })
+  let titleText = (
+    <Trans
+      i18nKey={'rating.you_got_the_tool_from'}
+      defaultValue={'You requested'}
+      components={{
+        toolName: <ToolName tool={tool} />,
+      }}
+    />
+  )
   if (isLoan) {
-    titleText = t('rating.you_lent_the_tool', { defaultValue: 'You lent' })
+    titleText = (
+      <Trans
+        i18nKey={'rating.you_lent_the_tool'}
+        defaultValue={'You lent'}
+        components={{
+          toolName: <ToolName tool={tool} />,
+        }}
+      />
+    )
     userId = rating.fromUserId
   }
 
@@ -125,17 +140,11 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
             )}
           </Skeleton>
 
-          <Box flex='1'>
+          <Box flex='1' onClick={onOpen} cursor={'pointer'}>
             <Flex justify='space-between' align='start' mb={2} direction={{ base: 'column', sm: 'row' }} gap={2}>
               <Box>
                 <Box fontSize='sm' mb={1}>
                   {titleText}
-                  {tool && (
-                    <Link pl={1} as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-                      {tool.title}
-                    </Link>
-                  )}
-                  {!tool && <Skeleton ml={1} isLoaded={!!tool} w={10} h={4} display='inline-block' />}
                 </Box>
                 <UserCard userId={userId} py={0} pl={0} borderWidth={0} showRating={false} avatarSize={'sm'} />
               </Box>
@@ -152,12 +161,6 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
                 </Flex>
               </Box>
             )}
-
-            <Flex justify='flex-end'>
-              <Button leftIcon={<Icon as={FaInfoCircle} />} size='sm' variant='ghost' onClick={onOpen}>
-                {t('common.details')}
-              </Button>
-            </Flex>
           </Box>
         </Flex>
       </Box>
@@ -173,5 +176,16 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
         </ModalContent>
       </Modal>
     </>
+  )
+}
+
+const ToolName = ({ tool }) => {
+  if (!tool) {
+    return <Skeleton ml={1} isLoaded={!!tool} w={10} h={4} display='inline-block' />
+  }
+  return (
+    <Link pl={1} as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
+      {tool.title}
+    </Link>
   )
 }
