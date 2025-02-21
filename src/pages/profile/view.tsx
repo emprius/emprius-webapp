@@ -1,25 +1,25 @@
+import { Box, Button, Flex } from '@chakra-ui/react'
 import React from 'react'
-import { Box, Button, VStack } from '@chakra-ui/react'
-import { FiLogOut } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+import { FiLogOut } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
-import { UserProfile } from '~components/Users/Profile'
 import { MainContainer } from '~components/Layout/LayoutComponents'
+import { UserProfile } from '~components/Users/Profile'
 
 export const View = () => {
   const { t } = useTranslation()
   const { user, logout } = useAuth()
 
   return (
-    <VStack spacing={4} align='center' w={'full'}>
-      <MainContainer>
+    <MainContainer>
+      <Flex gap={2} align='center' direction={'column'}>
         <UserProfile {...user} />
-      </MainContainer>
-      <Box pb={4}>
-        <Button leftIcon={<FiLogOut />} onClick={logout} colorScheme='red'>
-          {t('nav.logout')}
-        </Button>
-      </Box>
-    </VStack>
+        <Box pb={4}>
+          <Button leftIcon={<FiLogOut />} onClick={logout} colorScheme='red'>
+            {t('nav.logout')}
+          </Button>
+        </Box>
+      </Flex>
+    </MainContainer>
   )
 }

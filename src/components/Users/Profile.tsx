@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons'
-import { Badge, Box, Button, Heading, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BiWallet } from 'react-icons/bi'
@@ -17,7 +17,6 @@ import { lightText } from '~theme/common'
 export const UserProfile = (user: UserProfileType) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const tabBg = useColorModeValue('white', 'gray.800')
   const { user: currentUser } = useAuth()
   const isCurrentUser = user.id === currentUser?.id
 
@@ -25,10 +24,10 @@ export const UserProfile = (user: UserProfileType) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   return (
-    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor}>
+    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
       <Stack spacing={6}>
-        <HStack justify={'space-between'} align={'start'}>
-          <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
+        <Stack direction={{ base: 'column-reverse', sm: 'row' }} justify={'space-between'} align={'start'}>
+          <Stack direction={'row'} spacing={6} align={{ base: 'center', sm: 'flex-start' }}>
             <Avatar username={user.name} avatarHash={user.avatarHash} />
             <Stack spacing={1}>
               <Stack direction='row' align='center' spacing={2}>
@@ -57,11 +56,12 @@ export const UserProfile = (user: UserProfileType) => {
               size='md'
               variant='ghost'
               onClick={() => navigate(ROUTES.PROFILE.EDIT)}
+              alignSelf={{ base: 'end', sm: 'inherit' }}
             >
               {t('user.edit_profile')}
             </Button>
           )}
-        </HStack>
+        </Stack>
         {user.location && (
           <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
             <MapWithMarker {...user.location} markerProps={{ showExactLocation: isCurrentUser }} />
