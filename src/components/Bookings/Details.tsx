@@ -1,6 +1,7 @@
 import { Box, Divider, Flex, HStack, Icon, Link, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaRegCalendarAlt } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { BookingDates } from '~components/Bookings/BookingDates'
@@ -126,7 +127,13 @@ export const BookingDetails = ({ booking, tool, userId }: BookingDetailsProps) =
       <Divider />
 
       {/* Booking Dates */}
-      <BookingDates booking={booking} />
+      <Stack spacing={1}>
+        <HStack sx={lighterText}>
+          <Icon as={FaRegCalendarAlt} fontSize='sm' />
+          <Text fontSize='sm'> {t('bookings.dates', { defaultValue: 'Dates' })}</Text>
+        </HStack>
+        <BookingDates booking={booking} />
+      </Stack>
 
       <Divider />
 

@@ -1,4 +1,4 @@
-import { Icon, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
+import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +8,7 @@ import { usePendingActions } from '~components/InfoProviders/PendingActionsProvi
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import ErrorComponent from '~components/Layout/ErrorComponent'
+import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 
 import { ROUTES } from '~src/router/routes'
@@ -94,10 +95,10 @@ const BookingList = ({ data: bookings, type, isLoading, error }: BookingListProp
   }
 
   return (
-    <Stack spacing={4}>
+    <ResponsiveSimpleGrid>
       {bookings.map((booking) => (
         <BookingCard key={booking.id} booking={booking} type={type} />
       ))}
-    </Stack>
+    </ResponsiveSimpleGrid>
   )
 }

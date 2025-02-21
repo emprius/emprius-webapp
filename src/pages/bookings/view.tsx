@@ -1,16 +1,16 @@
+import { Stack, useBreakpointValue } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useOutletContext } from 'react-router-dom'
-import { UserBookings } from '~components/Bookings/UserBookings'
-import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
-import { ROUTES } from '~src/router/routes'
-import { Stack, useBreakpointValue } from '@chakra-ui/react'
+import { BookingCard } from '~components/Bookings/Card'
 import { useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
+import { UserBookings } from '~components/Bookings/UserBookings'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
+import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
-import { BookingCard } from '~components/Bookings/Card'
 
 const BookingList = ({ type }: { type: 'request' | 'petition' }) => {
   const { t } = useTranslation()

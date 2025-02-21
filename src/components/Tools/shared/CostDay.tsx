@@ -13,7 +13,7 @@ export const CostDay = ({ tool, badgeProps, ...rest }: ToolBadgesProps) => {
   const { t } = useTranslation()
   if (tool.cost === 0) {
     return (
-      <Stack direction='row' spacing={2} wrap='wrap' align={'center'} {...rest}>
+      <Stack direction='row' spacing={2} wrap='wrap' align={'center'} pt={1} {...rest}>
         <Badge colorScheme='primary' {...badgeProps}>
           {t('tools.free_badge', { defaultValue: 'Free' })}
         </Badge>
