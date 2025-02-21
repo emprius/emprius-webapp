@@ -40,7 +40,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "yarn generate-pwa-assets && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc && prettier --check src",
     "lint:fix": "prettier --write src",
