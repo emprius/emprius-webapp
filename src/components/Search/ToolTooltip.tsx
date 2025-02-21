@@ -33,12 +33,7 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
   return (
     <Stack spacing={1} width='200px' pt={6} pb={4} gap={2}>
       <Stack as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-        <ToolImage
-          imageHash={tool?.images?.[0] ?? ''}
-          title={tool.title}
-          isAvailable={tool.isAvailable}
-          height='120px'
-        />
+        <ToolImage imageHash={tool?.images?.[0] ?? ''} tool={tool} height='120px' />
         <Flex align='top' justify='space-between' gap={2} px={4}>
           <Text
             fontWeight='semibold'

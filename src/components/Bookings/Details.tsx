@@ -72,8 +72,7 @@ const ToolInfo = ({ tool }: { tool: Tool }) => {
         <Link as={RouterLink} to={toolDetailUrl}>
           <ToolImage
             imageHash={tool.images[0]}
-            title={tool.title}
-            isAvailable={tool.isAvailable}
+            tool={tool}
             w={'100%'}
             maxW={'140px'}
             maxH={'160px'}

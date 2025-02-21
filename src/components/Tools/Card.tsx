@@ -41,16 +41,12 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
         _hover={{ color: 'primary.500', textDecoration: 'none' }}
       >
         <Box position='relative'>
-          <ToolImage
-            imageHash={tool?.images?.length ? tool?.images[0] : ''}
-            title={tool.title}
-            isAvailable={tool.isAvailable}
-          />
+          <ToolImage imageHash={tool?.images?.length ? tool?.images[0] : ''} tool={tool} />
         </Box>
 
         <Stack p={4} spacing={3}>
           <Stack spacing={1}>
-            <Flex align='top' justify='space-between' gap={2}>
+            <Flex align='start' justify='space-between' gap={2}>
               <Text
                 fontWeight='semibold'
                 fontSize='lg'
