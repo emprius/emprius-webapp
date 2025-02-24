@@ -270,7 +270,9 @@
     "update_failed": "Failed to update tool",
     "update_success": "Tool updated successfully",
     "value_must_be_greater_than_zero": "Value must be greater than 0",
-    "weight": "Weight (kg)"
+    "weight": "Weight (kg)",
+    "not_found_title": "Tool Not Found",
+    "not_found_description": "This tool is no longer available"
   },
   "user": {
     "activate": "Activate profile",

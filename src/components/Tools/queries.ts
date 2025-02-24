@@ -2,6 +2,7 @@ import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOpti
 import { EmpriusLocation } from '~components/Layout/types'
 import api, { tools } from '~src/services/api'
 import { Tool, ToolsListResponse } from './types'
+import { useTranslation } from 'react-i18next'
 
 export interface createToolParams {
   title: string
@@ -20,13 +21,32 @@ export interface UpdateToolParams extends createToolParams {
   id: string
 }
 
-export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) =>
-  useQuery({
+export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) => {
+  const { t } = useTranslation()
+  const query = useQuery({
     queryKey: ['tool', id],
     queryFn: () => api.tools.getById(id),
     enabled: !!id,
     ...options,
   })
+
+  // Show placeholder if the tool is not found
+  if (query.isError) {
+    const notFoundTool: Tool = {
+      id: parseInt(id),
+      title: t('tools.not_found_title'),
+      description: t('tools.not_found_description'),
+      userId: '',
+      images: [],
+      rating: 0,
+      reservedDates: null,
+      isAvailable: false,
+    }
+    return { ...query, data: notFoundTool }
+  }
+
+  return query
+}
 
 export const useTools = () =>
   useQuery({
