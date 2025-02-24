@@ -45,7 +45,8 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
     },
   })
 
-  const handleDeny = async () => {
+  const handleDeny = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     await denyBooking(bookingId).then(() => {
       toast({
         title: t('bookings.deny_success'),
@@ -55,7 +56,8 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
     })
   }
 
-  const handleApprove = async () => {
+  const handleApprove = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     await acceptBooking(bookingId).then(() => {
       toast({
         title: t('bookings.approve_success'),
@@ -109,7 +111,8 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
     },
   })
 
-  const handleCancel = () => {
+  const handleCancel = (e: React.MouseEvent) => {
+    e.stopPropagation()
     mutateAsync(bookingId).then(() => {
       toast({
         title: t('bookings.cancel_success'),
@@ -161,7 +164,10 @@ const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen
 
   return (
     <>
-      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={onOpen}>
+      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={(e) => {
+        e.stopPropagation()
+        onOpen()
+      }}>
         {t('bookings.mark_as_returned')}
       </Button>
       <ReturnAlertDialog
@@ -185,7 +191,10 @@ const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
   }
 
   return (
-    <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={() => onOpen()}>
+    <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={(e) => {
+      e.stopPropagation()
+      onOpen()
+    }}>
       {text}
     </Button>
   )
