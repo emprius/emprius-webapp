@@ -12,6 +12,7 @@ import {
 } from '~components/Bookings/queries'
 import { RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
 import { icons } from '~theme/icons'
+import { useAuth } from '~components/Auth/AuthContext'
 
 interface ActionsProps {
   booking: Booking
@@ -164,10 +165,15 @@ const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen
 
   return (
     <>
-      <Button leftIcon={<FiCheck />} colorScheme='green' variant='outline' onClick={(e) => {
-        e.stopPropagation()
-        onOpen()
-      }}>
+      <Button
+        leftIcon={<FiCheck />}
+        colorScheme='green'
+        variant='outline'
+        onClick={(e) => {
+          e.stopPropagation()
+          onOpen()
+        }}
+      >
         {t('bookings.mark_as_returned')}
       </Button>
       <ReturnAlertDialog
@@ -182,19 +188,30 @@ const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen
 }
 
 const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & ActionsProps) => {
+  const { user } = useAuth()
   const { t } = useTranslation()
 
-  const isRated = booking.isRated
+  if (!booking?.ratings) {
+    return null
+  }
+
+  const isRated = booking.ratings.some((rating) => rating.fromUserId === user.id)
+
   let text = t('rating.rate_user')
   if (isRated) {
     text = t('rating.already_rated')
   }
 
   return (
-    <Button disabled={isRated} leftIcon={icons.ratings({})} variant='outline' onClick={(e) => {
-      e.stopPropagation()
-      onOpen()
-    }}>
+    <Button
+      disabled={isRated}
+      leftIcon={icons.ratings({})}
+      variant='outline'
+      onClick={(e) => {
+        e.stopPropagation()
+        onOpen()
+      }}
+    >
       {text}
     </Button>
   )
@@ -207,21 +224,21 @@ interface ActionButtonsProps {
 
 export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  let component = null
+
+  if (!booking) return null
 
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
-    component = <PendingRequestActions booking={booking} />
+    return <PendingRequestActions booking={booking} />
   }
 
   if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
-    component = <PendingPetitionActions booking={booking} />
+    return <PendingPetitionActions booking={booking} />
   }
 
+  let component = null
   if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
     component = <AcceptedBookingActions booking={booking} onOpen={onOpen} />
-  }
-
-  if (booking.bookingStatus === BookingStatus.RETURNED) {
+  } else if (booking.bookingStatus === BookingStatus.RETURNED) {
     component = <ReturnedBookingActions booking={booking} onOpen={onOpen} />
   }
 

@@ -1,6 +1,14 @@
-import { Booking } from '~components/Bookings/queries'
-
-export interface Rating extends Booking {}
+// export interface Rating extends Booking {}
+export interface Rating {
+  id: string
+  bookingId: string
+  fromUserId: string
+  toUserId: string
+  rating: number
+  ratingComment: string
+  ratingHashImages: string[]
+  ratedAt: string
+}
 
 export interface RateSubmission {
   bookingId: string

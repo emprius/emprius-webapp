@@ -1,13 +1,30 @@
-import { Box, Button, FormControl, FormLabel, Textarea, useToast, VStack } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  Skeleton,
+  Textarea,
+  useToast,
+  VStack,
+} from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { SetRatingStars } from '~components/Ratings/SetRatingStars'
-import { Rating } from '~components/Ratings/types'
 import { useSubmitRating } from './queries'
-import { RatingCardHeader } from '~components/Ratings/Card'
+import { Booking } from '~components/Bookings/queries'
+import { useTool } from '~components/Tools/queries'
+import { ServerImage } from '~components/Images/ServerImage'
+import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { UserCard } from '~components/Users/Card'
+import React from 'react'
 
 interface RatingFormProps {
-  rating: Rating
+  booking: Booking
   onSuccess?: () => void
 }
 
@@ -16,7 +33,58 @@ interface RatingFormData {
   comment: string
 }
 
-export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
+const RatingCardHeader = ({ booking }: { booking: Booking }) => {
+  const { t } = useTranslation()
+  const { data: tool } = useTool(booking.toolId)
+  const datef = t('rating.datef')
+  return (
+    <>
+      <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
+        <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
+          {tool?.images?.[0] && (
+            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
+              <ServerImage
+                imageId={tool.images[0]}
+                alt={tool.title}
+                width='100%'
+                height='100%'
+                objectFit='cover'
+                thumbnail
+              />
+            </Box>
+          )}
+        </Skeleton>
+        <VStack align='start'>
+          <Skeleton isLoaded={!!tool}>
+            <Heading size='md' noOfLines={2}>
+              {tool?.title}
+            </Heading>
+          </Skeleton>
+          <Badge px={2} py={1} borderRadius='full'>
+            <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
+              <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
+              {t('rating.date_formatted', { date: booking.startDate * 1000, format: datef })}
+              <Icon as={FaArrowRight} mx={2} />
+              {t('rating.date_formatted', { date: booking.endDate * 1000, format: datef })}
+            </Flex>
+          </Badge>
+        </VStack>
+      </Flex>
+      <UserCard
+        direction='row'
+        avatarSize='sm'
+        userId={booking.toUserId}
+        gap={2}
+        p={0}
+        fontSize='sm'
+        borderWidth={0}
+        mt={4}
+      />
+    </>
+  )
+}
+
+export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
   const submitRating = useSubmitRating()
   const toast = useToast()
@@ -34,7 +102,7 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
     try {
       if (data.userRating > 0) {
         await submitRating.mutateAsync({
-          bookingId: rating.id,
+          bookingId: booking.id,
           rating: data.userRating,
           comment: data.comment,
         })
@@ -65,7 +133,7 @@ export const RatingsForm = ({ rating, onSuccess }: RatingFormProps) => {
 
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} px={{ base: 2, md: 4 }} py={{ base: 3, md: 5 }}>
-      <RatingCardHeader rating={rating} />
+      <RatingCardHeader booking={booking} />
       <Box borderTopWidth='1px' pt={4} mt={4}>
         <VStack spacing={4} align='stretch'>
           <FormControl>

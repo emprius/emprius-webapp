@@ -22,6 +22,7 @@ const RatingSection = ({
   emptyTitle: string
   emptyDesc: string
 }) => {
+  console.log('XXXX', data)
   if (isLoading) {
     return <LoadingSpinner />
   }

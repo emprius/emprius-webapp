@@ -1,8 +1,6 @@
 import {
-  Badge,
   Box,
   Flex,
-  Heading,
   Icon,
   Link,
   Modal,
@@ -13,11 +11,9 @@ import {
   Skeleton,
   Text,
   useDisclosure,
-  VStack,
 } from '@chakra-ui/react'
 import React from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
+import { Trans } from 'react-i18next'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { BookingDetails } from '~components/Bookings/Details'
@@ -29,74 +25,22 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { Rating } from './types'
+import { Booking, useBookingDetail } from '~components/Bookings/queries'
 
-export const RatingCardHeader = ({ rating }: { rating: Rating }) => {
-  const { t } = useTranslation()
-  const { data: tool } = useTool(rating.toolId)
-  const datef = t('rating.datef')
-  return (
-    <>
-      <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
-        <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
-          {tool?.images?.[0] && (
-            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ServerImage
-                imageId={tool.images[0]}
-                alt={tool.title}
-                width='100%'
-                height='100%'
-                objectFit='cover'
-                thumbnail
-              />
-            </Box>
-          )}
-        </Skeleton>
-        <VStack align='start'>
-          <Skeleton isLoaded={!!tool}>
-            <Heading size='md' noOfLines={2}>
-              {tool?.title}
-            </Heading>
-          </Skeleton>
-          <Badge px={2} py={1} borderRadius='full'>
-            <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
-              <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-              {t('rating.date_formatted', { date: rating.startDate * 1000, format: datef })}
-              <Icon as={FaArrowRight} mx={2} />
-              {t('rating.date_formatted', { date: rating.endDate * 1000, format: datef })}
-            </Flex>
-          </Badge>
-        </VStack>
-      </Flex>
-      <UserCard
-        direction='row'
-        avatarSize='sm'
-        userId={rating.toUserId}
-        gap={2}
-        p={0}
-        fontSize='sm'
-        borderWidth={0}
-        mt={4}
-      />
-    </>
-  )
-}
-
-export const PendingRatingCard = (rating: Rating) => {
-  const isPending = !rating.isRated
-
-  if (!isPending) return null
-
+export const PendingRatingCard = (booking: Booking) => {
   return (
     <Box borderWidth='1px' borderRadius='lg' overflow='hidden' transition='all 0.2s' _hover={{ shadow: 'lg' }}>
-      <RatingsForm rating={rating} />
+      <RatingsForm booking={booking} />
     </Box>
   )
 }
 
 export const RatingCard = ({ rating }: { rating: Rating }) => {
   const { user } = useAuth()
-  const { t } = useTranslation()
-  const { data: tool } = useTool(rating.toolId)
+  const { data: booking } = useBookingDetail({ id: rating.bookingId })
+  const { data: tool } = useTool(booking?.toolId, {
+    enabled: !!booking?.toolId,
+  })
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const isLoan = rating.toUserId === user.id // toUserId is the owner
@@ -171,7 +115,7 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody py={6}>
-            <BookingDetails booking={rating} tool={tool} userId={userId} />
+            <BookingDetails booking={booking} tool={tool} userId={userId} />
           </ModalBody>
         </ModalContent>
       </Modal>

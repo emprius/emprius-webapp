@@ -89,6 +89,7 @@ export const tools = {
 export const bookings = {
   getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
   getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
+  getBooking: (id) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   cancel: (id: BookingActionsParams) =>
     apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/requests/${id}/cancel`)),
   accept: (id: BookingActionsParams) =>
@@ -97,13 +98,16 @@ export const bookings = {
     apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/deny`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
-  getRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates')),
+  getRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/rates')),
   getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
   getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
-  submitRating: (data: RateSubmission) => apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, {
-    rating: data.rating,
-    comment: data.comment
-  })),
+  submitRating: (data: RateSubmission) =>
+    apiRequest(
+      api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, {
+        rating: data.rating,
+        comment: data.comment,
+      })
+    ),
   getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
 }
 
@@ -119,7 +123,8 @@ export const users = {
 // images
 export const images = {
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
-  getImage: (hash: string, thumbnail?: boolean) => `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}`,
+  getImage: (hash: string, thumbnail?: boolean) =>
+    `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}`,
 }
 
 // Info endpoints
