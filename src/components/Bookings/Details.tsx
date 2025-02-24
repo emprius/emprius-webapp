@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, HStack, Icon, Link, Stack, Text } from '@chakra-ui/react'
+import { Box, Divider, Flex, HStack, Icon, Link, Stack, StackProps, Text, TextProps } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegCalendarAlt } from 'react-icons/fa'
@@ -37,12 +37,27 @@ const BookingComments = ({ booking }: { booking: Booking }) => {
         </Box>
         <Text fontSize='sm'>{booking.contact}</Text>
       </Stack>
-      <Stack direction='row' align='flex-start' spacing={2}>
-        <Box mt={1}>
-          <Icon as={icons.messageBubble} size={16} />
-        </Box>
-        <Text fontSize='sm'>{booking.comments}</Text>
-      </Stack>
+      <BookingComment comments={booking.comments} />
+    </Stack>
+  )
+}
+
+export const BookingComment = ({
+  comments,
+  textProps,
+  ...props
+}: {
+  comments: string
+  textProps?: TextProps
+} & StackProps) => {
+  return (
+    <Stack direction='row' align='flex-start' spacing={2} {...props}>
+      <Box mt={1}>
+        <Icon as={icons.messageBubble} size={16} />
+      </Box>
+      <Text fontSize='sm' {...textProps}>
+        {comments}
+      </Text>
     </Stack>
   )
 }

@@ -33,7 +33,7 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
-import { BookingDetails } from './Details'
+import { BookingComment, BookingDetails } from './Details'
 import { Booking } from './queries'
 
 export type BookingCardType = 'request' | 'petition'
@@ -58,6 +58,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
           <Box position='relative'>
             <ToolImage
               maxW={{ base: 'full', md: '160px' }}
+              minH={{ base: 'inherit', md: '210px' }}
               objectFit='cover'
               imageHash={tool?.images?.length ? tool?.images[0] : ''}
               tool={tool}
@@ -135,8 +136,35 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                         borderWidth={0}
                       />
                     </Stack>
-                    <Stack direction={'row'} justify={'end'} wrap={'wrap'} align={'end'} mt={2}>
-                      <ActionButtons booking={booking} type={type} />
+                    <Stack
+                      direction={{ base: 'column', md: 'row' }}
+                      justify={'space-between'}
+                      align={{ base: 'end', md: 'center' }}
+                      mt={2}
+                      spacing={4}
+                    >
+                      <Box
+                        px={4}
+                        py={2}
+                        borderRadius='lg'
+                        bg='gray.100'
+                        color='gray.500'
+                        _dark={{ bg: 'gray.600', color: 'white' }}
+                        flex='1'
+                        minW='0'
+                      >
+                        <BookingComment
+                          comments={booking.comments}
+                          textProps={{
+                            noOfLines: 1,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        />
+                      </Box>
+                      <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
+                        <ActionButtons booking={booking} type={type} />
+                      </Stack>
                     </Stack>
                   </Stack>
                 </>
