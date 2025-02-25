@@ -205,8 +205,8 @@
     "submit_success_description": "Valoración enviada con éxito",
     "submitted_ratings": "Enviadas",
     "submitting": "Enviando...",
-    "you_got_the_tool_from": "Has solicitado <toolName />",
-    "you_lent_the_tool": "Has prestado <toolName />"
+    "you_got_the_tool_from": "Has solicitado <toolName /> a",
+    "you_lent_the_tool": "Has prestado <toolName /> a"
   },
   "search": {
     "apply_filters": "Aplicar filtros",

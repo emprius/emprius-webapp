@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Icon,
   Link,
   Modal,
   ModalBody,
@@ -23,9 +22,9 @@ import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { useTool } from '~components/Tools/queries'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { icons } from '~theme/icons'
 import { Rating } from './types'
 import { Booking, useBookingDetail } from '~components/Bookings/queries'
+import { UserAvatar } from '~components/Images/Avatar'
 
 export const PendingRatingCard = (booking: Booking) => {
   return (
@@ -43,8 +42,10 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
   })
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const isLoan = rating.toUserId === user.id // toUserId is the owner
-  let userId = rating.toUserId
+  const isSubmitted = rating.fromUserId === user.id
+  const isLoan = booking?.toUserId === user.id // toUserId is the owner
+  let userId = isSubmitted ? rating.toUserId : rating.fromUserId
+
   let titleText = (
     <Trans
       i18nKey={'rating.you_got_the_tool_from'}
@@ -64,7 +65,6 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
         }}
       />
     )
-    userId = rating.fromUserId
   }
 
   return (
@@ -98,7 +98,9 @@ export const RatingCard = ({ rating }: { rating: Rating }) => {
             {rating.ratingComment && (
               <Box bg='gray.50' p={3} borderRadius='md' mb={2}>
                 <Flex align='start' gap={2}>
-                  <Icon as={icons.messageBubble} mt={1} color='gray.500' flexShrink={0} />
+                  <Box as={'span'} mt={1}>
+                    <UserAvatar userId={rating.fromUserId} size={'2xs'} />
+                  </Box>
                   <Text fontSize='sm' color='gray.600'>
                     {rating.ratingComment}
                   </Text>

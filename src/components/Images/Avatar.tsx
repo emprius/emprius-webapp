@@ -2,6 +2,7 @@ import { Avatar as ChakraAvatar } from '@chakra-ui/react'
 import React from 'react'
 import { ServerImage } from '~components/Images/ServerImage'
 import { ASSETS } from '~utils/constants'
+import { useUserProfile } from '~components/Users/queries'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
@@ -20,6 +21,11 @@ export interface AvatarProps {
   avatarHash?: string
   username?: string
   size?: AvatarSize
+}
+
+export const UserAvatar = ({ userId, size = '2xl' }: { userId: string } & Pick<AvatarProps, 'size'>) => {
+  const { data: user } = useUserProfile(userId)
+  return <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
 }
 
 export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl' }) => {

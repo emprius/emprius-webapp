@@ -14,6 +14,7 @@ import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
+import { Stack } from '@chakra-ui/react'
 
 const PendingRatings = () => {
   const { t } = useTranslation()
@@ -69,11 +70,11 @@ const SubmittedRatings = () => {
   }
 
   return (
-    <ResponsiveSimpleGrid>
+    <Stack>
       {data.map((rating, index) => (
         <RatingCard key={index} rating={rating} />
       ))}
-    </ResponsiveSimpleGrid>
+    </Stack>
   )
 }
 
@@ -100,11 +101,11 @@ const ReceivedRatings = () => {
   }
 
   return (
-    <ResponsiveSimpleGrid>
+    <Stack>
       {data.map((rating, index) => (
         <RatingCard key={index} rating={rating} />
       ))}
-    </ResponsiveSimpleGrid>
+    </Stack>
   )
 }
 
