@@ -31,7 +31,7 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
   const tool = tools[currentPage]
 
   return (
-    <Stack spacing={1} width='200px' pt={6} pb={4} gap={2}>
+    <Stack spacing={1} width='260px' pt={6} pb={4} gap={2}>
       <Stack as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
         <ToolImage imageHash={tool?.images?.[0] ?? ''} tool={tool} height='120px' />
         <Flex align='top' justify='space-between' gap={2} px={4}>
@@ -44,10 +44,7 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
           >
             {tool.title}
           </Text>
-          {/*<Text fontSize='lg' fontWeight='bold' sx={lightText} whiteSpace='nowrap'>*/}
-          {/*  {t('tools.cost_unit', { cost: tool.cost })}*/}
-          {/*</Text>*/}
-          <CostDay tool={tool} />
+          <CostDay tool={tool} fontSize='lg' />
         </Flex>
         <Box fontSize='sm' color='gray.600' noOfLines={2} px={4}>
           {tool.description}

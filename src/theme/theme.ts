@@ -119,6 +119,7 @@ const theme = extendTheme({
         color: 'white',
       },
       '.leaflet-popup-content, .leaflet-popup-content-wrapper': {
+        width: '260px',
         margin: 0,
         padding: 0,
       },
