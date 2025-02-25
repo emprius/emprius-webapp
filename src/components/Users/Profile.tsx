@@ -9,7 +9,6 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
 import { MapWithMarker } from '~components/Layout/Map'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
-import { UserRatings } from '~components/Ratings/UserRatings'
 import { UserProfile as UserProfileType } from '~components/Users/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
@@ -68,8 +67,6 @@ export const UserProfile = (user: UserProfileType) => {
           </Box>
         )}
       </Stack>
-
-      {isCurrentUser && <UserRatings />}
     </Box>
   )
 }

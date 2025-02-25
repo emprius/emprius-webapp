@@ -6,6 +6,15 @@ import { usePendingActions } from '~components/InfoProviders/PendingActionsProvi
 import { BadgeIcon } from '~components/Layout/BadgeIcon'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+import { IconType } from 'react-icons'
+
+type MenuItem = {
+  icon: IconType
+  path: string
+  count?: number
+  central?: boolean
+  additionalPath?: string[]
+}
 
 export const BottomNav = () => {
   const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
@@ -14,7 +23,7 @@ export const BottomNav = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const location = useLocation()
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
-  const menuItems = useMemo(
+  const menuItems = useMemo<MenuItem[]>(
     () => [
       { icon: icons.search, path: ROUTES.SEARCH },
       { icon: icons.tools, path: ROUTES.TOOLS.LIST },
@@ -23,9 +32,14 @@ export const BottomNav = () => {
         icon: icons.loan,
         path: ROUTES.BOOKINGS.REQUESTS,
         count: pendingRequestsCount,
-        additionalPath: ROUTES.BOOKINGS.PETITIONS, // This menu item can be selected on two different paths
+        additionalPath: [ROUTES.BOOKINGS.PETITIONS], // This menu item can be selected on two different paths
       },
-      { icon: icons.ratings, path: ROUTES.RATINGS.PENDING, count: pendingRatingsCount },
+      {
+        icon: icons.ratings,
+        path: ROUTES.RATINGS.PENDING,
+        count: pendingRatingsCount,
+        additionalPath: [ROUTES.RATINGS.SUBMITTED, ROUTES.RATINGS.PENDING],
+      },
     ],
     [t]
   )
@@ -47,7 +61,9 @@ export const BottomNav = () => {
     >
       {menuItems.map((item, index) => {
         const isSelected =
-          location.pathname === item.path || location.pathname === item?.additionalPath ? selectedColor : 'inherit'
+          location.pathname === item.path || item?.additionalPath?.some((path) => path === location.pathname)
+            ? selectedColor
+            : 'inherit'
         return (
           <Box key={index} as={RouterLink} to={item.path} p={3}>
             <BadgeIcon
