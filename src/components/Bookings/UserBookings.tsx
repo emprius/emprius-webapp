@@ -1,8 +1,7 @@
-import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react'
+import { Icon } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
 import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
@@ -10,6 +9,7 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
+import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
@@ -18,51 +18,31 @@ import { BookingCard, BookingCardType } from './Card'
 export const UserBookings = () => {
   const { t } = useTranslation()
   const { pendingRequestsCount } = usePendingActions()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const isMobile = useBreakpointValue({ base: true, md: false })
 
-  useEffect(() => {
-    if (location.pathname === ROUTES.BOOKINGS.REQUESTS) {
-      setTabIndex(1)
-    } else {
-      setTabIndex(0)
-    }
-  }, [location.pathname])
-
-  const [tabIndex, setTabIndex] = React.useState(location.pathname === ROUTES.BOOKINGS.REQUESTS ? 1 : 0)
-
-  const handleTabChange = (index: number) => {
-    setTabIndex(index)
-    if (isMobile) {
-      navigate(index === 0 ? ROUTES.BOOKINGS.PETITIONS : ROUTES.BOOKINGS.REQUESTS)
-    }
-  }
-
-  return (
-    <Tabs isLazy index={tabIndex} onChange={handleTabChange} display={{ base: 'block', md: 'none' }}>
-      <TabList>
-        <Tab>
+  const tabs: TabConfig[] = [
+    {
+      path: ROUTES.BOOKINGS.PETITIONS,
+      label: (
+        <>
           <Icon as={icons.request} mr={2} />
           {t('bookings.my_petitions')}
-        </Tab>
-        <Tab>
-          <BadgeCounter count={pendingRequestsCount}>
-            <Icon as={icons.loan} mr={2} />
-            {t('bookings.tool_requests')}
-          </BadgeCounter>
-        </Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel px={1}>
-          <Petitions />
-        </TabPanel>
-        <TabPanel px={1}>
-          <Requests />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
-  )
+        </>
+      ),
+      content: <Petitions />,
+    },
+    {
+      path: ROUTES.BOOKINGS.REQUESTS,
+      label: (
+        <BadgeCounter count={pendingRequestsCount}>
+          <Icon as={icons.loan} mr={2} />
+          {t('bookings.tool_requests')}
+        </BadgeCounter>
+      ),
+      content: <Requests />,
+    },
+  ]
+
+  return <RoutedTabs tabs={tabs} defaultPath={ROUTES.BOOKINGS.PETITIONS} />
 }
 
 const Requests = () => {
