@@ -3,7 +3,7 @@ import { Badge, Box, Button, Heading, Stack, Text, useColorModeValue } from '@ch
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BiWallet } from 'react-icons/bi'
-import { FiMail } from 'react-icons/fi'
+import { FiMail, FiHome } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -46,6 +46,12 @@ export const UserProfile = (user: UserProfileType) => {
                   {user.tokens} {t('common.token_symbol')}
                 </Text>
               </Stack>
+              {user.community && (
+                <Stack direction='row' align='center' spacing={2} sx={lightText}>
+                  <FiHome />
+                  <Text>{user.community}</Text>
+                </Stack>
+              )}
             </Stack>
           </Stack>
           {isCurrentUser && (

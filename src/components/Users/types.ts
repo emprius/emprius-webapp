@@ -9,6 +9,7 @@ export interface UserProfile {
   location?: EmpriusLocation
   active: boolean
   tokens: number
+  community?: string
   // notExists
   // ratingCount: number
   // createdAt: string
@@ -24,6 +25,7 @@ export interface EditProfileFormData {
   location?: EmpriusLocation
   active: boolean
   avatar?: string // b64 string
+  community?: string
 }
 
 export interface EditProfileFormProps {
@@ -33,6 +35,7 @@ export interface EditProfileFormProps {
     location?: EmpriusLocation
     active: boolean
     avatarHash?: string
+    community?: string
   }
   onSuccess?: () => void
 }

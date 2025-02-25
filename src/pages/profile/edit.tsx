@@ -21,6 +21,7 @@ export const Edit = () => {
         location: user?.location,
         active: user?.active || false,
         avatarHash: user?.avatarHash,
+        community: user?.community,
       }}
       onSuccess={() => navigate(-1)}
     />

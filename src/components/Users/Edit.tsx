@@ -165,6 +165,12 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
           <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
         </FormControl>
 
+        <FormControl isInvalid={!!errors.community}>
+          <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
+          <Input id='community' {...register('community')} />
+          <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
+        </FormControl>
+
         <LocationPicker name='location' control={control} isRequired={true} />
 
         <Stack direction='row' spacing={4} justify='flex-end'>
