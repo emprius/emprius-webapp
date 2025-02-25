@@ -20,9 +20,11 @@ export interface Transport {
   name: string
 }
 
+const UseInfoKey = ['info']
+
 export const useInfo = (options?: Omit<UseQueryOptions<InfoData>, 'queryKey' | 'queryFn'>) => {
   return useQuery<InfoData>({
-    queryKey: ['info'],
+    queryKey: UseInfoKey,
     queryFn: () => api.info.getInfo(),
     ...options,
   })

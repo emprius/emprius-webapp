@@ -1,23 +1,19 @@
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 import { Button, HStack, Text } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
-import { users } from '~src/services/api'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { UserCard } from '~components/Users/Card'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
+import { useUsers } from '~components/Users/queries'
 
 export const UsersList = () => {
   const { t } = useTranslation()
   const [page, setPage] = React.useState(0)
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['users', page],
-    queryFn: () => users.getList(page),
-  })
+  const { data, isLoading } = useUsers({ page })
 
   if (isLoading || !data) return <LoadingSpinner />
 

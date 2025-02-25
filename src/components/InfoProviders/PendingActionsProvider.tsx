@@ -20,10 +20,12 @@ const PendingActionsContext = createContext<PendingActionsContextType>({
 
 export const usePendingActions = () => useContext(PendingActionsContext)
 
+const PendingActionsKeys = ['pendingActions']
+
 export const PendingActionsProvider = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth()
   const { data, isLoading } = useQuery({
-    queryKey: ['pendingActions'],
+    queryKey: PendingActionsKeys,
     queryFn: () => bookings.getPendingActions(),
     refetchInterval: 30000, // Refetch every 30 seconds
     enabled: isAuthenticated,

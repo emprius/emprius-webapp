@@ -3,6 +3,13 @@ import { EmpriusLocation } from '~components/Layout/types'
 import api, { tools } from '~src/services/api'
 import { Tool, ToolsListResponse } from './types'
 import { useTranslation } from 'react-i18next'
+import { QueryKey } from '@tanstack/react-query/build/modern/index'
+
+export const ToolsKeys = {
+  tools: ['tools'],
+  userTools: (userId: string): QueryKey => ['userTools', userId],
+  tool: (id: string): QueryKey => ['tool', id],
+}
 
 export interface createToolParams {
   title: string
@@ -24,7 +31,7 @@ export interface UpdateToolParams extends createToolParams {
 export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) => {
   const { t } = useTranslation()
   const query = useQuery({
-    queryKey: ['tool', id],
+    queryKey: ToolsKeys.tool(id),
     queryFn: () => api.tools.getById(id),
     enabled: !!id,
     ...options,
@@ -50,7 +57,7 @@ export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>,
 
 export const useTools = () =>
   useQuery({
-    queryKey: ['tools'],
+    queryKey: ToolsKeys.tools,
     queryFn: () => api.tools.getUserTools(),
   })
 
@@ -59,7 +66,7 @@ export const useUserTools = (
   options?: Omit<UseQueryOptions<ToolsListResponse, Error>, 'queryKey' | 'queryFn'>
 ) =>
   useQuery({
-    queryKey: ['userTools', userId],
+    queryKey: ToolsKeys.userTools(userId),
     queryFn: () => api.tools.getUserToolsById(userId),
     enabled: !!userId,
     ...options,
@@ -71,8 +78,8 @@ export const useDeleteTool = () => {
     mutationFn: (id: string) => api.tools.delete(id),
     onSuccess: (data, id) => {
       // Invalidate tool queries to refetch updated data
-      queryClient.invalidateQueries({ queryKey: ['tools'] })
-      queryClient.removeQueries({ queryKey: ['tool', id] })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
+      queryClient.removeQueries({ queryKey: ToolsKeys.tool(id) })
     },
   })
 }
@@ -82,7 +89,7 @@ export const useCreateTool = (options?: Omit<UseMutationOptions<Tool, Error, cre
   return useMutation({
     mutationFn: tools.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tools'] })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
     },
     ...options,
   })
@@ -95,8 +102,8 @@ export const useUpdateTool = (
   return useMutation({
     mutationFn: tools.update,
     onSuccess: (data, params) => {
-      queryClient.invalidateQueries({ queryKey: ['tools'] })
-      queryClient.invalidateQueries({ queryKey: ['tool', params.id.toString()] })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
     },
     ...options,
   })

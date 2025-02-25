@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { EditProfileFormData, UserProfile } from '~components/Users/types'
-import api from '~src/services/api'
+import api, { users } from '~src/services/api'
+
+export const UserKeys = {
+  currentUser: ['currentUser'],
+  userId: (userId: string) => ['user', userId],
+  users: (page: number) => ['users', page],
+}
 
 export const useUpdateUserProfile = () => {
   const client = useQueryClient()
@@ -9,7 +15,7 @@ export const useUpdateUserProfile = () => {
     mutationKey: ['updateProfile'],
     // Invalidate profile query after mutation
     onSuccess: async (data) => {
-      await client.invalidateQueries({ queryKey: ['currentUser'] })
+      await client.invalidateQueries({ queryKey: UserKeys.currentUser })
       return data
     },
   })
@@ -18,7 +24,13 @@ export const useUpdateUserProfile = () => {
 // Query to get a user information
 export const useUserProfile = (userId: string, options?: Omit<UseQueryOptions<UserProfile>, 'queryKey' | 'queryFn'>) =>
   useQuery({
-    queryKey: ['userProfile', userId],
+    queryKey: UserKeys.userId(userId),
     queryFn: () => api.users.getById(userId),
     ...options,
+  })
+
+export const useUsers = ({ page }: { page: number }) =>
+  useQuery({
+    queryKey: UserKeys.users(page),
+    queryFn: () => users.getList(page),
   })

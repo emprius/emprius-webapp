@@ -8,6 +8,15 @@ import {
 } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { Rating } from '~components/Ratings/types'
+import { QueryKey } from '@tanstack/react-query/build/modern/index'
+import { ToolsKeys } from '~components/Tools/queries'
+
+export const BookingKeys = {
+  bookingsLists: ['bookings'],
+  requests: ['bookings', 'requests'],
+  petitions: ['bookings', 'petitions'],
+  detail: (id): QueryKey => ['booking', id],
+}
 
 export enum BookingStatus {
   PENDING = 'PENDING', // Requested by the user awaiting approval
@@ -40,21 +49,21 @@ export const useBookingDetail = ({
   options?: Omit<UseQueryOptions<Booking>, 'queryKey' | 'queryFn'>
 }) =>
   useQuery({
-    queryKey: ['booking', id],
+    queryKey: BookingKeys.detail(id),
     queryFn: () => api.bookings.getBooking(id),
     ...options,
   })
 
 export const useBookingRequests = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
   useQuery({
-    queryKey: ['bookingRequests'],
+    queryKey: BookingKeys.requests,
     queryFn: () => api.bookings.getRequests(),
     ...options,
   })
 
 export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
   useQuery({
-    queryKey: ['bookingPetitions'],
+    queryKey: BookingKeys.petitions,
     queryFn: () => api.bookings.getPetitions(),
     ...options,
   })
@@ -128,9 +137,8 @@ export const useCreateBooking = () =>
 
 // util function to invalidate queries using a client
 const invalidateQueries = (client: QueryClient, toolId?: string, bookingId?: string) => {
-  client.invalidateQueries({ queryKey: ['bookingRequests'] })
-  client.invalidateQueries({ queryKey: ['bookingPetitions'] })
-  client.invalidateQueries({ queryKey: ['tools'] })
-  if (toolId) client.invalidateQueries({ queryKey: ['tool', toolId] })
-  if (bookingId) client.invalidateQueries({ queryKey: ['bookingId', bookingId] })
+  client.invalidateQueries({ queryKey: BookingKeys.bookingsLists })
+  client.invalidateQueries({ queryKey: ToolsKeys.tools })
+  if (toolId) client.invalidateQueries({ queryKey: ToolsKeys.tool(toolId) })
+  if (bookingId) client.invalidateQueries({ queryKey: BookingKeys.detail(bookingId) })
 }

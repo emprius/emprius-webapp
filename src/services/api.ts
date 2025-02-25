@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosResponse} from 'axios'
-import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/authQueries'
+import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/queries'
 import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
 import {InfoData} from '~components/InfoProviders/InfoContext'
 import {BookingPendings} from '~components/InfoProviders/PendingActionsProvider'

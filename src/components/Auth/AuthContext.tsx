@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
-import { LoginResponse, useCurrentUser, useLogin, useRegister } from '~components/Auth/authQueries'
+import { LoginResponse, useCurrentUser, useLogin, useRegister } from '~components/Auth/queries'
 import { STORAGE_KEYS } from '~utils/constants'
 
 export const AuthContext = createContext<ReturnType<typeof useAuthProvider> | undefined>(undefined)

@@ -86,7 +86,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
 
 export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
-  const submitRating = useSubmitRating()
+  const submitRating = useSubmitRating({ bookingId: booking.id })
   const toast = useToast()
   const { handleSubmit, setValue, watch } = useForm<RatingFormData>({
     defaultValues: {
