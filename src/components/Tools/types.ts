@@ -3,12 +3,12 @@ import { DateRange } from '~components/Layout/Form/DateRangePicker'
 import { EmpriusLocation } from '~components/Layout/types'
 
 export interface Tool {
+  userId: string
   id: number
   title: string
   description?: string
-  isAvailable?: boolean
   cost?: number
-  userId: string
+  isAvailable?: boolean
   images: Image[]
   toolCategory?: number // Category ID
   location?: EmpriusLocation
@@ -24,14 +24,15 @@ export interface ToolsListResponse {
 }
 
 export interface ToolFormData {
+  id?: number
   title: string
   description: string
   cost: number
+  isAvailable: boolean
+  images: FileList
   toolCategory?: number
+  location?: EmpriusLocation
   estimatedValue: number
   height: number
   weight: number
-  images: FileList | any[]
-  location?: EmpriusLocation
-  isAvailable: boolean
 }

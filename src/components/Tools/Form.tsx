@@ -33,10 +33,10 @@ import { LocationPicker } from '~components/Layout/Form/LocationPicker'
 import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { lighterText } from '~theme/common'
-import { Tool, ToolFormData } from './types'
+import { ToolFormData } from './types'
 
 interface ToolFormProps {
-  initialData?: Partial<Tool>
+  initialData?: Partial<ToolFormData>
   onSubmit: (data: ToolFormData) => Promise<void>
   submitButtonText: string
   isLoading?: boolean

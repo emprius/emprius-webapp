@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useUploadImage } from '~components/Images/queries'
+import { useUploadImages } from '~components/Images/queries'
 import { ToolFormData } from '~components/Tools/types'
 import { ToolForm } from './Form'
 import { useCreateTool } from './queries'
@@ -13,7 +13,7 @@ export const AddTool = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
-  const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
+  const { mutateAsync: uploadImages, isPending: uploadImagesIsPending } = useUploadImages()
 
   const {
     mutateAsync: createTool,
@@ -42,13 +42,7 @@ export const AddTool = () => {
   const handleSubmit = async (data: ToolFormData) => {
     let imageHashes: string[] = []
     try {
-      // Upload images first
-      const imageFiles = Array.from(data.images)
-      const imagePromises = imageFiles.map(async (file) => {
-        const result = await uploadImage(file)
-        return result.hash
-      })
-      imageHashes = await Promise.all(imagePromises)
+      imageHashes = await uploadImages(data.images)
     } catch (error) {
       toast({
         title: 'Failed to upload images',
@@ -71,7 +65,7 @@ export const AddTool = () => {
     })
   }
 
-  const isLoading = createToolIsPending || uploadImageIsPending
+  const isLoading = createToolIsPending || uploadImagesIsPending
 
   return (
     <ToolForm

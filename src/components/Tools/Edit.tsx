@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { useUploadImage } from '~components/Images/queries'
+import { useUploadImages } from '~components/Images/queries'
 import { ROUTES } from '~src/router/routes'
 import { ToolForm } from './Form'
 import { UpdateToolParams, useUpdateTool } from './queries'
@@ -19,7 +19,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   const toast = useToast()
   const { user } = useAuth()
   const navigate = useNavigate()
-  const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
+  const { mutateAsync: uploadImages, isPending: uploadImagesIsPending } = useUploadImages()
   const [existingImages, setExistingImages] = useState(images || [])
   const [hadInitialImages] = useState(!!images?.length)
 
@@ -68,13 +68,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
 
     if (data.images.length) {
       try {
-        // Upload new images first
-        const imageFiles = Array.from(data.images)
-        const imagePromises = imageFiles.map(async (file) => {
-          const result = await uploadImage(file)
-          return result.hash
-        })
-        newImageHashes = await Promise.all(imagePromises)
+        newImageHashes = await uploadImages(data.images)
       } catch (error) {
         toast({
           title: 'Failed to upload images',
@@ -110,20 +104,20 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   const initialData = {
     ...initial,
   }
-  const isLoading = updateToolIsPending || uploadImageIsPending
+  const isLoading = updateToolIsPending || uploadImagesIsPending
 
   return (
     <ToolForm
       initialData={{
         ...initialData,
-        images: undefined // Remove images from initial data as they're handled separately
+        images: [], // Remove images from initial data as they're handled separately
       }}
+      existingImages={existingImages}
       onSubmit={handleSubmit}
       submitButtonText={t('common.save')}
       isLoading={isLoading}
       isError={isError}
       error={error}
-      existingImages={existingImages}
       onDeleteExistingImage={handleDeleteExistingImage}
       isEdit
       validateImages={validateImages}

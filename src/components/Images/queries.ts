@@ -9,3 +9,17 @@ export const useUploadImage = () =>
       return api.images.uploadImage(base64)
     },
   })
+
+export const useUploadImages = () => {
+  const { mutateAsync: uploadImage, isPending: uploadImageIsPending } = useUploadImage()
+  return useMutation({
+    mutationFn: async (files: FileList) => {
+      const imageFiles = Array.from(files)
+      const imagePromises = imageFiles.map(async (file) => {
+        const result = await uploadImage(file)
+        return result.hash
+      })
+      return await Promise.all(imagePromises)
+    },
+  })
+}
