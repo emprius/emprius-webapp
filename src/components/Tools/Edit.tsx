@@ -110,7 +110,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     <ToolForm
       initialData={{
         ...initialData,
-        images: [], // Remove images from initial data as they're handled separately
+        images: undefined, // Remove images from initial data as they're handled separately
       }}
       existingImages={existingImages}
       onSubmit={handleSubmit}
