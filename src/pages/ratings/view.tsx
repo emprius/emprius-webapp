@@ -39,7 +39,7 @@ const PendingRatings = () => {
   }
 
   return (
-    <ResponsiveSimpleGrid>
+    <ResponsiveSimpleGrid columns={{ base: 1, sm: 2, md: 2, xl: 3 }}>
       {data.map((booking: Booking, index) => (
         <PendingRatingCard key={index} {...booking} />
       ))}
