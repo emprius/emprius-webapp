@@ -14,4 +14,5 @@ export interface RateSubmission {
   bookingId: string
   rating: number
   comment: string
+  images?: string[]
 }

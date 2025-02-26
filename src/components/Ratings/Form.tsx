@@ -22,6 +22,8 @@ import { ServerImage } from '~components/Images/ServerImage'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { UserCard } from '~components/Users/Card'
 import React from 'react'
+import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
+import { useUploadImages } from '~components/Images/queries'
 
 interface RatingFormProps {
   booking: Booking
@@ -31,6 +33,8 @@ interface RatingFormProps {
 interface RatingFormData {
   userRating: number
   comment: string
+  images?: FileList
+  imageHashes?: string[]
 }
 
 const RatingCardHeader = ({ booking }: { booking: Booking }) => {
@@ -87,6 +91,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
 export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
   const submitRating = useSubmitRating({ bookingId: booking.id })
+  const uploadImages = useUploadImages()
   const toast = useToast()
   const { handleSubmit, setValue, watch } = useForm<RatingFormData>({
     defaultValues: {
@@ -101,10 +106,29 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const onSubmit = async (data: RatingFormData) => {
     try {
       if (data.userRating > 0) {
+        // Upload images if any
+        let imageHashes: string[] = []
+        if (data.images && data.images.length > 0) {
+          try {
+            imageHashes = await uploadImages.mutateAsync(data.images)
+          } catch (imageError) {
+            console.error('Error uploading images:', imageError)
+            toast({
+              title: t('rating.image_upload_error'),
+              description: t('rating.image_upload_error_description'),
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            })
+          }
+        }
+
+        // Submit rating with image hashes
         await submitRating.mutateAsync({
           bookingId: booking.id,
           rating: data.userRating,
           comment: data.comment,
+          images: imageHashes.length > 0 ? imageHashes : undefined,
         })
 
         // Show success toast
@@ -159,6 +183,13 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
               minHeight='100px'
             />
           </FormControl>
+
+          <MultipleImageSelector
+            name='images'
+            onChange={(e) => setValue('images', e.target.files || undefined)}
+            onBlur={() => {}}
+            label={t('rating.images')}
+          />
 
           <Button
             type='submit'
