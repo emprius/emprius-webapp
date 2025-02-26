@@ -7,7 +7,7 @@ import { OfflineBanner } from '~components/Layout/Banners/OfflineBanner'
 import { PWABanner } from '~components/Layout/Banners/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
-import { BottomNav } from '~src/pages/BottomNav'
+import { BottomNav } from '~components/Layout/BottomNav'
 import { ErrorBoundary } from '~src/pages/ErrorBoundary'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 

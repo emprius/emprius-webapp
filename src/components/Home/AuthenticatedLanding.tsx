@@ -62,6 +62,9 @@ export const AuthenticatedLanding = () => {
                 align={'center'}
                 position='relative'
                 zIndex={999}
+                _dark={{
+                  bg: 'gray.800',
+                }}
               >
                 <LandingSearchBar />
                 <Stack

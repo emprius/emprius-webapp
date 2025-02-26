@@ -53,8 +53,8 @@ export const SearchPage = () => {
   return (
     <FormProvider {...methods}>
       <Box h='100vh'>
-        <Box h='100vh' bg={bgColor} position='relative'>
-          <Flex h='100vh' bg='white'>
+        <Box h='100vh' position='relative'>
+          <Flex h='100vh'>
             <SideNav isMapView={isMapView} toggleView={toggleView} methods={methods} onSubmit={onSubmit} />
             {/*Floating buttons to open filters and switch view*/}
             <Box position='fixed' top={20} right={4} zIndex={2} display={{ base: 'flex', lg: 'none' }}>
@@ -109,6 +109,7 @@ const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSub
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false })
   const isMobile = useBreakpointValue({ base: true, lg: false })
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const bgColor = useColorModeValue('white', 'gray.800')
 
   if (isMobile) return null
 
@@ -119,7 +120,7 @@ const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSub
         px={isOpen ? 4 : 0}
         pt={isOpen ? 5 : 0}
         h='100vh'
-        bg='white'
+        bg={bgColor}
         transform={isOpen ? 'translateX(0)' : 'translateX(-100%)'}
         transition='transform 0.3s ease'
         zIndex={3}
@@ -142,8 +143,6 @@ const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSub
         top='5'
         onClick={onToggle}
         zIndex={999}
-        variant='outline'
-        bg={'white'}
         borderRadius={'sm'}
         size={'sm'}
       />
@@ -154,8 +153,6 @@ const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSub
         onClick={toggleView}
         isMapView={isMapView}
         zIndex={999}
-        variant='outline'
-        bg={'white'}
         borderRadius={'sm'}
         size={'sm'}
       />

@@ -82,7 +82,6 @@ export const BottomNav = () => {
                       justifyContent: 'center',
                       borderRadius: 'full',
                       border: '3px solid',
-                      borderColor: location.pathname === item.path ? selectedColor : 'black',
                     }
                   : {}
               }

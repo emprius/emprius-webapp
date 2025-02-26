@@ -12,6 +12,10 @@ const baseStyle = definePartsStyle({
       boxShadow: '0 0 0 2px rgba(56, 161, 105, 0.3)', // primary.500 with opacity
       borderColor: 'primary.500',
     },
+    _dark: {
+      color: 'whiteAlpha.900',
+      bg: 'gray.700',
+    },
   },
 })
 

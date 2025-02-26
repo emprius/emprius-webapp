@@ -32,7 +32,7 @@ const baseStyle = definePartsStyle((props) => {
         },
       },
       _hover: {
-        bg: `${colorScheme}.600`,
+        bg: `${colorScheme}.200`,
 
         _dark: {
           bg: 'whiteAlpha.300',
@@ -47,24 +47,6 @@ const baseStyle = definePartsStyle((props) => {
     },
   }
 })
-
-// const sizes = {
-//   sm: definePartsStyle({
-//     container: { width: '1.875rem', height: '1rem' },
-//     thumb: { width: '0.75rem', height: '0.75rem' },
-//     track: { width: '1.875rem', height: '1rem' },
-//   }),
-//   md: definePartsStyle({
-//     container: { width: '2.875rem', height: '1.5rem' },
-//     thumb: { width: '1.25rem', height: '1.25rem' },
-//     track: { width: '2.875rem', height: '1.5rem' },
-//   }),
-//   lg: definePartsStyle({
-//     container: { width: '3.875rem', height: '2rem' },
-//     thumb: { width: '1.75rem', height: '1.75rem' },
-//     track: { width: '3.875rem', height: '2rem' },
-//   }),
-// }
 
 export const Switch = defineMultiStyleConfig({
   baseStyle,

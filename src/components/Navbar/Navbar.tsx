@@ -63,6 +63,7 @@ export const Navbar = () => {
           </Flex>
         )}
         <Button
+          ml={4}
           as={RouterLink}
           to={'https://emprius.cat/collabora/'}
           leftIcon={icons.donate({})}
@@ -88,7 +89,7 @@ export const Navbar = () => {
                 alignItems='center'
                 p={2}
                 borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
+                _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
               >
                 <BadgeIcon
                   icon={icons.loan}
@@ -108,7 +109,7 @@ export const Navbar = () => {
                 alignItems='center'
                 p={2}
                 borderRadius='md'
-                _hover={{ bg: 'gray.100' }}
+                _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
               >
                 <BadgeIcon
                   icon={icons.ratings}
