@@ -1,6 +1,6 @@
 import { Image } from '~components/Images/ServerImage'
 import { DateRange } from '~components/Layout/Form/DateRangePicker'
-import { EmpriusLocation } from '~components/Layout/types'
+import { EmpriusLocation } from '~components/Layout/Map/types'
 
 export interface Tool {
   userId: string

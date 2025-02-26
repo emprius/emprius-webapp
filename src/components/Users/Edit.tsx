@@ -17,7 +17,7 @@ import {
 import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { LocationPicker } from '~components/Layout/Form/LocationPicker'
+import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { EditProfileFormData, EditProfileFormProps } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'

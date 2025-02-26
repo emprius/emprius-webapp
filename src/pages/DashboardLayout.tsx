@@ -2,7 +2,7 @@ import { Box, Flex, Icon, useBreakpointValue, useColorModeValue } from '@chakra-
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom'
-import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
+import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 
 import { ROUTES } from '~src/router/routes'

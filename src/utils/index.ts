@@ -1,4 +1,4 @@
-import { EmpriusLocation } from '~components/Layout/types'
+import { EmpriusLocation } from '~components/Layout/Map/types'
 import { LatLng } from 'leaflet'
 
 export const getB64FromFile = (file: File): Promise<string> => {

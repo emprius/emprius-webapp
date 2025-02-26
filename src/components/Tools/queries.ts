@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { EmpriusLocation } from '~components/Layout/types'
+import { EmpriusLocation } from '~components/Layout/Map/types'
 import api, { tools } from '~src/services/api'
 import { Tool, ToolsListResponse } from './types'
 import { useTranslation } from 'react-i18next'

@@ -2,7 +2,7 @@ import { FormControl } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useInfoContext } from '~components/InfoProviders/InfoContext'
+import { useInfoContext } from '~components/Layout/Contexts/InfoContext'
 import { SearchParams } from '~components/Search/queries'
 
 type FiltersProps = {

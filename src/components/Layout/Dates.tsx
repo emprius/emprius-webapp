@@ -4,7 +4,6 @@ import { lightText } from '~theme/common'
 
 export const DateRangeTotal = ({ begin, end, ...props }: { begin: Date; end: Date } & TextProps) => {
   const { t } = useTranslation()
-  // todo(kon): fix intl keys properly
   const datef = t('bookings.datef')
   return (
     <Text fontSize='md' sx={lightText} {...props}>

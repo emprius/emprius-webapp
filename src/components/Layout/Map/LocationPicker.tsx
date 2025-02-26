@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MAP_DEFAULTS } from '~utils/constants'
-import { EmpriusMarker } from '~components/Layout/Map'
+import { EmpriusMarker } from '~components/Layout/Map/Map'
 import { toLatLng } from '~src/utils'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER

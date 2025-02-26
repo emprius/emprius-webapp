@@ -22,7 +22,7 @@ import { ServerImage } from '~components/Images/ServerImage'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { UserCard } from '~components/Users/Card'
 import React from 'react'
-import { MultipleImageSelector } from '~components/Layout/Form/MultipleImageSelector'
+import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import { useUploadImages } from '~components/Images/queries'
 
 interface RatingFormProps {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { bookings } from '../../services/api'
+import { bookings } from '../../../services/api'
 import { useAuth } from '~components/Auth/AuthContext'
 
 export type BookingPendings = {

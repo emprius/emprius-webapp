@@ -2,7 +2,7 @@ import L, { LatLngExpression } from 'leaflet'
 import { Circle, MapContainer, MapContainerProps, Marker, TileLayer } from 'react-leaflet'
 import React, { PropsWithChildren, useMemo } from 'react'
 import { MAP_DEFAULTS } from '~utils/constants'
-import { EmpriusLocation } from '~components/Layout/types'
+import { EmpriusLocation } from '~components/Layout/Map/types'
 import { colors } from '~theme/colors'
 import { toLatLng } from '~src/utils'
 

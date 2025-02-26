@@ -1,4 +1,4 @@
-import { EmpriusLocation } from '~components/Layout/types'
+import { EmpriusLocation } from '~components/Layout/Map/types'
 
 export interface UserProfile {
   id: string

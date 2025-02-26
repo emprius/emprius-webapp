@@ -12,7 +12,7 @@ import { PendingRatingCard, RatingCard } from '~components/Ratings/Card'
 import { Booking } from '~components/Bookings/queries'
 import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
-import { usePendingActions } from '~components/InfoProviders/PendingActionsProvider'
+import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { Stack } from '@chakra-ui/react'
 
