@@ -80,16 +80,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   })
 
   const handleFormSubmit = async (data: ToolFormData) => {
-    try {
-      await onSubmit(data)
-    } catch (error) {
-      toast({
-        title: t('common.error'),
-        description: t('common.something_went_wrong'),
-        status: 'error',
-      })
-      throw error
-    }
+    await onSubmit(data)
   }
 
   const { isOpen, onToggle } = useDisclosure()
@@ -249,17 +240,22 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </Stack>
       </Collapse>
 
-      <Stack direction='row' spacing={4} justify='flex-end'>
-        <Button onClick={() => navigate(-1)} variant='ghost'>
-          {t('common.cancel')}
-        </Button>
-        <Button type='submit' colorScheme='primary' isLoading={isLoading}>
-          {submitButtonText}
-        </Button>
-        {isEdit && <DeleteToolButton toolId={initialData.id} />}
+      <Stack align={'end'}>
+        <Stack direction='row' spacing={4} justify='flex-end'>
+          <FormSubmitMessage isError={isError} error={error} />
+        </Stack>
+        <Stack direction='row' spacing={4} justify='space-between' w={'full'} align={'start'} wrap={'wrap-reverse'}>
+          {isEdit && <DeleteToolButton toolId={initialData.id} disabled={isLoading} />}
+          <Stack direction='row' spacing={4} justify='flex-end' flex={1}>
+            <Button onClick={() => navigate(-1)} variant='ghost'>
+              {t('common.cancel')}
+            </Button>
+            <Button type='submit' colorScheme='primary' isLoading={isLoading}>
+              {submitButtonText}
+            </Button>
+          </Stack>
+        </Stack>
       </Stack>
-
-      <FormSubmitMessage isError={isError} error={error} />
     </Stack>
   )
 }

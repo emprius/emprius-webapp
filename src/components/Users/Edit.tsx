@@ -21,16 +21,19 @@ import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { EditProfileFormData, EditProfileFormProps } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'
-import { ASSETS, AUTH_FORM } from '~utils/constants'
+import { AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, avatarSizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './queries'
-import { filterBySupportedTypes, INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
+import { useNavigate } from 'react-router-dom'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
-export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSuccess }) => {
+export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
   const { t } = useTranslation()
   const toast = useToast()
-  const updateProfile = useUpdateUserProfile()
+  const { mutateAsync, isError, error, isPending } = useUpdateUserProfile()
   const [newAvatar, setNewAvatar] = useState<File | ''>()
+  const navigate = useNavigate()
+  const onSuccess = () => navigate(-1)
 
   const {
     control,
@@ -38,7 +41,6 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
     handleSubmit,
     formState: { errors, dirtyFields },
     watch,
-    setValue,
   } = useForm<EditProfileFormData>({
     defaultValues: {
       ...initialData,
@@ -63,7 +65,6 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
         updatedFields.avatar = newAvatar === '' ? '' : await getB64FromFile(newAvatar)
       }
     } catch (error) {
-      console.error('Failed to process images:', error)
       toast({
         title: 'Failed to get image',
         status: 'error',
@@ -85,7 +86,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
 
     try {
       // Cast to EditProfileFormData since we know the API handles partial updates
-      await updateProfile.mutateAsync(updatedFields as EditProfileFormData)
+      await mutateAsync(updatedFields as EditProfileFormData)
       toast({
         title: t('common.success'),
         description: t('user.profile_updated'),
@@ -141,11 +142,8 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
         <FormControl isInvalid={!!errors.password}>
           <FormLabel>{t('common.password')}</FormLabel>
           <PasswordInput
+            id='password'
             {...register('password', {
-              pattern: {
-                value: AUTH_FORM.PASSWORD_REGEX,
-                message: t('auth.password_requirements'),
-              },
               minLength: {
                 value: AUTH_FORM.MIN_PASSWORD_LENGTH,
                 message: t('auth.password_too_short'),
@@ -173,11 +171,13 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData, onSucces
 
         <LocationPicker name='location' control={control} isRequired={true} />
 
+        <FormSubmitMessage isError={isError} error={error} />
+
         <Stack direction='row' spacing={4} justify='flex-end'>
           <Button onClick={onSuccess} variant='ghost'>
             {t('common.cancel')}
           </Button>
-          <Button type='submit' isLoading={updateProfile.isPending} loadingText={t('common.saving')}>
+          <Button type='submit' isLoading={isPending} loadingText={t('common.saving')}>
             {t('common.save')}
           </Button>
         </Stack>
@@ -197,7 +197,8 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
   const [previewUrl, setPreviewUrl] = useState<string | undefined>()
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = filterBySupportedTypes(event.target.files)?.[0]
+    // const file = filterBySupportedTypes(event.target.files)?.[0]
+    const file = event.target.files[0]
     if (!file) return
 
     try {
@@ -217,10 +218,11 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
     }
   }
 
-  const handleOnAvatarDelete = () => {
-    setPreviewUrl(ASSETS.AVATAR_FALLBACK)
-    onAvatarChange('')
-  }
+  // Deactivated feature
+  // const handleOnAvatarDelete = () => {
+  //   setPreviewUrl(ASSETS.AVATAR_FALLBACK)
+  //   onAvatarChange('')
+  // }
 
   return (
     <Box position='relative' width={avatarSizeToPixels[size]} height={avatarSizeToPixels[size]}>
@@ -255,7 +257,7 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
       </>
       <input
         type='file'
-        accept={INPUT_ACCEPTED_IMAGE_TYPES}
+        // accept={INPUT_ACCEPTED_IMAGE_TYPES}
         ref={inputRef}
         onChange={handleImageChange}
         style={{ display: 'none' }}

@@ -19,15 +19,20 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   const toast = useToast()
   const { user } = useAuth()
   const navigate = useNavigate()
-  const { mutateAsync: uploadImages, isPending: uploadImagesIsPending } = useUploadImages()
+  const {
+    mutateAsync: uploadImages,
+    isPending: uploadImagesIsPending,
+    isError: isImageError,
+    error: imageError,
+  } = useUploadImages()
   const [existingImages, setExistingImages] = useState(images || [])
   const [hadInitialImages] = useState(!!images?.length)
 
   const {
     mutateAsync,
     isPending: updateToolIsPending,
-    isError,
-    error,
+    isError: isUpdateError,
+    error: updateError,
   } = useUpdateTool({
     onSuccess: () => {
       toast({
@@ -105,6 +110,8 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     ...initial,
   }
   const isLoading = updateToolIsPending || uploadImagesIsPending
+  const isError = isUpdateError || isImageError
+  const error = updateError || imageError
 
   return (
     <ToolForm

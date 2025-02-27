@@ -5,8 +5,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Box,
   Button,
+  ButtonProps,
   IconButton,
   IconButtonProps,
   Switch,
@@ -20,6 +20,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { UpdateToolParams, useDeleteTool, useUpdateTool } from '~components/Tools/queries'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
 type ToolButtonProps = { toolId: number } & Omit<IconButtonProps, 'aria-label'>
 
@@ -108,17 +109,17 @@ export const AvailabilityToggle = ({ tool }: { tool: Tool }) => {
   )
 }
 
-export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
+export const DeleteToolButton = ({ toolId, ...props }: { toolId: number } & ButtonProps) => {
   const { t } = useTranslation()
   const toast = useToast()
-  const deleteTool = useDeleteTool()
+  const { mutateAsync, error, isError, isPending } = useDeleteTool()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
 
   const handleDelete = useCallback(async () => {
     try {
-      await deleteTool.mutateAsync(toolId.toString())
+      await mutateAsync(toolId.toString())
       toast({
         title: t('tools.deleted'),
         status: 'success',
@@ -136,13 +137,22 @@ export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
         isClosable: true,
       })
     }
-  }, [toolId, deleteTool, toast, t, onClose])
+  }, [toolId, mutateAsync, toast, t, onClose])
 
   return (
-    <Box>
-      <Button leftIcon={<FiTrash2 />} aria-label={t('tools.delete')} size='md' colorScheme='red' onClick={onOpen}>
+    <>
+      <Button
+        leftIcon={<FiTrash2 />}
+        aria-label={t('tools.delete')}
+        size='md'
+        colorScheme='red'
+        onClick={onOpen}
+        isLoading={isPending}
+        {...props}
+      >
         {t('tools.delete')}
       </Button>
+      <FormSubmitMessage isError={isError} error={error} />
 
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
@@ -164,6 +174,6 @@ export const DeleteToolButton = ({ toolId }: { toolId: number }) => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </Box>
+    </>
   )
 }

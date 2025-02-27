@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { EditUser } from '~components/Users/Edit'
 import { FormLayoutContext } from '~src/pages/FormLayout'
 
 export const Edit = () => {
   const { user } = useAuth()
-  const navigate = useNavigate()
   const { setTitle } = useOutletContext<FormLayoutContext>()
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export const Edit = () => {
         avatarHash: user?.avatarHash,
         community: user?.community,
       }}
-      onSuccess={() => navigate(-1)}
     />
   )
 }

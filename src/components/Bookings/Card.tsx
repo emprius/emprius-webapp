@@ -51,6 +51,8 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
   const isRequest = type === 'request'
   const userId = isRequest ? booking.fromUserId : booking.toUserId
 
+  const cardMinH = '210px'
+
   return (
     <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
       <Stack direction={{ base: 'column', md: 'row' }}>
@@ -58,7 +60,7 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
           <Box position='relative'>
             <ToolImage
               maxW={{ base: 'full', md: '160px' }}
-              minH={{ base: 'inherit', md: '210px' }}
+              minH={{ base: 'inherit', md: cardMinH }}
               objectFit='cover'
               imageHash={tool?.images?.length ? tool?.images[0] : ''}
               tool={tool}
@@ -71,9 +73,9 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
             </Hide>
           </Box>
         </CardHeader>
-        <CardBody pl={4} py={4} onClick={onOpen} cursor={'pointer'}>
-          <Stack direction={'row'} spacing={{ base: 4 }} align='stretch'>
-            <Stack spacing={0} flex='1' position='relative'>
+        <CardBody pl={4} py={4} onClick={onOpen} cursor={'pointer'} minH={cardMinH}>
+          <Stack direction={'row'} spacing={{ base: 4 }} align='stretch' h={'full'}>
+            <Stack spacing={0} flex='1' position='relative' h={'full'}>
               {/* Status badge for big screens */}
               <Hide below={'md'}>
                 <Box position='absolute' top={-2} right={-3} zIndex={1}>
@@ -81,93 +83,91 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                 </Box>
               </Hide>
               {/* Booking Summary Section */}
-              <Stack spacing={2}>
-                <>
-                  <Stack spacing={1}>
-                    <CardTitle isRequest={isRequest} />
-                    <Stack
-                      mt={{ base: 6, sm: 2 }}
-                      direction={'row'}
-                      spacing={{ base: 2, lg: 4 }}
-                      wrap={'wrap'}
-                      justify={'space-between'}
-                      align={'center'}
-                    >
-                      {/*tool info*/}
-                      {isLoading ? (
-                        <Skeleton height='24px' width='200px' />
-                      ) : (
-                        <Stack spacing={1} maxW={{ base: 'full', lg: '300px' }} w={{ base: 'full', lg: 'inherit' }}>
-                          <Flex gap={1} align='top' justify='space-between' direction={{ base: 'row', lg: 'column' }}>
-                            <Link
-                              as={RouterLink}
-                              to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+              <Stack spacing={1} justify={'space-between'} h={'full'}>
+                <Stack spacing={1}>
+                  <CardTitle isRequest={isRequest} />
+                  <Stack
+                    mt={{ base: 6, sm: 2 }}
+                    direction={'row'}
+                    spacing={{ base: 2, lg: 4 }}
+                    wrap={'wrap'}
+                    justify={'space-between'}
+                    align={'center'}
+                  >
+                    {/*tool info*/}
+                    {isLoading ? (
+                      <Skeleton height='24px' width='200px' />
+                    ) : (
+                      <Stack spacing={1} maxW={{ base: 'full', lg: '300px' }} w={{ base: 'full', lg: 'inherit' }}>
+                        <Flex gap={1} align='top' justify='space-between' direction={{ base: 'row', lg: 'column' }}>
+                          <Link
+                            as={RouterLink}
+                            to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
+                            fontWeight='semibold'
+                            fontSize='lg'
+                            _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                          >
+                            <Text
                               fontWeight='semibold'
                               fontSize='lg'
                               _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                              noOfLines={2}
+                              flex='1'
                             >
-                              <Text
-                                fontWeight='semibold'
-                                fontSize='lg'
-                                _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                                noOfLines={2}
-                                flex='1'
-                              >
-                                {tool?.title}
-                              </Text>
-                            </Link>
-                            <CostDay tool={tool} />
-                          </Flex>
+                              {tool?.title}
+                            </Text>
+                          </Link>
+                          <CostDay tool={tool} />
+                        </Flex>
 
-                          {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
-                        </Stack>
-                      )}
-                      {/*Dates*/}
-                      <BookingDates booking={booking} />
-                      {/* User Card - Hidden on small screens, visible on md and up */}
-                      <UserCard
-                        p={0}
-                        gap={2}
-                        direction={'column'}
-                        fontSize={'sm'}
-                        avatarSize={'sm'}
-                        userId={userId}
-                        justify={'start'}
-                        borderWidth={0}
-                      />
-                    </Stack>
-                    <Stack
-                      direction={{ base: 'column', md: 'row' }}
-                      justify={'space-between'}
-                      align={{ base: 'end', md: 'center' }}
-                      mt={2}
-                      spacing={4}
-                    >
-                      <Box
-                        px={4}
-                        py={2}
-                        borderRadius='lg'
-                        bg='gray.100'
-                        color='gray.500'
-                        _dark={{ bg: 'gray.600', color: 'white' }}
-                        flex='1'
-                        minW='0'
-                      >
-                        <BookingComment
-                          comments={booking.comments}
-                          textProps={{
-                            noOfLines: 1,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        />
-                      </Box>
-                      <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
-                        <ActionButtons booking={booking} type={type} />
+                        {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
                       </Stack>
-                    </Stack>
+                    )}
+                    {/*Dates*/}
+                    <BookingDates booking={booking} />
+                    {/* User Card - Hidden on small screens, visible on md and up */}
+                    <UserCard
+                      p={0}
+                      gap={2}
+                      direction={'column'}
+                      fontSize={'sm'}
+                      avatarSize={'sm'}
+                      userId={userId}
+                      justify={'start'}
+                      borderWidth={0}
+                    />
                   </Stack>
-                </>
+                </Stack>
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  justify={'space-between'}
+                  align={{ base: 'end', md: 'center' }}
+                  mt={2}
+                  spacing={4}
+                >
+                  <Box
+                    px={4}
+                    py={2}
+                    borderRadius='lg'
+                    bg='gray.100'
+                    color='gray.500'
+                    _dark={{ bg: 'gray.600', color: 'white' }}
+                    flex='1'
+                    minW='0'
+                  >
+                    <BookingComment
+                      comments={booking.comments}
+                      textProps={{
+                        noOfLines: 1,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    />
+                  </Box>
+                  <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
+                    <ActionButtons booking={booking} type={type} />
+                  </Stack>
+                </Stack>
               </Stack>
             </Stack>
           </Stack>

@@ -76,47 +76,47 @@ type BookingActionOptions = Omit<
 >
 
 // Query to accept a booking request
-export const useAcceptBooking = (options?: BookingActionOptions) => {
+export const useAcceptBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: (bookingId: string) => api.bookings.accept(bookingId),
     onSuccess: (res, bookingId) => {
-      invalidateQueries(client, '', bookingId)
+      invalidateQueries(client, booking.toolId, bookingId)
     },
     ...options,
   })
 }
 
 // Query to deny a booking request
-export const useDenyBooking = (options?: BookingActionOptions) => {
+export const useDenyBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.deny(bookingId),
     onSuccess: (res, bookingId) => {
-      invalidateQueries(client, res.toolId, bookingId)
+      invalidateQueries(client, booking.toolId, bookingId)
     },
     ...options,
   })
 }
 
 // Query to cancel a booking request
-export const useCancelBooking = (options?: BookingActionOptions) => {
+export const useCancelBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
-  return useMutation<Booking, Error, string>({
+  return useMutation<void, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.cancel(bookingId),
-    onSuccess: (res, bookingId) => {
-      invalidateQueries(client, res.toolId, bookingId)
+    onSuccess: (_, bookingId) => {
+      invalidateQueries(client, booking.toolId, bookingId)
     },
     ...options,
   })
 }
 
-export const useReturnBooking = (options?: BookingActionOptions) => {
+export const useReturnBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.return(bookingId),
     onSuccess: (res, bookingId) => {
-      invalidateQueries(client, '', bookingId)
+      invalidateQueries(client, booking.toolId, bookingId)
     },
     ...options,
   })

@@ -13,13 +13,18 @@ export const AddTool = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
-  const { mutateAsync: uploadImages, isPending: uploadImagesIsPending } = useUploadImages()
+  const {
+    mutateAsync: uploadImages,
+    isPending: uploadImagesIsPending,
+    isError: isImageError,
+    error: imageError,
+  } = useUploadImages()
 
   const {
     mutateAsync: createTool,
     isPending: createToolIsPending,
-    isError,
-    error,
+    isError: isCreateError,
+    error: createError,
   } = useCreateTool({
     onSuccess: () => {
       toast({
@@ -66,6 +71,8 @@ export const AddTool = () => {
   }
 
   const isLoading = createToolIsPending || uploadImagesIsPending
+  const isError = isCreateError || isImageError
+  const error = createError || imageError
 
   return (
     <ToolForm

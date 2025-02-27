@@ -1,4 +1,4 @@
-export const ACCEPTED_IMG_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
+export const ACCEPTED_IMG_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 export const INPUT_ACCEPTED_IMAGE_TYPES = ACCEPTED_IMG_TYPES.join(', ')
 

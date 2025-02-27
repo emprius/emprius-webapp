@@ -23,7 +23,7 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const toast = useToast()
 
-  const { mutateAsync: acceptBooking, isPending: isAcceptPending } = useAcceptBooking({
+  const { mutateAsync: acceptBooking, isPending: isAcceptPending } = useAcceptBooking(booking, {
     onError: (error) => {
       // Show toast error
       toast({
@@ -34,7 +34,7 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
       console.error(error)
     },
   })
-  const { mutateAsync: denyBooking, isPending: isDenyPending } = useDenyBooking({
+  const { mutateAsync: denyBooking, isPending: isDenyPending } = useDenyBooking(booking, {
     onError: (error) => {
       // Show toast error
       toast({
@@ -100,7 +100,7 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
   const toast = useToast()
-  const { mutateAsync, isPending } = useCancelBooking({
+  const { mutateAsync, isPending } = useCancelBooking(booking, {
     onError: (error) => {
       // Show toast error
       toast({
@@ -135,7 +135,7 @@ const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen
   const { t } = useTranslation()
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { mutateAsync, isPending } = useReturnBooking({
+  const { mutateAsync, isPending } = useReturnBooking(booking, {
     onError: (error) => {
       // Show toast error
       toast({

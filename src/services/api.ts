@@ -17,12 +17,23 @@ export class UnauthorizedError extends Error {
   }
 }
 
+export class ApiError extends Error {
+  public raw: AxiosError
+
+  constructor(message?: string, error?: AxiosError) {
+    super(message ? message : 'api error')
+    this.raw = error
+  }
+}
+
+interface ApiResponseHeader {
+  success: boolean
+  message: string
+}
+
 export interface ApiResponse<T> {
   data?: T
-  header: {
-    success: boolean
-    message: string
-  }
+  header: ApiResponseHeader
 }
 
 const api = axios.create({
@@ -49,6 +60,12 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       throw new UnauthorizedError(error?.message)
     }
+    if (!axios.isAxiosError(error)) throw error
+    const err = error?.response?.data?.header
+    if (!err?.success) {
+      if (!err?.message) throw new ApiError(error.message, error)
+      throw new ApiError(err?.message, error)
+    }
     throw error
   }
 )
@@ -58,7 +75,7 @@ async function apiRequest<T>(promise: Promise<AxiosResponse<ApiResponse<T>>>): P
   if (data?.header?.success) {
     return data.data
   }
-  throw new Error(data?.header?.message || 'API success is not true')
+  throw new ApiError(data?.header?.message || 'API success is not true')
 }
 
 // Auth endpoints

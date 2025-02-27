@@ -37,5 +37,4 @@ export interface EditProfileFormProps {
     avatarHash?: string
     community?: string
   }
-  onSuccess?: () => void
 }
