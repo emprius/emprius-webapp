@@ -5,6 +5,7 @@ import { Input } from './components/input'
 import { Link } from './components/link' // import { Text } from './components/text'
 import { Menu } from './components/menu'
 import { Modal } from './components/modal'
+import { NumberInput } from './components/numberInput'
 import { Popover } from './components/popover'
 import { Select } from './components/select'
 import { Slider } from './components/slider'
@@ -139,6 +140,7 @@ const theme = extendTheme({
     Button,
     Checkbox,
     Input,
+    NumberInput,
     Select,
     Slider,
     Switch,
