@@ -19,7 +19,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { Link as RouterLink } from 'react-router-dom'
@@ -34,7 +34,7 @@ import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingComment, BookingDetails } from './Details'
-import { Booking } from './queries'
+import { Booking, BookingStatus } from './queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
 export type BookingCardType = 'request' | 'petition'
@@ -54,8 +54,58 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
 
   const cardMinH = '210px'
 
+  // Determine if this booking is new
+  // const isNew = useMemo(() => isNewBooking(booking.createdAt), [booking.createdAt])
+  const isNew = useMemo(
+    () => booking.bookingStatus === BookingStatus.PENDING && type === 'request',
+    [booking.createdAt]
+  )
+
+  // todo(kon): move this to theme
+  // Set card styling based on conditions
+  const cardStyle = useMemo(() => {
+    if (error) {
+      return {
+        borderColor: 'red.300',
+        borderWidth: '2px',
+        shadow: 'md',
+        boxShadow: '0px 4px 6px rgba(255, 0, 0, 0.2)', // Red shadow
+        _hover: {
+          shadow: 'md',
+          boxShadow: '0px 6px 8px rgba(255, 0, 0, 0.3)', // Darker red on hover
+          borderColor: 'red.400',
+        },
+        transition: 'all 0.2s',
+      }
+    }
+    if (isNew) {
+      return {
+        borderColor: 'primary.300',
+        borderWidth: '2px',
+        shadow: 'md',
+        boxShadow: '0px 4px 6px rgba(0, 200, 100, 0.2)', // Greenish shadow
+        _hover: {
+          shadow: 'md',
+          boxShadow: '0px 6px 8px rgba(0, 200, 100, 0.3)', // Stronger green on hover
+          borderColor: 'primary.400',
+        },
+        transition: 'all 0.2s',
+      }
+    }
+    return {
+      variant: 'outline',
+      shadow: 'md',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', // Default subtle shadow
+      _hover: {
+        shadow: 'md',
+        boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)', // Slightly stronger default shadow
+      },
+      transition: 'box-shadow 0.2s',
+    }
+  }, [error, isNew])
+
   return (
-    <Card variant='outline' shadow='md' _hover={{ shadow: 'lg' }} transition='box-shadow 0.2s'>
+    <Card {...cardStyle}>
       <Stack direction={{ base: 'column', md: 'row' }}>
         <CardHeader p={0}>
           <Box position='relative'>
