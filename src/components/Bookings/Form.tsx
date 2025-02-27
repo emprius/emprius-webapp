@@ -21,7 +21,8 @@ import { DateRangePicker } from '~components/Layout/Form/DateRangePicker'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { TOOL_MAX_DATE_BOOKING } from '~utils/constants'
-import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
+import { addDayToDate, DateToEpoch, getDaysBetweenDates } from '~utils/dates'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
 interface BookingFormProps {
   tool: Tool
@@ -57,23 +58,19 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
     mode: 'onChange',
   })
 
-  const formatDateForApi = (date: string): number => {
-    return Math.floor(new Date(date).getTime() / 1000)
-  }
-
-  const createBooking = useCreateBooking()
+  const { mutateAsync, isError, isPending, error } = useCreateBooking()
 
   const onSubmit = async (formData: BookingFormData) => {
     try {
       const bookingData = {
         toolId: tool.id.toString(),
-        startDate: formatDateForApi(formData.startDate),
-        endDate: formatDateForApi(formData.endDate),
+        startDate: DateToEpoch(formData.startDate),
+        endDate: DateToEpoch(formData.endDate),
         contact: formData.contact,
         comments: formData.comments,
       }
 
-      await createBooking.mutateAsync(bookingData)
+      await mutateAsync(bookingData)
 
       toast({
         title: t('bookings.success'),
@@ -144,26 +141,13 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
           </FormControl>
           <TotalPrice tool={tool} watch={watch} />
         </Stack>
-        <Button
-          type='submit'
-          colorScheme='primary'
-          size='lg'
-          isLoading={createBooking.isPending}
-          isDisabled={!tool.isAvailable}
-        >
+        <FormSubmitMessage isError={isError} error={error} />
+        <Button type='submit' colorScheme='primary' size='lg' isLoading={isPending} isDisabled={!tool.isAvailable}>
           {t('bookings.book')}
         </Button>
       </Stack>
     </Box>
   )
-}
-
-const calculateTotalDays = (startDate: string, endDate: string): number => {
-  if (!startDate || !endDate) return 0
-  const start = new Date(startDate)
-  const end = new Date(endDate)
-  const diffTime = Math.abs(end.getTime() - start.getTime())
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 // +1 to include both start and end days
 }
 
 const TotalPrice = ({ tool, watch }: { tool: Tool; watch: UseFormWatch<BookingFormData> }) => {

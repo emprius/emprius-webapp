@@ -11,6 +11,7 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+import { BookingActionsProvider } from '~components/Bookings/Actions'
 
 const BookingList = ({ type }: { type: 'request' | 'petition' }) => {
   const { t } = useTranslation()
@@ -43,8 +44,16 @@ export const View = () => {
   const isMobile = useBreakpointValue({ base: true, md: false })
 
   if (isMobile) {
-    return <UserBookings />
+    return (
+      <BookingActionsProvider>
+        <UserBookings />
+      </BookingActionsProvider>
+    )
   }
 
-  return <BookingList type={isRequests ? 'request' : 'petition'} />
+  return (
+    <BookingActionsProvider>
+      <BookingList type={isRequests ? 'request' : 'petition'} />
+    </BookingActionsProvider>
+  )
 }

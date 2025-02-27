@@ -25,8 +25,10 @@ export const convertToDate = (input: DateInput): Date => {
   return new Date(input)
 }
 
-export const addDayToDate = (date: string | number | Date) => {
+export const addDayToDate = (date: DateInput) => {
   let dateObj = convertToDate(date) // Convert string to Date object
   dateObj.setDate(dateObj.getDate() + 1) // Add 1 day
   return dateObj
 }
+
+export const DateToEpoch = (date: DateInput) => Math.floor(new Date(date).getTime() / 1000)

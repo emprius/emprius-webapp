@@ -1,7 +1,7 @@
-import { Button, useDisclosure, useToast } from '@chakra-ui/react'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
+import {Button, useDisclosure, useToast} from '@chakra-ui/react'
+import React, {createContext, useContext, useState} from 'react'
+import {useTranslation} from 'react-i18next'
+import {FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle} from 'react-icons/fi'
 import {
   Booking,
   BookingStatus,
@@ -10,9 +10,70 @@ import {
   useDenyBooking,
   useReturnBooking,
 } from '~components/Bookings/queries'
-import { RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
-import { icons } from '~theme/icons'
-import { useAuth } from '~components/Auth/AuthContext'
+import {RatingModal, ReturnAlertDialog} from '~components/Ratings/Modal'
+import {icons} from '~theme/icons'
+import {useAuth} from '~components/Auth/AuthContext'
+
+// Create a context for booking actions
+interface BookingActionsContextType {
+  error: Error | null
+  onSuccess: (message: string) => void
+  onError: (error: Error, title: string) => void
+  // Rating modal disclosure state
+  ratingModalDisclosure: ReturnType<typeof useDisclosure>
+}
+
+const BookingActionsContext = createContext<BookingActionsContextType | undefined>(undefined)
+
+// Provider component
+export const BookingActionsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [error, setError] = useState<Error | null>()
+  const toast = useToast()
+
+  // Add rating modal disclosure
+  const ratingModalDisclosure = useDisclosure()
+
+  const onSuccess = (message: string) => {
+    toast({
+      title: message,
+      status: 'success',
+      isClosable: true,
+    })
+    setError(null)
+  }
+
+  const onError = (error: Error, title: string) => {
+    toast({
+      title: title,
+      status: 'error',
+      isClosable: true,
+    })
+    setError(error)
+    console.error(error)
+  }
+
+  return (
+    <BookingActionsContext.Provider
+      value={{
+        error,
+        onSuccess,
+        onError,
+        ratingModalDisclosure,
+      }}
+    >
+      {children}
+    </BookingActionsContext.Provider>
+  )
+}
+
+// Hook to use the booking actions context
+export const useBookingActions = () => {
+  const context = useContext(BookingActionsContext)
+  if (context === undefined) {
+    throw new Error('useBookingActions must be used within a BookingActionsProvider')
+  }
+  return context
+}
 
 interface ActionsProps {
   booking: Booking
@@ -21,54 +82,30 @@ interface ActionsProps {
 const PendingRequestActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
-  const toast = useToast()
+  const { error, onSuccess, onError } = useBookingActions()
 
   const { mutateAsync: acceptBooking, isPending: isAcceptPending } = useAcceptBooking(booking, {
-    onError: (error) => {
-      // Show toast error
-      toast({
-        title: t('bookings.accept_error'),
-        status: 'error',
-        isClosable: true,
-      })
-      console.error(error)
-    },
+    onError: (error) => onError(error, t('bookings.accept_error')),
   })
+
   const { mutateAsync: denyBooking, isPending: isDenyPending } = useDenyBooking(booking, {
-    onError: (error) => {
-      // Show toast error
-      toast({
-        title: t('bookings.deny_error'),
-        status: 'error',
-        isClosable: true,
-      })
-      console.error(error)
-    },
+    onError: (error) => onError(error, t('bookings.deny_error')),
   })
 
   const handleDeny = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    await denyBooking(bookingId).then(() => {
-      toast({
-        title: t('bookings.deny_success'),
-        status: 'success',
-        isClosable: true,
-      })
-    })
+    await denyBooking(bookingId)
+    onSuccess(t('bookings.deny_success'))
   }
 
   const handleApprove = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    await acceptBooking(bookingId).then(() => {
-      toast({
-        title: t('bookings.approve_success'),
-        status: 'success',
-        isClosable: true,
-      })
-    })
+    await acceptBooking(bookingId)
+    onSuccess(t('bookings.approve_success'))
   }
 
-  const isPending = isDenyPending || isDenyPending
+  const isPending = isAcceptPending || isDenyPending
+  const isError = !!error
 
   return (
     <>
@@ -99,28 +136,16 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
 const PendingPetitionActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
-  const toast = useToast()
+  const { onSuccess, onError } = useBookingActions()
+
   const { mutateAsync, isPending } = useCancelBooking(booking, {
-    onError: (error) => {
-      // Show toast error
-      toast({
-        title: t('bookings.cancel_error'),
-        status: 'error',
-        isClosable: true,
-      })
-      console.error(error)
-    },
+    onError: (error) => onError(error, t('bookings.cancel_error')),
   })
 
-  const handleCancel = (e: React.MouseEvent) => {
+  const handleCancel = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    mutateAsync(bookingId).then(() => {
-      toast({
-        title: t('bookings.cancel_success'),
-        status: 'success',
-        isClosable: true,
-      })
-    })
+    await mutateAsync(bookingId)
+    onSuccess(t('bookings.cancel_success'))
   }
 
   return (
@@ -130,37 +155,26 @@ const PendingPetitionActions = ({ booking }: ActionsProps) => {
   )
 }
 
-const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen: () => void } & ActionsProps) => {
+const AcceptedBookingActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { onSuccess, onError, ratingModalDisclosure } = useBookingActions()
+
   const { mutateAsync, isPending } = useReturnBooking(booking, {
-    onError: (error) => {
-      // Show toast error
-      toast({
-        title: t('bookings.return_error'),
-        status: 'error',
-        isClosable: true,
-      })
-      console.error(error)
-    },
+    onError: (error) => onError(error, t('bookings.return_error')),
   })
 
-  const handleReturn = () => {
-    mutateAsync(bookingId)
-      .then(() => {
-        toast({
-          title: t('bookings.return_success'),
-          status: 'success',
-          isClosable: true,
-        })
-        onClose()
-        onOpenRatingModal() // Open rating modal after successful return
-      })
-      .catch(() => {
-        onClose()
-      })
+  const handleReturn = async () => {
+    try {
+      await mutateAsync(bookingId)
+      onSuccess(t('bookings.return_success'))
+      onClose()
+      ratingModalDisclosure.onOpen() // Open rating modal after successful return
+    } catch (error) {
+      // Error is already handled by the mutation's onError
+      onClose()
+    }
   }
 
   return (
@@ -187,9 +201,10 @@ const AcceptedBookingActions = ({ booking, onOpen: onOpenRatingModal }: { onOpen
   )
 }
 
-const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & ActionsProps) => {
+const ReturnedBookingActions = ({ booking }: ActionsProps) => {
   const { user } = useAuth()
   const { t } = useTranslation()
+  const { ratingModalDisclosure } = useBookingActions()
 
   if (!booking?.ratings) {
     return null
@@ -209,7 +224,7 @@ const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
       variant='outline'
       onClick={(e) => {
         e.stopPropagation()
-        onOpen()
+        ratingModalDisclosure.onOpen()
       }}
     >
       {text}
@@ -217,29 +232,26 @@ const ReturnedBookingActions = ({ booking, onOpen }: { onOpen: () => void } & Ac
   )
 }
 
-interface ActionButtonsProps {
-  booking: Booking
+type ActionButtonsProps = {
   type: 'request' | 'petition'
-}
+} & ActionsProps
 
 export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    ratingModalDisclosure: { isOpen, onClose },
+  } = useBookingActions()
 
   if (!booking) return null
 
-  if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
-    return <PendingRequestActions booking={booking} />
-  }
-
-  if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
-    return <PendingPetitionActions booking={booking} />
-  }
-
   let component = null
-  if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
-    component = <AcceptedBookingActions booking={booking} onOpen={onOpen} />
+  if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
+    component = <PendingRequestActions booking={booking} />
+  } else if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
+    component = <PendingPetitionActions booking={booking} />
+  } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
+    component = <AcceptedBookingActions booking={booking} />
   } else if (booking.bookingStatus === BookingStatus.RETURNED) {
-    component = <ReturnedBookingActions booking={booking} onOpen={onOpen} />
+    component = <ReturnedBookingActions booking={booking} />
   }
 
   return (

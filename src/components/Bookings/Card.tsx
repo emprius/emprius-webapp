@@ -23,7 +23,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { Link as RouterLink } from 'react-router-dom'
-import { ActionButtons } from '~components/Bookings/Actions'
+import { ActionButtons, useBookingActions } from '~components/Bookings/Actions'
 import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { useTool } from '~components/Tools/queries'
@@ -35,6 +35,7 @@ import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingComment, BookingDetails } from './Details'
 import { Booking } from './queries'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
 export type BookingCardType = 'request' | 'petition'
 
@@ -45,8 +46,8 @@ interface BookingCardProps {
 
 export const BookingCard = ({ booking, type }: BookingCardProps) => {
   const { data: tool, isLoading } = useTool(booking.toolId)
-  const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { error } = useBookingActions()
 
   const isRequest = type === 'request'
   const userId = isRequest ? booking.fromUserId : booking.toUserId
@@ -168,6 +169,11 @@ export const BookingCard = ({ booking, type }: BookingCardProps) => {
                     <ActionButtons booking={booking} type={type} />
                   </Stack>
                 </Stack>
+                {!!error && (
+                  <Stack direction={{ base: 'column', md: 'row' }} alignSelf={'end'}>
+                    <FormSubmitMessage isError={!!error} error={error} />
+                  </Stack>
+                )}
               </Stack>
             </Stack>
           </Stack>
