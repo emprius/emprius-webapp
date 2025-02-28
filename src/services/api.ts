@@ -9,11 +9,13 @@ import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
 import {Tool, ToolsListResponse} from '~components/Tools/types'
 import {EditProfileFormData, UserProfile} from '~components/Users/types'
 import {STORAGE_KEYS} from '~utils/constants'
+import {ImageUploadResponse} from '~components/Images/queries'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
   constructor(message?: string) {
     super(message ? message : 'user not authorized')
+    this.name = 'UnauthorizedError'
   }
 }
 
@@ -22,6 +24,7 @@ export class ApiError extends Error {
 
   constructor(message?: string, error?: AxiosError) {
     super(message ? message : 'api error')
+    this.name = 'ApiError'
     this.raw = error
   }
 }
@@ -119,12 +122,7 @@ export const bookings = {
   getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
   getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
   submitRating: (data: RateSubmission) =>
-    apiRequest(
-      api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, {
-        rating: data.rating,
-        comment: data.comment,
-      })
-    ),
+    apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, data)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
 }
 
@@ -139,7 +137,7 @@ export const users = {
 
 // images
 export const images = {
-  uploadImage: (content: string) => apiRequest(api.post<ApiResponse<{ hash: string }>>('/images', { content })),
+  uploadImage: (content: string) => apiRequest(api.post<ApiResponse<ImageUploadResponse>>('/images', { content })),
   getImage: (hash: string, thumbnail?: boolean) =>
     `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}`,
 }
