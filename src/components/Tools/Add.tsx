@@ -46,17 +46,7 @@ export const AddTool = () => {
 
   const handleSubmit = async (data: ToolFormData) => {
     let imageHashes: string[] = []
-    try {
-      imageHashes = await uploadImages(data.images)
-    } catch (error) {
-      toast({
-        title: 'Failed to upload images',
-        status: 'error',
-        duration: 5000,
-      })
-      throw new Error('Failed to process images:', error)
-    }
-
+    imageHashes = await uploadImages(data.images)
     await createTool({
       title: data.title,
       description: data.description,

@@ -72,16 +72,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     let newImageHashes: string[] = []
 
     if (data.images.length) {
-      try {
-        newImageHashes = await uploadImages(data.images)
-      } catch (error) {
-        toast({
-          title: 'Failed to upload images',
-          status: 'error',
-          duration: 5000,
-        })
-        throw new Error('Failed to process images:', error)
-      }
+      newImageHashes = await uploadImages(data.images)
     }
 
     // Combine existing image hashes with new image hashes
