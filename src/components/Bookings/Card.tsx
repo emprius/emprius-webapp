@@ -67,7 +67,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
   // const isNew = useMemo(() => isNewBooking(booking.createdAt), [booking.createdAt])
   const isNew = useMemo(
     () => booking.bookingStatus === BookingStatus.PENDING && type === 'request',
-    [booking.createdAt]
+    [booking.bookingStatus]
   )
 
   // Set card styling based on conditions

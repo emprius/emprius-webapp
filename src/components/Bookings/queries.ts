@@ -10,12 +10,13 @@ import api from '~src/services/api'
 import { Rating } from '~components/Ratings/types'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { ToolsKeys } from '~components/Tools/queries'
+import { RatingsKeys } from '~components/Ratings/queries'
 
 export const BookingKeys = {
-  bookingsLists: ['bookings'],
-  requests: ['bookings', 'requests'],
-  petitions: ['bookings', 'petitions'],
-  detail: (id): QueryKey => ['booking', id],
+  bookingsLists: ['bookings'] as const,
+  requests: ['bookings', 'requests'] as const,
+  petitions: ['bookings', 'petitions'] as const,
+  detail: (id): QueryKey => ['booking', id] as const,
 }
 
 export enum BookingStatus {
@@ -117,6 +118,7 @@ export const useReturnBooking = (booking: Booking, options?: BookingActionOption
     mutationFn: (bookingId: string) => api.bookings.return(bookingId),
     onSuccess: (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
+      client.invalidateQueries({ queryKey: RatingsKeys.pending })
     },
     ...options,
   })
@@ -137,8 +139,7 @@ export const useCreateBooking = () =>
 
 // util function to invalidate queries using a client
 const invalidateQueries = (client: QueryClient, toolId?: string, bookingId?: string) => {
-  client.invalidateQueries({ queryKey: BookingKeys.bookingsLists })
-  client.invalidateQueries({ queryKey: ToolsKeys.tools })
+  client.invalidateQueries({ queryKey: BookingKeys.bookingsLists || ToolsKeys.tools })
   if (toolId) client.invalidateQueries({ queryKey: ToolsKeys.tool(toolId) })
   if (bookingId) client.invalidateQueries({ queryKey: BookingKeys.detail(bookingId) })
 }
