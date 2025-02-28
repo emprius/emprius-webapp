@@ -1,7 +1,7 @@
-import {Button, useDisclosure, useToast} from '@chakra-ui/react'
-import React, {createContext, useContext, useState} from 'react'
-import {useTranslation} from 'react-i18next'
-import {FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle} from 'react-icons/fi'
+import { Button, useDisclosure } from '@chakra-ui/react'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
 import {
   Booking,
   BookingStatus,
@@ -10,70 +10,10 @@ import {
   useDenyBooking,
   useReturnBooking,
 } from '~components/Bookings/queries'
-import {RatingModal, ReturnAlertDialog} from '~components/Ratings/Modal'
-import {icons} from '~theme/icons'
-import {useAuth} from '~components/Auth/AuthContext'
-
-// Create a context for booking actions
-interface BookingActionsContextType {
-  error: Error | null
-  onSuccess: (message: string) => void
-  onError: (error: Error, title: string) => void
-  // Rating modal disclosure state
-  ratingModalDisclosure: ReturnType<typeof useDisclosure>
-}
-
-const BookingActionsContext = createContext<BookingActionsContextType | undefined>(undefined)
-
-// Provider component
-export const BookingActionsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [error, setError] = useState<Error | null>()
-  const toast = useToast()
-
-  // Add rating modal disclosure
-  const ratingModalDisclosure = useDisclosure()
-
-  const onSuccess = (message: string) => {
-    toast({
-      title: message,
-      status: 'success',
-      isClosable: true,
-    })
-    setError(null)
-  }
-
-  const onError = (error: Error, title: string) => {
-    toast({
-      title: title,
-      status: 'error',
-      isClosable: true,
-    })
-    setError(error)
-    console.error(error)
-  }
-
-  return (
-    <BookingActionsContext.Provider
-      value={{
-        error,
-        onSuccess,
-        onError,
-        ratingModalDisclosure,
-      }}
-    >
-      {children}
-    </BookingActionsContext.Provider>
-  )
-}
-
-// Hook to use the booking actions context
-export const useBookingActions = () => {
-  const context = useContext(BookingActionsContext)
-  if (context === undefined) {
-    throw new Error('useBookingActions must be used within a BookingActionsProvider')
-  }
-  return context
-}
+import { RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
+import { icons } from '~theme/icons'
+import { useAuth } from '~components/Auth/AuthContext'
+import { useBookingActions } from '~components/Bookings/ActionsProvider'
 
 interface ActionsProps {
   booking: Booking
