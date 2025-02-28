@@ -16,3 +16,9 @@ export interface RateSubmission {
   comment: string
   images?: string[]
 }
+
+export interface RatingFormData {
+  userRating: number
+  comment: string
+  images?: FileList
+}

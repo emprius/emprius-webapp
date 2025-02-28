@@ -1,5 +1,7 @@
 import {
   Box,
+  Card,
+  CardBody,
   Flex,
   Link,
   Modal,
@@ -25,12 +27,22 @@ import { ROUTES } from '~src/router/routes'
 import { Rating } from './types'
 import { Booking, useBookingDetail } from '~components/Bookings/queries'
 import { UserAvatar } from '~components/Images/Avatar'
+import { useMutationState } from '@tanstack/react-query'
 
 export const PendingRatingCard = (booking: Booking) => {
+  // Check last mutation for this rating to see if there was an error
+  const mutations = useMutationState({
+    filters: { mutationKey: ['ratings', 'submit', booking.id] },
+    select: (mutation) => mutation.state,
+  })
+  const isError = mutations[mutations.length - 1]?.error
+
   return (
-    <Box borderWidth='1px' borderRadius='lg' overflow='hidden' transition='all 0.2s' _hover={{ shadow: 'lg' }}>
-      <RatingsForm booking={booking} />
-    </Box>
+    <Card variant={isError ? 'error' : 'elevated'}>
+      <CardBody>
+        <RatingsForm booking={booking} />
+      </CardBody>
+    </Card>
   )
 }
 
