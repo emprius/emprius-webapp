@@ -2,6 +2,7 @@ import { CloseIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
+  ButtonProps,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -11,21 +12,21 @@ import {
   SimpleGrid,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import React, { forwardRef, useCallback, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { icons } from '~theme/icons'
 import { filterBySupportedTypes, INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 
-interface ImageUploaderProps {
+type ImageUploaderProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void
   name: string
   error?: string
   isRequired?: boolean
   label?: string
-}
+} & ButtonProps
 
 export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderProps>(
-  ({ onChange, onBlur, name, error, isRequired = false, label = 'Images' }, ref) => {
+  ({ onChange, onBlur, name, error, isRequired = false, label = 'Images', ...props }, ref) => {
     const [previews, setPreviews] = useState<string[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -138,7 +139,7 @@ export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderP
     }, [files, onChange])
 
     // Cleanup preview URLs when component unmounts
-    React.useEffect(() => {
+    useEffect(() => {
       return () => {
         previews.forEach((url) => URL.revokeObjectURL(url))
       }
@@ -169,7 +170,7 @@ export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderP
           />
         </VisuallyHidden>
 
-        <Button leftIcon={icons.add({})} onClick={handleButtonClick} mb={4}>
+        <Button leftIcon={icons.add({})} onClick={handleButtonClick} mb={4} {...props}>
           Add Images
         </Button>
 

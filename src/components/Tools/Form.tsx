@@ -182,6 +182,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       <MultipleImageSelector
         label={t('tools.images')}
         error={errors.images?.message}
+        disabled={isLoading}
         {...register(
           'images',
           validateImages
