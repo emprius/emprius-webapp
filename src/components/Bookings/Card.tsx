@@ -69,51 +69,19 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
     [booking.createdAt]
   )
 
-  // todo(kon): move this to theme
   // Set card styling based on conditions
-  const cardStyle = useMemo(() => {
+  const cardVariant = useMemo(() => {
     if (error) {
-      return {
-        borderColor: 'red.300',
-        borderWidth: '2px',
-        shadow: 'md',
-        boxShadow: '0px 4px 6px rgba(255, 0, 0, 0.2)', // Red shadow
-        _hover: {
-          shadow: 'md',
-          boxShadow: '0px 6px 8px rgba(255, 0, 0, 0.3)', // Darker red on hover
-          borderColor: 'red.400',
-        },
-        transition: 'all 0.2s',
-      }
+      return 'error'
     }
     if (isNew) {
-      return {
-        borderColor: 'primary.300',
-        borderWidth: '2px',
-        shadow: 'md',
-        boxShadow: '0px 4px 6px rgba(0, 200, 100, 0.2)', // Greenish shadow
-        _hover: {
-          shadow: 'md',
-          boxShadow: '0px 6px 8px rgba(0, 200, 100, 0.3)', // Stronger green on hover
-          borderColor: 'primary.400',
-        },
-        transition: 'all 0.2s',
-      }
+      return 'newItem'
     }
-    return {
-      variant: 'outline',
-      shadow: 'md',
-      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', // Default subtle shadow
-      _hover: {
-        shadow: 'md',
-        boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.2)', // Slightly stronger default shadow
-      },
-      transition: 'box-shadow 0.2s',
-    }
+    return 'elevatedXl'
   }, [error, isNew])
 
   return (
-    <Card {...cardStyle}>
+    <Card variant={cardVariant}>
       <Stack direction={{ base: 'column', md: 'row' }}>
         <CardHeader p={0}>
           <Box position='relative'>

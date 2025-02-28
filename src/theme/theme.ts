@@ -1,5 +1,6 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import { Button } from './components/button'
+import { Card } from './components/card'
 import { Checkbox } from './components/checkbox'
 import { Input } from './components/input'
 import { Link } from './components/link' // import { Text } from './components/text'
@@ -138,6 +139,7 @@ const theme = extendTheme({
   },
   components: {
     Button,
+    Card,
     Checkbox,
     Input,
     NumberInput,
