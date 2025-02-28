@@ -23,7 +23,7 @@ import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { Link as RouterLink } from 'react-router-dom'
-import { ActionButtons, useBookingActions } from '~components/Bookings/Actions'
+import { ActionButtons, BookingActionsProvider, useBookingActions } from '~components/Bookings/Actions'
 import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { useTool } from '~components/Tools/queries'
@@ -44,7 +44,15 @@ interface BookingCardProps {
   type: BookingCardType
 }
 
-export const BookingCard = ({ booking, type }: BookingCardProps) => {
+// <BookingActionsProvider>
+
+export const BookingCard = (props: BookingCardProps) => (
+  <BookingActionsProvider>
+    <ProvidedBookingCard {...props} />
+  </BookingActionsProvider>
+)
+
+const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
   const { data: tool, isLoading } = useTool(booking.toolId)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { error } = useBookingActions()
