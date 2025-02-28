@@ -130,7 +130,11 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
       duration: 5000,
       isClosable: true,
     })
-    reset()
+    reset({
+      userRating: 0,
+      comment: '',
+      images: null,
+    })
     onSuccess?.()
   }
 
