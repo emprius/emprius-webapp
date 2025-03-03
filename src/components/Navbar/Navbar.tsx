@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { Avatar, avatarSizeToPixels } from '~components/Images/Avatar'
+import { avatarSizeToPixels, UserAvatar } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { ContextSearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
@@ -150,7 +150,7 @@ export const Navbar = () => {
               to={isDashboardLayout ? ROUTES.SEARCH : ROUTES.PROFILE.VIEW}
               minW={avatarSizeToPixels['sm']}
             >
-              <Avatar size='sm' username={user?.name} avatarHash={user?.avatarHash} />
+              <UserAvatar size='sm' userId={user.id} />
             </Link>
           </>
         )}
