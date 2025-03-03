@@ -171,6 +171,7 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
             disabled={isPending}
             label={t('tools.images')}
             error={errors.images?.message}
+            fileList={watch('images')}
             {...register('images')}
           />
 

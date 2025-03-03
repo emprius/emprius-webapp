@@ -12,25 +12,51 @@ import {
   SimpleGrid,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { icons } from '~theme/icons'
 import { filterBySupportedTypes, INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
+import { UseFormRegisterReturn } from 'react-hook-form/dist/types/form'
 
 type ImageUploaderProps = {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void
   name: string
   error?: string
   isRequired?: boolean
   label?: string
-} & ButtonProps
+  fileList?: FileList // Use fileList to monitor when value becomes null to clear images
+} & ButtonProps &
+  UseFormRegisterReturn
 
 export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderProps>(
-  ({ onChange, onBlur, name, error, isRequired = false, label = 'Images', ...props }, ref) => {
+  ({ fileList: value, onChange, onBlur, name, error, isRequired = false, label = 'Images', ...props }, ref) => {
     const [previews, setPreviews] = useState<string[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
-
     const [files, setFiles] = useState<File[]>([])
+
+    // Function to clear all images
+    const clearImages = useCallback(() => {
+      // Revoke all object URLs to prevent memory leaks
+      previews.forEach((url) => URL.revokeObjectURL(url))
+
+      // Clear the states
+      setPreviews([])
+      setFiles([])
+
+      // Clear the file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+
+        // Create a synthetic change event to notify the form
+        const syntheticEvent = {
+          target: fileInputRef.current,
+          currentTarget: fileInputRef.current,
+          type: 'change',
+          bubbles: true,
+          cancelable: true,
+          timeStamp: Date.now(),
+        } as unknown as React.ChangeEvent<HTMLInputElement>
+        onChange(syntheticEvent)
+      }
+    }, [previews, onChange])
 
     const handleFileChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,24 +145,74 @@ export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderP
     }
 
     // Initialize file input with files when component mounts and trigger onChange
-    React.useEffect(() => {
-      if (fileInputRef.current && files.length > 0) {
-        const dataTransfer = new DataTransfer()
-        files.forEach((file) => dataTransfer.items.add(file))
-        fileInputRef.current.files = dataTransfer.files
+    useEffect(() => {
+      if (fileInputRef.current) {
+        if (files.length > 0) {
+          const dataTransfer = new DataTransfer()
+          files.forEach((file) => dataTransfer.items.add(file))
+          fileInputRef.current.files = dataTransfer.files
 
-        // Trigger onChange to ensure form is aware of files
-        const syntheticEvent = {
-          target: fileInputRef.current,
-          currentTarget: fileInputRef.current,
-          type: 'change',
-          bubbles: true,
-          cancelable: true,
-          timeStamp: Date.now(),
-        } as unknown as React.ChangeEvent<HTMLInputElement>
-        onChange(syntheticEvent)
+          // Trigger onChange to ensure form is aware of files
+          const syntheticEvent = {
+            target: fileInputRef.current,
+            currentTarget: fileInputRef.current,
+            type: 'change',
+            bubbles: true,
+            cancelable: true,
+            timeStamp: Date.now(),
+          } as unknown as React.ChangeEvent<HTMLInputElement>
+          onChange(syntheticEvent)
+        } else {
+          // If files array is empty, clear the file input
+          fileInputRef.current.value = ''
+        }
       }
     }, [files, onChange])
+
+    // Watch for form reset by monitoring when the value becomes null
+    useEffect(() => {
+      // This effect will run when the component receives a new value from the form
+      // If the form is reset, the ref.current.files will be null or empty
+      const handleFormReset = () => {
+        if (fileInputRef.current && (!fileInputRef.current.files || fileInputRef.current.files.length === 0)) {
+          // Only clear if we actually have images to clear
+          if (files.length > 0 || previews.length > 0) {
+            clearImages()
+          }
+        }
+      }
+
+      // Check on mount and when the ref changes
+      handleFormReset()
+
+      // We can't directly watch for changes to fileInputRef.current.files,
+      // but we can set up a MutationObserver to detect when the form might be reset
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+            handleFormReset()
+          }
+        }
+      })
+
+      if (fileInputRef.current) {
+        observer.observe(fileInputRef.current, { attributes: true })
+      }
+
+      return () => {
+        observer.disconnect()
+      }
+    }, [files, previews, clearImages, value])
+
+    // Expose the clearImages method to parent components through the ref
+    useImperativeHandle(ref, () => {
+      // Return the actual input element but augment it with our clearImages method
+      const input = fileInputRef.current as HTMLInputElement & { clearImages?: () => void }
+      if (input) {
+        input.clearImages = clearImages
+      }
+      return input
+    }, [clearImages])
 
     // Cleanup preview URLs when component unmounts
     useEffect(() => {
@@ -148,7 +224,6 @@ export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderP
     return (
       <FormControl isRequired={isRequired} isInvalid={!!error}>
         <FormLabel>{label}</FormLabel>
-
         <VisuallyHidden>
           <Input
             type='file'
