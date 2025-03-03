@@ -14,6 +14,7 @@ export const ROUTES = {
   BOOKINGS: {
     PETITIONS: '/bookings/petitions',
     REQUESTS: '/bookings/requests',
+    DETAIL: '/bookings/:id',
   },
   RATINGS: {
     PENDING: '/ratings/pending',

@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { FaRegCalendarAlt } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
+import { ActionButtons } from '~components/Bookings/Actions'
 import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
+import { BookingActionsProvider } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { Tool } from '~components/Tools/types'
@@ -14,6 +16,8 @@ import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { Booking } from './queries'
+import { useAuth } from '~components/Auth/AuthContext'
+import { BookingTitle, Earned } from '~components/Bookings/Card'
 
 interface BookingDetailsProps {
   booking: Booking
@@ -77,7 +81,7 @@ const UserInfo = ({ userId }: { userId: string }) => {
   )
 }
 
-const ToolInfo = ({ tool }: { tool: Tool }) => {
+const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; isRequest: boolean }) => {
   const { t } = useTranslation()
   const toolDetailUrl = ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())
 
@@ -116,6 +120,8 @@ const ToolInfo = ({ tool }: { tool: Tool }) => {
           </Link>
         </Stack>
         <CostDay tool={tool} />
+        {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
+
         <Text fontSize='md' noOfLines={2} title={tool.description} sx={lightText}>
           {tool.description}
         </Text>
@@ -124,41 +130,52 @@ const ToolInfo = ({ tool }: { tool: Tool }) => {
   )
 }
 
-export const BookingDetails = ({ booking, tool, userId }: BookingDetailsProps) => {
+// New BookingDetailsPage component for standalone page
+export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProps) => {
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const isRequest = booking.toUserId === user.id
   return (
-    <Stack spacing={6}>
-      {/* Header with Status */}
-      <Flex justify='space-between' align='center'>
-        <Text fontSize='xl' fontWeight='bold'>
-          {t('common.details')}
-        </Text>
-        <StatusBadge status={booking.bookingStatus} />
-      </Flex>
+    <BookingActionsProvider>
+      <Stack spacing={6}>
+        {/* Header with Status */}
+        <Flex justify='space-between' align='center'>
+          <BookingTitle isRequest={isRequest} fontSize='2xl' fontWeight='bold' sx={{}} />
 
-      {/* Contact and Comments */}
-      <BookingComments booking={booking} />
+          <StatusBadge status={booking.bookingStatus} />
+        </Flex>
 
-      <Divider />
+        {/* Contact and Comments */}
+        <BookingComments booking={booking} />
 
-      {/* Booking Dates */}
-      <Stack spacing={1}>
-        <HStack sx={lighterText}>
-          <Icon as={FaRegCalendarAlt} fontSize='sm' />
-          <Text fontSize='sm'> {t('bookings.dates', { defaultValue: 'Dates' })}</Text>
-        </HStack>
-        <BookingDates booking={booking} />
+        <Divider />
+
+        {/* Booking Dates */}
+        <Stack spacing={1}>
+          <HStack sx={lighterText}>
+            <Icon as={FaRegCalendarAlt} fontSize='sm' />
+            <Text fontSize='sm'> {t('bookings.dates', { defaultValue: 'Dates' })}</Text>
+          </HStack>
+          <BookingDates booking={booking} />
+        </Stack>
+
+        <Divider />
+
+        {/* Tool Information */}
+        <ToolInfo tool={tool} booking={booking} isRequest={isRequest} />
+
+        <Divider />
+
+        {/* User Information */}
+        <UserInfo userId={userId} />
+
+        <Divider />
+
+        {/* Actions */}
+        <Flex justify='flex-end' gap={4}>
+          <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
+        </Flex>
       </Stack>
-
-      <Divider />
-
-      {/* Tool Information */}
-      <ToolInfo tool={tool} />
-
-      <Divider />
-
-      {/* User Information */}
-      <UserInfo userId={userId} />
-    </Stack>
+    </BookingActionsProvider>
   )
 }

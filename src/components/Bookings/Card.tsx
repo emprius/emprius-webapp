@@ -8,16 +8,10 @@ import {
   HStack,
   Icon,
   Link,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Skeleton,
   Stack,
+  StackProps,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,7 +27,7 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
-import { BookingComment, BookingDetails } from './Details'
+import { BookingComment } from './Details'
 import { Booking, BookingStatus } from './queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
@@ -45,8 +39,6 @@ interface BookingCardProps {
   type: BookingCardType
 }
 
-// <BookingActionsProvider>
-
 export const BookingCard = (props: BookingCardProps) => (
   <BookingActionsProvider>
     <ProvidedBookingCard {...props} />
@@ -55,7 +47,6 @@ export const BookingCard = (props: BookingCardProps) => (
 
 const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
   const { data: tool, isLoading } = useTool(booking.toolId)
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const { error } = useBookingActions()
 
   const isRequest = type === 'request'
@@ -64,7 +55,6 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
   const cardMinH = '210px'
 
   // Determine if this booking is new
-  // const isNew = useMemo(() => isNewBooking(booking.createdAt), [booking.createdAt])
   const isNew = useMemo(
     () => booking.bookingStatus === BookingStatus.PENDING && type === 'request',
     [booking.bookingStatus]
@@ -101,123 +91,120 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
             </Hide>
           </Box>
         </CardHeader>
-        <CardBody pl={4} py={4} onClick={onOpen} cursor={'pointer'} minH={cardMinH}>
-          <Stack direction={'row'} spacing={{ base: 4 }} align='stretch' h={'full'}>
-            <Stack spacing={0} flex='1' position='relative' h={'full'}>
-              {/* Status badge for big screens */}
-              <Hide below={'md'}>
-                <Box position='absolute' top={-2} right={-3} zIndex={1}>
-                  <StatusBadge status={booking.bookingStatus} />
-                </Box>
-              </Hide>
-              {/* Booking Summary Section */}
-              <Stack spacing={1} justify={'space-between'} h={'full'}>
-                <Stack spacing={1}>
-                  <CardTitle isRequest={isRequest} />
-                  <Stack
-                    mt={{ base: 6, sm: 2 }}
-                    direction={'row'}
-                    spacing={{ base: 2, lg: 4 }}
-                    wrap={'wrap'}
-                    justify={'space-between'}
-                    align={'center'}
-                  >
-                    {/*tool info*/}
-                    {isLoading ? (
-                      <Skeleton height='24px' width='200px' />
-                    ) : (
-                      <Stack spacing={1} maxW={{ base: 'full', lg: '300px' }} w={{ base: 'full', lg: 'inherit' }}>
-                        <Flex gap={1} align='top' justify='space-between' direction={{ base: 'row', lg: 'column' }}>
-                          <Link
-                            as={RouterLink}
-                            to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
-                            fontWeight='semibold'
-                            fontSize='lg'
-                            _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                          >
-                            <Text
+        <CardBody pl={4} py={4} cursor={'pointer'} minH={cardMinH}>
+          <RouterLink
+            to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}
+            state={{
+              booking,
+              tool,
+              userId,
+            }}
+          >
+            <Stack direction={'row'} spacing={{ base: 4 }} align='stretch' h={'full'}>
+              <Stack spacing={0} flex='1' position='relative' h={'full'}>
+                {/* Status badge for big screens */}
+                <Hide below={'md'}>
+                  <Box position='absolute' top={-2} right={-3} zIndex={1}>
+                    <StatusBadge status={booking.bookingStatus} />
+                  </Box>
+                </Hide>
+                {/* Booking Summary Section */}
+                <Stack spacing={1} justify={'space-between'} h={'full'}>
+                  <Stack spacing={1}>
+                    <BookingTitle isRequest={isRequest} />
+                    <Stack
+                      mt={{ base: 6, sm: 2 }}
+                      direction={'row'}
+                      spacing={{ base: 2, lg: 4 }}
+                      wrap={'wrap'}
+                      justify={'space-between'}
+                      align={'center'}
+                    >
+                      {/*tool info*/}
+                      {isLoading ? (
+                        <Skeleton height='24px' width='200px' />
+                      ) : (
+                        <Stack spacing={1} maxW={{ base: 'full', lg: '300px' }} w={{ base: 'full', lg: 'inherit' }}>
+                          <Flex gap={1} align='top' justify='space-between' direction={{ base: 'row', lg: 'column' }}>
+                            <Link
+                              as={RouterLink}
+                              to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}
                               fontWeight='semibold'
                               fontSize='lg'
                               _hover={{ color: 'primary.500', textDecoration: 'none' }}
-                              noOfLines={2}
-                              flex='1'
                             >
-                              {tool?.title}
-                            </Text>
-                          </Link>
-                          <CostDay tool={tool} />
-                        </Flex>
+                              <Text
+                                fontWeight='semibold'
+                                fontSize='lg'
+                                _hover={{ color: 'primary.500', textDecoration: 'none' }}
+                                noOfLines={2}
+                                flex='1'
+                              >
+                                {tool?.title}
+                              </Text>
+                            </Link>
+                            <CostDay tool={tool} />
+                          </Flex>
 
-                        {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
-                      </Stack>
-                    )}
-                    {/*Dates*/}
-                    <BookingDates booking={booking} />
-                    {/* User Card - Hidden on small screens, visible on md and up */}
-                    <UserCard
-                      p={0}
-                      gap={2}
-                      direction={'column'}
-                      fontSize={'sm'}
-                      avatarSize={'sm'}
-                      userId={userId}
-                      justify={'start'}
-                      borderWidth={0}
-                    />
+                          {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
+                        </Stack>
+                      )}
+                      {/*Dates*/}
+                      <BookingDates booking={booking} />
+                      {/* User Card - Hidden on small screens, visible on md and up */}
+                      <UserCard
+                        p={0}
+                        gap={2}
+                        direction={'column'}
+                        fontSize={'sm'}
+                        avatarSize={'sm'}
+                        userId={userId}
+                        justify={'start'}
+                        borderWidth={0}
+                      />
+                    </Stack>
                   </Stack>
-                </Stack>
-                <Stack
-                  direction={{ base: 'column', md: 'row' }}
-                  justify={'space-between'}
-                  align={{ base: 'end', md: 'center' }}
-                  mt={2}
-                  spacing={4}
-                >
-                  <Box
-                    px={4}
-                    py={2}
-                    borderRadius='lg'
-                    bg='gray.100'
-                    color='gray.500'
-                    _dark={{ bg: 'gray.600', color: 'white' }}
-                    flex='1'
-                    minW='0'
+                  <Stack
+                    direction={{ base: 'column', md: 'row' }}
+                    justify={'space-between'}
+                    align={{ base: 'end', md: 'center' }}
+                    mt={2}
+                    spacing={4}
                   >
-                    <BookingComment
-                      comments={booking.comments}
-                      textProps={{
-                        noOfLines: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    />
-                  </Box>
-                  <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
-                    <ActionButtons booking={booking} type={type} />
+                    <Box
+                      px={4}
+                      py={2}
+                      borderRadius='lg'
+                      bg='gray.100'
+                      color='gray.500'
+                      _dark={{ bg: 'gray.600', color: 'white' }}
+                      flex='1'
+                      minW='0'
+                    >
+                      <BookingComment
+                        comments={booking.comments}
+                        textProps={{
+                          noOfLines: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      />
+                    </Box>
+                    <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
+                      <ActionButtons booking={booking} type={type} />
+                    </Stack>
                   </Stack>
+                  {!!error && (
+                    <Stack direction={{ base: 'column', md: 'row' }} alignSelf={'end'}>
+                      <FormSubmitMessage isError={!!error} error={error} />
+                    </Stack>
+                  )}
                 </Stack>
-                {!!error && (
-                  <Stack direction={{ base: 'column', md: 'row' }} alignSelf={'end'}>
-                    <FormSubmitMessage isError={!!error} error={error} />
-                  </Stack>
-                )}
               </Stack>
             </Stack>
-          </Stack>
+          </RouterLink>
         </CardBody>
       </Stack>
-
-      {/* Details Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size='xl'>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <CardTitle isRequest={isRequest} />
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={4}>{tool && <BookingDetails booking={booking} tool={tool} userId={userId} />}</ModalBody>
-        </ModalContent>
-      </Modal>
     </Card>
   )
 }
@@ -239,7 +226,7 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
   )
 }
 
-const CardTitle = ({ isRequest }: { isRequest: boolean }) => {
+export const BookingTitle = ({ isRequest, ...props }: { isRequest: boolean } & StackProps) => {
   const { t } = useTranslation()
   let data = {
     icon: ImBoxAdd,
@@ -253,9 +240,9 @@ const CardTitle = ({ isRequest }: { isRequest: boolean }) => {
     }
   }
   return (
-    <HStack sx={lighterText}>
-      <Icon as={data.icon} fontSize='sm' />
-      <Text fontSize='sm'>{data.title}</Text>
+    <HStack sx={lighterText} fontSize='sm' {...props}>
+      <Icon as={data.icon} />
+      <Text>{data.title}</Text>
     </HStack>
   )
 }
