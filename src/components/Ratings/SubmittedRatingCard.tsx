@@ -11,6 +11,10 @@ import {
   useColorModeValue,
   HStack,
   VStack,
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from '@chakra-ui/react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link as RouterLink } from 'react-router-dom'
@@ -21,6 +25,7 @@ import { ROUTES } from '~src/router/routes'
 import { UnifiedRating } from './types'
 import { useBookingDetail } from '~components/Bookings/queries'
 import { format } from 'date-fns'
+import { convertToDate } from '~utils/dates'
 import { UserAvatar } from '~components/Images/Avatar'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { UserCard } from '~components/Users/Card'
@@ -119,27 +124,30 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
               )}
             </Box>
           </Flex>
-          {/* Chat-like rating messages */}
-          <Box maxW={{ base: '100%', lg: '70%' }}>
-            {/* Show requester's rating if they've rated */}
-            <MessageBubble
-              userId={rating.requester.id}
-              message={rating.requester.ratingComment}
-              rating={rating.requester.rating || 0}
-              isAuthor={!isOwner}
-              images={rating.requester.images}
-            />
-
-            {/*/!* Show owner's rating if they've rated *!/*/}
-            <MessageBubble
-              userId={rating.owner.id}
-              message={rating.owner.ratingComment}
-              rating={rating.owner.rating || 0}
-              isAuthor={isOwner}
-              images={rating.owner.images}
-            />
-          </Box>
         </RouterLink>
+
+        {/* Chat-like rating messages */}
+        <Box maxW={{ base: '100%', lg: '70%' }}>
+          {/* Show requester's rating if they've rated */}
+          <MessageBubble
+            userId={rating.requester.id}
+            message={rating.requester?.ratingComment}
+            rating={rating.requester?.rating || 0}
+            isAuthor={!isOwner}
+            images={rating.requester?.images}
+            ratedAt={rating.requester?.ratedAt}
+          />
+
+          {/*/!* Show owner's rating if they've rated *!/*/}
+          <MessageBubble
+            userId={rating.owner.id}
+            message={rating.owner?.ratingComment}
+            rating={rating.owner?.rating || 0}
+            isAuthor={isOwner}
+            images={rating.owner?.images}
+            ratedAt={rating.owner?.ratedAt}
+          />
+        </Box>
       </CardBody>
     </Card>
   )
@@ -162,11 +170,15 @@ interface MessageBubbleProps {
   rating: number
   isAuthor: boolean
   images?: string[] | null
+  ratedAt?: number | null
 }
 
-const MessageBubble = ({ userId, message, rating, isAuthor, images }: MessageBubbleProps) => {
+const MessageBubble = ({ userId, message, rating, isAuthor, images, ratedAt }: MessageBubbleProps) => {
+  const { t } = useTranslation()
   const bubbleColor = useColorModeValue(isAuthor ? 'blue.50' : 'gray.100', isAuthor ? 'blue.800' : 'gray.700')
   const textColor = useColorModeValue(isAuthor ? 'gray.800' : 'gray.700', isAuthor ? 'gray.100' : 'gray.200')
+  const dateColor = useColorModeValue(isAuthor ? 'gray.500' : 'gray.400', isAuthor ? 'gray.400' : 'gray.500')
+  const datef = t('rating.datef_full')
 
   if (!rating) return null
 
@@ -193,6 +205,23 @@ const MessageBubble = ({ userId, message, rating, isAuthor, images }: MessageBub
           <Text fontSize='sm' color={textColor} mt={1}>
             {message}
           </Text>
+        )}
+        {ratedAt && (
+          <Popover>
+            <PopoverTrigger>
+              <Text fontSize='xs' color={dateColor} alignSelf='flex-end' mt={1} cursor='pointer'>
+                {t('rating.rating_date', { date: convertToDate(ratedAt) })}
+              </Text>
+            </PopoverTrigger>
+            <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
+              <Box w={'full'} textAlign={'center'}>
+                {t('rating.date_formatted', {
+                  date: convertToDate(ratedAt),
+                  format: datef,
+                })}
+              </Box>
+            </PopoverContent>
+          </Popover>
         )}
         {/* TODO: Add image gallery if needed */}
       </VStack>

@@ -186,6 +186,7 @@
     "comment": "Comentaris",
     "comment_placeholder": "Comparteix la teva experiència amb aquesta eina i el seu propietari...",
     "date_formatted": "{{ date, format }}",
+    "rating_date": "{{ date, relative }}",
     "datef": "PP",
     "no_pending_ratings": "Cap valoració pendent",
     "no_pending_ratings_desc": "No tens cap valoració pendent per enviar",

@@ -80,7 +80,7 @@ i18n.services.formatter?.add('format', (value: any, lng: string | undefined, opt
   if (lng && lng !== 'en') {
     opts.locale = dateLocales[lng]
   }
-
+  
   return format(value, options.format, opts)
 })
 
