@@ -31,7 +31,6 @@ export interface EditProfileFormData {
 export interface EditProfileFormProps {
   initialData: {
     name: string
-    email: string
     location?: EmpriusLocation
     active: boolean
     avatarHash?: string

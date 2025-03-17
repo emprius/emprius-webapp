@@ -16,7 +16,6 @@ export const Edit = () => {
     <EditUser
       initialData={{
         name: user?.name || '',
-        email: user?.email || '',
         location: user?.location,
         active: user?.active || false,
         avatarHash: user?.avatarHash,

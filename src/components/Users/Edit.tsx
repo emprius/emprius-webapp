@@ -125,20 +125,6 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
           <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.email}>
-          <FormLabel>{t('common.email')}</FormLabel>
-          <Input
-            {...register('email', {
-              required: t('common.required'),
-              pattern: {
-                value: AUTH_FORM.EMAIL_REGEX,
-                message: t('auth.invalid_email'),
-              },
-            })}
-          />
-          <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-        </FormControl>
-
         <FormControl isInvalid={!!errors.password}>
           <FormLabel>{t('common.password')}</FormLabel>
           <PasswordInput
