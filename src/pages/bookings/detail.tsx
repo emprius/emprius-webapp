@@ -37,7 +37,7 @@ export const Detail = () => {
   })
 
   // Determine the user ID based on the booking type
-  const userId = location.pathname.includes('requests') ? booking.fromUserId : booking.toUserId
+  const userId = location.pathname.includes('requests') ? booking?.fromUserId : booking?.toUserId
   const isLoading = isLoadingBooking || isLoadingTool
 
   // Set title
