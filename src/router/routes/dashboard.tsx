@@ -31,15 +31,7 @@ const RatingElements = [
         ),
       },
       {
-        path: ROUTES.RATINGS.SUBMITTED,
-        element: (
-          <SuspenseLoader>
-            <UserRatingsPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        path: ROUTES.RATINGS.RECEIVED,
+        path: ROUTES.RATINGS.HISTORY,
         element: (
           <SuspenseLoader>
             <UserRatingsPage />

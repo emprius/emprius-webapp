@@ -18,8 +18,7 @@ export const ROUTES = {
   },
   RATINGS: {
     PENDING: '/ratings/pending',
-    SUBMITTED: '/ratings/submitted',
-    RECEIVED: '/ratings/received',
+    HISTORY: '/ratings/history',
   },
   USERS: {
     LIST: '/users',

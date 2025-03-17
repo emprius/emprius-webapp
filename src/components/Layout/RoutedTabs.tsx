@@ -6,6 +6,7 @@ export interface TabConfig {
   path: string
   label: React.ReactNode
   content: React.ReactNode
+  hidden?: boolean
 }
 
 interface RoutedTabsProps {
@@ -17,14 +18,23 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
   const navigate = useNavigate()
   const location = useLocation()
 
+  // Filter out hidden tabs for display
+  const visibleTabs = React.useMemo(() => tabs.filter(tab => !tab.hidden), [tabs])
+  
   // Find current tab index based on path
   const currentTabIndex = React.useMemo(() => {
-    const index = tabs.findIndex((tab) => tab.path === location.pathname)
-    return index >= 0 ? index : 0
-  }, [location.pathname, tabs])
+    // First check if the current path matches any visible tab
+    const visibleIndex = visibleTabs.findIndex((tab) => tab.path === location.pathname)
+    if (visibleIndex >= 0) {
+      return visibleIndex
+    }
+    
+    // If we're on a hidden tab, show the first visible tab
+    return 0
+  }, [location.pathname, visibleTabs])
 
   const handleTabChange = (index: number) => {
-    navigate(tabs[index].path)
+    navigate(visibleTabs[index].path)
   }
 
   useEffect(() => {
@@ -33,16 +43,16 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
       navigate(defaultPath)
     }
   }, [location.pathname, navigate, tabs, defaultPath])
-
+  
   return (
     <Tabs isLazy index={currentTabIndex} onChange={handleTabChange}>
       <TabList>
-        {tabs.map((tab, index) => (
+        {visibleTabs.map((tab, index) => (
           <Tab key={index}>{tab.label}</Tab>
         ))}
       </TabList>
       <TabPanels>
-        {tabs.map((tab, index) => (
+        {visibleTabs.map((tab, index) => (
           <TabPanel key={index} px={1}>
             {tab.content}
           </TabPanel>

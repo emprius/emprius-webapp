@@ -30,7 +30,13 @@ const SideNav = () => {
         path: ROUTES.BOOKINGS.REQUESTS,
         count: pendingRequestsCount,
       },
-      { icon: icons.ratings, label: t('nav.ratings'), path: ROUTES.RATINGS.PENDING, count: pendingRatingsCount },
+      {
+        icon: icons.ratings,
+        label: t('nav.ratings'),
+        // Show ratings history if no pending ratings
+        path: pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY,
+        count: pendingRatingsCount,
+      },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
     [t]

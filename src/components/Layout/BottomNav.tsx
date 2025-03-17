@@ -38,7 +38,7 @@ export const BottomNav = () => {
         icon: icons.ratings,
         path: ROUTES.RATINGS.PENDING,
         count: pendingRatingsCount,
-        additionalPath: [ROUTES.RATINGS.SUBMITTED, ROUTES.RATINGS.PENDING],
+        additionalPath: [ROUTES.RATINGS.HISTORY, ROUTES.RATINGS.PENDING],
       },
     ],
     [t]
