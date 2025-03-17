@@ -1,9 +1,10 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '../../services/api'
-import { RatingFormData, UnifiedRating } from './types'
+import { RatingFormData } from './types'
 import { BookingKeys } from '~components/Bookings/queries'
 import { useUploadImages } from '~components/Images/queries'
 import { useAuth } from '~components/Auth/AuthContext'
+import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 
 export const RatingsKeys = {
   ratingsLists: ['ratings'] as const,
@@ -24,90 +25,12 @@ export const useGetPendingRatings = () => {
 export const useGetUserRatings = (userId?: string) => {
   const { user } = useAuth()
   const id = userId || user.id
-  
+
   return useQuery({
     queryKey: RatingsKeys.userRatings(id),
     queryFn: () => api.users.getUserRatings(id),
     enabled: !!id,
   })
-}
-
-// Filter unified ratings to get only those submitted by the current user
-export const useGetSubmittedRatings = () => {
-  const { user } = useAuth()
-  const { data, ...rest } = useGetUserRatings(user.id)
-  
-  const submittedRatings = data?.filter(rating => {
-    // If the user is the owner, check if owner has rated
-    if (rating.owner.id === user.id) {
-      return rating.owner.rating !== null
-    }
-    // If the user is the requester, check if requester has rated
-    if (rating.requester.id === user.id) {
-      return rating.requester.rating !== null
-    }
-    return false
-  }).map(rating => {
-    // Convert to the old Rating format for backward compatibility
-    const isOwner = rating.owner.id === user.id
-    const ratingParty = isOwner ? rating.owner : rating.requester
-    const toUserId = isOwner ? rating.requester.id : rating.owner.id
-    
-    return {
-      id: rating.id,
-      bookingId: rating.bookingId,
-      fromUserId: user.id,
-      toUserId,
-      rating: ratingParty.rating || 0,
-      ratingComment: ratingParty.ratingComment || '',
-      ratingHashImages: ratingParty.images || [],
-      ratedAt: ratingParty.ratedAt ? new Date(ratingParty.ratedAt * 1000).toISOString() : '',
-    }
-  })
-  
-  return {
-    ...rest,
-    data: submittedRatings || [],
-  }
-}
-
-// Filter unified ratings to get only those received by the current user
-export const useGetReceivedRatings = () => {
-  const { user } = useAuth()
-  const { data, ...rest } = useGetUserRatings(user.id)
-  
-  const receivedRatings = data?.filter(rating => {
-    // If the user is the owner, check if requester has rated
-    if (rating.owner.id === user.id) {
-      return rating.requester.rating !== null
-    }
-    // If the user is the requester, check if owner has rated
-    if (rating.requester.id === user.id) {
-      return rating.owner.rating !== null
-    }
-    return false
-  }).map(rating => {
-    // Convert to the old Rating format for backward compatibility
-    const isOwner = rating.owner.id === user.id
-    const fromUserId = isOwner ? rating.requester.id : rating.owner.id
-    const ratingParty = isOwner ? rating.requester : rating.owner
-    
-    return {
-      id: rating.id,
-      bookingId: rating.bookingId,
-      fromUserId,
-      toUserId: user.id,
-      rating: ratingParty.rating || 0,
-      ratingComment: ratingParty.ratingComment || '',
-      ratingHashImages: ratingParty.images || [],
-      ratedAt: ratingParty.ratedAt ? new Date(ratingParty.ratedAt * 1000).toISOString() : '',
-    }
-  })
-  
-  return {
-    ...rest,
-    data: receivedRatings || [],
-  }
 }
 
 export const useSubmitRating = ({
@@ -148,6 +71,9 @@ export const useSubmitRating = ({
       })
       await queryClient.invalidateQueries({
         queryKey: BookingKeys.detail(bookingId),
+      })
+      await queryClient.invalidateQueries({
+        queryKey: PendingActionsKeys,
       })
     },
     retry: false,

@@ -20,7 +20,7 @@ const PendingActionsContext = createContext<PendingActionsContextType>({
 
 export const usePendingActions = () => useContext(PendingActionsContext)
 
-const PendingActionsKeys = ['pendingActions']
+export const PendingActionsKeys = ['pendingActions']
 
 export const PendingActionsProvider = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth()

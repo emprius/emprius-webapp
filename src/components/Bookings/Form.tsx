@@ -111,7 +111,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
             reservedDates={tool.reservedDates}
           />
 
-          <FormControl>
+          <FormControl isInvalid={!!errors.contact}>
             <FormLabel>{t('bookings.contact')}</FormLabel>
             <Input
               {...register('contact', {
@@ -122,10 +122,10 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               })}
               placeholder={t('bookings.contact_placeholder')}
             />
-            {errors.contact && <FormErrorMessage>{errors.contact.message}</FormErrorMessage>}
+            <FormErrorMessage>{errors.contact?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl>
+          <FormControl isInvalid={!!errors.comments}>
             <FormLabel>{t('bookings.comments')}</FormLabel>
             <Textarea
               {...register('comments', {
@@ -137,7 +137,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               placeholder={t('bookings.comments_placeholder')}
               rows={4}
             />
-            {errors.comments && <FormErrorMessage>{errors.comments.message}</FormErrorMessage>}
+            <FormErrorMessage>{errors.comments?.message}</FormErrorMessage>
           </FormControl>
           <TotalPrice tool={tool} watch={watch} />
         </Stack>
