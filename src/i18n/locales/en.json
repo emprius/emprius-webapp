@@ -95,7 +95,8 @@
     "something_went_wrong": "Something went wrong",
     "success": "Success",
     "toggle_theme": "Toggle theme",
-    "token_symbol": "{{, tokenSymbol}}"
+    "token_symbol": "{{, tokenSymbol}}",
+    "actual_password": "Current Password"
   },
   "donate": "Donate",
   "error": {

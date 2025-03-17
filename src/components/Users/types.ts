@@ -19,7 +19,7 @@ export interface UserProfile {
 
 export interface EditProfileFormData {
   name: string
-  email: string
+  actualPassword?: string
   password?: string
   confirmPassword?: string
   location?: EmpriusLocation

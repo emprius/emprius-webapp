@@ -6,11 +6,13 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   IconButton,
   Image,
   Input,
   Stack,
   Switch,
+  Text,
   useToast,
   VStack,
 } from '@chakra-ui/react'
@@ -26,8 +28,10 @@ import { Avatar, AvatarProps, avatarSizeToPixels } from '../Images/Avatar'
 import { useUpdateUserProfile } from './queries'
 import { useNavigate } from 'react-router-dom'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
+  const { user } = useAuth()
   const { t } = useTranslation()
   const toast = useToast()
   const { mutateAsync, isError, error, isPending } = useUpdateUserProfile()
@@ -76,6 +80,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
     // Only include password fields if password was modified
     if (!dirtyFields.password) {
       delete updatedFields.password
+      delete updatedFields.actualPassword
       delete updatedFields.confirmPassword
     }
 
@@ -102,6 +107,8 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
     }
   }
 
+  const newPassword = watch('password')
+
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={6} align='stretch'>
@@ -115,6 +122,11 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
           </VStack>
         </Flex>
 
+        <FormControl>
+          <FormLabel>{t('common.email')}</FormLabel>
+          <Input disabled value={user?.email} />
+        </FormControl>
+
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>{t('common.name')}</FormLabel>
           <Input
@@ -123,6 +135,17 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
             })}
           />
           <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={!!errors.actualPassword}>
+          <FormLabel>{t('common.actual_password')}</FormLabel>
+          <PasswordInput
+            id='actualPassword'
+            {...register('actualPassword', {
+              required: newPassword ? t('common.required') : false,
+            })}
+          />
+          <FormErrorMessage>{errors.actualPassword?.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!!errors.password}>
