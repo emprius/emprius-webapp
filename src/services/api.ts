@@ -3,7 +3,7 @@ import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/que
 import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
 import {InfoData} from '~components/Layout/Contexts/InfoContext'
 import {BookingPendings} from '~components/Layout/Contexts/PendingActionsProvider'
-import type {RateSubmission, Rating} from '~components/Ratings/types'
+import type {RateSubmission, Rating, UnifiedRating} from '~components/Ratings/types'
 import {SearchParams} from '~components/Search/queries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
 import {Tool, ToolsListResponse} from '~components/Tools/types'
@@ -133,6 +133,8 @@ export const users = {
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
   getList: (page: number = 0) =>
     apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
+  getUserRatings: (userId: string) => 
+    apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/rates`)),
 }
 
 // images

@@ -10,6 +10,21 @@ export interface Rating {
   ratedAt: string
 }
 
+export interface RatingParty {
+  id: string
+  rating: number | null
+  ratingComment: string | null
+  ratedAt: number | null
+  images: string[] | null
+}
+
+export interface UnifiedRating {
+  id: string
+  bookingId: string
+  owner: RatingParty
+  requester: RatingParty
+}
+
 export interface RateSubmission {
   bookingId: string
   rating: number
