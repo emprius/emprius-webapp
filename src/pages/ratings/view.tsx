@@ -8,8 +8,8 @@ import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
-import { PendingRatingCard } from '~components/Ratings/Card'
-import { UnifiedRatingCard } from '~components/Ratings/UnifiedRatingCard'
+import { PendingRatingCard } from '~components/Ratings/PendingRatingCard'
+import { SubmittedRatingCard } from '~components/Ratings/SubmittedRatingCard'
 import { Booking } from '~components/Bookings/queries'
 import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
@@ -80,7 +80,7 @@ const RatingHistory = () => {
   return (
     <Stack spacing={4}>
       {ratingsWithContent.map((rating, index) => (
-        <UnifiedRatingCard key={index} rating={rating} />
+        <SubmittedRatingCard key={index} rating={rating} />
       ))}
     </Stack>
   )
