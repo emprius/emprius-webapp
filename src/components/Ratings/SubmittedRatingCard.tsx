@@ -15,6 +15,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link as RouterLink } from 'react-router-dom'
@@ -206,6 +207,7 @@ const MessageBubble = ({ userId, message, rating, isAuthor, images, ratedAt }: M
             {message}
           </Text>
         )}
+        {images && <ImagesGrid images={images} />}
         {ratedAt && (
           <Popover>
             <PopoverTrigger>
@@ -223,8 +225,20 @@ const MessageBubble = ({ userId, message, rating, isAuthor, images, ratedAt }: M
             </PopoverContent>
           </Popover>
         )}
-        {/* TODO: Add image gallery if needed */}
       </VStack>
     </Flex>
+  )
+}
+
+export const ImagesGrid = ({ images }: { images: string[] }) => {
+  if (!images) return
+  return (
+    <HStack wrap={'wrap'} spacing={4}>
+      {images.map((image, index) => (
+        <Box key={image} position='relative' w={'50px'} h={'50px'}>
+          <ServerImage imageId={image} objectFit='cover' w='100%' h='100%' borderRadius='md' thumbnail modal />
+        </Box>
+      ))}
+    </HStack>
   )
 }

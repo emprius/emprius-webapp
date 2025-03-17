@@ -14,6 +14,7 @@ import {
 import React, { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { ServerImage } from '~components/Images/ServerImage'
+import { ImageModal } from '~components/Images/ImageModal'
 
 interface ImageCarouselProps {
   imageIds: string[]
@@ -23,8 +24,6 @@ interface ImageCarouselProps {
 
 export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height = '400px', width = '100%' }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? imageIds.length - 1 : prev - 1))
@@ -32,11 +31,6 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev === imageIds.length - 1 ? 0 : prev + 1))
-  }
-
-  const handleImageClick = (index: number) => {
-    setSelectedImageIndex(index)
-    onOpen()
   }
 
   if (!imageIds.length) return null
@@ -61,8 +55,15 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
           )}
 
           <Center width='100%' height='100%' overflow='hidden'>
-            <Box as='div' cursor='pointer' onClick={() => handleImageClick(currentIndex)} height='100%' width='100%'>
-              <ServerImage imageId={imageIds[currentIndex]} objectFit='cover' height='100%' width='100%' thumbnail />
+            <Box cursor='pointer' height='100%' width='100%'>
+              <ServerImage
+                imageId={imageIds[currentIndex]}
+                objectFit='cover'
+                height='100%'
+                width='100%'
+                thumbnail
+                modal
+              />
             </Box>
           </Center>
 
@@ -111,18 +112,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
           </HStack>
         )}
       </Box>
-
-      <Modal isOpen={isOpen} onClose={onClose} size='6xl' closeOnOverlayClick={true}>
-        <ModalOverlay />
-        <ModalContent bg='transparent' boxShadow='none'>
-          <ModalCloseButton color='white' />
-          <ModalBody p={0}>
-            {selectedImageIndex !== null && (
-              <ServerImage imageId={imageIds[selectedImageIndex]} objectFit='contain' width='100%' height='90vh' />
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      {/*{selectedImageIndex !== null && <ImageModal imageId={imageIds[selectedImageIndex]}/>}*/}
     </>
   )
 }
