@@ -4,11 +4,13 @@ import api, { tools } from '~src/services/api'
 import { Tool, ToolsListResponse } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
+import { UnifiedRating } from '~components/Ratings/types'
 
 export const ToolsKeys = {
   tools: ['tools'],
-  userTools: (userId: string): QueryKey => ['userTools', userId],
+  userTools: (userId: string): QueryKey => ['tools', 'user', userId],
   tool: (id: string): QueryKey => ['tool', id],
+  toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
 }
 
 export interface createToolParams {
@@ -105,6 +107,18 @@ export const useUpdateTool = (
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
     },
+    ...options,
+  })
+}
+
+export const useToolRatings = (
+  id: string,
+  options?: Omit<UseQueryOptions<UnifiedRating[], Error>, 'queryKey' | 'queryFn'>
+) => {
+  return useQuery({
+    queryKey: ToolsKeys.toolRatings(id),
+    queryFn: () => api.tools.getRatings(id),
+    enabled: !!id,
     ...options,
   })
 }

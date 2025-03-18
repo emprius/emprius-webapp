@@ -103,6 +103,7 @@ export const tools = {
     ),
   update: ({ id, ...data }: UpdateToolParams) => apiRequest(api.put<ApiResponse<Tool>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
+  getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/rates`)),
 }
 
 // Bookings endpoints

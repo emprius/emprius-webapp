@@ -5,6 +5,7 @@ import {
   Divider,
   Grid,
   GridItem,
+  Heading,
   Link,
   SimpleGrid,
   Stack,
@@ -24,10 +25,12 @@ import { MapWithMarker } from '~components/Layout/Map/Map'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
+import { useToolRatings } from '~components/Tools/queries'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
+import { MessageBubble } from '~components/Ratings/MessageBubble'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -106,6 +109,8 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                 </Stack>
               </Stack>
             </Box>
+
+            <ToolRatings toolId={tool.id.toString()} />
           </Stack>
         </GridItem>
 
@@ -172,4 +177,50 @@ const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
     return null
   }
   return <BookingForm tool={tool} />
+}
+
+interface ToolRatingsProps {
+  toolId: string
+}
+
+const ToolRatings = ({ toolId }: ToolRatingsProps) => {
+  const { t } = useTranslation()
+  const { data: ratings, isLoading } = useToolRatings(toolId)
+  const { user } = useAuth()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  if (isLoading) {
+    return (
+      <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
+        <Text>{t('common.loading')}</Text>
+      </Box>
+    )
+  }
+
+  if (!ratings || ratings.length === 0) {
+    return null
+  }
+
+  return (
+    <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
+      <Heading as='h3' size='md' mb={4}>
+        {t('tools.ratings', { defaultValue: 'Ratings' })}
+      </Heading>
+      <Stack spacing={4}>
+        {ratings.map((rating) => (
+          <Box key={rating.id} w={'full'}>
+            {/* Show requester's rating if they've rated */}
+            {rating.requester?.rating && (
+              <MessageBubble isAuthor={rating.requester.id === user?.id} {...rating.requester} />
+            )}
+
+            {/* Show owner's rating if they've rated */}
+            {rating.owner?.rating && <MessageBubble isAuthor={rating.owner.id === user?.id} {...rating.owner} />}
+            <Divider my={4} />
+          </Box>
+        ))}
+      </Stack>
+    </Box>
+  )
 }

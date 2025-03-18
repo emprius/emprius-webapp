@@ -188,6 +188,7 @@
     "comment_placeholder": "Share your experience with this tool and its owner...",
     "date_formatted": "{{ date, format }}",
     "rating_date": "{{ date, relative(past: %time ago; future: in %time) }}",
+    "datef_full": "Pp",
     "datef": "PP",
     "no_pending_ratings": "No Pending Ratings",
     "no_pending_ratings_desc": "You have no pending ratings to submit",
