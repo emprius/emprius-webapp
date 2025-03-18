@@ -2,6 +2,7 @@ import { HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
 import { lightText } from '~theme/common'
 import { icons } from '~theme/icons'
+import { StackProps } from '@chakra-ui/react/dist/types/stack/stack'
 
 interface DisplayRatingProps {
   rating: number
@@ -18,9 +19,15 @@ const sizes = {
   lg: { fontSize: '2rem', spacing: 2 },
 }
 
-export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingCount }: DisplayRatingProps) => {
+export const ShowRatingStars = ({
+  rating,
+  size = 'md',
+  showCount = true,
+  ratingCount,
+  ...props
+}: DisplayRatingProps & StackProps) => {
   return (
-    <HStack spacing={2} wrap={'wrap'}>
+    <HStack spacing={2} wrap={'wrap'} {...props}>
       <HStack spacing={sizes[size].spacing}>
         {[0, 1, 2, 3, 4].map((position) => (
           <Star key={position} position={position} rating={rating} size={size} />

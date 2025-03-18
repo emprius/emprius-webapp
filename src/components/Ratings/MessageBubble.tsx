@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import {
   Box,
   Flex,
+  FlexProps,
   HStack,
   Popover,
   PopoverContent,
@@ -19,8 +20,18 @@ import { ServerImage } from '~components/Images/ServerImage'
 
 export type MessageBubbleProps = {
   isAuthor: boolean
-} & RatingParty
-export const MessageBubble = ({ id, ratingComment, rating, isAuthor, images, ratedAt }: MessageBubbleProps) => {
+} & RatingParty &
+  FlexProps
+
+export const MessageBubble = ({
+  id,
+  ratingComment,
+  rating,
+  isAuthor,
+  images,
+  ratedAt,
+  ...flexProps
+}: MessageBubbleProps) => {
   const { t } = useTranslation()
   const bubbleColor = useColorModeValue(isAuthor ? 'blue.50' : 'gray.100', isAuthor ? 'blue.800' : 'gray.700')
   const textColor = useColorModeValue(isAuthor ? 'gray.800' : 'gray.700', isAuthor ? 'gray.100' : 'gray.200')
@@ -35,42 +46,56 @@ export const MessageBubble = ({ id, ratingComment, rating, isAuthor, images, rat
       mb={4}
       gap={2}
       direction={isAuthor ? 'row' : 'row-reverse'}
+      {...flexProps}
     >
       <UserAvatar userId={id} size='sm' />
       <VStack
         bg={bubbleColor}
         p={3}
         borderRadius='lg'
-        borderBottomRightRadius={isAuthor ? 0 : 'lg'}
-        borderBottomLeftRadius={isAuthor ? 'lg' : 0}
+        borderTopRightRadius={!isAuthor ? 0 : 'lg'}
+        borderTopLeftRadius={isAuthor ? 0 : 'lg'}
         boxShadow='sm'
         align={isAuthor ? 'start' : 'end'}
-        minW={'150px'}
       >
-        <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
-        {ratingComment && (
-          <Text fontSize='sm' color={textColor} mt={1}>
-            {ratingComment}
-          </Text>
-        )}
-        {images && <ImagesGrid images={images} />}
-        {ratedAt && (
-          <Popover>
-            <PopoverTrigger>
-              <Text fontSize='xs' color={dateColor} alignSelf='flex-end' mt={1} cursor='pointer'>
-                {t('rating.rating_date', { date: convertToDate(ratedAt) })}
-              </Text>
-            </PopoverTrigger>
-            <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
-              <Box w={'full'} textAlign={'center'}>
-                {t('rating.date_formatted', {
-                  date: convertToDate(ratedAt),
-                  format: datef,
-                })}
-              </Box>
-            </PopoverContent>
-          </Popover>
-        )}
+        <ShowRatingStars
+          rating={(rating * 100) / 5}
+          size='sm'
+          showCount={false}
+          pr={isAuthor ? '20px' : 0}
+          pl={!isAuthor ? '20px' : 0}
+        />
+        <VStack spacing={0} w={'full'}>
+          {ratingComment && (
+            <Text
+              fontSize='sm'
+              color={textColor}
+              alignSelf={isAuthor ? 'start' : 'end'}
+              pr={isAuthor ? '10px' : 0}
+              pl={!isAuthor ? '10px' : 0}
+            >
+              {ratingComment}
+            </Text>
+          )}
+          {images && <ImagesGrid images={images} />}
+          {ratedAt && (
+            <Popover>
+              <PopoverTrigger>
+                <Text fontSize='xs' color={dateColor} alignSelf={isAuthor ? 'end' : 'start'} cursor='pointer'>
+                  {t('rating.rating_date', { date: convertToDate(ratedAt) })}
+                </Text>
+              </PopoverTrigger>
+              <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
+                <Box w={'full'} textAlign={'center'}>
+                  {t('rating.date_formatted', {
+                    date: convertToDate(ratedAt),
+                    format: datef,
+                  })}
+                </Box>
+              </PopoverContent>
+            </Popover>
+          )}
+        </VStack>
       </VStack>
     </Flex>
   )

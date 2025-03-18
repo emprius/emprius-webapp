@@ -205,16 +205,15 @@ const ToolRatings = ({ toolId }: ToolRatingsProps) => {
   return (
     <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
       <Heading as='h3' size='md' mb={4}>
-        {t('tools.ratings', { defaultValue: 'Ratings' })}
+        {t('rating.ratings')}
       </Heading>
-      <Stack spacing={4}>
+      <Stack spacing={2}>
         {ratings.map((rating) => (
           <Box key={rating.id} w={'full'}>
             {/* Show requester's rating if they've rated */}
             {rating.requester?.rating && (
               <MessageBubble isAuthor={rating.requester.id === user?.id} {...rating.requester} />
             )}
-
             {/* Show owner's rating if they've rated */}
             {rating.owner?.rating && <MessageBubble isAuthor={rating.owner.id === user?.id} {...rating.owner} />}
             <Divider my={4} />
