@@ -31,6 +31,7 @@ import { BookingComment } from './Details'
 import { Booking, BookingStatus } from './queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
+import { icons } from '~theme/icons'
 
 export type BookingCardType = 'request' | 'petition'
 
@@ -216,13 +217,13 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
 export const BookingTitle = ({ isRequest, ...props }: { isRequest: boolean } & StackProps) => {
   const { t } = useTranslation()
   let data = {
-    icon: ImBoxAdd,
+    icon: icons.inbox,
     title: t('bookings.tool_petition_title', { defaultValue: 'You are requesting a Tool' }),
   }
 
   if (isRequest) {
     data = {
-      icon: ImBoxRemove,
+      icon: icons.outbox,
       title: t('bookings.tool_request_title', { defaultValue: 'Your tool is needed' }),
     }
   }

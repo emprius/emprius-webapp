@@ -6,10 +6,12 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  HStack,
   Icon,
   Link,
   Skeleton,
   Stack,
+  Text,
   Textarea,
   useToast,
   VStack,
@@ -31,6 +33,9 @@ import { ImageUploadError } from '~components/Images/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { useAuth } from '~components/Auth/AuthContext'
+import { lighterText } from '~theme/common'
+import { icons } from '~theme/icons'
 
 interface RatingFormProps {
   booking: Booking
@@ -39,47 +44,64 @@ interface RatingFormProps {
 
 const RatingCardHeader = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
+  const { user } = useAuth()
   const { data: tool } = useTool(booking.toolId)
   const datef = t('rating.datef')
+  const isOwner = booking.toUserId === user.id
+  let otherUser = booking.toUserId
+  let title = t('rating.you_got')
+  let icon = icons.inbox
+  if (isOwner) {
+    otherUser = booking.fromUserId
+    title = t('rating.you_lent')
+    icon = icons.outbox
+  }
+
   return (
-    <>
-      <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
-        <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
-          {tool?.images?.[0] && (
-            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ToolImage imageId={tool.images[0]} alt={tool.title} toolId={tool.id} />
-            </Box>
-          )}
-        </Skeleton>
-        <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}>
-          <VStack align='start'>
-            <Skeleton isLoaded={!!tool}>
-              <Heading size='md' noOfLines={2}>
-                {tool?.title}
-              </Heading>
-            </Skeleton>
-            <Badge px={2} py={1} borderRadius='full'>
-              <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
-                <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-                {t('rating.date_formatted', { date: booking.startDate * 1000, format: datef })}
-                <Icon as={FaArrowRight} mx={2} />
-                {t('rating.date_formatted', { date: booking.endDate * 1000, format: datef })}
-              </Flex>
-            </Badge>
-          </VStack>
-        </Link>
+    <Flex direction={'column'} gap={2}>
+      <HStack sx={lighterText} fontSize='sm'>
+        <Icon as={icon} />
+        <Text>{title}</Text>
+      </HStack>
+      <Flex direction={'column'} gap={1} align={{ base: 'center', md: 'start' }}>
+        <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
+          <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
+            {tool?.images?.[0] && (
+              <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
+                <ToolImage imageId={tool.images[0]} alt={tool.title} toolId={tool.id} />
+              </Box>
+            )}
+          </Skeleton>
+          <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}>
+            <VStack align='start'>
+              <Skeleton isLoaded={!!tool}>
+                <Heading size='md' noOfLines={2}>
+                  {tool?.title}
+                </Heading>
+              </Skeleton>
+              <Badge px={2} py={1} borderRadius='full'>
+                <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
+                  <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
+                  {t('rating.date_formatted', { date: booking.startDate * 1000, format: datef })}
+                  <Icon as={FaArrowRight} mx={2} />
+                  {t('rating.date_formatted', { date: booking.endDate * 1000, format: datef })}
+                </Flex>
+              </Badge>
+            </VStack>
+          </Link>
+        </Flex>
+        <UserCard
+          direction='row'
+          avatarSize='sm'
+          userId={otherUser}
+          gap={2}
+          p={0}
+          fontSize='sm'
+          borderWidth={0}
+          mt={4}
+        />
       </Flex>
-      <UserCard
-        direction='row'
-        avatarSize='sm'
-        userId={booking.toUserId}
-        gap={2}
-        p={0}
-        fontSize='sm'
-        borderWidth={0}
-        mt={4}
-      />
-    </>
+    </Flex>
   )
 }
 

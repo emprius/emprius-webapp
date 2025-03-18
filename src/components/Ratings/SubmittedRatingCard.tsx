@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   SimpleGrid,
+  Icon,
 } from '@chakra-ui/react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link as RouterLink } from 'react-router-dom'
@@ -31,6 +32,8 @@ import { UserAvatar } from '~components/Images/Avatar'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { UserCard } from '~components/Users/Card'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { icons } from '~theme/icons'
+import { lighterText } from '~theme/common'
 
 interface UnifiedRatingCardProps {
   rating: UnifiedRating
@@ -68,7 +71,7 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
   if (isOwner) {
     titleText = (
       <Trans
-        i18nKey={'rating.you_lent_the_tool'}
+        i18nKey={'rating.you_lent_the_tool_from'}
         defaultValue={'You lent'}
         components={{
           toolName: <ToolName tool={tool} />,
@@ -104,6 +107,7 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
 
             <Box flex='1'>
               <HStack fontSize='sm' fontWeight='medium' mb={1} wrap={'wrap'}>
+                <Icon as={isOwner ? icons.outbox : icons.inbox} sx={lighterText} />
                 {titleText}
                 <UserCard
                   userId={otherUser.id}
