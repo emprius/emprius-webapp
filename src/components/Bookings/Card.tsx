@@ -22,7 +22,7 @@ import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { useTool } from '~components/Tools/queries'
 import { CostDay } from '~components/Tools/shared/CostDay'
-import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
@@ -83,12 +83,15 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
       <Stack direction={{ base: 'column', md: 'row' }}>
         <CardHeader p={0}>
           <Box position='relative'>
-            <ToolImage
+            <ToolImageAvailability
               maxW={{ base: 'full', md: '160px' }}
               minH={{ base: 'inherit', md: cardMinH }}
               objectFit='cover'
-              imageHash={tool?.images?.length ? tool?.images[0] : ''}
-              tool={tool}
+              imageId={tool?.images?.length ? tool?.images[0] : ''}
+              isAvailable={tool.isAvailable}
+              isLoading={!tool}
+              toolId={tool.id}
+              alt={tool.title}
             />
             {/* Status badge for small screens */}
             <Hide above={'md'}>

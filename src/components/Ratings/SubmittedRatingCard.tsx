@@ -30,6 +30,7 @@ import { convertToDate } from '~utils/dates'
 import { UserAvatar } from '~components/Images/Avatar'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { UserCard } from '~components/Users/Card'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
 
 interface UnifiedRatingCardProps {
   rating: UnifiedRating
@@ -90,16 +91,14 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
           <Flex gap={4} align='start' mb={4}>
             <Skeleton isLoaded={!!tool} width='50px' height='50px' borderRadius='md' overflow='hidden' flexShrink={0}>
               {tool?.images?.[0] && (
-                <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id?.toString() ?? '')}>
-                  <ServerImage
-                    imageId={tool.images[0]}
-                    alt={tool.title}
-                    width='100%'
-                    height='100%'
-                    objectFit='cover'
-                    thumbnail
-                  />
-                </Link>
+                <ToolImage
+                  imageId={tool.images[0]}
+                  alt={tool.title}
+                  toolId={tool.id}
+                  width='100%'
+                  height='100%'
+                  objectFit='cover'
+                />
               )}
             </Skeleton>
 

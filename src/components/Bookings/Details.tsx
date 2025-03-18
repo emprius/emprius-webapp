@@ -9,7 +9,7 @@ import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { BookingActionsProvider } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
-import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
@@ -90,9 +90,12 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
       {/* Tool Image */}
       <Box flex={'0 0 140px'}>
         <Link as={RouterLink} to={toolDetailUrl}>
-          <ToolImage
-            imageHash={tool.images[0]}
-            tool={tool}
+          <ToolImageAvailability
+            imageId={tool.images[0]}
+            isAvailable={tool.isAvailable}
+            isLoading={!tool}
+            toolId={tool.id}
+            alt={tool.title}
             w={'100%'}
             maxW={'140px'}
             maxH={'160px'}

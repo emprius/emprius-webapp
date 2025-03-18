@@ -30,6 +30,7 @@ import { RatingFormData } from '~components/Ratings/types'
 import { ImageUploadError } from '~components/Images/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
+import { ToolImage } from '~components/Tools/shared/ToolImage'
 
 interface RatingFormProps {
   booking: Booking
@@ -46,14 +47,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
         <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
           {tool?.images?.[0] && (
             <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ServerImage
-                imageId={tool.images[0]}
-                alt={tool.title}
-                width='100%'
-                height='100%'
-                objectFit='cover'
-                thumbnail
-              />
+              <ToolImage imageId={tool.images[0]} alt={tool.title} toolId={tool.id} />
             </Box>
           )}
         </Skeleton>

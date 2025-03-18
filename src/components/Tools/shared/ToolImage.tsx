@@ -1,47 +1,28 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { Badge, Box, Icon, ImageProps, Link, Skeleton, Tooltip } from '@chakra-ui/react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TiCancel } from 'react-icons/ti'
 import { Link as RouterLink } from 'react-router-dom'
-import { ServerImage } from '~components/Images/ServerImage'
+import { ServerImage, ServerImageProps } from '~components/Images/ServerImage'
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 
 type ToolImageProps = {
-  imageHash?: string
-  // id: string
-  // isAvailable: boolean
-  tool: Tool
-  height?: string
-} & Omit<ImageProps, 'src'>
+  toolId?: number
+} & Omit<ServerImageProps, 'fallbackSrc'>
 
-export const ToolImage = ({ imageHash, tool, height = '200px', ...rest }: ToolImageProps) => {
+type ToolImageAvailabilityProps = {
+  isAvailable: boolean
+} & ToolImageProps
+
+export const ToolImageAvailability = ({ isAvailable, isLoading, ...rest }: ToolImageAvailabilityProps) => {
   const { t } = useTranslation()
-
-  const isLoading = !tool
-  const isAvailable = tool?.isAvailable
   const tooltipLabel = isAvailable ? t('tools.available') : t('tools.unavailable')
-  const id = tool?.id
-  const title = tool?.title
-
-  if (isLoading) {
-    return <Skeleton height='100%' />
-  }
 
   return (
     <Box position='relative'>
-      <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', id?.toString() ?? '')}>
-        <ServerImage
-          imageId={imageHash}
-          alt={title}
-          height={height}
-          width='100%'
-          objectFit='cover'
-          thumbnail
-          {...rest}
-        />
-      </Link>
+      <ToolImage height='200px' {...rest} />
       <Tooltip label={tooltipLabel} hasArrow>
         <Badge
           position='absolute'
@@ -60,3 +41,23 @@ export const ToolImage = ({ imageHash, tool, height = '200px', ...rest }: ToolIm
     </Box>
   )
 }
+
+export const ToolImage = ({ toolId, isLoading, ...rest }: ToolImageProps) => {
+  if (isLoading) {
+    return <Skeleton height='100%' />
+  }
+
+  if (!toolId) {
+    return <Image {...rest} />
+  }
+
+  return (
+    <Link as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', toolId?.toString() ?? '')}>
+      <Image {...rest} />
+    </Link>
+  )
+}
+
+const Image = (props: ToolImageProps) => (
+  <ServerImage width='100%' height='100%' objectFit='cover' thumbnail {...props} />
+)

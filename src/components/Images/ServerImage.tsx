@@ -1,4 +1,4 @@
-import { Image, ImageProps, useDisclosure } from '@chakra-ui/react'
+import { Image, ImageProps, Skeleton, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import api from '~src/services/api'
 import { ASSETS } from '~utils/constants'
@@ -9,6 +9,7 @@ export type ServerImageProps = Omit<ImageProps, 'src'> & {
   fallbackSrc?: string
   thumbnail?: boolean
   modal?: boolean
+  isLoading?: boolean
 }
 
 export const ServerImage: React.FC<ServerImageProps> = ({
@@ -16,9 +17,14 @@ export const ServerImage: React.FC<ServerImageProps> = ({
   fallbackSrc = ASSETS.TOOL_FALLBACK,
   thumbnail = false,
   modal = false,
+  isLoading,
   ...props
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  if (isLoading) {
+    return <Skeleton height='100%' />
+  }
 
   if (!imageId) {
     return <Image src={fallbackSrc} {...props} />
@@ -28,7 +34,7 @@ export const ServerImage: React.FC<ServerImageProps> = ({
     <>
       <Image
         onClick={modal ? onOpen : null}
-        cursor={modal ? 'pointer' : 'default'}
+        cursor={modal ? 'pointer' : 'inherit'}
         src={api.images.getImage(imageId, thumbnail)}
         fallbackSrc={fallbackSrc}
         {...props}

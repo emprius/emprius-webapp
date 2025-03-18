@@ -8,7 +8,7 @@ import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/Own
 import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
-import { ToolImage } from './shared/ToolImage'
+import { ToolImageAvailability } from './shared/ToolImage'
 
 interface ToolCardProps {
   tool: Tool
@@ -41,7 +41,13 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
         _hover={{ color: 'primary.500', textDecoration: 'none' }}
       >
         <Box position='relative'>
-          <ToolImage imageHash={tool?.images?.length ? tool?.images[0] : ''} tool={tool} />
+          <ToolImageAvailability
+            imageId={tool?.images?.length ? tool?.images[0] : ''}
+            isAvailable={tool?.isAvailable}
+            isLoading={!tool}
+            toolId={tool?.id}
+            alt={tool?.title}
+          />
         </Box>
 
         <Stack p={4} spacing={3}>

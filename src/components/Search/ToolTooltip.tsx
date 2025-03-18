@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { GrNext, GrPrevious } from 'react-icons/gr'
 import { Link as RouterLink } from 'react-router-dom'
 import { CostDay } from '~components/Tools/shared/CostDay'
-import { ToolImage } from '~components/Tools/shared/ToolImage'
+import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import type { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 
@@ -13,7 +13,6 @@ interface ToolTooltipProps {
 }
 
 export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
-  const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(0)
 
   const handleNext = (e: React.MouseEvent) => {
@@ -33,7 +32,14 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
   return (
     <Stack spacing={1} width='260px' pt={6} pb={4} gap={2}>
       <Stack as={RouterLink} to={ROUTES.TOOLS.DETAIL.replace(':id', tool.id.toString())}>
-        <ToolImage imageHash={tool?.images?.[0] ?? ''} tool={tool} height='120px' />
+        <ToolImageAvailability
+          imageId={tool?.images?.[0] ?? ''}
+          isAvailable={tool.isAvailable}
+          isLoading={!tool}
+          toolId={tool.id}
+          alt={tool.title}
+          height='120px'
+        />
         <Flex align='top' justify='space-between' gap={2} px={4}>
           <Text
             fontWeight='semibold'
