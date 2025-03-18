@@ -89,10 +89,10 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
               minH={{ base: 'inherit', md: cardMinH }}
               objectFit='cover'
               imageId={tool?.images?.length ? tool?.images[0] : ''}
-              isAvailable={tool.isAvailable}
-              isLoading={!tool}
-              toolId={tool.id}
-              alt={tool.title}
+              isAvailable={tool?.isAvailable}
+              isLoading={isLoading}
+              toolId={tool?.id}
+              alt={tool?.title}
             />
             {/* Status badge for small screens */}
             <Hide above={'md'}>
