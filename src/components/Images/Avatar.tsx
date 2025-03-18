@@ -1,8 +1,10 @@
-import { Avatar as ChakraAvatar } from '@chakra-ui/react'
+import { Avatar as ChakraAvatar, Link } from '@chakra-ui/react'
 import React from 'react'
 import { ServerImage } from '~components/Images/ServerImage'
 import { ASSETS } from '~utils/constants'
 import { useUserProfile } from '~components/Users/queries'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/routes'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
@@ -23,8 +25,22 @@ export interface AvatarProps {
   size?: AvatarSize
 }
 
-export const UserAvatar = ({ userId, size = '2xl' }: { userId: string } & Pick<AvatarProps, 'size'>) => {
+export const UserAvatar = ({
+  userId,
+  size = '2xl',
+  linkProfile,
+}: {
+  userId: string
+  linkProfile?: boolean
+} & Pick<AvatarProps, 'size'>) => {
   const { data: user } = useUserProfile(userId)
+  if (linkProfile) {
+    return (
+      <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', userId)}>
+        <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
+      </Link>
+    )
+  }
   return <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
 }
 

@@ -48,7 +48,7 @@ export const MessageBubble = ({
       direction={isAuthor ? 'row' : 'row-reverse'}
       {...flexProps}
     >
-      <UserAvatar userId={id} size='sm' />
+      <UserAvatar userId={id} size='sm' linkProfile />
       <VStack
         bg={bubbleColor}
         p={3}
