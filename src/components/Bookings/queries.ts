@@ -11,6 +11,7 @@ import { Rating } from '~components/Ratings/types'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { ToolsKeys } from '~components/Tools/queries'
 import { RatingsKeys } from '~components/Ratings/queries'
+import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 
 export const BookingKeys = {
   bookingsLists: ['bookings'] as const,
@@ -116,9 +117,10 @@ export const useReturnBooking = (booking: Booking, options?: BookingActionOption
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
     mutationFn: (bookingId: string) => api.bookings.return(bookingId),
-    onSuccess: (res, bookingId) => {
+    onSuccess: async (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
-      client.invalidateQueries({ queryKey: RatingsKeys.pending })
+      await client.invalidateQueries({ queryKey: RatingsKeys.pending })
+      await client.invalidateQueries({ queryKey: PendingActionsKeys })
     },
     ...options,
   })

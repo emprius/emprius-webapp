@@ -39,7 +39,7 @@ const SideNav = () => {
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
-    [t]
+    [t, pendingRatingsCount, pendingRequestsCount]
   )
 
   return (

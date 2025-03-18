@@ -7,6 +7,7 @@ import {
   FormLabel,
   Heading,
   Icon,
+  Link,
   Skeleton,
   Stack,
   Textarea,
@@ -27,6 +28,8 @@ import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { RatingFormData } from '~components/Ratings/types'
 import { ImageUploadError } from '~components/Images/queries'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/routes'
 
 interface RatingFormProps {
   booking: Booking
@@ -54,21 +57,23 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
             </Box>
           )}
         </Skeleton>
-        <VStack align='start'>
-          <Skeleton isLoaded={!!tool}>
-            <Heading size='md' noOfLines={2}>
-              {tool?.title}
-            </Heading>
-          </Skeleton>
-          <Badge px={2} py={1} borderRadius='full'>
-            <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
-              <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
-              {t('rating.date_formatted', { date: booking.startDate * 1000, format: datef })}
-              <Icon as={FaArrowRight} mx={2} />
-              {t('rating.date_formatted', { date: booking.endDate * 1000, format: datef })}
-            </Flex>
-          </Badge>
-        </VStack>
+        <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}>
+          <VStack align='start'>
+            <Skeleton isLoaded={!!tool}>
+              <Heading size='md' noOfLines={2}>
+                {tool?.title}
+              </Heading>
+            </Skeleton>
+            <Badge px={2} py={1} borderRadius='full'>
+              <Flex align='center' wrap='wrap' fontSize='sm' fontWeight='medium'>
+                <Icon as={FaRegCalendarAlt} mr={1} mt={1} />
+                {t('rating.date_formatted', { date: booking.startDate * 1000, format: datef })}
+                <Icon as={FaArrowRight} mx={2} />
+                {t('rating.date_formatted', { date: booking.endDate * 1000, format: datef })}
+              </Flex>
+            </Badge>
+          </VStack>
+        </Link>
       </Flex>
       <UserCard
         direction='row'
