@@ -104,7 +104,7 @@ export const Navbar = () => {
               </Link>
               <Link
                 as={RouterLink}
-                to={ROUTES.RATINGS.PENDING}
+                to={pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY}
                 display='flex'
                 alignItems='center'
                 p={2}
