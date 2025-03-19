@@ -1,4 +1,4 @@
-import { Avatar as ChakraAvatar, Link } from '@chakra-ui/react'
+import { Avatar as ChakraAvatar, Box, Link } from '@chakra-ui/react'
 import React from 'react'
 import { ServerImage } from '~components/Images/ServerImage'
 import { ASSETS } from '~utils/constants'
@@ -36,7 +36,7 @@ export const UserAvatar = ({
   const { data: user } = useUserProfile(userId)
   if (linkProfile) {
     return (
-      <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', userId)}>
+      <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', userId)} minW={avatarSizeToPixels[size]}>
         <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
       </Link>
     )
