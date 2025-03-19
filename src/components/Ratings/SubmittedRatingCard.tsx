@@ -12,7 +12,7 @@ import { UserCard } from '~components/Users/Card'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { icons } from '~theme/icons'
 import { lighterText } from '~theme/common'
-import { MessageBubble } from '~components/Ratings/MessageBubble'
+import { RatingComments } from '~components/Ratings/RatingComments'
 
 interface UnifiedRatingCardProps {
   rating: UnifiedRating
@@ -108,13 +108,8 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
             </Box>
           </Flex>
         </RouterLink>
-
-        {/* Chat-like rating messages */}
-        <Box maxW={{ base: '100%', lg: '70%' }}>
-          {/* Show requester's rating if they've rated */}
-          <MessageBubble isAuthor={!isOwner} {...rating.requester} />
-          {/*/!* Show owner's rating if they've rated *!/*/}
-          <MessageBubble isAuthor={isOwner} {...rating.owner} />
+        <Box maxW={{ base: '100%', lg: '60%' }}>
+          <RatingComments {...rating} />
         </Box>
       </CardBody>
     </Card>

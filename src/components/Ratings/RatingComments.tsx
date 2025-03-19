@@ -1,4 +1,4 @@
-import { RatingParty } from '~components/Ratings/types'
+import { RatingParty, UnifiedRating } from '~components/Ratings/types'
 import { useTranslation } from 'react-i18next'
 import {
   Box,
@@ -17,21 +17,34 @@ import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { convertToDate } from '~utils/dates'
 import React from 'react'
 import { ServerImage } from '~components/Images/ServerImage'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export type MessageBubbleProps = {
   isAuthor: boolean
 } & RatingParty &
   FlexProps
 
-export const MessageBubble = ({
-  id,
-  ratingComment,
-  rating,
-  isAuthor,
-  images,
-  ratedAt,
-  ...flexProps
-}: MessageBubbleProps) => {
+export const RatingComments = ({ requester, owner }: UnifiedRating) => {
+  const { user } = useAuth()
+  return (
+    <Flex direction={'row'} wrap={'wrap'} gap={1} pt={4}>
+      {/* Show requester's rating if they've rated */}
+      {requester?.rating && (
+        <Box position='relative' top={-4}>
+          <MessageBubbles isAuthor={requester.id === user?.id} {...requester} mb={0} />
+        </Box>
+      )}
+      {/* Show owner's rating if they've rated */}
+      {owner?.rating && (
+        <Box position='relative' pl={4}>
+          <MessageBubbles isAuthor={owner.id === user?.id} {...owner} ml={'auto'} />
+        </Box>
+      )}
+    </Flex>
+  )
+}
+
+const MessageBubbles = ({ id, ratingComment, rating, isAuthor, images, ratedAt, ...flexProps }: MessageBubbleProps) => {
   const { t } = useTranslation()
   const textColor = useColorModeValue(isAuthor ? 'gray.700' : 'gray.800', isAuthor ? 'gray.200' : 'gray.100')
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')

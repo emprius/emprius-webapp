@@ -1,6 +1,8 @@
 import {
   Badge,
   Box,
+  Card,
+  CardBody,
   Container,
   Divider,
   Flex,
@@ -32,7 +34,7 @@ import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
-import { MessageBubble } from '~components/Ratings/MessageBubble'
+import { RatingComments } from '~components/Ratings/RatingComments'
 import { useBookingDetail } from '~components/Bookings/queries'
 import { UnifiedRating } from '~components/Ratings/types'
 import { addDayToDate, convertToDate, getDaysBetweenDates } from '~utils/dates'
@@ -43,7 +45,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { categories, transports } = useInfoContext()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
-  const { isAuthenticated, user } = useAuth()
+  const { user } = useAuth()
 
   return (
     <Container maxW='container.xl' py={8}>
@@ -222,42 +224,39 @@ const ToolRatings = ({ toolId }: ToolRatingsProps) => {
 }
 
 const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
-  const { user } = useAuth()
   const { data: booking, isLoading } = useBookingDetail({ id: rating.bookingId })
   const { t } = useTranslation()
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const bgHover = useColorModeValue('gray.50', 'gray.800')
 
   const startDate = convertToDate(booking?.startDate)
   const endDate = convertToDate(booking?.endDate)
 
   return (
-    <Box key={rating.id} w={'full'}>
-      <Flex align='center' gap={1} wrap={'wrap'}>
-        <UserCard
-          userId={rating.requester.id}
-          borderWidth={0}
-          direction='row'
-          showAvatar={false}
-          p={0}
-          ratingProps={{ showCount: false }}
-        />
-        <Skeleton isLoaded={!isLoading}>
-          <Text sx={lightText} fontSize='sm'>
-            {t('tools.lent_from_to', {
-              startDate: startDate,
-              endDate: endDate,
-              format: t('rating.datef'),
-            })}
-          </Text>
-        </Skeleton>
-        <DateRangeTotal begin={startDate} end={addDayToDate(endDate)} />
-      </Flex>
-      <Divider my={4} />
-
-      {/* Show requester's rating if they've rated */}
-      {rating.requester?.rating && <MessageBubble isAuthor={rating.requester.id === user?.id} {...rating.requester} />}
-      {/* Show owner's rating if they've rated */}
-      {rating.owner?.rating && <MessageBubble isAuthor={rating.owner.id === user?.id} {...rating.owner} />}
-      <Divider my={4} />
-    </Box>
+    <Card variant='outline' mb={4} borderColor={borderColor} _hover={{ bg: bgHover }} transition='background 0.2s'>
+      <CardBody>
+        <Flex align='center' gap={1} wrap={'wrap'} mb={4}>
+          <UserCard
+            userId={rating.requester.id}
+            borderWidth={0}
+            direction='row'
+            showAvatar={false}
+            p={0}
+            ratingProps={{ showCount: false }}
+          />
+          <Skeleton isLoaded={!isLoading}>
+            <Text sx={lightText} fontSize='sm'>
+              {t('tools.lent_from_to', {
+                startDate: startDate,
+                endDate: endDate,
+                format: t('rating.datef'),
+              })}
+            </Text>
+          </Skeleton>
+          <DateRangeTotal begin={startDate} end={addDayToDate(endDate)} />
+        </Flex>
+        <RatingComments {...rating} />
+      </CardBody>
+    </Card>
   )
 }
