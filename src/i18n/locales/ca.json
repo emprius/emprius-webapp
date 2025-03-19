@@ -267,6 +267,7 @@
     "toolCategory": "Categoria d'eina",
     "total_cost": "Sol·licitud per {{total}} {{,tokenSymbol}}",
     "unavailable": "No disponible",
+    "lent_from_to": "ho va prestar des del {{startDate, format}} fins al {{endDate, format}}",
     "update_error": "Error al actualitzar l'eina",
     "update_failed": "Error al actualitzar l'eina",
     "update_success": "Eina actualitzada amb èxit",

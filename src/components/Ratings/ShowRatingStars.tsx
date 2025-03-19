@@ -19,13 +19,9 @@ const sizes = {
   lg: { fontSize: '2rem', spacing: 2 },
 }
 
-export const ShowRatingStars = ({
-  rating,
-  size = 'md',
-  showCount = true,
-  ratingCount,
-  ...props
-}: DisplayRatingProps & StackProps) => {
+export type RatingProps = DisplayRatingProps & StackProps
+
+export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingCount, ...props }: RatingProps) => {
   return (
     <HStack spacing={2} wrap={'wrap'} {...props}>
       <HStack spacing={sizes[size].spacing}>

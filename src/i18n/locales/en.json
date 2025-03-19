@@ -270,6 +270,7 @@
     "toolCategory": "Tool Category",
     "total_cost": "Request for {{total}} {{,tokenSymbol}}",
     "unavailable": "Unavailable",
+    "lent_from_to": "lent from {{startDate, format}} to {{endDate, format}}",
     "update_error": "Error updating tool",
     "update_failed": "Failed to update tool",
     "update_success": "Tool updated successfully",

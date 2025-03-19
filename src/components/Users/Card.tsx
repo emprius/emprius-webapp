@@ -6,7 +6,7 @@ import { UserProfile } from '~components/Users/types'
 
 import { ROUTES } from '~src/router/routes'
 import { Avatar, AvatarSize } from '../Images/Avatar'
-import { ShowRatingStars } from '../Ratings/ShowRatingStars'
+import { RatingProps, ShowRatingStars } from '../Ratings/ShowRatingStars'
 import { useUserProfile } from './queries'
 
 type UserMiniCardProps = {
@@ -15,6 +15,8 @@ type UserMiniCardProps = {
   direction?: StackProps['direction']
   placeholderData?: UseQueryOptions<UserProfile>['placeholderData']
   showRating?: boolean
+  showAvatar?: boolean
+  ratingProps?: Omit<RatingProps, 'rating'>
 } & FlexProps
 
 export const UserCard: React.FC<UserMiniCardProps> = ({
@@ -23,6 +25,8 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   direction = 'column',
   placeholderData,
   showRating = true,
+  showAvatar = true,
+  ratingProps,
   ...flexProps
 }) => {
   const { data: user, isLoading } = useUserProfile(userId, {
@@ -60,12 +64,12 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       to={ROUTES.USERS.DETAIL.replace(':id', userId)}
       {...flexProps}
     >
-      <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />
+      {showAvatar && <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />}
       <Stack direction={direction} spacing={1}>
         <Text fontWeight='bold' wordBreak='break-word'>
           {user.name}
         </Text>
-        {showRating && <ShowRatingStars rating={user.rating} size='sm' />}
+        {showRating && <ShowRatingStars rating={user.rating} size='sm' {...ratingProps} />}
       </Stack>
     </Flex>
   )

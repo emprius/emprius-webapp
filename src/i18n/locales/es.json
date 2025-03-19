@@ -268,6 +268,7 @@
     "toolCategory": "Categoría de herramienta",
     "total_cost": "Solicitud por {{total}} {{,tokenSymbol}}",
     "unavailable": "No disponible",
+    "lent_from_to": "lo prestó desde el {{startDate, format}} hasta el {{endDate, format}}",
     "update_error": "Error al actualizar la herramienta",
     "update_failed": "Error al actualizar la herramienta",
     "update_success": "Herramienta actualizada con éxito",

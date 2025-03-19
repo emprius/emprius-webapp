@@ -3,11 +3,13 @@ import {
   Box,
   Container,
   Divider,
+  Flex,
   Grid,
   GridItem,
   Heading,
   Link,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   useColorModeValue,
@@ -31,6 +33,10 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
 import { MessageBubble } from '~components/Ratings/MessageBubble'
+import { useBookingDetail } from '~components/Bookings/queries'
+import { UnifiedRating } from '~components/Ratings/types'
+import { addDayToDate, convertToDate, getDaysBetweenDates } from '~utils/dates'
+import { DateRangeTotal } from '~components/Layout/Dates'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -186,7 +192,6 @@ interface ToolRatingsProps {
 const ToolRatings = ({ toolId }: ToolRatingsProps) => {
   const { t } = useTranslation()
   const { data: ratings, isLoading } = useToolRatings(toolId)
-  const { user } = useAuth()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
@@ -209,17 +214,50 @@ const ToolRatings = ({ toolId }: ToolRatingsProps) => {
       </Heading>
       <Stack spacing={2}>
         {ratings.map((rating) => (
-          <Box key={rating.id} w={'full'}>
-            {/* Show requester's rating if they've rated */}
-            {rating.requester?.rating && (
-              <MessageBubble isAuthor={rating.requester.id === user?.id} {...rating.requester} />
-            )}
-            {/* Show owner's rating if they've rated */}
-            {rating.owner?.rating && <MessageBubble isAuthor={rating.owner.id === user?.id} {...rating.owner} />}
-            <Divider my={4} />
-          </Box>
+          <RatingCard rating={rating} />
         ))}
       </Stack>
+    </Box>
+  )
+}
+
+const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
+  const { user } = useAuth()
+  const { data: booking, isLoading } = useBookingDetail({ id: rating.bookingId })
+  const { t } = useTranslation()
+
+  const startDate = convertToDate(booking?.startDate)
+  const endDate = convertToDate(booking?.endDate)
+
+  return (
+    <Box key={rating.id} w={'full'}>
+      <Flex align='center' gap={1} wrap={'wrap'}>
+        <UserCard
+          userId={rating.requester.id}
+          borderWidth={0}
+          direction='row'
+          showAvatar={false}
+          p={0}
+          ratingProps={{ showCount: false }}
+        />
+        <Skeleton isLoaded={!isLoading}>
+          <Text sx={lightText} fontSize='sm'>
+            {t('tools.lent_from_to', {
+              startDate: startDate,
+              endDate: endDate,
+              format: t('rating.datef'),
+            })}
+          </Text>
+        </Skeleton>
+        <DateRangeTotal begin={startDate} end={addDayToDate(endDate)} />
+      </Flex>
+      <Divider my={4} />
+
+      {/* Show requester's rating if they've rated */}
+      {rating.requester?.rating && <MessageBubble isAuthor={rating.requester.id === user?.id} {...rating.requester} />}
+      {/* Show owner's rating if they've rated */}
+      {rating.owner?.rating && <MessageBubble isAuthor={rating.owner.id === user?.id} {...rating.owner} />}
+      <Divider my={4} />
     </Box>
   )
 }
