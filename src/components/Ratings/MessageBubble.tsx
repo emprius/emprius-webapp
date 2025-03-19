@@ -33,46 +33,33 @@ export const MessageBubble = ({
   ...flexProps
 }: MessageBubbleProps) => {
   const { t } = useTranslation()
-  const bubbleColor = useColorModeValue(isAuthor ? 'blue.50' : 'gray.100', isAuthor ? 'blue.800' : 'gray.700')
-  const textColor = useColorModeValue(isAuthor ? 'gray.800' : 'gray.700', isAuthor ? 'gray.100' : 'gray.200')
-  const dateColor = useColorModeValue(isAuthor ? 'gray.500' : 'gray.400', isAuthor ? 'gray.400' : 'gray.500')
+  const textColor = useColorModeValue(isAuthor ? 'gray.700' : 'gray.800', isAuthor ? 'gray.200' : 'gray.100')
+  const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
   const datef = t('rating.datef_full')
 
   if (!rating) return null
 
   return (
     <Flex
-      justify={{ base: isAuthor ? 'start' : 'end', lg: 'start' }}
+      justify={{ base: isAuthor ? 'end' : 'start', lg: 'start' }}
       mb={4}
       gap={2}
-      direction={isAuthor ? 'row' : 'row-reverse'}
+      direction={isAuthor ? 'row-reverse' : 'row'}
       {...flexProps}
     >
       <UserAvatar userId={id} size='sm' linkProfile />
-      <VStack
-        bg={bubbleColor}
-        p={3}
-        borderRadius='lg'
-        borderTopRightRadius={!isAuthor ? 0 : 'lg'}
-        borderTopLeftRadius={isAuthor ? 0 : 'lg'}
-        boxShadow='sm'
-        align={isAuthor ? 'start' : 'end'}
-      >
-        <ShowRatingStars
-          rating={(rating * 100) / 5}
-          size='sm'
-          showCount={false}
-          pr={isAuthor ? '20px' : 0}
-          pl={!isAuthor ? '20px' : 0}
-        />
+      <Bubble isAuthor={isAuthor}>
+        <HStack justify={isAuthor ? 'end' : 'start'} pr={isAuthor ? 0 : '20px'} pl={isAuthor ? 'auto' : 0}>
+          <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
+        </HStack>
         <VStack spacing={0} w={'full'}>
           {ratingComment && (
             <Text
               fontSize='sm'
               color={textColor}
-              alignSelf={isAuthor ? 'start' : 'end'}
-              pr={isAuthor ? '10px' : 0}
-              pl={!isAuthor ? '10px' : 0}
+              alignSelf={isAuthor ? 'end' : 'start'}
+              pr={isAuthor ? 0 : '10px'}
+              pl={isAuthor ? '10px' : 0}
             >
               {ratingComment}
             </Text>
@@ -81,7 +68,7 @@ export const MessageBubble = ({
           {ratedAt && (
             <Popover>
               <PopoverTrigger>
-                <Text fontSize='xs' color={dateColor} alignSelf={isAuthor ? 'end' : 'start'} cursor='pointer'>
+                <Text fontSize='xs' color={dateColor} alignSelf={isAuthor ? 'start' : 'end'} cursor='pointer'>
                   {t('rating.rating_date', { date: convertToDate(ratedAt) })}
                 </Text>
               </PopoverTrigger>
@@ -96,7 +83,7 @@ export const MessageBubble = ({
             </Popover>
           )}
         </VStack>
-      </VStack>
+      </Bubble>
     </Flex>
   )
 }
@@ -110,5 +97,35 @@ export const ImagesGrid = ({ images }: { images: string[] }) => {
         </Box>
       ))}
     </HStack>
+  )
+}
+
+const Bubble = ({ children, position = 'left', isAuthor }) => {
+  const bubbleColor = useColorModeValue(isAuthor ? 'gray.100' : 'blue.50', isAuthor ? 'gray.700' : 'blue.800')
+  return (
+    <Box>
+      <Box
+        maxW='400px'
+        p={3}
+        bg={bubbleColor}
+        color='white'
+        borderRadius='1em'
+        position='relative'
+        _before={{
+          content: "''",
+          position: 'absolute',
+          top: '1em',
+          left: isAuthor ? 'auto' : '-0.4em',
+          right: isAuthor ? '-0.4em' : 'auto',
+          width: '1.5em',
+          height: '1.5em',
+          bg: bubbleColor,
+          clipPath: isAuthor ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
+        }}
+        alignSelf={position === 'left' ? 'flex-start' : 'flex-end'}
+      >
+        {children}
+      </Box>
+    </Box>
   )
 }
