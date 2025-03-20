@@ -210,9 +210,9 @@
     "submit_success_description": "Valoració enviada amb èxit",
     "submitting": "Enviant...",
     "you_got": "Has sol·licitat",
-    "you_got_the_tool_from": "Has sol·licitat <toolName />",
+    "you_got_the_tool_from": "Ha sol·licitat <toolName />",
     "you_lent": "Has prestat",
-    "you_lent_the_tool_from": "Has prestat <toolName />"
+    "you_lent_the_tool_from": "Ha prestat <toolName />"
   },
   "search": {
     "apply_filters": "Aplicar filtres",

@@ -8,6 +8,7 @@ import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { UserRatingCard } from '~components/Ratings/UserRatingCard'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export const UserRatings = () => {
   const { t } = useTranslation()
@@ -39,7 +40,7 @@ export const UserRatings = () => {
   return (
     <Stack spacing={4}>
       {ratingsWithContent.map((rating, index) => (
-        <UserRatingCard key={index} rating={rating} />
+        <UserRatingCard key={index} rating={rating} actualUser={id} />
       ))}
     </Stack>
   )

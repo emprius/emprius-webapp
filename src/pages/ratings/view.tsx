@@ -80,7 +80,7 @@ const RatingHistory = () => {
   return (
     <Stack spacing={4}>
       {ratingsWithContent.map((rating, index) => (
-        <UserRatingCard key={index} rating={rating} />
+        <UserRatingCard key={index} rating={rating} actualUser={user.id} />
       ))}
     </Stack>
   )

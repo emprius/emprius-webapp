@@ -16,17 +16,17 @@ import { RatingComments } from '~components/Ratings/RatingComments'
 
 interface UnifiedRatingCardProps {
   rating: UnifiedRating
+  actualUser: string
 }
 
-export const UserRatingCard = ({ rating }: UnifiedRatingCardProps) => {
+export const UserRatingCard = ({ rating, actualUser }: UnifiedRatingCardProps) => {
   const { t } = useTranslation()
-  const { user } = useAuth()
   const { data: booking, isLoading: isLoadingBooking } = useBookingDetail({ id: rating.bookingId })
   const { data: tool, isLoading: isLoadingTool } = useTool(booking?.toolId, {
     enabled: !!booking?.toolId,
   })
 
-  const isOwner = rating.owner.id === user.id
+  const isOwner = rating.owner.id === actualUser
   const otherUser = isOwner ? rating.requester : rating.owner
   const datef = t('rating.datef')
 
