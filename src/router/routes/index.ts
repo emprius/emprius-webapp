@@ -23,6 +23,10 @@ export const ROUTES = {
   USERS: {
     LIST: '/users',
     DETAIL: '/users/:id',
+    TABS: {
+      TOOLS: '/users/:id/tools',
+      RATINGS: '/users/:id/ratings',
+    },
   },
   AUTH: {
     LOGIN: '/login',

@@ -45,6 +45,22 @@ const RootRoutesElements = [
           </SuspenseLoader>
         ),
       },
+      {
+        path: ROUTES.USERS.TABS.TOOLS,
+        element: (
+          <SuspenseLoader>
+            <UserDetail />
+          </SuspenseLoader>
+        ),
+      },
+      {
+        path: ROUTES.USERS.TABS.RATINGS,
+        element: (
+          <SuspenseLoader>
+            <UserDetail />
+          </SuspenseLoader>
+        ),
+      },
     ],
   },
 ]
