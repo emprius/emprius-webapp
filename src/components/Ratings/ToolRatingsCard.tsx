@@ -1,7 +1,7 @@
 import { UnifiedRating } from '~components/Ratings/types'
 import { useBookingDetail } from '~components/Bookings/queries'
 import { Trans, useTranslation } from 'react-i18next'
-import { Box, Card, CardBody, Flex, Heading, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Card, CardBody, Flex, Heading, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { addDayToDate, convertToDate } from '~utils/dates'
 import { UserCard } from '~components/Users/Card'
 import { lightText } from '~theme/common'
@@ -9,6 +9,8 @@ import { DateRangeTotal } from '~components/Layout/Dates'
 import { RatingComments } from '~components/Ratings/RatingComments'
 import React from 'react'
 import { useToolRatings } from '~components/Tools/queries'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/routes'
 
 interface ToolRatingsProps {
   toolId: string
@@ -67,19 +69,21 @@ const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
             ratingProps={{ showCount: false }}
           />
           <Skeleton isLoaded={!isLoading}>
-            <Text sx={lightText} fontSize='sm'>
-              <Trans
-                i18nKey={'tools.lent_from_to'}
-                values={{
-                  startDate: startDate,
-                  endDate: endDate,
-                  format: t('rating.datef'),
-                }}
-                components={{
-                  b: <strong />,
-                }}
-              />
-            </Text>
+            <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking?.id)}>
+              <Text sx={lightText} fontSize='sm'>
+                <Trans
+                  i18nKey={'tools.lent_from_to'}
+                  values={{
+                    startDate: startDate,
+                    endDate: endDate,
+                    format: t('rating.datef'),
+                  }}
+                  components={{
+                    b: <strong />,
+                  }}
+                />
+              </Text>
+            </Link>
           </Skeleton>
           <DateRangeTotal begin={startDate} end={addDayToDate(endDate)} isLoaded={!isLoading} />
         </Flex>
