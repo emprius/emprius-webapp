@@ -8,12 +8,14 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { useTranslation } from 'react-i18next'
 import { Tool } from '~components/Tools/types'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export const Detail = () => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const location = useLocation()
   const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const { user } = useAuth()
 
   // Check if we have state passed from navigation
   const {
@@ -37,7 +39,7 @@ export const Detail = () => {
   })
 
   // Determine the user ID based on the booking type
-  const userId = location.pathname.includes('requests') ? booking?.fromUserId : booking?.toUserId
+  const userId = user.id === booking?.fromUserId ? booking?.toUserId : booking?.fromUserId
   const isLoading = isLoadingBooking || isLoadingTool
 
   // Set title
