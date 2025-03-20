@@ -4,6 +4,7 @@ import {
   CardBody,
   CardHeader,
   Container,
+  Divider,
   Flex,
   HStack,
   Icon,
@@ -94,19 +95,44 @@ export const BookingComment = ({
 }
 
 // Component for displaying user information
-const UserInfo = ({ userId }: { userId: string }) => {
+const UserInfo = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
+  const { fromUserId, toUserId } = booking
 
   return (
     <Card variant='bookingDetail'>
       <CardHeader>
         <HStack spacing={2}>
           <Icon as={icons.user} />
-          <Text fontWeight='medium'>{t('bookings.user_info')}</Text>
+          <Text fontWeight='medium'>{t('bookings.users_info')}</Text>
         </HStack>
       </CardHeader>
       <CardBody>
-        <UserCard userId={userId} borderWidth={0} p={0} />
+        <Stack spacing={4}>
+          {/* Requester */}
+          <Box>
+            <Text fontWeight='medium' mb={2} color='primary.500'>
+              {t('bookings.requester')}{' '}
+              <Text as='span' fontWeight='normal' color='gray.500' fontSize='sm'>
+                ({t('bookings.requester_desc')})
+              </Text>
+            </Text>
+            <UserCard userId={fromUserId} borderWidth={0} p={0} />
+          </Box>
+
+          <Divider />
+
+          {/* Owner */}
+          <Box>
+            <Text fontWeight='medium' mb={2} color='primary.500'>
+              {t('bookings.owner')}{' '}
+              <Text as='span' fontWeight='normal' color='gray.500' fontSize='sm'>
+                ({t('bookings.owner_desc')})
+              </Text>
+            </Text>
+            <UserCard userId={toUserId} borderWidth={0} p={0} />
+          </Box>
+        </Stack>
       </CardBody>
     </Card>
   )
@@ -311,6 +337,9 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
   const headerBg = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
+  // Check if the authenticated user is involved in the booking
+  const isUserInvolved = user.id === booking.fromUserId || user.id === booking.toUserId
+
   return (
     <BookingActionsProvider>
       <Container maxW='container.xl' p={0}>
@@ -333,7 +362,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
           <Stack spacing={6}>
             <BookingComments booking={booking} />
             <BookingDateInfo booking={booking} />
-            <UserInfo userId={userId} />
+            <UserInfo booking={booking} />
 
             {/* Add Ratings section */}
             {booking.bookingStatus === BookingStatus.RETURNED && <BookingRatings booking={booking} />}
@@ -343,20 +372,22 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
           <Stack spacing={6}>
             <ToolInfo tool={tool} booking={booking} isRequest={isRequest} />
 
-            {/* Actions Card */}
-            <Card variant='bookingDetail'>
-              <CardHeader>
-                <HStack spacing={2}>
-                  <Icon as={icons.tools} />
-                  <Text fontWeight='medium'>{t('bookings.actions', { defaultValue: 'Actions' })}</Text>
-                </HStack>
-              </CardHeader>
-              <CardBody>
-                <Flex justify='flex-end' gap={4} wrap='wrap'>
-                  <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
-                </Flex>
-              </CardBody>
-            </Card>
+            {/* Actions Card - Only show if the authenticated user is not involved in the booking */}
+            {isUserInvolved && (
+              <Card variant='bookingDetail'>
+                <CardHeader>
+                  <HStack spacing={2}>
+                    <Icon as={icons.tools} />
+                    <Text fontWeight='medium'>{t('bookings.actions', { defaultValue: 'Actions' })}</Text>
+                  </HStack>
+                </CardHeader>
+                <CardBody>
+                  <Flex justify='flex-end' gap={4} wrap='wrap'>
+                    <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
+                  </Flex>
+                </CardBody>
+              </Card>
+            )}
           </Stack>
         </SimpleGrid>
       </Container>

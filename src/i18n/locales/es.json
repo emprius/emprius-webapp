@@ -79,7 +79,12 @@
     "total_earned": "Total ganado: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total gastado: {{amount}} {{,tokenSymbol}}",
     "try_again": "Por favor, inténtalo más tarde",
-    "user_info": "Información del usuario"
+    "user_info": "Información del usuario",
+    "users_info": "Información de los usuarios",
+    "requester": "Solicitante",
+    "requester_desc": "Persona que solicitó la herramienta",
+    "owner": "Propietario",
+    "owner_desc": "Persona propietaria de la herramienta"
   },
   "common": {
     "actual_password": "Contraseña actual",
