@@ -18,11 +18,11 @@ interface UnifiedRatingCardProps {
   rating: UnifiedRating
 }
 
-export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
+export const UserRatingCard = ({ rating }: UnifiedRatingCardProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { data: booking } = useBookingDetail({ id: rating.bookingId })
-  const { data: tool } = useTool(booking?.toolId, {
+  const { data: booking, isLoading: isLoadingBooking } = useBookingDetail({ id: rating.bookingId })
+  const { data: tool, isLoading: isLoadingTool } = useTool(booking?.toolId, {
     enabled: !!booking?.toolId,
   })
 
@@ -71,18 +71,16 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
         >
           {/* Header with tool info */}
           <Flex gap={4} align='start' mb={4}>
-            <Skeleton isLoaded={!!tool} width='50px' height='50px' borderRadius='md' overflow='hidden' flexShrink={0}>
-              {tool?.images?.[0] && (
-                <ToolImage
-                  imageId={tool.images[0]}
-                  alt={tool.title}
-                  toolId={tool.id}
-                  width='100%'
-                  height='100%'
-                  objectFit='cover'
-                />
-              )}
-            </Skeleton>
+            <Box width='50px' height='50px' borderRadius='md' overflow='hidden'>
+              <ToolImage
+                imageId={tool?.images?.[0]}
+                alt={tool?.title}
+                toolId={tool?.id}
+                width='100%'
+                height='100%'
+                isLoading={isLoadingTool}
+              />
+            </Box>
 
             <Box flex='1'>
               <HStack fontSize='sm' fontWeight='medium' mb={1} wrap={'wrap'}>
@@ -99,12 +97,14 @@ export const SubmittedRatingCard = ({ rating }: UnifiedRatingCardProps) => {
                   bgColor={'transparent'}
                 />
               </HStack>
-              {booking && (
-                <Text fontSize='xs' color='gray.500'>
-                  {format(new Date(booking.startDate * 1000), datef)} -{' '}
-                  {format(new Date(booking.endDate * 1000), datef)}
-                </Text>
-              )}
+              <Skeleton isLoaded={!isLoadingBooking} maxW={'250px'}>
+                {booking && (
+                  <Text fontSize='xs' color='gray.500'>
+                    {format(new Date(booking.startDate * 1000), datef)} -{' '}
+                    {format(new Date(booking.endDate * 1000), datef)}
+                  </Text>
+                )}
+              </Skeleton>
             </Box>
           </Flex>
         </RouterLink>

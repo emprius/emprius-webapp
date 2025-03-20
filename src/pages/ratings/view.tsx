@@ -9,7 +9,7 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { PendingRatingCard } from '~components/Ratings/PendingRatingCard'
-import { SubmittedRatingCard } from '~components/Ratings/SubmittedRatingCard'
+import { UserRatingCard } from '~components/Ratings/UserRatingCard'
 import { Booking } from '~components/Bookings/queries'
 import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
@@ -80,7 +80,7 @@ const RatingHistory = () => {
   return (
     <Stack spacing={4}>
       {ratingsWithContent.map((rating, index) => (
-        <SubmittedRatingCard key={index} rating={rating} />
+        <UserRatingCard key={index} rating={rating} />
       ))}
     </Stack>
   )

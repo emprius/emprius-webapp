@@ -15,12 +15,13 @@ import {
 import { UserAvatar } from '~components/Images/Avatar'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { convertToDate } from '~utils/dates'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { ServerImage } from '~components/Images/ServerImage'
 import { useAuth } from '~components/Auth/AuthContext'
 
 export type MessageBubbleProps = {
   isAuthor: boolean
+  isRight?: boolean
 } & RatingParty &
   FlexProps
 
@@ -37,14 +38,23 @@ export const RatingComments = ({ requester, owner }: UnifiedRating) => {
       {/* Show owner's rating if they've rated */}
       {owner?.rating && (
         <Box position='relative' pl={4}>
-          <MessageBubbles isAuthor={owner.id === user?.id} {...owner} ml={'auto'} />
+          <MessageBubbles isAuthor={owner.id === user?.id} {...owner} ml={'auto'} isRight />
         </Box>
       )}
     </Flex>
   )
 }
 
-const MessageBubbles = ({ id, ratingComment, rating, isAuthor, images, ratedAt, ...flexProps }: MessageBubbleProps) => {
+const MessageBubbles = ({
+  id,
+  ratingComment,
+  rating,
+  isAuthor,
+  images,
+  ratedAt,
+  isRight = false,
+  ...flexProps
+}: MessageBubbleProps) => {
   const { t } = useTranslation()
   const textColor = useColorModeValue(isAuthor ? 'gray.700' : 'gray.800', isAuthor ? 'gray.200' : 'gray.100')
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
@@ -54,15 +64,15 @@ const MessageBubbles = ({ id, ratingComment, rating, isAuthor, images, ratedAt, 
 
   return (
     <Flex
-      justify={{ base: isAuthor ? 'end' : 'start', lg: 'start' }}
+      justify={{ base: isRight ? 'end' : 'start', lg: 'start' }}
       mb={4}
       gap={2}
-      direction={isAuthor ? 'row-reverse' : 'row'}
+      direction={isRight ? 'row-reverse' : 'row'}
       {...flexProps}
     >
       <UserAvatar userId={id} size='sm' linkProfile />
-      <Bubble isAuthor={isAuthor}>
-        <HStack justify={isAuthor ? 'end' : 'start'} pr={isAuthor ? 0 : '20px'} pl={isAuthor ? 'auto' : 0}>
+      <Bubble isAuthor={isAuthor} isRight={isRight}>
+        <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
           <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
         </HStack>
         <VStack spacing={0} w={'full'}>
@@ -70,9 +80,9 @@ const MessageBubbles = ({ id, ratingComment, rating, isAuthor, images, ratedAt, 
             <Text
               fontSize='sm'
               color={textColor}
-              alignSelf={isAuthor ? 'end' : 'start'}
-              pr={isAuthor ? 0 : '10px'}
-              pl={isAuthor ? '10px' : 0}
+              alignSelf={isRight ? 'end' : 'start'}
+              pr={isRight ? 0 : '10px'}
+              pl={isRight ? '10px' : 0}
             >
               {ratingComment}
             </Text>
@@ -81,7 +91,7 @@ const MessageBubbles = ({ id, ratingComment, rating, isAuthor, images, ratedAt, 
           {ratedAt && (
             <Popover>
               <PopoverTrigger>
-                <Text fontSize='xs' color={dateColor} alignSelf={isAuthor ? 'start' : 'end'} cursor='pointer'>
+                <Text fontSize='xs' color={dateColor} alignSelf={isRight ? 'start' : 'end'} cursor='pointer'>
                   {t('rating.rating_date', { date: convertToDate(ratedAt) })}
                 </Text>
               </PopoverTrigger>
@@ -113,7 +123,11 @@ export const ImagesGrid = ({ images }: { images: string[] }) => {
   )
 }
 
-const Bubble = ({ children, position = 'left', isAuthor }) => {
+const Bubble = ({
+  children,
+  isRight,
+  isAuthor,
+}: Pick<MessageBubbleProps, 'isAuthor' | 'isRight'> & PropsWithChildren) => {
   const bubbleColor = useColorModeValue(isAuthor ? 'gray.100' : 'blue.50', isAuthor ? 'gray.700' : 'blue.800')
   return (
     <Box>
@@ -128,14 +142,14 @@ const Bubble = ({ children, position = 'left', isAuthor }) => {
           content: "''",
           position: 'absolute',
           top: '1em',
-          left: isAuthor ? 'auto' : '-0.4em',
-          right: isAuthor ? '-0.4em' : 'auto',
+          left: isRight ? 'auto' : '-0.4em',
+          right: isRight ? '-0.4em' : 'auto',
           width: '1.5em',
           height: '1.5em',
           bg: bubbleColor,
-          clipPath: isAuthor ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
+          clipPath: isRight ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
         }}
-        alignSelf={position === 'left' ? 'flex-start' : 'flex-end'}
+        alignSelf={isRight ? 'flex-start' : 'flex-end'}
       >
         {children}
       </Box>

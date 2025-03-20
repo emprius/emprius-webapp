@@ -91,7 +91,7 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
       <Box flex={'0 0 140px'}>
         <Link as={RouterLink} to={toolDetailUrl}>
           <ToolImageAvailability
-            imageId={tool.images[0]}
+            imageId={tool.images?.[0] ?? ''}
             isAvailable={tool.isAvailable}
             isLoading={!tool}
             toolId={tool.id}
