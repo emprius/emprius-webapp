@@ -50,12 +50,42 @@ const elevatedXl = definePartsStyle({
   },
 })
 
+// Define the booking detail card variant
+const bookingDetail = definePartsStyle({
+  container: {
+    variant: 'outline',
+    overflow: 'hidden',
+    borderRadius: 'lg',
+    shadow: 'sm',
+    transition: 'box-shadow 0.2s',
+    _hover: {
+      shadow: 'md',
+    },
+  },
+  header: {
+    bg: 'primary.50',
+    py: 3,
+    px: 4,
+    _dark: {
+      bg: 'primary.900',
+    },
+  },
+  body: {
+    // bg: 'gray.50',
+    p: 4,
+    _dark: {
+      // bg: 'gray.700',
+    },
+  },
+})
+
 export const Card = defineMultiStyleConfig({
   baseStyle: theme.components.Card.baseStyle,
   variants: {
     error,
     newItem,
     elevatedXl,
+    bookingDetail,
     ...theme.components.Card.variants,
   },
   defaultProps: {

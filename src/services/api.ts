@@ -3,7 +3,7 @@ import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/que
 import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
 import {InfoData} from '~components/Layout/Contexts/InfoContext'
 import {BookingPendings} from '~components/Layout/Contexts/PendingActionsProvider'
-import type {RateSubmission, Rating, UnifiedRating} from '~components/Ratings/types'
+import type {BookingRating, RateSubmission, Rating, UnifiedRating} from '~components/Ratings/types'
 import {SearchParams} from '~components/Search/queries'
 import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
 import {Tool, ToolsListResponse} from '~components/Tools/types'
@@ -122,6 +122,7 @@ export const bookings = {
   getRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/rates')),
   getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
   getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
+  getBookingRatings: (id: string) => apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/rate`)),
   submitRating: (data: RateSubmission) =>
     apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, data)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
