@@ -29,6 +29,7 @@ import { useUpdateUserProfile } from './queries'
 import { useNavigate } from 'react-router-dom'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useAuth } from '~components/Auth/AuthContext'
+import { INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
   const { user } = useAuth()
@@ -266,7 +267,8 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
       </>
       <input
         type='file'
-        // accept={INPUT_ACCEPTED_IMAGE_TYPES}
+        accept={INPUT_ACCEPTED_IMAGE_TYPES}
+        capture='environment'
         ref={inputRef}
         onChange={handleImageChange}
         style={{ display: 'none' }}
