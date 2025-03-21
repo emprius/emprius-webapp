@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import React from 'react'
-import { useForm, UseFormWatch } from 'react-hook-form'
+import { useFormContext, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useCreateBooking } from '~components/Bookings/queries'
@@ -23,17 +23,18 @@ import { ROUTES } from '~src/router/routes'
 import { TOOL_MAX_DATE_BOOKING } from '~utils/constants'
 import { addDayToDate, DateToEpoch, getDaysBetweenDates } from '~utils/dates'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
-
-interface BookingFormProps {
-  tool: Tool
-}
+import { useAuth } from '~components/Auth/AuthContext'
 
 // Form data uses strings since DateRangePicker returns strings
-interface BookingFormData {
+export interface BookingFormData {
   startDate: string
   endDate: string
   contact?: string
   comments?: string
+}
+
+interface BookingFormProps {
+  tool: Tool
 }
 
 export const BookingForm = ({ tool }: BookingFormProps) => {
@@ -41,6 +42,8 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
   const toast = useToast()
   const navigate = useNavigate()
   const bgColor = useColorModeValue('white', 'gray.800')
+  const { user } = useAuth()
+  const isOwner = user?.id === tool.userId
 
   const {
     control,
@@ -48,15 +51,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<BookingFormData>({
-    defaultValues: {
-      startDate: '',
-      endDate: '',
-      contact: '',
-      comments: '',
-    },
-    mode: 'onChange',
-  })
+  } = useFormContext<BookingFormData>()
 
   const { mutateAsync, isError, isPending, error } = useCreateBooking()
 
@@ -96,20 +91,73 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
   const maxDate = new Date()
   maxDate.setMonth(maxDate.getMonth() + TOOL_MAX_DATE_BOOKING)
 
+  const startDateValue = watch('startDate')
+  const endDateValue = watch('endDate')
+
+  // console.log('AAA startDateValue form', startDateValue)
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
       <Stack spacing={6}>
         <Stack spacing={4}>
-          <DateRangePicker
-            control={control}
-            startName='startDate'
-            endName='endDate'
-            label={t('bookings.dates')}
-            isRequired
-            minDate={minDate}
-            maxDate={maxDate}
-            reservedDates={tool.reservedDates}
-          />
+          {isOwner ? (
+            // Show DateRangePicker for owner
+            <DateRangePicker
+              control={control}
+              startName='startDate'
+              endName='endDate'
+              label={t('bookings.dates')}
+              isRequired
+              minDate={minDate}
+              maxDate={maxDate}
+              reservedDates={tool.reservedDates}
+            />
+          ) : (
+            // Show selected dates as text for non-owner
+            <FormControl isRequired isInvalid={!!errors.startDate || !!errors.endDate}>
+              <FormLabel>{t('bookings.dates')}</FormLabel>
+              <Box
+                p={3}
+                borderWidth={1}
+                borderRadius='md'
+                borderColor={!startDateValue || !endDateValue ? 'red.300' : 'gray.200'}
+              >
+                {startDateValue && endDateValue ? (
+                  <Stack spacing={1}>
+                    <DateRangeTotal begin={new Date(startDateValue)} end={addDayToDate(endDateValue)} />
+                    <Stack direction='row' spacing={2} mt={1}>
+                      <Text fontWeight='bold'>{t('bookings.from', { defaultValue: 'From' })}:</Text>
+                      <Text>
+                        {new Date(startDateValue).toLocaleDateString(undefined, {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </Text>
+                    </Stack>
+                    <Stack direction='row' spacing={2}>
+                      <Text fontWeight='bold'>{t('bookings.to', { defaultValue: 'To' })}:</Text>
+                      <Text>
+                        {new Date(endDateValue).toLocaleDateString(undefined, {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </Text>
+                    </Stack>
+                  </Stack>
+                ) : (
+                  <Text color='gray.500'>
+                    {t('bookings.select_dates_on_calendar', { defaultValue: 'Please select dates on the calendar' })}
+                  </Text>
+                )}
+              </Box>
+              {(!startDateValue || !endDateValue) && (
+                <FormErrorMessage>{t('validation.required', { field: t('bookings.dates') })}</FormErrorMessage>
+              )}
+            </FormControl>
+          )}
 
           <FormControl isInvalid={!!errors.contact}>
             <FormLabel>{t('bookings.contact')}</FormLabel>
@@ -122,7 +170,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               })}
               placeholder={t('bookings.contact_placeholder')}
             />
-            <FormErrorMessage>{errors.contact?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.contact?.message?.toString()}</FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={!!errors.comments}>
@@ -137,7 +185,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
               placeholder={t('bookings.comments_placeholder')}
               rows={4}
             />
-            <FormErrorMessage>{errors.comments?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.comments?.message?.toString()}</FormErrorMessage>
           </FormControl>
           <TotalPrice tool={tool} watch={watch} />
         </Stack>
