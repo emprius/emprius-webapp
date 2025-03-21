@@ -50,6 +50,11 @@ export const ToolRatings = ({ toolId }: ToolRatingsProps) => {
 const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
   const { data: booking, isLoading } = useBookingDetail({ id: rating.bookingId })
   const { t } = useTranslation()
+
+  if (!rating.owner.rating && !rating.requester.rating) {
+    return null
+  }
+
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgHover = useColorModeValue('gray.50', 'gray.800')
 
@@ -67,6 +72,7 @@ const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
             showAvatar={false}
             p={0}
             ratingProps={{ showCount: false }}
+            bgColor={'transparent'}
           />
           <Skeleton isLoaded={!isLoading}>
             <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking?.id)}>
