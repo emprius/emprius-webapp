@@ -56,18 +56,23 @@ const bookingDetail = definePartsStyle({
     variant: 'outline',
     overflow: 'hidden',
     borderRadius: 'lg',
+    borderWidth: '1px',
     shadow: 'sm',
-    transition: 'box-shadow 0.2s',
+    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    borderColor: 'gray.300',
     _hover: {
       shadow: 'md',
     },
+    _dark: {
+      borderColor: 'gray.600',
+    },
   },
   header: {
-    bg: 'primary.50',
+    bg: 'gray.50',
     py: 3,
     px: 4,
     _dark: {
-      bg: 'primary.900',
+      bg: 'gray.900',
     },
   },
   body: {

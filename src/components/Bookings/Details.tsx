@@ -26,7 +26,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { ActionButtons } from '~components/Bookings/Actions'
 import { BookingDates } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
-import { BookingActionsProvider } from '~components/Bookings/ActionsProvider'
+import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { Tool } from '~components/Tools/types'
@@ -40,6 +40,7 @@ import { Earned } from '~components/Bookings/Card'
 import { RatingComments } from '~components/Ratings/RatingComments'
 import { useGetBookingRatings } from '~components/Ratings/queries'
 import { UnifiedRating } from '~components/Ratings/types'
+import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 
 interface BookingDetailsProps {
   booking: Booking
@@ -233,9 +234,9 @@ const DynamicBookingTitle = ({ booking, isRequest }: { booking: Booking; isReque
       text = isRequest ? t(`bookings.tool_request_past_title`) : t(`bookings.tool_petition_past_title`)
     } else if (booking.bookingStatus === BookingStatus.REJECTED || booking.bookingStatus === BookingStatus.CANCELLED) {
       text = isRequest ? t(`bookings.tool_request_cancelled_title`) : t(`bookings.tool_petition_cancelled_title`)
-    } else if (now < startDate) {
+    } else if (now < startDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
       text = isRequest ? t('bookings.tool_request_future_title') : t('bookings.tool_petition_future_title')
-    } else if (now >= startDate && now <= endDate) {
+    } else if (now >= startDate && now <= endDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
       text = isRequest ? t(`bookings.tool_request_present_title`) : t(`bookings.tool_petition_present_title`)
     }
     return text
@@ -329,16 +330,49 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
   )
 }
 
+/* Actions Card - Only show if the authenticated user is not involved in the booking */
+const ActionsWrapper = ({ booking, userId }: { booking: Booking; userId: string }) => {
+  const { user } = useAuth()
+  const { error } = useBookingActions()
+  // Check if the authenticated user is involved in the booking
+  const isUserInvolved = user.id === booking.fromUserId || user.id === booking.toUserId
+
+  if (!isUserInvolved) {
+    return null
+  }
+
+  return (
+    // <Card variant='bookingDetail'>
+    //   <CardHeader>
+    //     <HStack spacing={2}>
+    //       <Icon as={icons.tools} />
+    //       <Text fontWeight='medium'>{t('bookings.actions', { defaultValue: 'Actions' })}</Text>
+    //     </HStack>
+    //   </CardHeader>
+    //   <CardBody>
+    //     <Flex justify='flex-end' gap={4} wrap='wrap'>
+    //     </Flex>
+    //   </CardBody>
+    // </Card>
+    <>
+      <Flex justify='flex-start' gap={4}>
+        <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
+      </Flex>
+      {!!error && (
+        <Stack direction={{ base: 'column', md: 'row' }} alignSelf={'end'}>
+          <FormSubmitMessage isError={!!error} error={error} />
+        </Stack>
+      )}
+    </>
+  )
+}
 // Improved BookingDetailsPage component for standalone page
 export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProps) => {
-  const { t } = useTranslation()
   const { user } = useAuth()
+  const { t } = useTranslation()
   const isRequest = booking.toUserId === user.id
   const headerBg = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-
-  // Check if the authenticated user is involved in the booking
-  const isUserInvolved = user.id === booking.fromUserId || user.id === booking.toUserId
 
   return (
     <BookingActionsProvider>
@@ -355,14 +389,15 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
             <StatusBadge status={booking.bookingStatus} />
           </Flex>
         </Box>
-
+        <Box mb={6}>
+          <ActionsWrapper booking={booking} userId={userId} />
+        </Box>
         {/* Main Content */}
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={6}>
           {/* Left Column */}
           <Stack spacing={6}>
-            <BookingComments booking={booking} />
             <BookingDateInfo booking={booking} />
-            <UserInfo booking={booking} />
+            <BookingComments booking={booking} />
 
             {/* Add Ratings section */}
             {booking.bookingStatus === BookingStatus.RETURNED && <BookingRatings booking={booking} />}
@@ -371,23 +406,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
           {/* Right Column */}
           <Stack spacing={6}>
             <ToolInfo tool={tool} booking={booking} isRequest={isRequest} />
-
-            {/* Actions Card - Only show if the authenticated user is not involved in the booking */}
-            {isUserInvolved && (
-              <Card variant='bookingDetail'>
-                <CardHeader>
-                  <HStack spacing={2}>
-                    <Icon as={icons.tools} />
-                    <Text fontWeight='medium'>{t('bookings.actions', { defaultValue: 'Actions' })}</Text>
-                  </HStack>
-                </CardHeader>
-                <CardBody>
-                  <Flex justify='flex-end' gap={4} wrap='wrap'>
-                    <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
-                  </Flex>
-                </CardBody>
-              </Card>
-            )}
+            <UserInfo booking={booking} />
           </Stack>
         </SimpleGrid>
       </Container>

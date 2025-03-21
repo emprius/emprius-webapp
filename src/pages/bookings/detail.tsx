@@ -39,7 +39,7 @@ export const Detail = () => {
   })
 
   // Determine the user ID based on the booking type
-  const userId = user.id === booking?.fromUserId ? booking?.toUserId : booking?.fromUserId
+  const userId = user.id === booking?.toUserId ? booking?.toUserId : booking?.fromUserId
   const isLoading = isLoadingBooking || isLoadingTool
 
   // Set title
