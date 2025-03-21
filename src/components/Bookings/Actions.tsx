@@ -150,16 +150,14 @@ const ReturnedBookingActions = ({ booking }: ActionsProps) => {
     return null
   }
 
-  const isRated = booking.ratings.some((rating) => rating.fromUserId === user.id)
-
   let text = t('rating.rate_user')
-  if (isRated) {
+  if (booking.isRated) {
     text = t('rating.already_rated')
   }
 
   return (
     <Button
-      disabled={isRated}
+      disabled={booking.isRated}
       leftIcon={icons.ratings({})}
       variant='outline'
       onClick={(e) => {

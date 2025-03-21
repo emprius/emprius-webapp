@@ -41,6 +41,7 @@ export interface Booking {
   createdAt: string
   updatedAt: string
   ratings: Rating[]
+  isRated: boolean
 }
 
 export const useBookingDetail = ({
