@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { ActionButtons } from '~components/Bookings/Actions'
-import { BookingDates } from '~components/Bookings/BookingDates'
+import { BookingDates, BookingStatusTitle } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { useTool } from '~components/Tools/queries'
 import { CostDay } from '~components/Tools/shared/CostDay'
@@ -114,7 +114,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
               {/* Booking Summary Section */}
               <Stack spacing={1} justify={'space-between'} h={'full'}>
                 <Stack spacing={1}>
-                  <BookingTitle isRequest={isRequest} />
+                  <BookingStatusTitle isRequest={isRequest} booking={booking} fontSize='sm' />
                   <Stack
                     mt={{ base: 6, sm: 2 }}
                     direction={'row'}
@@ -214,23 +214,23 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
   )
 }
 
-export const BookingTitle = ({ isRequest, ...props }: { isRequest: boolean } & StackProps) => {
-  const { t } = useTranslation()
-  let data = {
-    icon: icons.inbox,
-    title: t('bookings.tool_petition_title', { defaultValue: 'You are requesting a Tool' }),
-  }
-
-  if (isRequest) {
-    data = {
-      icon: icons.outbox,
-      title: t('bookings.tool_request_title', { defaultValue: 'Your tool is needed' }),
-    }
-  }
-  return (
-    <HStack sx={lighterText} fontSize='sm' {...props}>
-      <Icon as={data.icon} />
-      <Text>{data.title}</Text>
-    </HStack>
-  )
-}
+// export const BookingTitle = ({ isRequest, ...props }: { isRequest: boolean } & StackProps) => {
+//   const { t } = useTranslation()
+//   let data = {
+//     icon: icons.inbox,
+//     title: t('bookings.tool_petition_title', { defaultValue: 'You are requesting a Tool' }),
+//   }
+//
+//   if (isRequest) {
+//     data = {
+//       icon: icons.outbox,
+//       title: t('bookings.tool_request_title', { defaultValue: 'Your tool is needed' }),
+//     }
+//   }
+//   return (
+//     <HStack sx={lighterText} fontSize='sm' {...props}>
+//       <Icon as={data.icon} />
+//       <Text>{data.title}</Text>
+//     </HStack>
+//   )
+// }

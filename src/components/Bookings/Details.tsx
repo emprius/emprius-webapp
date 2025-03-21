@@ -24,7 +24,7 @@ import { FaRegCalendarAlt } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { ActionButtons } from '~components/Bookings/Actions'
-import { BookingDates } from '~components/Bookings/BookingDates'
+import { BookingDates, BookingStatusTitle } from '~components/Bookings/BookingDates'
 import { StatusBadge } from '~components/Bookings/StatusBage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
@@ -220,36 +220,6 @@ const BookingDateInfo = ({ booking }: { booking: Booking }) => {
   )
 }
 
-// Custom component for dynamic booking title based on timing
-const DynamicBookingTitle = ({ booking, isRequest }: { booking: Booking; isRequest: boolean }) => {
-  const { t } = useTranslation()
-  const now = new Date().getTime() / 1000 // Current time in seconds
-  const startDate = booking.startDate // Already in seconds
-  const endDate = booking.endDate // Already in seconds
-
-  // Determine booking timing status
-  const title = useMemo(() => {
-    let text = isRequest ? t('bookings.tool_request_title') : t('bookings.tool_petition_title')
-    if (booking.bookingStatus === BookingStatus.RETURNED) {
-      text = isRequest ? t(`bookings.tool_request_past_title`) : t(`bookings.tool_petition_past_title`)
-    } else if (booking.bookingStatus === BookingStatus.REJECTED || booking.bookingStatus === BookingStatus.CANCELLED) {
-      text = isRequest ? t(`bookings.tool_request_cancelled_title`) : t(`bookings.tool_petition_cancelled_title`)
-    } else if (now < startDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
-      text = isRequest ? t('bookings.tool_request_future_title') : t('bookings.tool_petition_future_title')
-    } else if (now >= startDate && now <= endDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
-      text = isRequest ? t(`bookings.tool_request_present_title`) : t(`bookings.tool_petition_present_title`)
-    }
-    return text
-  }, [booking, now])
-
-  return (
-    <HStack sx={lighterText} fontSize={{ base: 'xl', md: '2xl' }} fontWeight='bold'>
-      <Icon as={isRequest ? icons.outbox : icons.inbox} />
-      <Text>{title}</Text>
-    </HStack>
-  )
-}
-
 // Component to display booking ratings
 const BookingRatings = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
@@ -342,18 +312,6 @@ const ActionsWrapper = ({ booking, userId }: { booking: Booking; userId: string 
   }
 
   return (
-    // <Card variant='bookingDetail'>
-    //   <CardHeader>
-    //     <HStack spacing={2}>
-    //       <Icon as={icons.tools} />
-    //       <Text fontWeight='medium'>{t('bookings.actions', { defaultValue: 'Actions' })}</Text>
-    //     </HStack>
-    //   </CardHeader>
-    //   <CardBody>
-    //     <Flex justify='flex-end' gap={4} wrap='wrap'>
-    //     </Flex>
-    //   </CardBody>
-    // </Card>
     <>
       <Flex justify='flex-start' gap={4}>
         <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
@@ -381,7 +339,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         <Box mb={6} p={4} borderColor={borderColor} borderBottom={'1px'} borderBottomColor={borderColor}>
           <Flex justify='space-between' align='center' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
             <Stack spacing={1}>
-              <DynamicBookingTitle isRequest={isRequest} booking={booking} />
+              <BookingStatusTitle isRequest={isRequest} booking={booking} fontWeight='bold' />
               <Text fontSize='sm' color='gray.500' _dark={{ color: 'gray.400' }}>
                 {t('bookings.reference', { id: booking.id })}
               </Text>
