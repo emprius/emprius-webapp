@@ -18,6 +18,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { StyledCalendar } from '~components/Layout/StyledCalendar'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegCalendarAlt } from 'react-icons/fa'
@@ -29,7 +30,7 @@ import { StatusBadge } from '~components/Bookings/StatusBage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
-import { Tool } from '~components/Tools/types'
+import { DateRange, Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
@@ -205,6 +206,12 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
 const BookingDateInfo = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
 
+  // Convert booking dates to Date objects for the calendar
+  const startDate = new Date(booking.startDate * 1000)
+  const endDate = new Date(booking.endDate * 1000)
+
+  const selectedRange: [Date, Date] = [startDate, endDate]
+
   return (
     <Card variant='bookingDetail'>
       <CardHeader>
@@ -214,7 +221,10 @@ const BookingDateInfo = ({ booking }: { booking: Booking }) => {
         </HStack>
       </CardHeader>
       <CardBody>
-        <BookingDates booking={booking} />
+        {/* Display the calendar with the booking date range */}
+        <Box mb={3}>
+          <StyledCalendar selectedRange={selectedRange} isSelectable={false} />
+        </Box>
       </CardBody>
     </Card>
   )
