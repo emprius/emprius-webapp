@@ -1,6 +1,6 @@
 import { FiMenu, FiMessageCircle, FiPlus, FiSearch, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
-import { FaHeartbeat } from 'react-icons/fa'
+import { FaHeartbeat, FaCalendar } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 
 export const icons = {
@@ -17,4 +17,5 @@ export const icons = {
   donate: FaHeartbeat,
   outbox: ImBoxRemove,
   inbox: ImBoxAdd,
+  calendar: FaCalendar,
 }

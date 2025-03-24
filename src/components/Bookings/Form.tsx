@@ -10,8 +10,10 @@ import {
   Textarea,
   useColorModeValue,
   useToast,
+  Flex,
+  Icon,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormContext, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -21,6 +23,7 @@ import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { TOOL_MAX_DATE_BOOKING } from '~utils/constants'
 import { addDayToDate, DateToEpoch, getDaysBetweenDates } from '~utils/dates'
+import { icons } from '~theme/icons'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useAuth } from '~components/Auth/AuthContext'
 
@@ -28,7 +31,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 export interface BookingFormData {
   startDate: string
   endDate: string
-  contact?: string
+  contact: string
   comments?: string
 }
 
@@ -45,16 +48,34 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
   const isOwner = user?.id === tool.userId
 
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
+    clearErrors,
   } = useFormContext<BookingFormData>()
 
   const { mutateAsync, isError, isPending, error } = useCreateBooking()
 
   const onSubmit = async (formData: BookingFormData) => {
+    // Validate dates are selected
+    if (!formData.startDate) {
+      setError('startDate', {
+        type: 'required',
+        message: t('validation.required', { field: t('bookings.start_date', { defaultValue: 'Start date' }) }),
+      })
+      return
+    }
+
+    if (!formData.endDate) {
+      setError('endDate', {
+        type: 'required',
+        message: t('validation.required', { field: t('bookings.end_date', { defaultValue: 'End date' }) }),
+      })
+      return
+    }
+
     try {
       const bookingData = {
         toolId: tool.id.toString(),
@@ -72,7 +93,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
         duration: 3000,
       })
 
-      navigate(ROUTES.PROFILE.VIEW)
+      navigate(ROUTES.BOOKINGS.REQUESTS)
     } catch (error) {
       console.error('Failed to create booking:', error)
       toast({
@@ -92,76 +113,70 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
 
   const startDateValue = watch('startDate')
   const endDateValue = watch('endDate')
+  const datef = t('bookings.datef')
 
-  // console.log('AAA startDateValue form', startDateValue)
+  // Clear errors when dates are selected
+  useEffect(() => {
+    if (startDateValue) {
+      clearErrors('startDate')
+    }
+  }, [startDateValue, clearErrors])
+
+  useEffect(() => {
+    if (endDateValue) {
+      clearErrors('endDate')
+    }
+  }, [endDateValue, clearErrors])
+
   return (
     <Box as='form' onSubmit={handleSubmit(onSubmit)} bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
       <Stack spacing={6}>
         <Stack spacing={4}>
-          {isOwner ? (
-            // Show DateRangePicker for owner
-            <DateRangePicker
-              control={control}
-              startName='startDate'
-              endName='endDate'
-              label={t('bookings.dates')}
-              isRequired
-              minDate={minDate}
-              maxDate={maxDate}
-              reservedDates={tool.reservedDates}
-            />
-          ) : (
-            // Show selected dates as text for non-owner
-            <FormControl isRequired isInvalid={!!errors.startDate || !!errors.endDate}>
-              <FormLabel>{t('bookings.dates')}</FormLabel>
-              <Box
-                p={3}
-                borderWidth={1}
-                borderRadius='md'
-                borderColor={!startDateValue || !endDateValue ? 'red.300' : 'gray.200'}
-              >
+          {/* Show selected dates as text for non-owner*/}
+          <FormControl isRequired isInvalid={!!errors.startDate || !!errors.endDate}>
+            <FormLabel>{t('bookings.dates')}</FormLabel>
+            <Box
+              p={3}
+              borderWidth={1}
+              borderRadius='md'
+              borderColor={errors.startDate || errors.endDate ? 'red.300' : 'gray.200'}
+            >
+              <Flex align='center'>
+                <Icon as={icons.calendar} mr={3} color='gray.500' boxSize={5} />
                 {startDateValue && endDateValue ? (
-                  <Stack spacing={1}>
-                    <DateRangeTotal begin={new Date(startDateValue)} end={addDayToDate(endDateValue)} />
-                    <Stack direction='row' spacing={2} mt={1}>
-                      <Text fontWeight='bold'>{t('bookings.from', { defaultValue: 'From' })}:</Text>
-                      <Text>
-                        {new Date(startDateValue).toLocaleDateString(undefined, {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </Text>
-                    </Stack>
-                    <Stack direction='row' spacing={2}>
-                      <Text fontWeight='bold'>{t('bookings.to', { defaultValue: 'To' })}:</Text>
-                      <Text>
-                        {new Date(endDateValue).toLocaleDateString(undefined, {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </Text>
-                    </Stack>
-                  </Stack>
+                  <Text>
+                    {t('bookings.date_formatted', { date: new Date(startDateValue), format: datef })}
+                    {' - '}
+                    {t('bookings.date_formatted', { date: new Date(endDateValue), format: datef })}
+                  </Text>
+                ) : startDateValue ? (
+                  <Text>{t('bookings.date_formatted', { date: new Date(startDateValue), format: datef })}</Text>
                 ) : (
                   <Text color='gray.500'>
                     {t('bookings.select_dates_on_calendar', { defaultValue: 'Please select dates on the calendar' })}
                   </Text>
                 )}
-              </Box>
-              {(!startDateValue || !endDateValue) && (
-                <FormErrorMessage>{t('validation.required', { field: t('bookings.dates') })}</FormErrorMessage>
-              )}
-            </FormControl>
-          )}
+              </Flex>
+            </Box>
+            {startDateValue && endDateValue && (
+              <Text fontSize='sm' mt={2} color='gray.600'>
+                {t('bookings.total_days', {
+                  count: getDaysBetweenDates(startDateValue, addDayToDate(endDateValue)),
+                  defaultValue: '{{count}} days total',
+                })}
+              </Text>
+            )}
+            {errors.startDate && <FormErrorMessage>{errors.startDate.message?.toString()}</FormErrorMessage>}
+            {errors.endDate && !errors.startDate && (
+              <FormErrorMessage>{errors.endDate.message?.toString()}</FormErrorMessage>
+            )}
+          </FormControl>
 
-          <FormControl isInvalid={!!errors.contact}>
+          <FormControl isRequired isInvalid={!!errors.contact}>
             <FormLabel>{t('bookings.contact')}</FormLabel>
             <Input
               {...register('contact', {
+                required: t('validation.required', { field: t('bookings.contact') }),
                 maxLength: {
                   value: 100,
                   message: t('validation.max_length', { max: 100 }),
@@ -225,7 +240,6 @@ const TotalPrice = ({ tool, watch }: { tool: Tool; watch: UseFormWatch<BookingFo
           defaultValue: 'Request for {{total}} {{,tokenSymbol}}',
         })}
       </Text>
-      <DateRangeTotal {...date} />
     </Stack>
   )
 }
