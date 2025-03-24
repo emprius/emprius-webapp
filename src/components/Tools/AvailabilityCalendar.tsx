@@ -1,10 +1,10 @@
 import { Box, Heading, Text, useColorModeValue } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DateRange } from '~components/Layout/Form/DateRangePicker'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useFormContext } from 'react-hook-form'
 import { StyledCalendar } from '~components/Layout/StyledCalendar'
+import { DateRange } from '~components/Tools/types'
 
 interface ToolAvailabilityCalendarProps {
   reservedDates: DateRange[]

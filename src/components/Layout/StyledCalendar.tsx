@@ -2,7 +2,7 @@ import { Box, useColorModeValue, useTheme } from '@chakra-ui/react'
 import React from 'react'
 import Calendar, { CalendarProps } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
-import { DateRange } from '~components/Layout/Form/DateRangePicker'
+import { DateRange } from '~components/Tools/types'
 
 export type StyledCalendarProps = {
   // Core functionality
