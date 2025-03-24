@@ -251,6 +251,15 @@ export const StyledCalendar = ({
             },
           },
         },
+        // Apply hover style only to selectable dates that aren't reserved or part of a range
+        '.react-calendar__tile:not(.reserved-date, .reserved-start-date, .reserved-end-date, .reserved-single-date, .selected-start-date, .selected-end-date, .in-range-date):not(:disabled)':
+          {
+            '&:hover': {
+              backgroundColor: isSelectable
+                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important`
+                : 'transparent',
+            },
+          },
         '.react-calendar__tile--now': {
           backgroundColor: 'transparent !important',
           color: `${todayColor} !important`,

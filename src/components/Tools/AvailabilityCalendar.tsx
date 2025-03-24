@@ -139,10 +139,6 @@ export const AvailabilityCalendar = ({
     formContext.setValue('endDate', dateStr, { shouldValidate: true })
   }
 
-  // Get today's date for minDate
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
   return (
     <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm'>
       <Heading size='md' mb={4}>
@@ -161,8 +157,8 @@ export const AvailabilityCalendar = ({
           {selectedRange[0] && selectedRange[1]
             ? t('bookings.dates_selected', { defaultValue: 'Dates selected' })
             : selectionMode === 'start'
-            ? t('bookings.select_start_date', { defaultValue: 'Select start date' })
-            : t('bookings.select_end_date', { defaultValue: 'Select end date' })}
+              ? t('bookings.select_start_date', { defaultValue: 'Select start date' })
+              : t('bookings.select_end_date', { defaultValue: 'Select end date' })}
         </Text>
       )}
     </Box>
