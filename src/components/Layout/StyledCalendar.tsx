@@ -239,7 +239,7 @@ export const StyledCalendar = ({
           transition: 'all 0.2s ease',
           position: 'relative',
           '&:hover': {
-            backgroundColor: isSelectable ? useColorModeValue('gray.100', 'gray.700') : 'transparent',
+            backgroundColor: 'transparent',
             transform: isSelectable ? 'scale(1.05)' : 'none',
             borderRadius: '4px',
           },
@@ -248,18 +248,43 @@ export const StyledCalendar = ({
             cursor: 'not-allowed',
             '&:hover': {
               transform: 'none',
+              backgroundColor: 'transparent !important',
             },
           },
         },
         // Apply hover style only to selectable dates that aren't reserved or part of a range
-        '.react-calendar__tile:not(.reserved-date, .reserved-start-date, .reserved-end-date, .reserved-single-date, .selected-start-date, .selected-end-date, .in-range-date):not(:disabled)':
-          {
+        '.react-calendar__tile:not(.reserved-date, .reserved-start-date, .reserved-end-date, .reserved-single-date, .selected-start-date, .selected-end-date, .in-range-date):not(:disabled)': {
+          ...(selectedRange[0] && !selectedRange[1] ? {
+            // When start date is selected but end date is not, style the hover like an end date
             '&:hover': {
-              backgroundColor: isSelectable
-                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important`
+              backgroundColor: isSelectable 
+                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
+                : 'transparent',
+              borderTopLeftRadius: '0 !important',
+              borderBottomLeftRadius: '0 !important',
+              borderTopRightRadius: '50% !important',
+              borderBottomRightRadius: '50% !important',
+            },
+          } : !selectedRange[0] && !selectedRange[1] ? {
+            // When neither start nor end date is selected, style the hover like a start date
+            '&:hover': {
+              backgroundColor: isSelectable 
+                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
+                : 'transparent',
+              borderTopRightRadius: '0 !important',
+              borderBottomRightRadius: '0 !important',
+              borderTopLeftRadius: '50% !important',
+              borderBottomLeftRadius: '50% !important',
+            },
+          } : {
+            // Default hover style for other cases
+            '&:hover': {
+              backgroundColor: isSelectable 
+                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
                 : 'transparent',
             },
-          },
+          }),
+        },
         '.react-calendar__tile--now': {
           backgroundColor: 'transparent !important',
           color: `${todayColor} !important`,
