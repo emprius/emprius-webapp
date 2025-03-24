@@ -18,7 +18,7 @@ export const StyledCalendar = ({
   reservedDates = [],
   selectedRange = [null, null],
   onDateClick,
-  isSelectable = true,
+  isSelectable = false,
   calendarWrapperProps,
   ...calendarProps
 }: StyledCalendarProps) => {
@@ -80,9 +80,9 @@ export const StyledCalendar = ({
       }
 
       // Don't add selection classes if selection is disabled
-      if (!isSelectable) {
-        return classes.join(' ')
-      }
+      // if (!isSelectable) {
+      //   return classes.join(' ')
+      // }
 
       const [start, end] = selectedRange
 
@@ -95,9 +95,8 @@ export const StyledCalendar = ({
       if (end && date.toDateString() === end.toDateString()) {
         classes.push('selected-end-date')
       }
-
-      // Mark dates in the selected range
-      if (start && end && date > start && date < end) {
+      // Mark dates in the selected range. Dont add the class for endate
+      else if (start && end && date > start && date < end) {
         classes.push('in-range-date')
       }
     }
@@ -204,6 +203,7 @@ export const StyledCalendar = ({
           transition: 'all 0.2s ease',
           '&:hover': {
             backgroundColor: `${useColorModeValue(theme.colors.primary[300], theme.colors.primary[600])} !important`,
+            // backgroundColor: `red !important`,
             transform: isSelectable ? 'scale(1.05)' : 'none',
           },
         },
@@ -253,38 +253,43 @@ export const StyledCalendar = ({
           },
         },
         // Apply hover style only to selectable dates that aren't reserved or part of a range
-        '.react-calendar__tile:not(.reserved-date, .reserved-start-date, .reserved-end-date, .reserved-single-date, .selected-start-date, .selected-end-date, .in-range-date):not(:disabled)': {
-          ...(selectedRange[0] && !selectedRange[1] ? {
-            // When start date is selected but end date is not, style the hover like an end date
-            '&:hover': {
-              backgroundColor: isSelectable 
-                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
-                : 'transparent',
-              borderTopLeftRadius: '0 !important',
-              borderBottomLeftRadius: '0 !important',
-              borderTopRightRadius: '50% !important',
-              borderBottomRightRadius: '50% !important',
-            },
-          } : !selectedRange[0] && !selectedRange[1] ? {
-            // When neither start nor end date is selected, style the hover like a start date
-            '&:hover': {
-              backgroundColor: isSelectable 
-                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
-                : 'transparent',
-              borderTopRightRadius: '0 !important',
-              borderBottomRightRadius: '0 !important',
-              borderTopLeftRadius: '50% !important',
-              borderBottomLeftRadius: '50% !important',
-            },
-          } : {
-            // Default hover style for other cases
-            '&:hover': {
-              backgroundColor: isSelectable 
-                ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important` 
-                : 'transparent',
-            },
-          }),
-        },
+        '.react-calendar__tile:not(.reserved-date, .reserved-start-date, .reserved-end-date, .reserved-single-date, .selected-start-date, .selected-end-date, .in-range-date):not(:disabled)':
+          {
+            ...(isSelectable && selectedRange[0] && !selectedRange[1]
+              ? {
+                  // When start date is selected but end date is not, style the hover like an end date
+                  '&:hover': {
+                    backgroundColor: isSelectable
+                      ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important`
+                      : 'transparent',
+                    borderTopLeftRadius: '0 !important',
+                    borderBottomLeftRadius: '0 !important',
+                    borderTopRightRadius: '50% !important',
+                    borderBottomRightRadius: '50% !important',
+                  },
+                }
+              : isSelectable && !selectedRange[0] && !selectedRange[1]
+                ? {
+                    // When neither start nor end date is selected, style the hover like a start date
+                    '&:hover': {
+                      backgroundColor: isSelectable
+                        ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important`
+                        : 'transparent',
+                      borderTopRightRadius: '0 !important',
+                      borderBottomRightRadius: '0 !important',
+                      borderTopLeftRadius: '50% !important',
+                      borderBottomLeftRadius: '50% !important',
+                    },
+                  }
+                : {
+                    // Default hover style for other cases
+                    '&:hover': {
+                      backgroundColor: isSelectable
+                        ? `${useColorModeValue(theme.colors.primary[100], theme.colors.primary[800])} !important`
+                        : 'transparent',
+                    },
+                  }),
+          },
         '.react-calendar__tile--now': {
           backgroundColor: 'transparent !important',
           color: `${todayColor} !important`,
@@ -321,15 +326,15 @@ export const StyledCalendar = ({
         '.react-calendar__tile--now.selected-end-date': {
           backgroundColor: `${selectedColor} !important`,
           color: useColorModeValue('black', 'white') + ' !important',
-          borderTopLeftRadius: '0 !important',
-          borderBottomLeftRadius: '0 !important',
+          borderTopLeftRadius: '50% !important',
+          borderBottomLeftRadius: '50% !important',
           borderTopRightRadius: '50% !important',
           borderBottomRightRadius: '50% !important',
           '&::after': {
             border: `2px solid ${useColorModeValue(theme.colors.primary[600], theme.colors.primary[300])}`,
             width: '90%',
             height: '90%',
-            borderRadius: '0 50% 50% 0',
+            borderRadius: '50%',
           },
         },
         '.react-calendar__tile--now.in-range-date': {
@@ -374,6 +379,15 @@ export const StyledCalendar = ({
           abbr: {
             textDecoration: 'none',
           },
+        },
+
+        // Override default active date style when is not clickable
+        '.react-calendar__tile--active': {
+          background: isSelectable ? 'inherit' : 'transparent',
+          color: 'inherit',
+        },
+        '.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus': {
+          background: isSelectable ? 'inherit' : 'transparent',
         },
       }}
       {...calendarWrapperProps}
