@@ -45,7 +45,6 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
   const navigate = useNavigate()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { user } = useAuth()
-  const isOwner = user?.id === tool.userId
 
   const {
     register,
@@ -93,7 +92,7 @@ export const BookingForm = ({ tool }: BookingFormProps) => {
         duration: 3000,
       })
 
-      navigate(ROUTES.BOOKINGS.REQUESTS)
+      navigate(ROUTES.BOOKINGS.PETITIONS)
     } catch (error) {
       console.error('Failed to create booking:', error)
       toast({

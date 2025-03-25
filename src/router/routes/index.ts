@@ -22,7 +22,7 @@ export const ROUTES = {
   },
   USERS: {
     LIST: '/users',
-    DETAIL: '/users/:id',
+    DETAIL: '/users/:id/tools',
     TABS: {
       TOOLS: '/users/:id/tools',
       RATINGS: '/users/:id/ratings',

@@ -66,11 +66,9 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
       <Flex direction={'column'} gap={1} align={{ base: 'center', md: 'start' }}>
         <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
           <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
-            {tool?.images?.[0] && (
-              <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-                <ToolImage imageId={tool.images[0]} alt={tool.title} toolId={tool.id} />
-              </Box>
-            )}
+            <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
+              <ToolImage imageId={tool.images?.[0] ?? ''} alt={tool.title} toolId={tool.id} />
+            </Box>
           </Skeleton>
           <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}>
             <VStack align='start'>

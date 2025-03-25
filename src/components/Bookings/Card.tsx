@@ -164,20 +164,22 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
                     px={4}
                     py={2}
                     borderRadius='lg'
-                    bg='gray.100'
+                    bg={booking.comments ? 'gray.100' : 'transparent'}
                     color='gray.500'
                     _dark={{ bg: 'gray.600', color: 'white' }}
                     flex='1'
                     minW='0'
                   >
-                    <BookingComment
-                      comments={booking.comments}
-                      textProps={{
-                        noOfLines: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    />
+                    {booking.comments && (
+                      <BookingComment
+                        comments={booking.comments}
+                        textProps={{
+                          noOfLines: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      />
+                    )}
                   </Box>
                   <Stack direction={'row'} align={'end'} gap={2} wrap={'wrap'}>
                     <ActionButtons booking={booking} type={type} />

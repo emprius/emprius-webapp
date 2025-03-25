@@ -69,7 +69,7 @@ const BookingComments = ({ booking }: { booking: Booking }) => {
               {booking.contact}
             </Text>
           </HStack>
-          <BookingComment comments={booking.comments} />
+          {booking.comments && <BookingComment comments={booking.comments} />}
         </Stack>
       </CardBody>
     </Card>
@@ -223,7 +223,7 @@ const BookingDateInfo = ({ booking }: { booking: Booking }) => {
       <CardBody>
         {/* Display the calendar with the booking date range */}
         <Box mb={3}>
-          <StyledCalendar selectedRange={selectedRange} isSelectable={false} />
+          <StyledCalendar selectedRange={selectedRange} isSelectable={false} value={selectedRange[0]} />
         </Box>
       </CardBody>
     </Card>
