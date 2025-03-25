@@ -31,7 +31,7 @@ import logo from '/assets/logos/logo.png'
 export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
-  const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
+  const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
   const location = useLocation()
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -142,6 +142,27 @@ export const Navbar = () => {
                   </MenuItem>
                   <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                     {t('user.list_title')}
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.COMMUNITIES.LIST} icon={icons.users({})}>
+                    {t('communities.title')}
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.COMMUNITIES.INVITES} icon={icons.users({})}>
+                    {t('communities.invites')}
+                    {pendingInvitesCount > 0 && (
+                      <Box
+                        ml={2}
+                        px={2}
+                        py={1}
+                        fontSize='xs'
+                        fontWeight='bold'
+                        lineHeight='none'
+                        color='white'
+                        bg='red.500'
+                        borderRadius='full'
+                      >
+                        {pendingInvitesCount}
+                      </Box>
+                    )}
                   </MenuItem>
                   <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>

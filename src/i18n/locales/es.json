@@ -188,6 +188,14 @@
       "petitions": "Préstamos",
       "requests": "Solicitudes"
     },
+    "communities": {
+      "detail": "Detalles de comunidad",
+      "edit": "Editar comunidad",
+      "invites": "Invitaciones de comunidad",
+      "list": "Comunidades",
+      "new": "Nueva comunidad",
+      "users": "Miembros de la comunidad"
+    },
     "profile": {
       "edit": "Editar perfil",
       "view": "Perfil"

@@ -15,6 +15,10 @@ export type UserProfile = {
   createdAt: string
   lastSeen: string
   bio?: string
+  communities?: {
+    id: string
+    role: 'owner' | 'user'
+  }[]
 }
 
 export type UserProfileDTO = Omit<UserProfile, 'location' | 'inviteCodes'> & {

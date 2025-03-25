@@ -15,7 +15,7 @@ const SideNav = () => {
   const location = useLocation()
   const selectedBg = useColorModeValue('primary.50', 'primary.900')
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
-  const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
+  const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
 
   const menuItems = useMemo(
     () => [
@@ -38,8 +38,15 @@ const SideNav = () => {
         additionalPath: [ROUTES.RATINGS.PENDING, ROUTES.RATINGS.HISTORY],
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
+      {
+        icon: icons.users,
+        label: t('communities.title'),
+        // Show invites tab if there are pending invites
+        path: pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST,
+        count: pendingInvitesCount,
+      },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
   )
 
   return (

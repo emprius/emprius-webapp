@@ -41,6 +41,14 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       return `${t('pages.auth.login')} | ${baseTitle}`
     case ROUTES.AUTH.REGISTER:
       return `${t('pages.auth.register')} | ${baseTitle}`
+    case ROUTES.COMMUNITIES.LIST:
+      return `${t('pages.communities.list')} | ${baseTitle}`
+    case ROUTES.COMMUNITIES.NEW:
+      return `${t('pages.communities.new')} | ${baseTitle}`
+    case ROUTES.COMMUNITIES.INVITES:
+      return `${t('pages.communities.invites')} | ${baseTitle}`
+    case ROUTES.ABOUT:
+      return `${t('pages.about')} | ${baseTitle}`
     default:
       // Handle dynamic routes using matchPath
       if (matchPath(ROUTES.TOOLS.DETAIL, pathname)) {
@@ -59,11 +67,14 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       ) {
         return `${t('pages.users.detail')} | ${baseTitle}`
       }
-      if (pathname.match(/^\/tools\/\d+\/edit$/)) {
-        return `Edit Tool | ${baseTitle}`
+      if (matchPath(ROUTES.COMMUNITIES.DETAIL, pathname)) {
+        return `${t('pages.communities.detail')} | ${baseTitle}`
       }
-      if (pathname.match(/^\/users\/\d+$/)) {
-        return `User Details | ${baseTitle}`
+      if (matchPath(ROUTES.COMMUNITIES.EDIT, pathname)) {
+        return `${t('pages.communities.edit')} | ${baseTitle}`
+      }
+      if (matchPath(ROUTES.COMMUNITIES.USERS, pathname)) {
+        return `${t('pages.communities.users')} | ${baseTitle}`
       }
       return baseTitle
   }
