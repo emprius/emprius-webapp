@@ -21,6 +21,7 @@ export interface Tool {
   height?: number
   weight?: number
   reservedDates: DateRange[] | null
+  communities?: string[] // Array of community IDs where this tool is shared
 }
 
 export interface ToolsListResponse {
@@ -39,4 +40,5 @@ export interface ToolFormData {
   estimatedValue: number
   height: number
   weight: number
+  communities?: string[] // Array of community IDs where this tool is shared
 }

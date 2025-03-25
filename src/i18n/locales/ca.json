@@ -162,13 +162,23 @@
     "settings": "Configuració"
   },
   "pages": {
+    "about": "Sobre",
     "auth": {
       "login": "Iniciar sessió",
       "register": "Registrar-se"
     },
     "bookings": {
+      "detail": "Detalls de reserva",
       "petitions": "Préstecs",
       "requests": "Sol·licituds"
+    },
+    "communities": {
+      "detail": "Detalls de comunitat",
+      "edit": "Editar comunitat",
+      "invites": "Invitacions de comunitat",
+      "list": "Comunitats",
+      "new": "Nova comunitat",
+      "users": "Membres de la comunitat"
     },
     "profile": {
       "edit": "Editar perfil",
@@ -181,9 +191,13 @@
     },
     "search": "Cercar",
     "tools": {
-      "list": "Eines"
+      "detail": "Detalls d'eina",
+      "edit": "Editar eina",
+      "list": "Eines",
+      "new": "Nova eina"
     },
     "users": {
+      "detail": "Detalls d'usuari",
       "list": "Usuaris"
     }
   },

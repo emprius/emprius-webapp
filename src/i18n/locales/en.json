@@ -162,13 +162,23 @@
     "settings": "Settings"
   },
   "pages": {
+    "about": "About",
     "auth": {
       "login": "Login",
       "register": "Register"
     },
     "bookings": {
+      "detail": "Booking Details",
       "petitions": "Loans",
       "requests": "Requests"
+    },
+    "communities": {
+      "detail": "Community Details",
+      "edit": "Edit Community",
+      "invites": "Community Invites",
+      "list": "Communities",
+      "new": "New Community",
+      "users": "Community Members"
     },
     "profile": {
       "edit": "Edit Profile",
@@ -181,9 +191,13 @@
     },
     "search": "Search",
     "tools": {
-      "list": "Tools"
+      "detail": "Tool Details",
+      "edit": "Edit Tool",
+      "list": "Tools",
+      "new": "New Tool"
     },
     "users": {
+      "detail": "User Details",
       "list": "Users"
     }
   },
