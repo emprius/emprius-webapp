@@ -10,6 +10,10 @@ export interface UserProfile {
   active: boolean
   tokens: number
   community?: string
+  communities?: {
+    id: string
+    role: 'owner' | 'user'
+  }[]
   // notExists
   // ratingCount: number
   // createdAt: string
