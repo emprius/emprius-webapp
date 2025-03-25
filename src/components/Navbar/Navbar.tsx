@@ -24,6 +24,7 @@ import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeIcon } from '../Layout/BadgeIcon'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
+import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -140,6 +141,7 @@ export const Navbar = () => {
                   <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                     {t('user.list_title')}
                   </MenuItem>
+                  <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>
               </Menu>
             </Box>
