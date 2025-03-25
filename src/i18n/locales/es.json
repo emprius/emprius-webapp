@@ -162,11 +162,13 @@
     "settings": "Ajustes"
   },
   "pages": {
+    "about": "Acerca de",
     "auth": {
       "login": "Iniciar sesión",
       "register": "Registrarse"
     },
     "bookings": {
+      "detail": "Detalles de reserva",
       "petitions": "Préstamos",
       "requests": "Solicitudes"
     },
@@ -181,9 +183,13 @@
     },
     "search": "Buscar",
     "tools": {
-      "list": "Herramientas"
+      "detail": "Detalles de herramienta",
+      "edit": "Editar herramienta",
+      "list": "Herramientas",
+      "new": "Nueva herramienta"
     },
     "users": {
+      "detail": "Detalles de usuario",
       "list": "Usuarios"
     }
   },

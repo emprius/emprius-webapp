@@ -162,11 +162,13 @@
     "settings": "Settings"
   },
   "pages": {
+    "about": "About",
     "auth": {
       "login": "Login",
       "register": "Register"
     },
     "bookings": {
+      "detail": "Booking Details",
       "petitions": "Loans",
       "requests": "Requests"
     },
@@ -181,9 +183,13 @@
     },
     "search": "Search",
     "tools": {
-      "list": "Tools"
+      "detail": "Tool Details",
+      "edit": "Edit Tool",
+      "list": "Tools",
+      "new": "New Tool"
     },
     "users": {
+      "detail": "User Details",
       "list": "Users"
     }
   },

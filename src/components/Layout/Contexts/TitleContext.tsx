@@ -1,7 +1,7 @@
 import { TFunction } from 'i18next'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, matchPath } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 
 interface TitleContextType {
@@ -21,6 +21,8 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       return `${t('pages.search')} | ${baseTitle}`
     case ROUTES.TOOLS.LIST:
       return `${t('pages.tools.list')} | ${baseTitle}`
+    case ROUTES.TOOLS.NEW:
+      return `${t('pages.tools.new')} | ${baseTitle}`
     case ROUTES.PROFILE.VIEW:
       return `${t('pages.profile.view')} | ${baseTitle}`
     case ROUTES.PROFILE.EDIT:
@@ -31,10 +33,8 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       return `${t('pages.bookings.requests')} | ${baseTitle}`
     case ROUTES.RATINGS.PENDING:
       return `${t('pages.ratings.pending')} | ${baseTitle}`
-    case ROUTES.RATINGS.SUBMITTED:
+    case ROUTES.RATINGS.HISTORY:
       return `${t('pages.ratings.submitted')} | ${baseTitle}`
-    case ROUTES.RATINGS.RECEIVED:
-      return `${t('pages.ratings.received')} | ${baseTitle}`
     case ROUTES.USERS.LIST:
       return `${t('pages.users.list')} | ${baseTitle}`
     case ROUTES.AUTH.LOGIN:
@@ -42,10 +42,20 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
     case ROUTES.AUTH.REGISTER:
       return `${t('pages.auth.register')} | ${baseTitle}`
     default:
-      // todo(kon): use matchPath https://github.com/remix-run/react-router/blob/a3e4b8ed875611637357647fcf862c2bc61f4e11/packages/react-router/lib/hooks.tsx#L173
-      // Handle dynamic routes
-      if (pathname.match(/^\/tools\/\d+$/)) {
-        return `Tool Details | ${baseTitle}`
+      // Handle dynamic routes using matchPath
+      if (matchPath(ROUTES.TOOLS.DETAIL, pathname)) {
+        return `${t('pages.tools.detail')} | ${baseTitle}`
+      }
+      if (matchPath(ROUTES.TOOLS.EDIT, pathname)) {
+        return `${t('pages.tools.edit')} | ${baseTitle}`
+      }
+      if (matchPath(ROUTES.BOOKINGS.DETAIL, pathname)) {
+        return `${t('pages.bookings.detail')} | ${baseTitle}`
+      }
+      if (matchPath(ROUTES.USERS.DETAIL, pathname) || 
+          matchPath(ROUTES.USERS.TABS.TOOLS, pathname) || 
+          matchPath(ROUTES.USERS.TABS.RATINGS, pathname)) {
+        return `${t('pages.users.detail')} | ${baseTitle}`
       }
       if (pathname.match(/^\/tools\/\d+\/edit$/)) {
         return `Edit Tool | ${baseTitle}`
