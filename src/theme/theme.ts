@@ -3,7 +3,7 @@ import { Button } from './components/button'
 import { Card } from './components/card'
 import { Checkbox } from './components/checkbox'
 import { Input } from './components/input'
-import { Link } from './components/link' // import { Text } from './components/text'
+import { Link } from './components/link'
 import { Menu } from './components/menu'
 import { Modal } from './components/modal'
 import { NumberInput } from './components/numberInput'
@@ -14,6 +14,7 @@ import { Switch } from './components/switch'
 import { Textarea } from './components/textarea'
 import { Tooltip } from './components/tooltip'
 import { colors } from '~theme/colors'
+import { Tabs } from '~theme/components/tabs'
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -152,6 +153,7 @@ const theme = extendTheme({
     Tooltip,
     Modal,
     Link,
+    Tabs,
   },
   shadows: {
     outline: '0 0 0 3px rgba(9, 103, 210, 0.6)',
