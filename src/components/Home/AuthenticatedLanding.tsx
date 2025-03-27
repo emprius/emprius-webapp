@@ -6,6 +6,8 @@ import { LandingSearchBar } from '~components/Home/AuthComponents/SearchBar'
 import { useSearchTools } from '~components/Search/queries'
 import { defaultFilterValues, SearchFilters } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
+import ovellesImg from '/assets/ovelles.jpg'
+import bannerImg from '/assets/logos/banner.png'
 
 export const AuthenticatedLanding = () => {
   const { data: tools, isPending, isError, error, mutate } = useSearchTools()
@@ -25,7 +27,7 @@ export const AuthenticatedLanding = () => {
           <ParallaxBannerLayer
             speed={-20}
             style={{
-              backgroundImage: 'url("/assets/ovelles.jpg")',
+              backgroundImage: `url("${ovellesImg}")`,
               backgroundSize: 'cover',
               opacity: 0.8,
             }}
@@ -43,7 +45,7 @@ export const AuthenticatedLanding = () => {
             <Stack alignSelf={'start'} alignItems='center' w='full' maxW='container.xl' mx='auto' px={4} gap={4}>
               <Box
                 as='img'
-                src='/assets/logos/banner.png'
+                src={bannerImg}
                 alt='Emprius'
                 w='full'
                 maxW='250px'

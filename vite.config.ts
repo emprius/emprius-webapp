@@ -69,19 +69,19 @@ const pwaManifest: Partial<VitePWAOptions> = {
     theme_color: '#319795',
     icons: [
       {
-        src: '/assets/pwa/manifest-icon-192.maskable.png',
+        src: 'assets/pwa/manifest-icon-192.maskable.png',
         sizes: '192x192',
         type: 'image/png',
         purpose: 'any maskable'
       },
       {
-        src: '/assets/pwa/manifest-icon-512.maskable.png',
+        src: 'assets/pwa/manifest-icon-512.maskable.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any maskable'
       },
       {
-        src: '/assets/pwa/apple-icon-180.png',
+        src: 'assets/pwa/apple-icon-180.png',
         sizes: '180x180',
         type: 'image/png',
         purpose: 'any'

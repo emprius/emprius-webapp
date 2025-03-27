@@ -1,4 +1,9 @@
 import L from 'leaflet'
+import markerIcon from '/assets/markers/marker-icon.png'
+import markerIcon2x from '/assets/markers/marker-icon-2x.png'
+import markerShadow from '/assets/markers/marker-shadow.png'
+import toolFallback from '/assets/logos/tool-fallback.svg'
+import avatarFallback from '/assets/avatars/fallback.png'
 
 export const AUTH_FORM = {
   EMAIL_REGEX: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -37,9 +42,9 @@ export const MAP_DEFAULTS = {
     ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
   MARKER: L.icon({
-    iconUrl: '/assets/markers/marker-icon.png',
-    iconRetinaUrl: '/assets/markers/marker-icon-2x.png',
-    shadowUrl: '/assets/markers/marker-shadow.png',
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x,
+    shadowUrl: markerShadow,
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -52,8 +57,8 @@ export const MAP_DEFAULTS = {
  * Asset paths
  */
 export const ASSETS = {
-  TOOL_FALLBACK: '/assets/logos/tool-fallback.svg',
-  AVATAR_FALLBACK: '/assets/avatars/fallback.png',
+  TOOL_FALLBACK: toolFallback,
+  AVATAR_FALLBACK: avatarFallback,
 } as const
 
 // MS intervall to update the PWA

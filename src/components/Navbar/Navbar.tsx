@@ -26,6 +26,8 @@ import { BadgeIcon } from '../Layout/BadgeIcon'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
+import logo from '/assets/logos/logo.png'
+
 export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
@@ -55,7 +57,7 @@ export const Navbar = () => {
     >
       <Stack direction='row' align='center' spacing={1} flex='1' mr={4}>
         <Link as={RouterLink} to={ROUTES.HOME} _hover={{ textDecoration: 'none' }}>
-          <Box as='img' src='/assets/logos/logo.png' alt='Emprius' h='40px' />
+          <Box as='img' src={logo} alt='Emprius' h='40px' />
         </Link>
 
         {isAuthenticated && location.pathname !== ROUTES.HOME && (

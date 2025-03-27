@@ -4,9 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
-
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+
+import ovellesImg from '/assets/ovelles.jpg'
+import campsImg from '/assets/camps.jpg'
+import bannerImg from '/assets/logos/banner.png'
 
 export const Landing = () => {
   const { t } = useTranslation()
@@ -40,7 +43,7 @@ export const Landing = () => {
           <ParallaxBannerLayer
             speed={-20}
             style={{
-              backgroundImage: 'url("/assets/ovelles.jpg")',
+              backgroundImage: `url("${ovellesImg}")`,
               backgroundSize: 'cover',
               opacity: 0.8,
             }}
@@ -115,7 +118,7 @@ export const Landing = () => {
                 >
                   <Box
                     as='img'
-                    src='/assets/logos/banner.png'
+                    src={bannerImg}
                     alt='Emprius'
                     w='full'
                     h='auto'
@@ -190,7 +193,7 @@ export const Landing = () => {
           <ParallaxBannerLayer
             speed={-15}
             style={{
-              backgroundImage: 'url("/assets/camps.jpg")',
+              backgroundImage: `url("${campsImg}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: 0.8,
