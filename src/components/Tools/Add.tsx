@@ -50,7 +50,6 @@ export const AddTool = () => {
     await createTool({
       title: data.title,
       description: data.description,
-      cost: Number(data.cost),
       images: imageHashes,
       toolCategory: data.toolCategory,
       location: data.location,

@@ -31,7 +31,6 @@ export interface ToolFormData {
   id?: number
   title: string
   description: string
-  cost: number
   isAvailable: boolean
   images: FileList
   toolCategory?: number

@@ -16,7 +16,6 @@ export const ToolsKeys = {
 export interface createToolParams {
   title: string
   description?: string
-  cost?: number // uint64
   images: string[]
   toolCategory?: number // uint
   location: EmpriusLocation
