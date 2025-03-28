@@ -12,6 +12,8 @@ test.describe('User Registration', () => {
   }
 
   test('should register a new user successfully', async ({ page }) => {
+    console.log('Using registration token:', testUser.invitationToken)
+
     // Navigate to the registration page
     await page.goto('/register')
 
@@ -49,10 +51,12 @@ test.describe('User Registration', () => {
 
     // Submit the form and wait for navigation
     await Promise.all([
-      // Wait for navigation or network request to complete
-      page.waitForResponse(response => response.url().includes('/api/auth') && response.status() === 200, { timeout: 10000 }),
       // Click the register button
-      page.getByRole('button', { name: /register/i }).click()
+      page.getByRole('button', { name: /register/i }).click(),
+      // Wait for navigation or network request to complete
+      page.waitForResponse((response) => response.url().includes('/register') && response.status() === 200, {
+        timeout: 10000,
+      }),
     ])
 
     // Wait a moment for any client-side redirects to complete
@@ -65,15 +69,16 @@ test.describe('User Registration', () => {
     } catch (error) {
       // If not redirected, check for a success message or other indicator of successful registration
       console.log('Not redirected to home page, checking for success indicators...')
-      
+
       // Take a screenshot for debugging
       await page.screenshot({ path: 'playwright-report/register-success-alt.png' })
-      
+
       // Check for success toast or message
-      const successIndicator = page.locator('text=success').first() || 
-                              page.locator('text=registered').first() ||
-                              page.locator('.chakra-toast').first()
-      
+      const successIndicator =
+        page.locator('text=success').first() ||
+        page.locator('text=registered').first() ||
+        page.locator('.chakra-toast').first()
+
       await expect(successIndicator).toBeVisible({ timeout: 5000 })
     }
 
