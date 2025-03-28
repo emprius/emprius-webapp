@@ -1,0 +1,93 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      # We'll use GitHub Actions services to run the backend
+      # This assumes the backend has a docker-compose.yml file
+      # that can be used to start the services
+      
+      # Note: If the backend requires more complex setup,
+      # we can use the RUN_BACKEND environment variable to
+      # trigger our custom setup script instead
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      
+      - name: Clone backend repository
+        run: |
+          git clone https://github.com/emprius/emprius-app-backend.git backend-for-tests
+          cd backend-for-tests
+      
+      - name: Start backend services
+        run: |
+          cd backend-for-tests
+          docker-compose up -d
+      
+      - name: Wait for backend to be ready
+        run: |
+          # Simple wait script to ensure backend is ready
+          MAX_RETRIES=30
+          RETRY_COUNT=0
+          RETRY_INTERVAL=2
+          
+          echo "Waiting for backend to be ready..."
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            if curl -s http://localhost:3333/health > /dev/null; then
+              echo "Backend is ready!"
+              break
+            fi
+            
+            echo "Backend not ready yet, retrying in $RETRY_INTERVAL seconds..."
+            sleep $RETRY_INTERVAL
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+          done
+          
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "Backend failed to start after $((MAX_RETRIES * RETRY_INTERVAL)) seconds"
+            exit 1
+          fi
+      
+      - name: Run Playwright tests
+        run: yarn test:e2e:with-backend
+        env:
+          CI: 'true'
+          TEST_API_URL: 'http://localhost:3333'
+          REGISTER_TOKEN: ${{ secrets.REGISTER_TOKEN || 'test-token' }}
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      
+      - name: Stop backend services
+        if: always()
+        run: |
+          cd backend-for-tests
+          docker-compose down

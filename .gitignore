@@ -31,3 +31,9 @@ package-lock.json
 
 # Local Netlify folder
 .netlify
+
+# E2E Testing
+/backend-for-tests
+/playwright-report
+/test-results
+/playwright/.cache

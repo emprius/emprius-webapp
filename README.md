@@ -58,6 +58,10 @@ cp .env.example .env
 - `yarn lint:fix` - Fix code formatting with Prettier
 - `yarn translations` - Update translation files
 - `yarn generate-pwa-assets` - Generate PWA assets from logo
+- `yarn test:e2e` - Run end-to-end tests
+- `yarn test:e2e:ui` - Run end-to-end tests in UI mode
+- `yarn test:e2e:with-backend` - Run end-to-end tests with dockerized backend
+- `yarn test:e2e:setup-backend` - Set up the backend for testing
 
 ### Development
 
@@ -83,6 +87,27 @@ To preview the production build locally:
 yarn preview
 ```
 
+## Testing
+
+### End-to-End Testing
+
+The project includes end-to-end tests using Playwright. These tests can run against a local development server and can optionally use a dockerized backend.
+
+For more information about the e2e tests, see the [e2e README](e2e/README.md).
+
+#### Running E2E Tests
+
+```bash
+# Run tests without backend
+yarn test:e2e
+
+# Run tests with UI for debugging
+yarn test:e2e:ui
+
+# Run tests with dockerized backend
+yarn test:e2e:with-backend
+```
+
 ## Tech Stack
 
 - React 18
@@ -96,3 +121,4 @@ yarn preview
 - PWA (Workbox)
 - React Hook Form
 - Axios
+- Playwright (E2E Testing)
