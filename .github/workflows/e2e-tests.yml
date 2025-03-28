@@ -30,7 +30,7 @@ jobs:
       - name: Start backend services
         run: |
           cd backend-for-tests
-          docker-compose up -d
+          docker compose up -d
 
       - name: Wait for backend to be ready
         run: |
@@ -76,4 +76,4 @@ jobs:
         if: always()
         run: |
           cd backend-for-tests
-          docker-compose down
+          docker compose down
