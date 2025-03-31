@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const BACKEND_REPO = 'https://github.com/emprius/emprius-app-backend.git'
 const BACKEND_DIR = join(__dirname, '../backend-for-tests')
-const BACKEND_API_URL = process.env.TEST_API_URL || 'http://localhost:3333'
+export const BACKEND_API_URL = process.env.TEST_API_URL || 'http://localhost:3333'
 const MAX_RETRIES = 30
 const RETRY_INTERVAL = 2000 // 2 seconds
 

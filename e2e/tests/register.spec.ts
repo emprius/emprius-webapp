@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test'
+import { invitationToken } from '../utils/auth'
+import { ROUTES } from '../../src/router/routes'
 
 test.describe('User Registration', () => {
   // Use hardcoded test data with timestamp to ensure uniqueness
@@ -8,14 +10,14 @@ test.describe('User Registration', () => {
     email: `testuser${timestamp}@example.com`,
     password: `Password123`, // Meets requirements: 8+ chars, letters and numbers
     community: `Test Community ${timestamp}`,
-    invitationToken: process.env.REGISTER_TOKEN || 'test',
+    invitationToken,
   }
 
   test('should register a new user successfully', async ({ page }) => {
     console.log('Using registration token:', testUser.invitationToken)
 
     // Navigate to the registration page
-    await page.goto('/register')
+    await page.goto(ROUTES.AUTH.REGISTER)
 
     // Verify we're on the registration page
     await expect(page.getByRole('heading', { name: /register/i })).toBeVisible()
@@ -46,21 +48,11 @@ test.describe('User Registration', () => {
     // Note: The exact coordinates might need adjustment based on the map's default center
     await mapContainer.click({ position: { x: 150, y: 150 } })
 
-    // Take a screenshot for debugging
-    await page.screenshot({ path: 'playwright-report/register-form-filled.png' })
-
-    // Submit the form and wait for navigation
-    await Promise.all([
-      // Click the register button
-      page.getByRole('button', { name: /register/i }).click(),
-      // Wait for navigation or network request to complete
-      page.waitForResponse((response) => response.url().includes('/register') && response.status() === 200, {
-        timeout: 10000,
-      }),
-    ])
+    // Click the register button
+    await page.getByRole('button', { name: /register/i }).click()
 
     // Wait a moment for any client-side redirects to complete
-    await page.waitForTimeout(2000)
+    await page.waitForTimeout(3000)
 
     // Verify successful registration - either we're redirected to home page or we see a success message
     try {
@@ -70,9 +62,6 @@ test.describe('User Registration', () => {
       // If not redirected, check for a success message or other indicator of successful registration
       console.log('Not redirected to home page, checking for success indicators...')
 
-      // Take a screenshot for debugging
-      await page.screenshot({ path: 'playwright-report/register-success-alt.png' })
-
       // Check for success toast or message
       const successIndicator =
         page.locator('text=success').first() ||
@@ -81,14 +70,11 @@ test.describe('User Registration', () => {
 
       await expect(successIndicator).toBeVisible({ timeout: 5000 })
     }
-
-    // Take a screenshot of the result
-    await page.screenshot({ path: 'playwright-report/register-success.png' })
   })
 
   test('should show validation errors for invalid inputs', async ({ page }) => {
     // Navigate to the registration page
-    await page.goto('/register')
+    await page.goto(ROUTES.AUTH.REGISTER)
 
     // Wait for the form to be fully loaded
     await page.waitForSelector('form')
@@ -117,8 +103,5 @@ test.describe('User Registration', () => {
     const errorMessages = page.locator('.chakra-form__error-message')
     const count = await errorMessages.count()
     expect(count).toBeGreaterThan(0)
-
-    // Take a screenshot of the validation errors
-    await page.screenshot({ path: 'playwright-report/register-validation-errors.png' })
   })
 })

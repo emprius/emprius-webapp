@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
+// @ts-ignore
 import path from 'path'
 
 /**

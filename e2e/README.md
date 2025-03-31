@@ -131,8 +131,7 @@ yarn test:e2e:setup-backend
 ## Test Structure
 
 - `e2e/tests/` - Contains all test files
-  - `e2e/tests/example.spec.ts` - Basic example tests
-  - `e2e/tests/register.spec.ts` - User registration tests
+- `e2e/utils/` - Contains utility functions for tests
 - `e2e/playwright.config.ts` - Playwright configuration
 - `e2e/setup-backend.ts` - Script to set up the backend
 - `e2e/global-setup.ts` - Global setup for Playwright
@@ -161,6 +160,12 @@ test('basic test', async ({ page }) => {
 - Successfully register a new user with valid data
 - Show validation errors for invalid inputs
 
+#### Tool Management Tests (tool-management.spec.ts)
+- Create a new tool with all fields filled
+- Edit an existing tool
+- Toggle tool availability
+- Form validation for invalid inputs
+
 For more information, see the [Playwright documentation](https://playwright.dev/docs/intro).
 
 ## CI/CD Integration
@@ -168,3 +173,24 @@ For more information, see the [Playwright documentation](https://playwright.dev/
 Tests are automatically run on GitHub Actions for every push to main/master/develop branches and for pull requests.
 
 The workflow is defined in `.github/workflows/e2e-tests.yml`.
+
+## Test User Credentials
+
+Some tests, like the tool management tests, require a valid user account to be already registered in the system. You can configure the test user credentials using environment variables:
+
+```bash
+# On Linux/macOS
+TEST_USER_EMAIL=your-test-user@example.com TEST_USER_PASSWORD=your-password yarn test:e2e
+
+# On Windows (Command Prompt)
+set TEST_USER_EMAIL=your-test-user@example.com
+set TEST_USER_PASSWORD=your-password
+yarn test:e2e
+
+# On Windows (PowerShell)
+$env:TEST_USER_EMAIL = "your-test-user@example.com"
+$env:TEST_USER_PASSWORD = "your-password"
+yarn test:e2e
+```
+
+If not provided, the tests will use default values which may not work with your backend.
