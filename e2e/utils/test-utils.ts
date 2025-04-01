@@ -61,16 +61,3 @@ export async function uploadTestImage(
   // Give time for the image to be processed
   await page.waitForTimeout(1000)
 }
-
-export const writeReport = async (page: Page, name: string = 'test-report') => {
-  // Use absolute path to the playwright-report directory at the project root
-  const reportDir = path.resolve(process.cwd(), 'playwright-report')
-  await fs.mkdir(reportDir, { recursive: true }) // Ensure directory exists
-
-  const reportPath = path.join(reportDir, name)
-  console.log(`Saving report: ${reportPath}`)
-
-  const htmlContent = await page.content()
-  await fs.writeFile(`${reportPath}.html`, htmlContent, 'utf-8')
-  await page.screenshot({ path: `${reportPath}.png` })
-}

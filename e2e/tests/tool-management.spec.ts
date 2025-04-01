@@ -93,7 +93,6 @@ test.describe('Tool Management', () => {
       await page.getByLabel(/height/i).fill(testTool.height)
       await page.getByLabel(/weight/i).fill(testTool.weight)
     } catch (error) {
-      await writeReport(page, 'form-fill-error')
       throw error
     }
 
@@ -111,7 +110,6 @@ test.describe('Tool Management', () => {
       await submitButton.click()
       await responsePromise
     } catch (error) {
-      await writeReport(page, 'form-submit-error')
       throw error
     }
 
@@ -123,7 +121,6 @@ test.describe('Tool Management', () => {
       // Verify the tool appears in the list
       await expect(page.getByText(testTool.title)).toBeVisible({ timeout: 10000 })
     } catch (error) {
-      await writeReport(page, 'verification-error')
       throw error
     }
   })
@@ -224,7 +221,6 @@ test.describe('Tool Management', () => {
       }
     } catch (error) {
       console.error('Error finding edit button:', error)
-      await writeReport(page, 'edit-button-error')
       throw error
     }
 
@@ -246,7 +242,6 @@ test.describe('Tool Management', () => {
         await expect(page).toHaveURL(/\/tools\/\d+\/edit|\/edit-tool/, { timeout: 10000 })
       }
     } catch (error) {
-      await writeReport(page, 'edit-page-verification-error')
       throw error
     }
 
@@ -353,7 +348,6 @@ test.describe('Tool Management', () => {
         throw new Error('Could not toggle tool availability')
       }
     } catch (e) {
-      await writeReport(page, 'switch-availability-error')
       throw e
     }
   })
@@ -417,7 +411,6 @@ async function navigateToToolDetail(page: Page): Promise<void> {
     // Verify we're on a tool detail page by checking the URL pattern
     await expect(page).toHaveURL(/\/tools\/\d+$/, { timeout: 10000 })
   } catch (error) {
-    await writeReport(page, 'tool-navigation-error')
     throw error
   }
 }
