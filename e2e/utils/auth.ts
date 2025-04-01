@@ -9,7 +9,7 @@ import { Page, expect } from '@playwright/test'
 import { BACKEND_API_URL } from '../setup-backend'
 import axios from 'axios'
 
-export const invitationToken = process.env.REGISTER_TOKEN || 'test'
+export const invitationToken = process.env.REGISTER_TOKEN || 'comunals'
 
 /**
  * Default test user credentials

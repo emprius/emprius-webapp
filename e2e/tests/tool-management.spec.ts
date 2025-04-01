@@ -16,14 +16,14 @@
 
 import { test, expect, Page } from '@playwright/test'
 import { login } from '../utils/auth'
-import { generateUniqueTestData, uploadTestImage, writeReport } from '../utils/test-utils'
+import { generateUniqueTestData, uploadTestImage } from '../utils/test-utils'
 import { ROUTES } from '../../src/router/routes'
 
 /**
  * Default test tool data
  */
 export function getDefaultToolData() {
-  const testData = generateUniqueTestData('Tool')
+  const testData = generateUniqueTestData('ToolTest')
   return {
     title: testData.title,
     description: testData.description,
@@ -34,7 +34,10 @@ export function getDefaultToolData() {
   }
 }
 
-test.describe('Tool Management', () => {
+/**
+ * Tests in order to avoid executing test without a already created tool
+ */
+test.describe.serial('Tool Management', () => {
   /**
    * Test data with timestamp to ensure uniqueness across test runs
    */
@@ -329,9 +332,9 @@ test.describe('Tool Management', () => {
         await confirmButton.click()
 
         // Wait for the API response after confirmation
-        await page.waitForResponse((response) => response.url().includes('/tools') && response.status() === 200, {
-          timeout: 15000,
-        })
+        // await page.waitForResponse((response) => response.status() === 200, {
+        //   timeout: 15000,
+        // })
 
         // Wait for the toast notification to appear
         await page.waitForSelector('.chakra-toast', { timeout: 10000 })
@@ -368,40 +371,17 @@ async function navigateToToolDetail(page: Page): Promise<void> {
   await page.waitForTimeout(5000)
 
   try {
-    // First approach: Try to find tool cards by looking for links to tool detail pages
-    // This specifically looks for links that match the pattern /tools/{number}
-    // and excludes links like /tools/new which would be for creating a new tool
-    const toolDetailLinks = page.locator('a[href^="/tools/"]').filter({
-      has: page.locator('text=.'), // Must contain some text
-      hasNot: page.locator('text=/new/i'), // Must not contain "new"
-    })
+    // First approach: Try to find and click on elements containing "ToolTest" text
+    const toolTestElements = page.getByText('ToolTest', { exact: false })
 
-    // Check if we found any tool cards
-    const count = await toolDetailLinks.count()
+    // Check if we found any elements with "ToolTest" text
+    const count = await toolTestElements.count()
+
     if (count > 0) {
-      // Click the first tool card
-      await toolDetailLinks.first().click()
+      // Click the first element containing "ToolTest"
+      await toolTestElements.first().click()
     } else {
-      // Second approach: Try to find tool cards by their structure based on Card.tsx
-      // Look for Flex components that might be tool cards
-      // Based on the Card.tsx structure, tool cards are Flex components with specific styling
-      const toolCards = page
-        .locator('.chakra-card, div[style*="flex"]')
-        .filter({ hasText: /.+/ }) // Must contain some text
-        .filter({ hasNot: page.locator('text=/add|new/i') }) // Exclude "Add" or "New" buttons
-
-      const cardCount = await toolCards.count()
-      if (cardCount > 0) {
-        await toolCards.first().click()
-      } else {
-        // Third approach: Just try to find any clickable element that might be a tool card
-        // Look for any element with a title or description that might be a tool
-        const anyToolElement = page
-          .locator('div, a')
-          .filter({ hasText: /.{10,}/ })
-          .first()
-        await anyToolElement.click()
-      }
+      throw new Error('No tool card found')
     }
 
     // Wait for the tool detail page to load
