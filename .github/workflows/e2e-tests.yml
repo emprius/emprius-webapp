@@ -36,9 +36,3 @@ jobs:
           name: playwright-report
           path: e2e/playwright-report/
           retention-days: 2
-
-      - name: Stop backend services
-        if: always()
-        run: |
-          cd backend-for-tests
-          docker compose down
