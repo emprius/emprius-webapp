@@ -1,7 +1,30 @@
-import { QueryClient } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
+import { UnauthorizedError } from './api'
+
+// Custom event for unauthorized access
+export const UNAUTHORIZED_EVENT = 'emprius:unauthorized'
+
+// Function to handle unauthorized errors
+const handleUnauthorizedError = (error: unknown) => {
+  if (error instanceof UnauthorizedError) {
+    // Dispatch a custom event to notify the AuthContext
+    window.dispatchEvent(new CustomEvent(UNAUTHORIZED_EVENT))
+  }
+}
+
+// Create caches with error handlers
+const queryCache = new QueryCache({
+  onError: handleUnauthorizedError,
+})
+
+const mutationCache = new MutationCache({
+  onError: handleUnauthorizedError,
+})
 
 const queryClient = new QueryClient({
+  queryCache,
+  mutationCache,
   defaultOptions: {
     queries: {
       // gcTime: 1000 * 60 * 60 * 24, // 24 hours

@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { UNAUTHORIZED_EVENT } from '../../services/queryClient'
 import { LoginResponse, useCurrentUser, useLogin, useRegister } from '~components/Auth/queries'
 import { STORAGE_KEYS } from '~utils/constants'
 
@@ -48,12 +49,29 @@ const useAuthProvider = () => {
     enabled: !!bearer,
   })
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.EXPIRITY)
     setBearer(null)
     queryClient.removeQueries()
-  }
+  }, [queryClient])
+
+  // Listen for unauthorized events
+  useEffect(() => {
+    // Handler for unauthorized events
+    const handleUnauthorized = () => {
+      console.log('Unauthorized access detected, logging out')
+      logout()
+    }
+
+    // Add event listener
+    window.addEventListener(UNAUTHORIZED_EVENT, handleUnauthorized)
+
+    // Clean up event listener on unmount
+    return () => {
+      window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized)
+    }
+  }, [logout])
 
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
   const isLoading = useMemo(() => !!bearer && isLoadingUser, [bearer, isLoadingUser])
