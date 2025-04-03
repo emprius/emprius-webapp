@@ -1,5 +1,5 @@
 import { tabsAnatomy } from '@chakra-ui/anatomy'
-import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
+import { createMultiStyleConfigHelpers, defineStyle } from '@chakra-ui/react'
 import { theme } from '@chakra-ui/theme'
 import { keyframes } from '@emotion/react'
 
@@ -93,10 +93,76 @@ const gradient = definePartsStyle((props) => {
   }
 })
 
+const outline = definePartsStyle((props) => {
+  const { colorScheme } = props
+  return {
+    tablist: {
+      borderBottom: '2px solid',
+      borderColor: 'gray.200',
+      mb: 1,
+      _dark: {
+        borderColor: 'gray.700',
+      },
+    },
+    tab: {
+      fontWeight: 'medium',
+      color: 'gray.600',
+      borderColor: 'transparent',
+      position: 'relative',
+      boxShadow: 'none',
+      borderTopRadius: 'md',
+      bg: 'transparent',
+      _dark: {
+        color: 'gray.300',
+      },
+      _selected: {
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        border: '1px solid',
+        borderColor: `${colorScheme}.500`,
+        _after: {
+          content: '""',
+          position: 'absolute',
+          bottom: '-3px',
+          left: '0',
+          right: '0',
+          height: '2px',
+          bg: `${colorScheme}.500`,
+          borderRadius: 'full',
+          animation: `${slideIn} 0.4s ease-in-out forwards`,
+          transformOrigin: 'left',
+        },
+        _dark: {
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+          borderColor: `${colorScheme}.400`,
+          _after: {
+            bg: `${colorScheme}.400`,
+          },
+        },
+      },
+      _hover: {
+        bg: `${colorScheme}.50`,
+        _dark: {
+          bg: `${colorScheme}.900`,
+        },
+      },
+      _active: {
+        bg: `${colorScheme}.100`,
+        _dark: {
+          bg: `${colorScheme}.800`,
+        },
+      },
+    },
+    tabpanel: {
+      ...theme.components.Tabs.baseStyle(props).tabpanel,
+    },
+  }
+})
+
 export const Tabs = defineMultiStyleConfig({
   baseStyle: theme.components.Tabs.baseStyle,
   variants: {
     gradient,
+    outline,
     ...theme.components.Tabs.variants,
   },
   defaultProps: {

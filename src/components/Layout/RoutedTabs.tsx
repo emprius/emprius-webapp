@@ -46,7 +46,7 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
 
   return (
     <>
-      <Tabs isLazy index={currentTabIndex} onChange={handleTabChange} variant={'gradient'}>
+      <Tabs isLazy index={currentTabIndex} onChange={handleTabChange} variant={'outline'}>
         <TabList>
           {visibleTabs.map((tab, index) => (
             <Tab key={index}>{tab.label}</Tab>
