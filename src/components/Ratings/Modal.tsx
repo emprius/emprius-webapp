@@ -5,8 +5,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
+  Flex,
   HStack,
+  Icon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,11 +17,15 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { RatingsForm } from './Form'
 import { Booking } from '~components/Bookings/queries'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { BiSolidParty } from 'react-icons/bi'
+import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 
 interface RatingModalProps {
   isOpen: boolean
@@ -103,5 +110,56 @@ export const ReturnAlertDialog = ({
         </AlertDialogContent>
       </AlertDialogOverlay>
     </AlertDialog>
+  )
+}
+
+// Success Modal component
+export const SuccessModal = () => {
+  const { t } = useTranslation()
+  // const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const toolName = searchParams.get('toolName') || ''
+  // Convert rating from 1-5 scale to 0-100 scale for ShowRatingStars
+  const ratingValue = parseInt(searchParams.get('rating') || '0')
+  const rating = ratingValue * 20 // Convert from 1-5 scale to 0-100 scale
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+
+  // Shows success modal when redirected from rating submission
+  useEffect(() => {
+    if (searchParams.get('submitted') === 'true') {
+      setShowSuccessModal(true)
+      // We don't remove the parameters here to allow the modal to access them
+      // They will be removed when the modal is closed
+    }
+  }, [searchParams, setSearchParams])
+
+  // Handle modal close and clean up URL parameters
+  const handleModalClose = () => {
+    setShowSuccessModal(false)
+    // Remove the query parameters to prevent showing the modal on refresh
+    searchParams.delete('submitted')
+    searchParams.delete('toolName')
+    searchParams.delete('rating')
+    setSearchParams(searchParams)
+  }
+  return (
+    <Modal isOpen={showSuccessModal} onClose={handleModalClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{t('rating.submit_success')}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <Flex direction='column' align='center' gap={4}>
+            <Box color='green.500' fontSize='4xl'>
+              <Icon as={BiSolidParty} />
+            </Box>
+            <Text fontWeight='bold' textAlign='center' mb={2}>
+              {t('rating.your_rating_for', { toolName }) || `Your rating for ${toolName} was submitted successfully`}
+            </Text>
+            <ShowRatingStars rating={rating} size='lg' />
+          </Flex>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   )
 }
