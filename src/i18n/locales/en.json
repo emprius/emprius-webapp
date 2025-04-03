@@ -233,7 +233,8 @@
     "you_got": "You requested",
     "you_got_the_tool_from": "Requested <toolName /> to",
     "you_lent": "You lent",
-    "you_lent_the_tool_from": "Lent <toolName /> to"
+    "you_lent_the_tool_from": "Lent <toolName /> to",
+    "your_rating_for": "Your rating for {{toolName}} was submitted successfully"
   },
   "search": {
     "apply_filters": "Apply Filters",

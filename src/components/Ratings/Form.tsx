@@ -30,7 +30,7 @@ import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { RatingFormData } from '~components/Ratings/types'
 import { ImageUploadError } from '~components/Images/queries'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -105,6 +105,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
 
 export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const { t } = useTranslation()
+  const { data: tool } = useTool(booking.toolId)
   const { error, isError, mutateAsync, isPending } = useSubmitRating({
     bookingId: booking.id,
     onError: (error) => {
@@ -140,6 +141,8 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
   const userRating = watch('userRating')
   const comment = watch('comment')
 
+  const navigate = useNavigate()
+
   const onSubmit = async (data: RatingFormData) => {
     await mutateAsync(data)
     toast({
@@ -155,6 +158,8 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
       images: null,
     })
     onSuccess?.()
+    // Redirect to ratings history page with success parameter and rating info
+    navigate(`${ROUTES.RATINGS.HISTORY}?submitted=true&toolName=${encodeURIComponent(tool?.title || '')}&rating=${data.userRating}`)
   }
 
   return (

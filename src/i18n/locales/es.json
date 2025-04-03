@@ -233,7 +233,8 @@
     "you_got": "Has solicitado",
     "you_got_the_tool_from": "Ha solicitado <toolName /> a",
     "you_lent": "Has prestado",
-    "you_lent_the_tool_from": "Ha prestado <toolName /> a"
+    "you_lent_the_tool_from": "Ha prestado <toolName /> a",
+    "your_rating_for": "Tu valoración para {{toolName}} se ha enviado correctamente"
   },
   "search": {
     "apply_filters": "Aplicar filtros",

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
-import { useOutletContext, useLocation } from 'react-router-dom'
+import { useOutletContext, useLocation, useSearchParams } from 'react-router-dom'
 import { useGetPendingRatings, useGetUserRatings } from '~components/Ratings/queries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import ErrorComponent from '~components/Layout/ErrorComponent'
@@ -15,8 +15,22 @@ import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
-import { Stack } from '@chakra-ui/react'
+import {
+  Stack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Text,
+  Icon,
+  Flex,
+  Box,
+} from '@chakra-ui/react'
 import { useAuth } from '~components/Auth/AuthContext'
+import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
+import { BiSolidParty } from 'react-icons/bi'
 
 const PendingRatings = () => {
   const { t } = useTranslation()
@@ -86,10 +100,62 @@ const RatingHistory = () => {
   )
 }
 
+// Success Modal component
+const SuccessModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const { t } = useTranslation()
+  const [searchParams] = useSearchParams()
+  const toolName = searchParams.get('toolName') || ''
+  // Convert rating from 1-5 scale to 0-100 scale for ShowRatingStars
+  const ratingValue = parseInt(searchParams.get('rating') || '0')
+  const rating = ratingValue * 20 // Convert from 1-5 scale to 0-100 scale
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{t('rating.submit_success')}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <Flex direction='column' align='center' gap={4}>
+            <Box color='green.500' fontSize='4xl'>
+              <Icon as={BiSolidParty} />
+            </Box>
+            <Text fontWeight='bold' textAlign='center' mb={2}>
+              {t('rating.your_rating_for', { toolName }) || `Your rating for ${toolName} was submitted successfully`}
+            </Text>
+            <ShowRatingStars rating={rating} size='lg' />
+          </Flex>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  )
+}
+
 export const View = () => {
   const { pendingRatingsCount } = usePendingActions()
   const { t } = useTranslation()
   const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+
+  // Shows success modal when redirected from rating submission
+  useEffect(() => {
+    if (searchParams.get('submitted') === 'true') {
+      setShowSuccessModal(true)
+      // We don't remove the parameters here to allow the modal to access them
+      // They will be removed when the modal is closed
+    }
+  }, [searchParams, setSearchParams])
+
+  // Handle modal close and clean up URL parameters
+  const handleModalClose = () => {
+    setShowSuccessModal(false)
+    // Remove the query parameters to prevent showing the modal on refresh
+    searchParams.delete('submitted')
+    searchParams.delete('toolName')
+    searchParams.delete('rating')
+    setSearchParams(searchParams)
+  }
 
   useEffect(() => {
     setTitle(t('rating.ratings'))
@@ -108,5 +174,10 @@ export const View = () => {
     },
   ]
 
-  return <RoutedTabs tabs={tabs} defaultPath={ROUTES.RATINGS.PENDING} />
+  return (
+    <>
+      <SuccessModal isOpen={showSuccessModal} onClose={handleModalClose} />
+      <RoutedTabs tabs={tabs} defaultPath={ROUTES.RATINGS.PENDING} />
+    </>
+  )
 }
