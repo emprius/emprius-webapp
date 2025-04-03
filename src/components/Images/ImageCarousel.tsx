@@ -4,17 +4,10 @@ import {
   Flex,
   HStack,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { ServerImage } from '~components/Images/ServerImage'
-import { ImageModal } from '~components/Images/ImageModal'
 
 interface ImageCarouselProps {
   imageIds: string[]
@@ -63,6 +56,9 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
                 width='100%'
                 thumbnail
                 modal
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                hasMultipleImages={imageIds.length > 1}
               />
             </Box>
           </Center>
@@ -112,7 +108,6 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({ imageIds, height =
           </HStack>
         )}
       </Box>
-      {/*{selectedImageIndex !== null && <ImageModal imageId={imageIds[selectedImageIndex]}/>}*/}
     </>
   )
 }

@@ -2,7 +2,7 @@ import { Image, ImageProps, Skeleton, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import api from '~src/services/api'
 import { ASSETS } from '~utils/constants'
-import { ImageModal } from '~components/Images/ImageModal'
+import { ImageModal, ImageModalActions } from '~components/Images/ImageModal'
 
 export type ServerImageProps = Omit<ImageProps, 'src'> & {
   imageId: string
@@ -10,7 +10,7 @@ export type ServerImageProps = Omit<ImageProps, 'src'> & {
   thumbnail?: boolean
   modal?: boolean
   isLoading?: boolean
-}
+} & ImageModalActions
 
 export const ServerImage: React.FC<ServerImageProps> = ({
   imageId,
@@ -18,6 +18,9 @@ export const ServerImage: React.FC<ServerImageProps> = ({
   thumbnail = false,
   modal = false,
   isLoading,
+  onPrevious,
+  onNext,
+  hasMultipleImages = false,
   ...props
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -39,7 +42,16 @@ export const ServerImage: React.FC<ServerImageProps> = ({
         fallbackSrc={fallbackSrc}
         {...props}
       />
-      {modal && <ImageModal isOpen={isOpen} onClose={onClose} imageId={imageId} />}
+      {modal && (
+        <ImageModal
+          isOpen={isOpen}
+          onClose={onClose}
+          imageId={imageId}
+          onPrevious={onPrevious}
+          onNext={onNext}
+          hasMultipleImages={hasMultipleImages}
+        />
+      )}
     </>
   )
 }
