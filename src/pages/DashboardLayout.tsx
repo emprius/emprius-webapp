@@ -33,9 +33,9 @@ const SideNav = () => {
       {
         icon: icons.ratings,
         label: t('nav.ratings'),
-        // Show ratings history if no pending ratings
         path: pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY,
         count: pendingRatingsCount,
+        additionalPath: [ROUTES.RATINGS.PENDING, ROUTES.RATINGS.HISTORY],
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
@@ -53,37 +53,41 @@ const SideNav = () => {
       borderColor={borderColor}
       zIndex={4}
     >
-      {menuItems.map((item) => (
-        <Flex
-          key={item.label}
-          as={RouterLink}
-          to={item.path}
-          align='center'
-          p={2}
-          mx={0}
-          borderRadius='lg'
-          role='group'
-          cursor='pointer'
-          bg={location.pathname === item.path ? selectedBg : 'transparent'}
-          color={location.pathname === item.path ? selectedColor : 'inherit'}
-          _hover={{
-            bg: location.pathname === item.path ? selectedBg : useColorModeValue('gray.100', 'gray.700'),
-          }}
-          mb={2}
-          fontSize={18}
-        >
-          <Icon mr={4} as={item.icon} color={location.pathname === item.path ? selectedColor : 'inherit'} />
-          <BadgeCounter
-            count={item?.count}
-            badgeProps={{
-              top: '-4px',
-              right: '-20px',
+      {menuItems.map((item) => {
+        const isSelected =
+          location.pathname === item.path || item?.additionalPath?.some((path) => path === location.pathname)
+        return (
+          <Flex
+            key={item.label}
+            as={RouterLink}
+            to={item.path}
+            align='center'
+            p={2}
+            mx={0}
+            borderRadius='lg'
+            role='group'
+            cursor='pointer'
+            bg={isSelected ? selectedBg : 'transparent'}
+            color={isSelected ? selectedColor : 'inherit'}
+            _hover={{
+              bg: isSelected ? selectedBg : useColorModeValue('gray.100', 'gray.700'),
             }}
+            mb={2}
+            fontSize={18}
           >
-            {item.label}
-          </BadgeCounter>
-        </Flex>
-      ))}
+            <Icon mr={4} as={item.icon} color={isSelected ? selectedColor : 'inherit'} />
+            <BadgeCounter
+              count={item?.count}
+              badgeProps={{
+                top: '-4px',
+                right: '-20px',
+              }}
+            >
+              {item.label}
+            </BadgeCounter>
+          </Flex>
+        )
+      })}
     </Flex>
   )
 }
