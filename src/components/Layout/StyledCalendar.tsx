@@ -86,18 +86,29 @@ export const StyledCalendar = ({
 
       const [start, end] = selectedRange
 
-      // Mark selected start date
-      if (start && date.toDateString() === start.toDateString()) {
-        classes.push('selected-start-date')
-      }
+      // Check if start and end dates are the same
+      const isSameStartAndEnd = start && 
+        end && 
+        start.toDateString() === end.toDateString() && 
+        date.toDateString() === start.toDateString();
 
-      // Mark selected end date
-      if (end && date.toDateString() === end.toDateString()) {
-        classes.push('selected-end-date')
-      }
-      // Mark dates in the selected range. Dont add the class for endate
-      else if (start && end && date > start && date < end) {
-        classes.push('in-range-date')
+      if (isSameStartAndEnd) {
+        // When start and end are the same day, add rangeBothEnds class
+        classes.push('rangeBothEnds');
+      } else {
+        // Mark selected start date
+        if (start && date.toDateString() === start.toDateString()) {
+          classes.push('selected-start-date');
+        }
+
+        // Mark selected end date
+        if (end && date.toDateString() === end.toDateString()) {
+          classes.push('selected-end-date');
+        }
+        // Mark dates in the selected range. Dont add the class for endate
+        else if (start && end && date > start && date < end) {
+          classes.push('in-range-date');
+        }
       }
     }
 
@@ -309,6 +320,17 @@ export const StyledCalendar = ({
           },
         },
         // Special styling for when today is also selected as start or end date
+        '.react-calendar__tile--now.rangeBothEnds': {
+          backgroundColor: `${selectedColor} !important`,
+          color: useColorModeValue('black', 'white') + ' !important',
+          borderRadius: '50% !important',
+          '&::after': {
+            border: `2px solid ${useColorModeValue(theme.colors.primary[600], theme.colors.primary[300])}`,
+            width: '90%',
+            height: '90%',
+            borderRadius: '50%',
+          },
+        },
         '.react-calendar__tile--now.selected-start-date': {
           backgroundColor: `${selectedColor} !important`,
           color: useColorModeValue('black', 'white') + ' !important',
@@ -326,15 +348,15 @@ export const StyledCalendar = ({
         '.react-calendar__tile--now.selected-end-date': {
           backgroundColor: `${selectedColor} !important`,
           color: useColorModeValue('black', 'white') + ' !important',
-          borderTopLeftRadius: '50% !important',
-          borderBottomLeftRadius: '50% !important',
+          borderTopLeftRadius: '0% !important',
+          borderBottomLeftRadius: '0% !important',
           borderTopRightRadius: '50% !important',
           borderBottomRightRadius: '50% !important',
           '&::after': {
             border: `2px solid ${useColorModeValue(theme.colors.primary[600], theme.colors.primary[300])}`,
             width: '90%',
             height: '90%',
-            borderRadius: '50%',
+            borderRadius: '0 50% 50% 0',
           },
         },
         '.react-calendar__tile--now.in-range-date': {
