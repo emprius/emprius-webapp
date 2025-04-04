@@ -38,7 +38,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
   const { user } = useAuth()
-  
+
   // Create form methods
   const formMethods = useForm<BookingFormData>({
     defaultValues: {
@@ -111,11 +111,35 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                           <Text>{tool.weight && `${tool.weight}kg`}</Text>
                         </Stack>
                       )}
+                      {tool.nomadic && (
+                        <Stack direction='row' align='center'>
+                          <FiBox size={20} />
+                          <Text>
+                            {t('tools.nomadic')}: {tool.nomadic ? t('common.yes') : t('common.no')}
+                          </Text>
+                        </Stack>
+                      )}
                     </SimpleGrid>
+                    <Divider my={4} />
+                    <Text fontWeight='medium' mb={2}>
+                      {t('tools.owner')}
+                    </Text>
                     <UserCard userId={tool.userId} />
+
+                    {tool.actualUserId && tool.actualUserId !== tool.userId && (
+                      <>
+                        <Text fontWeight='medium' mt={4} mb={2}>
+                          {t('tools.current_holder', { defaultValue: 'Current Holder' })}
+                        </Text>
+                        <UserCard userId={tool.actualUserId} />
+                      </>
+                    )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
-                        <MapWithMarker {...tool.location} markerProps={{ showExactLocation: user?.id === tool.userId }} />
+                        <MapWithMarker
+                          {...tool.location}
+                          markerProps={{ showExactLocation: user?.id === tool.userId }}
+                        />
                       </Box>
                     )}
                   </Stack>
@@ -146,8 +170,8 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   </SimpleGrid>
                 </Box>
               )}
-              <AvailabilityCalendar 
-                reservedDates={tool.reservedDates || []} 
+              <AvailabilityCalendar
+                reservedDates={tool.reservedDates || []}
                 toolUserId={tool.userId}
                 isSelectable={tool.isAvailable}
               />
@@ -165,7 +189,7 @@ const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
   const isOwner = user?.id === tool.userId
-  
+
   if (!isAuthenticated) {
     return (
       <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
@@ -195,6 +219,6 @@ const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
   if (isOwner) {
     return null
   }
-  
+
   return <BookingForm tool={tool} />
 }

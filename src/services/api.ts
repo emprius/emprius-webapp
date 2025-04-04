@@ -119,6 +119,7 @@ export const bookings = {
     apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/deny`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
+  picked: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/picked`)),
   getRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/rates')),
   getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
   getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),

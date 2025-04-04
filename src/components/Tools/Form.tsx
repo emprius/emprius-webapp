@@ -92,17 +92,34 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <Input {...register('title', { required: true })} />
           <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl
-          as={Stack}
-          alignItems={'center'}
-          direction={'row'}
-          wrap={'wrap'}
-          pt={{ base: 0, md: 6 }}
-          justifyContent={{ base: 'start', md: 'end' }}
-        >
-          <FormLabel mb='0'>{t('tools.is_available')}</FormLabel>
-          <Switch size={'lg'} {...register('isAvailable')} />
-        </FormControl>
+        <Stack direction="row" spacing={4}>
+          <FormControl
+            as={Stack}
+            alignItems={'center'}
+            direction={'row'}
+            wrap={'wrap'}
+            pt={{ base: 0, md: 6 }}
+            justifyContent={{ base: 'start', md: 'end' }}
+          >
+            <FormLabel mb='0'>{t('tools.is_available')}</FormLabel>
+            <Switch size={'lg'} {...register('isAvailable')} />
+          </FormControl>
+          <FormControl
+            display='flex'
+            flexDirection={'column'}
+            alignItems='start'
+            pt={{ base: 0, md: 6 }}
+            justifyContent={{ base: 'start', md: 'end' }}
+          >
+            <FormLabel mb='0'>{t('tools.nomadic', { defaultValue: 'Nomadic' })}</FormLabel>
+            <Text fontSize='sm' sx={lighterText}>
+              {t('tools.nomadic_description', {
+                defaultValue: 'Tools change location every time they are rented. Once rented, they stay at the new location until rented again.',
+              })}
+            </Text>
+            <Switch mt={2} size={'lg'} {...register('nomadic')} />
+          </FormControl>
+        </Stack>
       </Stack>
 
       <FormControl isInvalid={!!errors.toolCategory} isRequired>
