@@ -11,6 +11,10 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
   let colorScheme = ''
   let text = ''
   switch (status) {
+    case BookingStatus.PICKED:
+      colorScheme = 'green'
+      text = t(`bookings.status.PICKED`)
+      break
     case BookingStatus.RETURNED:
       colorScheme = 'green'
       text = t(`bookings.status.RETURNED`)
