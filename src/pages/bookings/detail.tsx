@@ -47,6 +47,10 @@ export const Detail = () => {
     setTitle('')
   }, [setTitle, t])
 
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
   // If we don't have an ID, redirect to bookings
   if (!id || bookingError || !booking || !tool) {
     return (
@@ -55,10 +59,6 @@ export const Detail = () => {
         desc={t('bookings.not_found_desc', { defaultValue: 'The booking you are looking for could not be found.' })}
       />
     )
-  }
-
-  if (isLoading) {
-    return <LoadingSpinner />
   }
 
   return <BookingDetailsPage booking={booking} tool={tool} userId={userId} />
