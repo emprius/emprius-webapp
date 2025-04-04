@@ -87,27 +87,25 @@ export const StyledCalendar = ({
       const [start, end] = selectedRange
 
       // Check if start and end dates are the same
-      const isSameStartAndEnd = start && 
-        end && 
-        start.toDateString() === end.toDateString() && 
-        date.toDateString() === start.toDateString();
+      const isSameStartAndEnd =
+        start && end && start.toDateString() === end.toDateString() && date.toDateString() === start.toDateString()
 
       if (isSameStartAndEnd) {
         // When start and end are the same day, add rangeBothEnds class
-        classes.push('rangeBothEnds');
+        classes.push('rangeBothEnds')
       } else {
         // Mark selected start date
         if (start && date.toDateString() === start.toDateString()) {
-          classes.push('selected-start-date');
+          classes.push('selected-start-date')
         }
 
         // Mark selected end date
         if (end && date.toDateString() === end.toDateString()) {
-          classes.push('selected-end-date');
+          classes.push('selected-end-date')
         }
         // Mark dates in the selected range. Dont add the class for endate
         else if (start && end && date > start && date < end) {
-          classes.push('in-range-date');
+          classes.push('in-range-date')
         }
       }
     }

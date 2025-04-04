@@ -223,7 +223,15 @@ const BookingDateInfo = ({ booking }: { booking: Booking }) => {
       <CardBody>
         {/* Display the calendar with the booking date range */}
         <Box mb={3}>
-          <StyledCalendar selectedRange={selectedRange} isSelectable={false} value={selectedRange[0]} />
+          <StyledCalendar
+            selectedRange={selectedRange}
+            isSelectable={false}
+            value={selectedRange[0]}
+            calendarWrapperProps={{
+              maxW: '450px',
+              m: '0 auto',
+            }}
+          />
         </Box>
       </CardBody>
     </Card>
