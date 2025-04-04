@@ -67,7 +67,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
         <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'center', md: 'stretch' }} gap={4}>
           <Skeleton isLoaded={!!tool} width='100px' height='100px' flexShrink={0} borderRadius='md'>
             <Box width='100px' height='100px' flexShrink={0} borderRadius='md' overflow='hidden'>
-              <ToolImage imageId={tool.images?.[0] ?? ''} alt={tool.title} toolId={tool.id} />
+              <ToolImage imageId={tool?.images?.[0] ?? ''} alt={tool?.title} toolId={tool?.id} />
             </Box>
           </Skeleton>
           <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking.id)}>
@@ -159,7 +159,9 @@ export const RatingsForm = ({ booking, onSuccess }: RatingFormProps) => {
     })
     onSuccess?.()
     // Redirect to ratings history page with success parameter and rating info
-    navigate(`${ROUTES.RATINGS.HISTORY}?submitted=true&toolName=${encodeURIComponent(tool?.title || '')}&rating=${data.userRating}`)
+    navigate(
+      `${ROUTES.RATINGS.HISTORY}?submitted=true&toolName=${encodeURIComponent(tool?.title || '')}&rating=${data.userRating}`
+    )
   }
 
   return (
