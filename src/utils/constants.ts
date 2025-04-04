@@ -66,4 +66,4 @@ export const UPDATE_PWA_INTERVAL = 1000 * 60 * 30 // 30 minutes
 
 export const TOOL_MAX_DATE_BOOKING = 12 // months from now that a tool can be booked
 
-export const TOKEN_SYMBOL = 'POP'
+export const TOKEN_SYMBOL = 'EUR'
