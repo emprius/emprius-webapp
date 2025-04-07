@@ -56,6 +56,7 @@ export const AddTool = () => {
       estimatedValue: Number(data.estimatedValue) || 0,
       height: Number(data.height),
       weight: Number(data.weight),
+      nomadic: data?.nomadic ?? false,
     })
   }
 

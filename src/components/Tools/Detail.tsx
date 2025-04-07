@@ -5,6 +5,7 @@ import {
   Divider,
   Grid,
   GridItem,
+  Icon,
   Link,
   SimpleGrid,
   Stack,
@@ -31,6 +32,7 @@ import { lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
+import { icons } from '~theme/icons'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -113,17 +115,12 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       )}
                       {tool.nomadic && (
                         <Stack direction='row' align='center'>
-                          <FiBox size={20} />
-                          <Text>
-                            {t('tools.nomadic')}: {tool.nomadic ? t('common.yes') : t('common.no')}
-                          </Text>
+                          <Icon as={icons.nomadic} />
+                          <Text>{t('tools.nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
                         </Stack>
                       )}
                     </SimpleGrid>
                     <Divider my={4} />
-                    <Text fontWeight='medium' mb={2}>
-                      {t('tools.owner')}
-                    </Text>
                     <UserCard userId={tool.userId} />
 
                     {tool.actualUserId && tool.actualUserId !== tool.userId && (
