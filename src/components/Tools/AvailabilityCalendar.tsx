@@ -8,15 +8,10 @@ import { DateRange } from '~components/Tools/types'
 
 interface ToolAvailabilityCalendarProps {
   reservedDates: DateRange[]
-  toolUserId: string
   isSelectable?: boolean
 }
 
-export const AvailabilityCalendar = ({
-  reservedDates,
-  toolUserId,
-  isSelectable = true,
-}: ToolAvailabilityCalendarProps) => {
+export const AvailabilityCalendar = ({ reservedDates, isSelectable = true }: ToolAvailabilityCalendarProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const formContext = useFormContext()
@@ -86,7 +81,7 @@ export const AvailabilityCalendar = ({
 
   const handleDateClick = (value: Date) => {
     // Only allow selection if user is not the owner and selection is enabled
-    if (user?.id === toolUserId || !isSelectable || !formContext) {
+    if (!isSelectable || !formContext) {
       return
     }
 
@@ -149,10 +144,10 @@ export const AvailabilityCalendar = ({
         reservedDates={reservedDates}
         selectedRange={selectedRange}
         onDateClick={handleDateClick}
-        isSelectable={isSelectable && user?.id !== toolUserId}
+        isSelectable={isSelectable}
       />
 
-      {user?.id !== toolUserId && isSelectable && (
+      {isSelectable && (
         <Text fontSize='md' mt={2} color='gray.500'>
           {selectedRange[0] && selectedRange[1]
             ? t('bookings.dates_selected', { defaultValue: 'Dates selected' })

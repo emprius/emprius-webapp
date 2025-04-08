@@ -54,6 +54,14 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   })
 
   const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
+  const isOwner = tool.userId === user?.id
+  // If is owner and tool is not nomadic or
+  // tool is nomadic and is actual user or
+  // tool is nomadic and not actual user and is the owner
+  const canNotBook =
+    (!tool.nomadic && isOwner) ||
+    (tool.nomadic && tool.actualUserId === user.id) ||
+    (tool.nomadic && !tool.actualUserId && isOwner)
 
   return (
     <FormProvider {...formMethods}>
@@ -185,10 +193,9 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
               )}
               <AvailabilityCalendar
                 reservedDates={tool.reservedDates || []}
-                toolUserId={tool.userId}
-                isSelectable={tool.isAvailable}
+                isSelectable={tool.isAvailable && !canNotBook}
               />
-              <BookingFormWrapper tool={tool} />
+              <BookingFormWrapper tool={tool} canNotBook={canNotBook} />
             </Stack>
           </GridItem>
         </Grid>
@@ -197,11 +204,10 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   )
 }
 
-const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
+const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: boolean }) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
-  const isOwner = user?.id === tool.userId
 
   if (!isAuthenticated) {
     return (
@@ -229,7 +235,7 @@ const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
     )
   }
 
-  if (isOwner) {
+  if (canNotBook) {
     return null
   }
 
