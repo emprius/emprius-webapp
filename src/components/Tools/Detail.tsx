@@ -3,6 +3,7 @@ import {
   Box,
   Container,
   Divider,
+  Flex,
   Grid,
   GridItem,
   Icon,
@@ -28,7 +29,7 @@ import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/Own
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
+import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
@@ -52,6 +53,8 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
     mode: 'onChange',
   })
 
+  const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
+
   return (
     <FormProvider {...formMethods}>
       <Container maxW='container.xl' py={8}>
@@ -66,7 +69,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                     <Stack spacing={1}>
                       <Stack direction='row' align='center' justify='space-between'>
                         <Text fontSize='3xl' fontWeight='bold' color={'primary.500'}>
-                          {tool.title}
+                          {tool.nomadic && <Icon as={icons.nomadic} />} {tool.title}
                         </Text>
                         <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                           {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
@@ -84,7 +87,6 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       />
                     </Stack>
                     {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
-                    <Divider />
                     <SimpleGrid spacing={4} columns={{ base: 2 }}>
                       {!!tool.toolCategory && (
                         <Stack direction='row' align='center'>
@@ -113,22 +115,36 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                           <Text>{tool.weight && `${tool.weight}kg`}</Text>
                         </Stack>
                       )}
-                      {tool.nomadic && (
+                    </SimpleGrid>
+                    {tool.nomadic && (
+                      <Flex direction={'column'} gap={1}>
                         <Stack direction='row' align='center'>
                           <Icon as={icons.nomadic} />
-                          <Text>{t('tools.nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
+                          <Text>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
                         </Stack>
-                      )}
-                    </SimpleGrid>
+                        <Text sx={lighterText}>{t('tools.nomadic_description')}</Text>
+                      </Flex>
+                    )}
                     <Divider my={4} />
-                    <UserCard userId={tool.userId} />
-
-                    {tool.actualUserId && tool.actualUserId !== tool.userId && (
+                    <>
+                      <Text fontWeight='medium' mb={2} color='primary.500'>
+                        {t('common.owner')}
+                      </Text>
+                      <UserCard userId={tool.userId} borderWidth={0} p={0} />
+                    </>
+                    {showActualUser && (
                       <>
-                        <Text fontWeight='medium' mt={4} mb={2}>
-                          {t('tools.current_holder', { defaultValue: 'Current Holder' })}
+                        <Text fontWeight='medium' mb={2} color='primary.500'>
+                          {t('tools.current_holder', { defaultValue: 'Current Holder' })}{' '}
+                          <Text as='span' fontWeight='normal' color='gray.500' fontSize='sm'>
+                            (
+                            {t('tools.nomadic_owner_desc', {
+                              defaultValue: 'Person who is holding the nomadic tool right now',
+                            })}
+                            )
+                          </Text>
                         </Text>
-                        <UserCard userId={tool.actualUserId} />
+                        <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
                       </>
                     )}
                     {tool.location && (

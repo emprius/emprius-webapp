@@ -105,7 +105,7 @@ const UserInfo = ({ booking }: { booking: Booking }) => {
   let ownerDesc = t('bookings.owner_desc')
   if (booking.nomadic) {
     owner = t('bookings.nomadic_owner', { defaultValue: 'Holder' })
-    ownerDesc = t('bookings.nomadic_owner_desc', { defaultValue: 'Person who is holding the nomadic tool' })
+    ownerDesc = t('bookings.nomadic_owner_desc', { defaultValue: 'Holder of the tool at booking moment' })
   }
 
   return (
