@@ -1,13 +1,4 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Button, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
@@ -241,7 +232,7 @@ export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   } else if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
     component = <PendingPetitionActions booking={booking} />
   } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
-    if (booking?.isNomadic) {
+    if (booking?.nomadic) {
       component = <NomadAcceptedBookingActions booking={booking} />
     } else {
       component = <AcceptedBookingActions booking={booking} />

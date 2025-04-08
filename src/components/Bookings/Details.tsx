@@ -101,6 +101,13 @@ const UserInfo = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
   const { fromUserId, toUserId } = booking
 
+  let owner = t('bookings.owner')
+  let ownerDesc = t('bookings.owner_desc')
+  if (booking.nomadic) {
+    owner = t('bookings.nomadic_owner', { defaultValue: 'Holder' })
+    ownerDesc = t('bookings.nomadic_owner_desc', { defaultValue: 'Person who is holding the nomadic tool' })
+  }
+
   return (
     <Card variant='bookingDetail'>
       <CardHeader>
@@ -127,9 +134,9 @@ const UserInfo = ({ booking }: { booking: Booking }) => {
           {/* Owner */}
           <Box>
             <Text fontWeight='medium' mb={2} color='primary.500'>
-              {t('bookings.owner')}{' '}
+              {owner}{' '}
               <Text as='span' fontWeight='normal' color='gray.500' fontSize='sm'>
-                ({t('bookings.owner_desc')})
+                ({ownerDesc})
               </Text>
             </Text>
             <UserCard userId={toUserId} borderWidth={0} p={0} />

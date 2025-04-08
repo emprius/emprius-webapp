@@ -43,7 +43,7 @@ export interface Booking {
   updatedAt: string
   ratings: Rating[]
   isRated: boolean
-  isNomadic: boolean
+  nomadic: boolean
 }
 
 export const useBookingDetail = ({
