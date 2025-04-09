@@ -1,10 +1,4 @@
-import {
-  Box,
-  Center,
-  Flex,
-  HStack,
-  IconButton,
-} from '@chakra-ui/react'
+import { Box, Center, Flex, HStack, IconButton } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { ServerImage } from '~components/Images/ServerImage'

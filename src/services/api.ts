@@ -1,15 +1,20 @@
-import axios, {AxiosError, AxiosResponse} from 'axios'
-import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/queries'
-import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
-import {InfoData} from '~components/Layout/Contexts/InfoContext'
-import {BookingPendings} from '~components/Layout/Contexts/PendingActionsProvider'
-import type {BookingRating, RateSubmission, Rating, UnifiedRating} from '~components/Ratings/types'
-import {SearchParams} from '~components/Search/queries'
-import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
-import {Tool, ToolsListResponse} from '~components/Tools/types'
-import {EditProfileFormData, UserProfile} from '~components/Users/types'
-import {STORAGE_KEYS} from '~utils/constants'
-import {ImageUploadResponse} from '~components/Images/queries'
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import { ILoginParams, IRegisterParams, LoginResponse } from '~components/Auth/queries'
+import {
+  Booking,
+  BookingActionsParams,
+  BookingActionsReturnType,
+  CreateBookingData,
+} from '~components/Bookings/queries'
+import { InfoData } from '~components/Layout/Contexts/InfoContext'
+import { BookingPendings } from '~components/Layout/Contexts/PendingActionsProvider'
+import type { BookingRating, RateSubmission, Rating, UnifiedRating } from '~components/Ratings/types'
+import { SearchParams } from '~components/Search/queries'
+import { createToolParams, UpdateToolParams } from '~components/Tools/queries'
+import { Tool, ToolsListResponse } from '~components/Tools/types'
+import { EditProfileFormData, UserProfile } from '~components/Users/types'
+import { STORAGE_KEYS } from '~utils/constants'
+import { ImageUploadResponse } from '~components/Images/queries'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -123,7 +128,8 @@ export const bookings = {
   getRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/rates')),
   getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
   getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
-  getBookingRatings: (id: string) => apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/rate`)),
+  getBookingRatings: (id: string) =>
+    apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/rate`)),
   submitRating: (data: RateSubmission) =>
     apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, data)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
@@ -136,8 +142,7 @@ export const users = {
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
   getList: (page: number = 0) =>
     apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
-  getUserRatings: (userId: string) => 
-    apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/rates`)),
+  getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/rates`)),
 }
 
 // images

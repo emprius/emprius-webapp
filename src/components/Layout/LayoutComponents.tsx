@@ -1,4 +1,4 @@
-import {Container, ContainerProps, SimpleGrid, SimpleGridProps} from '@chakra-ui/react'
+import { Container, ContainerProps, SimpleGrid, SimpleGridProps } from '@chakra-ui/react'
 
 /**
  * Container used on some layouts to wrap the content
