@@ -3,7 +3,7 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/react'
 const baseStyle = defineStyle({
   color: 'primary.500',
   _hover: {
-    textDecoration: 'none',
+    textDecoration: 'primary.300',
     color: 'primary.600',
   },
   _dark: {
