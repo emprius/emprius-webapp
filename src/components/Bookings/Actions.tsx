@@ -232,7 +232,7 @@ export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   } else if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
     component = <PendingPetitionActions booking={booking} />
   } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
-    if (booking?.nomadic) {
+    if (booking?.isNomadic) {
       component = <NomadAcceptedBookingActions booking={booking} />
     } else {
       component = <AcceptedBookingActions booking={booking} />

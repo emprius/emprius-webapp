@@ -60,9 +60,9 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   // tool is nomadic and is actual user or
   // tool is nomadic and not actual user and is the owner
   const canNotBook =
-    (!tool.nomadic && isOwner) ||
-    (tool.nomadic && tool.actualUserId === user.id) ||
-    (tool.nomadic && !tool.actualUserId && isOwner)
+    (!tool.isNomadic && isOwner) ||
+    (tool.isNomadic && tool.actualUserId === user.id) ||
+    (tool.isNomadic && !tool.actualUserId && isOwner)
 
   return (
     <FormProvider {...formMethods}>
@@ -123,7 +123,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                         </Stack>
                       )}
                     </SimpleGrid>
-                    {tool.nomadic && (
+                    {tool.isNomadic && (
                       <Flex direction={'column'} gap={1}>
                         <Stack direction='row' align='center'>
                           <Icon as={icons.nomadic} />

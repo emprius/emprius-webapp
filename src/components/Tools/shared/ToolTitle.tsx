@@ -9,7 +9,7 @@ import { Tool } from '~components/Tools/types'
 const ToolTitle = ({ tool, ...props }: { tool: Tool } & TextProps) => (
   <Skeleton isLoaded={!!tool}>
     <Text {...props}>
-      {tool?.nomadic && <Icon as={icons.nomadic} />} {tool?.title}
+      {tool?.isNomadic && <Icon as={icons.nomadic} />} {tool?.title}
     </Text>
   </Skeleton>
 )

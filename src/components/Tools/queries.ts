@@ -23,7 +23,7 @@ export interface createToolParams {
   height?: number // uint64
   weight?: number // uint64
   isAvailable?: boolean
-  nomadic?: boolean
+  isNomadic?: boolean
 }
 
 export interface UpdateToolParams extends createToolParams {

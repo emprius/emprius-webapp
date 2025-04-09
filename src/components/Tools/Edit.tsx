@@ -88,7 +88,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       location: data.location,
       images: allImageHashes,
       isAvailable: data.isAvailable,
-      nomadic: data.nomadic,
+      isNomadic: data.isNomadic,
     }
 
     await mutateAsync({

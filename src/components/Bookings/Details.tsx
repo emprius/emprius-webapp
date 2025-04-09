@@ -104,7 +104,7 @@ const UserInfo = ({ booking }: { booking: Booking }) => {
 
   let owner = t('bookings.owner')
   let ownerDesc = t('bookings.owner_desc')
-  if (booking.nomadic) {
+  if (booking.isNomadic) {
     owner = t('bookings.nomadic_owner', { defaultValue: 'Holder' })
     ownerDesc = t('bookings.nomadic_owner_desc', { defaultValue: 'Holder of the tool at booking moment' })
   }
@@ -376,7 +376,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         <Box mb={6}>
           <ActionsWrapper booking={booking} userId={userId} />
         </Box>
-        {booking.nomadic && (
+        {booking.isNomadic && (
           <Flex direction={'column'} gap={1} mb={6}>
             <Stack direction='row' align='center'>
               <Icon sx={lightText} as={icons.nomadic} />
