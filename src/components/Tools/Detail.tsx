@@ -35,6 +35,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
+import { MdSocialDistance } from 'react-icons/md'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -120,6 +121,14 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
                         <Stack direction='row' align='center'>
                           <LuWeight size={20} />
                           <Text>{tool.weight && `${tool.weight}kg`}</Text>
+                        </Stack>
+                      )}
+                      {!!tool.maxDistance && (
+                        <Stack direction='row' align='center'>
+                          <MdSocialDistance size={20} />
+                          <Text>
+                            {t('tools.max_distance')}: {tool.maxDistance}
+                          </Text>
                         </Stack>
                       )}
                     </SimpleGrid>

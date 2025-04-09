@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon, CloseIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, ChevronUpIcon, CloseIcon, FormHelperText } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -260,6 +260,28 @@ export const ToolForm: React.FC<ToolFormProps> = ({
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
+            <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={!!errors.maxDistance}>
+            <FormLabel>{t('tools.maxDistance', { defaultValue: 'Max distance (km)' })}</FormLabel>
+            <NumberInput min={1} precision={0}>
+              <NumberInputField
+                {...register('maxDistance', {
+                  valueAsNumber: true,
+                  setValueAs: (value) => (value === '' ? undefined : parseInt(value)),
+                })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <FormHelperText>
+              {t('tools.maxDistance_desc', {
+                defaultValue: 'Maximum loan distance, preventing users from booking if they are too far away',
+              })}
+            </FormHelperText>
             <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
           </FormControl>
         </Stack>

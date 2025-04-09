@@ -23,6 +23,7 @@ export type Tool = {
   reservedDates: DateRange[] | null
   isNomadic?: boolean
   actualUserId?: string
+  maxDistance?: number
 }
 
 export type ToolLocated = {
@@ -48,6 +49,7 @@ export type CreateToolParams = {
   height?: number // uint64
   weight?: number // uint64
   isNomadic?: boolean
+  maxDistance?: number
 }
 
 export type UpdateToolParams = CreateToolParams & {
