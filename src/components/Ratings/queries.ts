@@ -31,13 +31,13 @@ export const useGetBookingRatings = (
   return useQuery({
     queryKey: RatingsKeys.bookingRatings(bookingId),
     queryFn: async () => {
-      const response = await api.bookings.getBookingRatings(bookingId);
-      return response.ratings;
+      const response = await api.bookings.getBookingRatings(bookingId)
+      return response.ratings
     },
     enabled: !!bookingId,
     ...options,
-  });
-};
+  })
+}
 
 export const useGetUserRatings = (userId?: string) => {
   const { user } = useAuth()

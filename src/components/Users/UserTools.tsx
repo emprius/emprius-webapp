@@ -15,13 +15,8 @@ export const UserTools = () => {
   } = useUserTools(id || '')
 
   if (isToolsLoading) return <LoadingSpinner />
-  
+
   return (
-    <ToolList 
-      tools={toolsData?.tools || []} 
-      isLoading={isToolsLoading} 
-      isError={isToolsError} 
-      error={toolsError} 
-    />
+    <ToolList tools={toolsData?.tools || []} isLoading={isToolsLoading} isError={isToolsError} error={toolsError} />
   )
 }

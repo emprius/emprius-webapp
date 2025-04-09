@@ -23,6 +23,7 @@ export interface Tool {
   reservedDates: DateRange[] | null
   isNomadic?: boolean
   actualUserId?: string
+  maxDistance?: number
 }
 
 export interface ToolsListResponse {
@@ -41,4 +42,5 @@ export interface ToolFormData {
   height: number
   weight: number
   isNomadic?: boolean
+  maxDistance?: number
 }
