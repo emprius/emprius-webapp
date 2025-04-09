@@ -166,7 +166,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
               'Tools change location every time they are rented. Once rented, they stay at the new location until rented again.',
           })}
         </Text>
-        <Switch mt={2} size={'lg'} {...register('nomadic')} />
+        <Switch mt={2} size={'lg'} {...register('isNomadic')} />
       </FormControl>
       <LocationPicker name='location' control={control} isRequired={true} />
 
