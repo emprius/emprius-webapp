@@ -33,7 +33,7 @@ import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { DateRange, Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
+import { lighterText, lightText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { Booking, BookingStatus } from './queries'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -42,6 +42,7 @@ import { RatingComments } from '~components/Ratings/RatingComments'
 import { useGetBookingRatings } from '~components/Ratings/queries'
 import { UnifiedRating } from '~components/Ratings/types'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 interface BookingDetailsProps {
   booking: Booking
@@ -189,9 +190,9 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
               to={toolDetailUrl}
               fontSize={{ base: 'lg', md: 'xl' }}
               fontWeight='semibold'
-              _hover={{ color: 'primary.500', textDecoration: 'none' }}
+              _hover={{ color: 'primary.500' }}
             >
-              {tool.title}
+              <ToolTitle tool={tool} />
             </Link>
 
             <HStack spacing={4} wrap='wrap'>
@@ -365,7 +366,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
           <Flex justify='space-between' align='center' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
             <Stack spacing={1}>
               <BookingStatusTitle isRequest={isRequest} booking={booking} fontWeight='bold' />
-              <Text fontSize='sm' color='gray.500' _dark={{ color: 'gray.400' }}>
+              <Text fontSize='sm' sx={lighterText}>
                 {t('bookings.reference', { id: booking.id })}
               </Text>
             </Stack>
@@ -375,6 +376,15 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         <Box mb={6}>
           <ActionsWrapper booking={booking} userId={userId} />
         </Box>
+        {booking.nomadic && (
+          <Flex direction={'column'} gap={1} mb={6}>
+            <Stack direction='row' align='center'>
+              <Icon sx={lightText} as={icons.nomadic} />
+              <Text sx={lightText}>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
+            </Stack>
+            <Text sx={lighterText}>{t('tools.nomadic_description')}</Text>
+          </Flex>
+        )}
         {/* Main Content */}
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={6}>
           {/* Left Column */}

@@ -34,6 +34,7 @@ import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
 import { icons } from '~theme/icons'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -76,9 +77,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   <Stack spacing={4}>
                     <Stack spacing={1}>
                       <Stack direction='row' align='center' justify='space-between'>
-                        <Text fontSize='3xl' fontWeight='bold' color={'primary.500'}>
-                          {tool.nomadic && <Icon as={icons.nomadic} />} {tool.title}
-                        </Text>
+                        <ToolTitle fontSize='3xl' fontWeight='bold' color={'primary.500'} tool={tool} />
                         <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                           {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                         </Badge>

@@ -9,6 +9,7 @@ import { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
 import { ToolImageAvailability } from './shared/ToolImage'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 interface ToolCardProps {
   tool: Tool
@@ -53,15 +54,14 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
         <Stack p={4} spacing={3}>
           <Stack spacing={1}>
             <Flex align='start' justify='space-between' gap={2}>
-              <Text
+              <ToolTitle
                 fontWeight='semibold'
                 fontSize='lg'
                 _hover={{ color: 'primary.500', textDecoration: 'none' }}
                 noOfLines={2}
                 flex='1'
-              >
-                {tool.title}
-              </Text>
+                tool={tool}
+              />
               <CostDay tool={tool} />
             </Flex>
 
