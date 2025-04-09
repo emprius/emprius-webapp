@@ -25,6 +25,7 @@ export enum BookingStatus {
   ACCEPTED = 'ACCEPTED', // Approved by the owner
   CANCELLED = 'CANCELLED', // Cancelled by the requester
   REJECTED = 'REJECTED', // Denied by the owner
+  PICKED = 'PICKED', // Tool has been picked up by the requester
   RETURNED = 'RETURNED', // Completed by both parties
 }
 
@@ -42,6 +43,7 @@ export interface Booking {
   updatedAt: string
   ratings: Rating[]
   isRated: boolean
+  isNomadic: boolean
 }
 
 export const useBookingDetail = ({
@@ -121,6 +123,18 @@ export const useReturnBooking = (booking: Booking, options?: BookingActionOption
     onSuccess: async (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
       await client.invalidateQueries({ queryKey: RatingsKeys.pending })
+      await client.invalidateQueries({ queryKey: PendingActionsKeys })
+    },
+    ...options,
+  })
+}
+
+export const usePickedBooking = (booking: Booking, options?: BookingActionOptions) => {
+  const client = useQueryClient()
+  return useMutation<Booking, Error, string>({
+    mutationFn: (bookingId: string) => api.bookings.picked(bookingId),
+    onSuccess: async (res, bookingId) => {
+      invalidateQueries(client, booking.toolId, bookingId)
       await client.invalidateQueries({ queryKey: PendingActionsKeys })
     },
     ...options,

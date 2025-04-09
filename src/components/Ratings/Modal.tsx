@@ -113,6 +113,71 @@ export const ReturnAlertDialog = ({
   )
 }
 
+export const PickedAlertDialog = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  endDate,
+  isLoading,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+  endDate: number
+  isLoading: boolean
+}) => {
+  const cancelRef = useRef<HTMLButtonElement>(null)
+  const { t } = useTranslation()
+
+  const expectedDay = new Date(endDate * 1000)
+  expectedDay.setHours(0, 0, 0, 0)
+  const currentDay = new Date()
+  currentDay.setHours(0, 0, 0, 0)
+
+  const isLate = currentDay > expectedDay
+  const isEarly = currentDay < expectedDay
+  const isOnTime = currentDay === expectedDay
+  const datef = t('bookings.datef')
+
+  return (
+    <AlertDialog isOpen={isOpen} leastDestructiveRef={React.useRef(null)} onClose={onClose}>
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            {t('bookings.picked_dialog_title', { defaultValue: 'Mark as picked' })}
+          </AlertDialogHeader>
+
+          <AlertDialogBody>
+            {t('bookings.picked_dialog_message', {
+              defaultValue: 'Are you sure you want to mark this tool as picked?',
+            })}
+            <HStack mb={4}>
+              <Text>{t('bookings.expected_pick_date', { date: expectedDay })}</Text>
+              <Text fontWeight={'bold'}>
+                {t('bookings.date_formatted', {
+                  date: expectedDay,
+                  format: datef,
+                })}
+              </Text>
+            </HStack>
+            {isLate && <Text style={{ color: 'red' }}>{t('bookings.late_pick_warning')}</Text>}
+            {isEarly && <Text style={{ color: 'orange' }}>{t('bookings.early_pick_notice')}</Text>}
+            {isOnTime && <Text style={{ color: 'green' }}>{t('bookings.on_time_pick_notice')}</Text>}
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button onClick={onClose} disabled={isLoading}>
+              {t('common.cancel')}
+            </Button>
+            <Button colorScheme='blue' onClick={onConfirm} ml={3} isLoading={isLoading}>
+              {t('bookings.picked_dialog_confirm', { defaultValue: 'Mark as picked' })}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
+  )
+}
+
 // Success Modal component
 export const SuccessModal = () => {
   const { t } = useTranslation()

@@ -9,8 +9,9 @@ import {
   useCancelBooking,
   useDenyBooking,
   useReturnBooking,
+  usePickedBooking,
 } from '~components/Bookings/queries'
-import { RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
+import { PickedAlertDialog, RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
 import { icons } from '~theme/icons'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useBookingActions } from '~components/Bookings/ActionsProvider'
@@ -141,8 +142,52 @@ const AcceptedBookingActions = ({ booking }: ActionsProps) => {
   )
 }
 
-const ReturnedBookingActions = ({ booking }: ActionsProps) => {
-  const { user } = useAuth()
+const NomadAcceptedBookingActions = ({ booking }: ActionsProps) => {
+  const bookingId = booking.id
+  const { t } = useTranslation()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { onSuccess, onError, ratingModalDisclosure } = useBookingActions()
+
+  const { mutateAsync, isPending } = usePickedBooking(booking, {
+    onError: (error) => onError(error, t('bookings.picked_error', { defaultValue: 'Error marking as picked' })),
+  })
+
+  const handlePicked = async () => {
+    try {
+      await mutateAsync(bookingId)
+      onSuccess(t('bookings.picked_success', { defaultValue: 'Tool marked as picked successfully' }))
+      onClose()
+    } catch (error) {
+      // Error is already handled by the mutation's onError
+      onClose()
+    }
+  }
+
+  return (
+    <>
+      <Button
+        leftIcon={<FiCheck />}
+        colorScheme='blue'
+        variant='outline'
+        onClick={(e) => {
+          e.stopPropagation()
+          onOpen()
+        }}
+      >
+        {t('bookings.mark_as_picked', { defaultValue: 'Mark as picked' })}
+      </Button>
+      <PickedAlertDialog
+        isLoading={isPending}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={handlePicked}
+        endDate={booking.endDate}
+      />
+    </>
+  )
+}
+
+const RateUserBookingActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const { ratingModalDisclosure } = useBookingActions()
 
@@ -187,9 +232,13 @@ export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   } else if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
     component = <PendingPetitionActions booking={booking} />
   } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
-    component = <AcceptedBookingActions booking={booking} />
-  } else if (booking.bookingStatus === BookingStatus.RETURNED) {
-    component = <ReturnedBookingActions booking={booking} />
+    if (booking?.isNomadic) {
+      component = <NomadAcceptedBookingActions booking={booking} />
+    } else {
+      component = <AcceptedBookingActions booking={booking} />
+    }
+  } else if (booking.bookingStatus === BookingStatus.RETURNED || booking.bookingStatus === BookingStatus.PICKED) {
+    component = <RateUserBookingActions booking={booking} />
   }
 
   return (

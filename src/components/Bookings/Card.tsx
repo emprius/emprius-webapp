@@ -32,6 +32,7 @@ import { Booking, BookingStatus } from './queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { icons } from '~theme/icons'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 export type BookingCardType = 'request' | 'petition'
 
@@ -129,9 +130,14 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
                     ) : (
                       <Stack spacing={1} maxW={{ base: 'full', lg: '300px' }} w={{ base: 'full', lg: 'inherit' }}>
                         <Flex gap={1} align='top' justify='space-between' direction={{ base: 'row', lg: 'column' }}>
-                          <Text fontWeight='semibold' fontSize='lg' noOfLines={2} flex='1' color='primary.500'>
-                            {tool?.title}
-                          </Text>
+                          <ToolTitle
+                            tool={tool}
+                            fontWeight='semibold'
+                            fontSize='lg'
+                            noOfLines={2}
+                            flex='1'
+                            color='primary.500'
+                          />
                           <CostDay tool={tool} />
                         </Flex>
 

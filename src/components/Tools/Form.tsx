@@ -6,6 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Icon,
   IconButton,
   Input,
   NumberDecrementStepper,
@@ -34,6 +35,7 @@ import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { lighterText } from '~theme/common'
 import { ToolFormData } from './types'
+import { icons } from '~theme/icons'
 
 interface ToolFormProps {
   initialData?: Partial<ToolFormData>
@@ -147,7 +149,25 @@ export const ToolForm: React.FC<ToolFormProps> = ({
       </FormControl>
 
       <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
-
+      <FormControl
+        display='flex'
+        flexDirection={'column'}
+        alignItems='start'
+        pt={{ base: 0, md: 6 }}
+        justifyContent={{ base: 'start', md: 'end' }}
+      >
+        <FormLabel mb='0'>
+          <Icon as={icons.nomadic} mr={2} />
+          {t('tools.nomadic', { defaultValue: 'Nomadic' })}
+        </FormLabel>
+        <Text fontSize='sm' sx={lighterText}>
+          {t('tools.nomadic_description', {
+            defaultValue:
+              'Tools change location every time they are rented. Once rented, they stay at the new location until rented again.',
+          })}
+        </Text>
+        <Switch mt={2} size={'lg'} {...register('nomadic')} />
+      </FormControl>
       <LocationPicker name='location' control={control} isRequired={true} />
 
       {existingImages.length > 0 && (

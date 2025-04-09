@@ -3,8 +3,10 @@ import {
   Box,
   Container,
   Divider,
+  Flex,
   Grid,
   GridItem,
+  Icon,
   Link,
   SimpleGrid,
   Stack,
@@ -27,10 +29,12 @@ import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/Own
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
+import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
+import { icons } from '~theme/icons'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const { t } = useTranslation()
@@ -38,7 +42,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
   const { user } = useAuth()
-  
+
   // Create form methods
   const formMethods = useForm<BookingFormData>({
     defaultValues: {
@@ -49,6 +53,16 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
     },
     mode: 'onChange',
   })
+
+  const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
+  const isOwner = tool.userId === user?.id
+  // If is owner and tool is not nomadic or
+  // tool is nomadic and is actual user or
+  // tool is nomadic and not actual user and is the owner
+  const canNotBook =
+    (!tool.isNomadic && isOwner) ||
+    (tool.isNomadic && tool.actualUserId === user.id) ||
+    (tool.isNomadic && !tool.actualUserId && isOwner)
 
   return (
     <FormProvider {...formMethods}>
@@ -63,9 +77,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   <Stack spacing={4}>
                     <Stack spacing={1}>
                       <Stack direction='row' align='center' justify='space-between'>
-                        <Text fontSize='3xl' fontWeight='bold' color={'primary.500'}>
-                          {tool.title}
-                        </Text>
+                        <ToolTitle fontSize='3xl' fontWeight='bold' color={'primary.500'} tool={tool} />
                         <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
                           {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
                         </Badge>
@@ -82,7 +94,6 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                       />
                     </Stack>
                     {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
-                    <Divider />
                     <SimpleGrid spacing={4} columns={{ base: 2 }}>
                       {!!tool.toolCategory && (
                         <Stack direction='row' align='center'>
@@ -112,10 +123,43 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                         </Stack>
                       )}
                     </SimpleGrid>
-                    <UserCard userId={tool.userId} />
+                    {tool.isNomadic && (
+                      <Flex direction={'column'} gap={1}>
+                        <Stack direction='row' align='center'>
+                          <Icon as={icons.nomadic} />
+                          <Text>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
+                        </Stack>
+                        <Text sx={lighterText}>{t('tools.nomadic_description')}</Text>
+                      </Flex>
+                    )}
+                    <Divider my={4} />
+                    <>
+                      <Text fontWeight='medium' mb={2} color='primary.500'>
+                        {t('common.owner')}
+                      </Text>
+                      <UserCard userId={tool.userId} borderWidth={0} p={0} />
+                    </>
+                    {showActualUser && (
+                      <>
+                        <Text fontWeight='medium' mb={2} color='primary.500'>
+                          {t('tools.current_holder', { defaultValue: 'Current Holder' })}{' '}
+                          <Text as='span' fontWeight='normal' color='gray.500' fontSize='sm'>
+                            (
+                            {t('tools.nomadic_owner_desc', {
+                              defaultValue: 'Person who is holding the nomadic tool right now',
+                            })}
+                            )
+                          </Text>
+                        </Text>
+                        <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
+                      </>
+                    )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
-                        <MapWithMarker {...tool.location} markerProps={{ showExactLocation: user?.id === tool.userId }} />
+                        <MapWithMarker
+                          {...tool.location}
+                          markerProps={{ showExactLocation: user?.id === tool.userId }}
+                        />
                       </Box>
                     )}
                   </Stack>
@@ -146,12 +190,11 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                   </SimpleGrid>
                 </Box>
               )}
-              <AvailabilityCalendar 
-                reservedDates={tool.reservedDates || []} 
-                toolUserId={tool.userId}
-                isSelectable={tool.isAvailable}
+              <AvailabilityCalendar
+                reservedDates={tool.reservedDates || []}
+                isSelectable={tool.isAvailable && !canNotBook}
               />
-              <BookingFormWrapper tool={tool} />
+              <BookingFormWrapper tool={tool} canNotBook={canNotBook} />
             </Stack>
           </GridItem>
         </Grid>
@@ -160,12 +203,11 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
   )
 }
 
-const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
+const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: boolean }) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
-  const isOwner = user?.id === tool.userId
-  
+
   if (!isAuthenticated) {
     return (
       <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
@@ -192,9 +234,9 @@ const BookingFormWrapper = ({ tool }: { tool: Tool }) => {
     )
   }
 
-  if (isOwner) {
+  if (canNotBook) {
     return null
   }
-  
+
   return <BookingForm tool={tool} />
 }

@@ -7,6 +7,7 @@ import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import type { Tool } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
+import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 interface ToolTooltipProps {
   tools: Tool[]
@@ -41,15 +42,15 @@ export const ToolTooltip = ({ tools }: ToolTooltipProps) => {
           height='120px'
         />
         <Flex align='top' justify='space-between' gap={2} px={4}>
-          <Text
+          <ToolTitle
             fontWeight='semibold'
             fontSize='lg'
-            _hover={{ color: 'primary.500', textDecoration: 'none' }}
+            // _hover={{ color: 'primary.500', textDecoration: 'none' }}
+            color={'primary.500'}
             noOfLines={2}
             flex='1'
-          >
-            {tool.title}
-          </Text>
+            tool={tool}
+          />
           <CostDay tool={tool} fontSize='lg' />
         </Flex>
         <Box fontSize='sm' color='gray.600' noOfLines={2} px={4}>

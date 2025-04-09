@@ -21,6 +21,8 @@ export interface Tool {
   height?: number
   weight?: number
   reservedDates: DateRange[] | null
+  isNomadic?: boolean
+  actualUserId?: string
 }
 
 export interface ToolsListResponse {
@@ -38,4 +40,5 @@ export interface ToolFormData {
   estimatedValue: number
   height: number
   weight: number
+  isNomadic?: boolean
 }
