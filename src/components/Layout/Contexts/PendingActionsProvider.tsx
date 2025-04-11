@@ -1,16 +1,16 @@
 import React, { createContext, useContext } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { bookings } from '../../../services/api'
+import { users } from '../../../services/api'
 import { useAuth } from '~components/Auth/AuthContext'
 
-export type BookingPendings = {
+export type ProfilePendings = {
   pendingRatingsCount: number
   pendingRequestsCount: number
 }
 
 type PendingActionsContextType = {
   isLoading: boolean
-} & BookingPendings
+} & ProfilePendings
 
 const PendingActionsContext = createContext<PendingActionsContextType>({
   pendingRatingsCount: 0,
@@ -26,7 +26,7 @@ export const PendingActionsProvider = ({ children }: { children: React.ReactNode
   const { isAuthenticated } = useAuth()
   const { data, isLoading } = useQuery({
     queryKey: PendingActionsKeys,
-    queryFn: () => bookings.getPendingActions(),
+    queryFn: () => users.getPendingActions(),
     refetchInterval: 30000, // Refetch every 30 seconds
     enabled: isAuthenticated,
   })

@@ -3,9 +3,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './i18n'
 import './index.css'
-import {Providers} from './Providers'
+import { Providers } from './Providers'
 
-import {registerServiceWorker} from './registerSW'
+import { registerServiceWorker } from './registerSW'
 
 // Register service worker
 registerServiceWorker()
