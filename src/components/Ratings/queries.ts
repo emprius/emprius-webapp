@@ -19,7 +19,7 @@ export const RatingsKeys = {
 export const useGetPendingRatings = () => {
   return useQuery({
     queryKey: RatingsKeys.pending,
-    queryFn: () => api.bookings.getRatings(),
+    queryFn: () => api.bookings.getPendingRatings(),
   })
 }
 
