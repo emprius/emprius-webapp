@@ -1,15 +1,21 @@
-import axios, {AxiosError, AxiosResponse} from 'axios'
-import {ILoginParams, IRegisterParams, LoginResponse} from '~components/Auth/queries'
-import {Booking, BookingActionsParams, BookingActionsReturnType, CreateBookingData,} from '~components/Bookings/queries'
-import {InfoData} from '~components/Layout/Contexts/InfoContext'
-import {BookingPendings} from '~components/Layout/Contexts/PendingActionsProvider'
-import type {BookingRating, RateSubmission, Rating, UnifiedRating} from '~components/Ratings/types'
-import {SearchParams} from '~components/Search/queries'
-import {createToolParams, UpdateToolParams} from '~components/Tools/queries'
-import {Tool, ToolsListResponse} from '~components/Tools/types'
-import {EditProfileFormData, UserProfile} from '~components/Users/types'
-import {STORAGE_KEYS} from '~utils/constants'
-import {ImageUploadResponse} from '~components/Images/queries'
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import { ILoginParams, IRegisterParams, LoginResponse } from '~components/Auth/queries'
+import {
+  Booking,
+  BookingActionsParams,
+  BookingActionsReturnType,
+  CreateBookingData,
+  UpdateBookingStatus,
+} from '~components/Bookings/queries'
+import { InfoData } from '~components/Layout/Contexts/InfoContext'
+import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
+import type { BookingRating, RateSubmission, Rating, UnifiedRating } from '~components/Ratings/types'
+import { SearchParams } from '~components/Search/queries'
+import { createToolParams, UpdateToolParams } from '~components/Tools/queries'
+import { Tool, ToolsListResponse } from '~components/Tools/types'
+import { EditProfileFormData, UserProfile } from '~components/Users/types'
+import { STORAGE_KEYS } from '~utils/constants'
+import { ImageUploadResponse } from '~components/Images/queries'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -103,30 +109,21 @@ export const tools = {
     ),
   update: ({ id, ...data }: UpdateToolParams) => apiRequest(api.put<ApiResponse<Tool>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
-  getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/rates`)),
+  getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/ratings`)),
 }
 
 // Bookings endpoints
 export const bookings = {
-  getRequests: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests')),
-  getPetitions: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/petitions')),
+  getIncoming: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests/incoming')),
+  getOutgoing: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests/outgoing')),
   getBooking: (id) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
-  cancel: (id: BookingActionsParams) =>
-    apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/requests/${id}/cancel`)),
-  accept: (id: BookingActionsParams) =>
-    apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/accept`)),
-  deny: (id: BookingActionsParams) =>
-    apiRequest(api.post<ApiResponse<BookingActionsReturnType>>(`/bookings/petitions/${id}/deny`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
-  return: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/return`)),
-  picked: (id: string) => apiRequest(api.post<ApiResponse<Booking>>(`/bookings/${id}/picked`)),
-  getRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/rates')),
-  getSubmittedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/submitted')),
-  getReceivedRatings: () => apiRequest(api.get<ApiResponse<Rating[]>>('/bookings/rates/received')),
-  getBookingRatings: (id: string) => apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/rate`)),
+  update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),
+  getPendingRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/ratings/pending')),
+  getBookingRatings: (id: string) =>
+    apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/ratings`)),
   submitRating: (data: RateSubmission) =>
-    apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/rate`, data)),
-  getPendingActions: () => apiRequest(api.get<ApiResponse<BookingPendings>>('/bookings/pendings')),
+    apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/ratings`, data)),
 }
 
 // Users endpoints
@@ -136,8 +133,8 @@ export const users = {
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
   getList: (page: number = 0) =>
     apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
-  getUserRatings: (userId: string) => 
-    apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/rates`)),
+  getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
+  getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
 }
 
 // images

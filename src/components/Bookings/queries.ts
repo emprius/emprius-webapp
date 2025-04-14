@@ -46,6 +46,10 @@ export interface Booking {
   isNomadic: boolean
 }
 
+export interface UpdateBookingStatus {
+  status: 'ACCEPTED' | 'REJECTED' | 'CANCELLED' | 'RETURNED' | 'PICKED'
+}
+
 export const useBookingDetail = ({
   id,
   options,
@@ -62,14 +66,14 @@ export const useBookingDetail = ({
 export const useBookingRequests = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: BookingKeys.requests,
-    queryFn: () => api.bookings.getRequests(),
+    queryFn: () => api.bookings.getIncoming(),
     ...options,
   })
 
 export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
   useQuery({
     queryKey: BookingKeys.petitions,
-    queryFn: () => api.bookings.getPetitions(),
+    queryFn: () => api.bookings.getOutgoing(),
     ...options,
   })
 
@@ -84,7 +88,7 @@ type BookingActionOptions = Omit<
 export const useAcceptBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation({
-    mutationFn: (bookingId: string) => api.bookings.accept(bookingId),
+    mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'ACCEPTED' }),
     onSuccess: (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
     },
@@ -96,7 +100,7 @@ export const useAcceptBooking = (booking: Booking, options?: BookingActionOption
 export const useDenyBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
-    mutationFn: (bookingId: string) => api.bookings.deny(bookingId),
+    mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'REJECTED' }),
     onSuccess: (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
     },
@@ -107,8 +111,8 @@ export const useDenyBooking = (booking: Booking, options?: BookingActionOptions)
 // Query to cancel a booking request
 export const useCancelBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
-  return useMutation<void, Error, string>({
-    mutationFn: (bookingId: string) => api.bookings.cancel(bookingId),
+  return useMutation<Booking, Error, string>({
+    mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'CANCELLED' }),
     onSuccess: (_, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
     },
@@ -119,7 +123,7 @@ export const useCancelBooking = (booking: Booking, options?: BookingActionOption
 export const useReturnBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
-    mutationFn: (bookingId: string) => api.bookings.return(bookingId),
+    mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'RETURNED' }),
     onSuccess: async (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
       await client.invalidateQueries({ queryKey: RatingsKeys.pending })
@@ -132,7 +136,7 @@ export const useReturnBooking = (booking: Booking, options?: BookingActionOption
 export const usePickedBooking = (booking: Booking, options?: BookingActionOptions) => {
   const client = useQueryClient()
   return useMutation<Booking, Error, string>({
-    mutationFn: (bookingId: string) => api.bookings.picked(bookingId),
+    mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'PICKED' }),
     onSuccess: async (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
       await client.invalidateQueries({ queryKey: PendingActionsKeys })

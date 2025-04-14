@@ -52,9 +52,11 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       if (matchPath(ROUTES.BOOKINGS.DETAIL, pathname)) {
         return `${t('pages.bookings.detail')} | ${baseTitle}`
       }
-      if (matchPath(ROUTES.USERS.DETAIL, pathname) || 
-          matchPath(ROUTES.USERS.TABS.TOOLS, pathname) || 
-          matchPath(ROUTES.USERS.TABS.RATINGS, pathname)) {
+      if (
+        matchPath(ROUTES.USERS.DETAIL, pathname) ||
+        matchPath(ROUTES.USERS.TABS.TOOLS, pathname) ||
+        matchPath(ROUTES.USERS.TABS.RATINGS, pathname)
+      ) {
         return `${t('pages.users.detail')} | ${baseTitle}`
       }
       if (pathname.match(/^\/tools\/\d+\/edit$/)) {
