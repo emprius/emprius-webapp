@@ -29,7 +29,11 @@ export type RegisterFormData = {
   location: LatLng
 } & Omit<IRegisterParams, 'location'>
 
-export const Register = () => {
+interface RegisterProps {
+  defaultInvitationToken?: string
+}
+
+export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const toast = useToast()
@@ -45,14 +49,15 @@ export const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     mode: 'onChange',
+    defaultValues: {
+      invitationToken: defaultInvitationToken
+    }
   })
 
   const password = watch('password')
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
-    // Remove confirmPassword before sending to backend
     await mutateAsync(data)
-      // todo(konv1): use route constants
       .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         console.error('Registration failed:', error)
