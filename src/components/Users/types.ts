@@ -10,6 +10,7 @@ export interface UserProfile {
   active: boolean
   tokens: number
   community?: string
+  invites?: string[]
   // notExists
   // ratingCount: number
   // createdAt: string

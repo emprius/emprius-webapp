@@ -135,6 +135,7 @@ export const users = {
     apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
+  getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/codes')),
 }
 
 // images
