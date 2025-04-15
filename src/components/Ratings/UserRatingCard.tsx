@@ -22,8 +22,8 @@ interface UnifiedRatingCardProps {
 export const UserRatingCard = ({ rating, actualUser }: UnifiedRatingCardProps) => {
   const { t } = useTranslation()
   const { data: booking, isLoading: isLoadingBooking } = useBookingDetail({ id: rating.bookingId })
-  const { data: tool, isLoading: isLoadingTool } = useTool(booking?.toolId, {
-    enabled: !!booking?.toolId,
+  const { data: tool, isLoading: isLoadingTool } = useTool(rating?.toolId, {
+    enabled: !!rating?.toolId,
   })
 
   const isOwner = rating.owner.id === actualUser
