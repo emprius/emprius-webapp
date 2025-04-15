@@ -27,7 +27,11 @@ interface RegisterFormData extends IRegisterParams {
   confirmPassword: string
 }
 
-export const Register = () => {
+interface RegisterProps {
+  defaultInvitationToken?: string
+}
+
+export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const toast = useToast()
@@ -43,6 +47,9 @@ export const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     mode: 'onChange',
+    defaultValues: {
+      invitationToken: defaultInvitationToken
+    }
   })
 
   const password = watch('password')
@@ -51,7 +58,6 @@ export const Register = () => {
     // Remove confirmPassword before sending to backend
     const { confirmPassword, ...registerData } = data
     await mutateAsync(registerData)
-      // todo(konv1): use route constants
       .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
         console.error('Registration failed:', error)
