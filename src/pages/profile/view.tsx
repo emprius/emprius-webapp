@@ -1,10 +1,11 @@
-import { Box, Button, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiLogOut } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { MainContainer } from '~components/Layout/LayoutComponents'
 import { UserProfile } from '~components/Users/Profile'
+import InviteCodes from '~components/Users/InviteCodes'
 
 export const View = () => {
   const { t } = useTranslation()
@@ -14,11 +15,12 @@ export const View = () => {
     <MainContainer>
       <Flex gap={2} align='center' direction={'column'}>
         <UserProfile {...user} />
-        <Box pb={4}>
+        <VStack pb={4} w={'full'}>
+          {user?.invites && <InviteCodes codes={user?.invites} />}
           <Button leftIcon={<FiLogOut />} onClick={logout} colorScheme='red'>
             {t('nav.logout')}
           </Button>
-        </Box>
+        </VStack>
       </Flex>
     </MainContainer>
   )
