@@ -120,8 +120,7 @@ export const bookings = {
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),
   getPendingRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/ratings/pending')),
-  getBookingRatings: (id: string) =>
-    apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/ratings`)),
+  getBookingRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating>>(`/bookings/${id}/ratings`)),
   submitRating: (data: RateSubmission) =>
     apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/ratings`, data)),
 }

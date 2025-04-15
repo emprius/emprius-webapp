@@ -249,43 +249,14 @@ const BookingDateInfo = ({ booking }: { booking: Booking }) => {
 // Component to display booking ratings
 const BookingRatings = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
-  const { user } = useAuth()
 
   // Fetch ratings for this specific booking
-  const { data: bookingRatings, isLoading } = useGetBookingRatings(booking.id)
+  const { data, isLoading } = useGetBookingRatings(booking.id)
 
   // If the booking has no ratings and is not in RETURNED status, don't show anything
-  if (booking.bookingStatus !== BookingStatus.RETURNED && (!bookingRatings || bookingRatings.length === 0)) {
+  if (booking.bookingStatus !== BookingStatus.RETURNED && booking.bookingStatus !== BookingStatus.PICKED) {
     return null
   }
-
-  // Convert BookingRating[] to UnifiedRating format for RatingComments component
-  const createUnifiedRating = useMemo(() => {
-    if (!bookingRatings || bookingRatings.length === 0) return null
-
-    // Group ratings by user role (owner/requester)
-    const ownerRating = bookingRatings.find((r) => r.fromUserId === booking.toUserId)
-    const requesterRating = bookingRatings.find((r) => r.fromUserId === booking.fromUserId)
-
-    return {
-      id: booking.id,
-      bookingId: booking.id,
-      owner: {
-        id: booking.toUserId,
-        rating: ownerRating?.rating || null,
-        ratingComment: ownerRating?.comment || null,
-        ratedAt: ownerRating?.ratedAt || null,
-        images: ownerRating?.images || null,
-      },
-      requester: {
-        id: booking.fromUserId,
-        rating: requesterRating?.rating || null,
-        ratingComment: requesterRating?.comment || null,
-        ratedAt: requesterRating?.ratedAt || null,
-        images: requesterRating?.images || null,
-      },
-    } as UnifiedRating
-  }, [bookingRatings, booking])
 
   return (
     <Card variant='bookingDetail'>
@@ -296,31 +267,13 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
         </HStack>
       </CardHeader>
       <CardBody>
-        {isLoading ? (
+        {isLoading && (
           <Flex justify='center' py={4}>
             <Spinner />
           </Flex>
-        ) : createUnifiedRating ? (
-          <RatingComments {...createUnifiedRating} />
-        ) : booking.ratings && booking.ratings.length > 0 ? (
-          // Fallback to use ratings directly from booking object if available
-          <Box>
-            {booking.ratings.map((rating, index) => (
-              <Box key={rating.id || index} mb={2}>
-                <HStack>
-                  <Text fontWeight='bold'>
-                    {rating.fromUserId === user.id ? t('rating.you_lent') : t('rating.you_got')}
-                  </Text>
-                </HStack>
-                <Box pl={4}>
-                  <Text>{rating.ratingComment}</Text>
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        ) : (
-          <Text color='gray.500'>{t('rating.no_ratings_history_desc')}</Text>
         )}
+        {!isLoading && data && <RatingComments {...data} />}
+        {!isLoading && !data && <Text color='gray.500'>{t('rating.no_ratings_history_desc')}</Text>}
       </CardBody>
     </Card>
   )

@@ -10,17 +10,6 @@ export interface Rating {
   ratedAt: string
 }
 
-export interface BookingRating {
-  id: string
-  bookingId: string
-  fromUserId: string
-  toUserId: string
-  rating: number
-  comment: string
-  images?: string[]
-  ratedAt: number
-}
-
 export interface RatingParty {
   id: string
   rating: number | null
@@ -32,6 +21,7 @@ export interface RatingParty {
 export interface UnifiedRating {
   id: string
   bookingId: string
+  toolId: string
   owner: RatingParty
   requester: RatingParty
 }
