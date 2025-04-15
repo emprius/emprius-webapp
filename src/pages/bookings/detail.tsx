@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useLocation, useOutletContext, useParams } from 'react-router-dom'
 import { BookingDetailsPage } from '~components/Bookings/Details'
-import { Booking, useBookingDetail } from '~components/Bookings/queries'
+import { useBookingDetail } from '~components/Bookings/queries'
 import { useTool } from '~components/Tools/queries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Tool } from '~components/Tools/types'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 import { useAuth } from '~components/Auth/AuthContext'
+import { Booking } from '~components/Bookings/types'
 
 export const Detail = () => {
   const { id } = useParams<{ id: string }>()

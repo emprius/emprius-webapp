@@ -10,7 +10,6 @@ import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { PendingRatingCard } from '~components/Ratings/PendingRatingCard'
 import { UserRatingCard } from '~components/Ratings/UserRatingCard'
-import { Booking } from '~components/Bookings/queries'
 import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
@@ -18,6 +17,7 @@ import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { Stack } from '@chakra-ui/react'
 import { useAuth } from '~components/Auth/AuthContext'
 import { SuccessModal } from '~components/Ratings/Modal'
+import { Booking } from '~components/Bookings/types'
 
 const PendingRatings = () => {
   const { t } = useTranslation()

@@ -35,7 +35,6 @@ import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
 import { icons } from '~theme/icons'
-import { Booking, BookingStatus } from './queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Earned } from '~components/Bookings/Card'
 import { RatingComments } from '~components/Ratings/RatingComments'
@@ -43,6 +42,7 @@ import { useGetBookingRatings } from '~components/Ratings/queries'
 import { UnifiedRating } from '~components/Ratings/types'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
+import { Booking, BookingStatus } from '~components/Bookings/types'
 
 interface BookingDetailsProps {
   booking: Booking

@@ -20,7 +20,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { SetRatingStars } from '~components/Ratings/SetRatingStars'
 import { useSubmitRating } from './queries'
-import { Booking } from '~components/Bookings/queries'
 import { useTool } from '~components/Tools/queries'
 import { ServerImage } from '~components/Images/ServerImage'
 import { FaArrowRight, FaRegCalendarAlt } from 'react-icons/fa'
@@ -36,6 +35,7 @@ import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { useAuth } from '~components/Auth/AuthContext'
 import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
+import { Booking } from '~components/Bookings/types'
 
 interface RatingFormProps {
   booking: Booking
