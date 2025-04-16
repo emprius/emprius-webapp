@@ -251,12 +251,14 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
   const { t } = useTranslation()
 
   // Fetch ratings for this specific booking
-  const { data, isLoading } = useGetBookingRatings(booking.id)
+  const { data, isLoading, isFetched } = useGetBookingRatings(booking.id)
 
   // If the booking has no ratings and is not in RETURNED status, don't show anything
   if (booking.bookingStatus !== BookingStatus.RETURNED && booking.bookingStatus !== BookingStatus.PICKED) {
     return null
   }
+
+  const noRatings = isFetched && !data.owner?.rating && !data.requester?.rating
 
   return (
     <Card variant='bookingDetail'>
@@ -273,7 +275,7 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
           </Flex>
         )}
         {!isLoading && data && <RatingComments {...data} />}
-        {!isLoading && !data && <Text color='gray.500'>{t('rating.no_ratings_history_desc')}</Text>}
+        {((!isLoading && !data) || noRatings) && <Text color='gray.500'>{t('rating.no_ratings_history_desc')}</Text>}
       </CardBody>
     </Card>
   )
@@ -346,7 +348,9 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
             <BookingComments booking={booking} />
 
             {/* Add Ratings section */}
-            {booking.bookingStatus === BookingStatus.RETURNED && <BookingRatings booking={booking} />}
+            {(booking.bookingStatus === BookingStatus.RETURNED || booking.bookingStatus === BookingStatus.PICKED) && (
+              <BookingRatings booking={booking} />
+            )}
           </Stack>
 
           {/* Right Column */}

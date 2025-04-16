@@ -190,7 +190,7 @@ const RateUserBookingActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const { ratingModalDisclosure } = useBookingActions()
 
-  if (!booking?.ratings) {
+  if (booking?.bookingStatus !== BookingStatus.RETURNED && booking.bookingStatus !== BookingStatus.PICKED) {
     return null
   }
 
