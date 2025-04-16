@@ -258,7 +258,7 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
     return null
   }
 
-  const noRatings = isFetched && !data.owner?.rating && !data.requester?.rating
+  const noRatings = isFetched && !data?.owner?.rating && !data?.requester?.rating
 
   return (
     <Card variant='bookingDetail'>
