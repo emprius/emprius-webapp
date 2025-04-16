@@ -11,6 +11,8 @@ import React from 'react'
 import { useToolRatings } from '~components/Tools/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
+import { icons } from '~theme/icons'
 
 interface ToolRatingsProps {
   toolId: string
@@ -31,7 +33,16 @@ export const ToolRatings = ({ toolId }: ToolRatingsProps) => {
   }
 
   if (!ratings || ratings.length === 0) {
-    return null
+    return (
+      <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
+        <ElementNotFound
+          icon={icons.ratings}
+          title={t('rating.no_ratings_yet', { defaultValue: 'No ratings yet' })}
+          desc={t('rating.no_ratings_history_desc')}
+          py={4}
+        />
+      </Box>
+    )
   }
 
   return (

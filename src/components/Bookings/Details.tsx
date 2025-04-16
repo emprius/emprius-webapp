@@ -43,6 +43,7 @@ import { UnifiedRating } from '~components/Ratings/types'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { Booking, BookingStatus } from '~components/Bookings/types'
+import { ElementNotFound } from '~components/Layout/ElementNotFound'
 
 interface BookingDetailsProps {
   booking: Booking
@@ -275,7 +276,13 @@ const BookingRatings = ({ booking }: { booking: Booking }) => {
           </Flex>
         )}
         {!isLoading && data && <RatingComments {...data} />}
-        {((!isLoading && !data) || noRatings) && <Text color='gray.500'>{t('rating.no_ratings_history_desc')}</Text>}
+        {!isLoading && noRatings && (
+          <ElementNotFound
+            title={t('rating.no_ratings_yet', { defaultValue: 'No ratings yet' })}
+            desc={t('rating.no_ratings_history_desc')}
+            py={4}
+          />
+        )}
       </CardBody>
     </Card>
   )
