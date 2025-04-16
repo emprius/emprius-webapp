@@ -3,8 +3,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiCheck, FiThumbsDown, FiThumbsUp, FiXCircle } from 'react-icons/fi'
 import {
-  Booking,
-  BookingStatus,
   useAcceptBooking,
   useCancelBooking,
   useDenyBooking,
@@ -15,6 +13,7 @@ import { PickedAlertDialog, RatingModal, ReturnAlertDialog } from '~components/R
 import { icons } from '~theme/icons'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useBookingActions } from '~components/Bookings/ActionsProvider'
+import { Booking, BookingStatus } from '~components/Bookings/types'
 
 interface ActionsProps {
   booking: Booking
@@ -191,7 +190,7 @@ const RateUserBookingActions = ({ booking }: ActionsProps) => {
   const { t } = useTranslation()
   const { ratingModalDisclosure } = useBookingActions()
 
-  if (!booking?.ratings) {
+  if (booking?.bookingStatus !== BookingStatus.RETURNED && booking.bookingStatus !== BookingStatus.PICKED) {
     return null
   }
 

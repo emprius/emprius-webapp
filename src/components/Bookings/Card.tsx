@@ -28,11 +28,11 @@ import { ROUTES } from '~src/router/routes'
 import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingComment } from './Details'
-import { Booking, BookingStatus } from './queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
+import { Booking, BookingStatus } from '~components/Bookings/types'
 
 export type BookingCardType = 'request' | 'petition'
 

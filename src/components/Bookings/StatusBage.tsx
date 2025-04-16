@@ -1,6 +1,6 @@
-import { BookingStatus } from '~components/Bookings/queries'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@chakra-ui/react'
+import { BookingStatus } from '~components/Bookings/types'
 
 interface StatusBadgeProps {
   status: BookingStatus

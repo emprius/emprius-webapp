@@ -1,12 +1,12 @@
 import { Flex, HStack, Icon, Stack, StackProps, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FaArrowRight } from 'react-icons/fa'
-import { Booking, BookingStatus } from '~components/Bookings/queries'
 import { DateRangeTotal } from '~components/Layout/Dates'
 import { lighterText, lightText } from '~theme/common'
 import { addDayToDate } from '~utils/dates'
 import { useMemo } from 'react'
 import { icons } from '~theme/icons'
+import { Booking, BookingStatus } from '~components/Bookings/types'
 
 interface BookingDatesProps {
   booking: Booking

@@ -2,7 +2,7 @@ import { Icon } from '@chakra-ui/react'
 import { UseQueryResult } from '@tanstack/react-query'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Booking, useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
+import { useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter } from '~components/Layout/BadgeIcon'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
@@ -14,6 +14,7 @@ import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BookingCard, BookingCardType } from './Card'
+import { Booking } from '~components/Bookings/types'
 
 export const UserBookings = () => {
   const { t } = useTranslation()

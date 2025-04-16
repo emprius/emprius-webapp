@@ -1,21 +1,15 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ILoginParams, IRegisterParams, LoginResponse } from '~components/Auth/queries'
-import {
-  Booking,
-  BookingActionsParams,
-  BookingActionsReturnType,
-  CreateBookingData,
-  UpdateBookingStatus,
-} from '~components/Bookings/queries'
 import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
-import type { BookingRating, RateSubmission, Rating, UnifiedRating } from '~components/Ratings/types'
+import type { RateSubmission, UnifiedRating } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
 import { createToolParams, UpdateToolParams } from '~components/Tools/queries'
 import { Tool, ToolsListResponse } from '~components/Tools/types'
 import { EditProfileFormData, UserProfile } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
+import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -120,8 +114,7 @@ export const bookings = {
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),
   getPendingRatings: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/ratings/pending')),
-  getBookingRatings: (id: string) =>
-    apiRequest(api.get<ApiResponse<{ ratings: BookingRating[] }>>(`/bookings/${id}/ratings`)),
+  getBookingRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating>>(`/bookings/${id}/ratings`)),
   submitRating: (data: RateSubmission) =>
     apiRequest(api.post<ApiResponse<void>>(`/bookings/${data.bookingId}/ratings`, data)),
 }

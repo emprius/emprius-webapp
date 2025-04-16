@@ -1,8 +1,8 @@
 import { Card, CardBody } from '@chakra-ui/react'
 import React from 'react'
 import { RatingsForm } from '~components/Ratings/Form'
-import { Booking } from '~components/Bookings/queries'
 import { useMutationState } from '@tanstack/react-query'
+import { Booking } from '~components/Bookings/types'
 
 export const PendingRatingCard = (booking: Booking) => {
   // Check last mutation for this rating to see if there was an error

@@ -7,47 +7,17 @@ import {
   UseQueryOptions,
 } from '@tanstack/react-query'
 import api from '~src/services/api'
-import { Rating } from '~components/Ratings/types'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { ToolsKeys } from '~components/Tools/queries'
 import { RatingsKeys } from '~components/Ratings/queries'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
+import { Booking, CreateBookingData } from '~components/Bookings/types'
 
 export const BookingKeys = {
   bookingsLists: ['bookings'] as const,
   requests: ['bookings', 'requests'] as const,
   petitions: ['bookings', 'petitions'] as const,
   detail: (id): QueryKey => ['booking', id] as const,
-}
-
-export enum BookingStatus {
-  PENDING = 'PENDING', // Requested by the user awaiting approval
-  ACCEPTED = 'ACCEPTED', // Approved by the owner
-  CANCELLED = 'CANCELLED', // Cancelled by the requester
-  REJECTED = 'REJECTED', // Denied by the owner
-  PICKED = 'PICKED', // Tool has been picked up by the requester
-  RETURNED = 'RETURNED', // Completed by both parties
-}
-
-export interface Booking {
-  id: string
-  toolId: string
-  fromUserId: string
-  toUserId: string
-  startDate: number
-  endDate: number
-  contact?: string
-  comments?: string
-  bookingStatus: BookingStatus
-  createdAt: string
-  updatedAt: string
-  ratings: Rating[]
-  isRated: boolean
-  isNomadic: boolean
-}
-
-export interface UpdateBookingStatus {
-  status: 'ACCEPTED' | 'REJECTED' | 'CANCELLED' | 'RETURNED' | 'PICKED'
 }
 
 export const useBookingDetail = ({
@@ -143,14 +113,6 @@ export const usePickedBooking = (booking: Booking, options?: BookingActionOption
     },
     ...options,
   })
-}
-
-export interface CreateBookingData {
-  toolId: string
-  startDate: number
-  endDate: number
-  contact?: string
-  comments?: string
 }
 
 export const useCreateBooking = () =>

@@ -21,11 +21,11 @@ import {
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { RatingsForm } from './Form'
-import { Booking } from '~components/Bookings/queries'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { BiSolidParty } from 'react-icons/bi'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
+import { Booking } from '~components/Bookings/types'
 
 interface RatingModalProps {
   isOpen: boolean

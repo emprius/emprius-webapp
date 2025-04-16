@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api from '../../services/api'
-import { BookingRating, RatingFormData } from './types'
+import { RatingFormData, type UnifiedRating } from './types'
 import { BookingKeys } from '~components/Bookings/queries'
 import { useUploadImages } from '~components/Images/queries'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -26,14 +26,11 @@ export const useGetPendingRatings = () => {
 // Hook to get ratings for a specific booking
 export const useGetBookingRatings = (
   bookingId: string,
-  options?: Omit<UseQueryOptions<BookingRating[]>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<UnifiedRating>, 'queryKey' | 'queryFn'>
 ) => {
   return useQuery({
     queryKey: RatingsKeys.bookingRatings(bookingId),
-    queryFn: async () => {
-      const response = await api.bookings.getBookingRatings(bookingId)
-      return response.ratings
-    },
+    queryFn: async () => await api.bookings.getBookingRatings(bookingId),
     enabled: !!bookingId,
     ...options,
   })
