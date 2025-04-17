@@ -1,7 +1,7 @@
 import { Badge, BadgeProps, Stack, StackProps, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolDTO } from '~components/Tools/types'
 import { lightText } from '~theme/common'
 
 type ToolBadgesProps = {

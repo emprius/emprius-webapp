@@ -1,10 +1,11 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { EmpriusLocation } from '~components/Layout/Map/types'
 import api, { tools } from '~src/services/api'
-import { Tool, ToolsListResponse } from './types'
+import { CreateToolParams, Tool, ToolDTO, ToolLocated, ToolsListResponse, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { UnifiedRating } from '~components/Ratings/types'
+import { toEmpriusLocation, toLatLng } from '~src/utils'
+import { UserProfile } from '~components/Users/types'
 
 export const ToolsKeys = {
   tools: ['tools'],
@@ -13,28 +14,18 @@ export const ToolsKeys = {
   toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
 }
 
-export interface createToolParams {
-  title: string
-  description?: string
-  images: string[]
-  toolCategory?: number // uint
-  location: EmpriusLocation
-  estimatedValue?: number // uint64
-  height?: number // uint64
-  weight?: number // uint64
-  isAvailable?: boolean
-  isNomadic?: boolean
-}
-
-export interface UpdateToolParams extends createToolParams {
-  id: string
-}
-
-export const useTool = (id: string, options?: Omit<UseQueryOptions<Tool, Error>, 'queryKey' | 'queryFn'>) => {
+export const useTool = (
+  id: string,
+  options?: Omit<UseQueryOptions<ToolDTO, Error, ToolLocated>, 'queryKey' | 'queryFn' | 'select'>
+) => {
   const { t } = useTranslation()
   const query = useQuery({
     queryKey: ToolsKeys.tool(id),
     queryFn: () => api.tools.getById(id),
+    select: (data): ToolLocated => ({
+      ...data,
+      location: toLatLng(data?.location),
+    }),
     enabled: !!id,
     ...options,
   })
@@ -86,10 +77,10 @@ export const useDeleteTool = () => {
   })
 }
 
-export const useCreateTool = (options?: Omit<UseMutationOptions<Tool, Error, createToolParams>, 'mutationFn'>) => {
+export const useCreateTool = (options?: Omit<UseMutationOptions<ToolDTO, Error, CreateToolParams>, 'mutationFn'>) => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: tools.create,
+    mutationFn: (tool) => tools.create({ ...tool, location: toEmpriusLocation(tool.location) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
     },
@@ -98,11 +89,11 @@ export const useCreateTool = (options?: Omit<UseMutationOptions<Tool, Error, cre
 }
 
 export const useUpdateTool = (
-  options?: Omit<UseMutationOptions<Tool, Error, Partial<UpdateToolParams>>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<ToolDTO, Error, Partial<UpdateToolParams>>, 'mutationFn'>
 ) => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: tools.update,
+    mutationFn: (tool) => tools.update({ ...tool, location: toEmpriusLocation(tool.location) }),
     onSuccess: (data, params) => {
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })

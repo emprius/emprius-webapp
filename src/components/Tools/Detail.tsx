@@ -26,7 +26,7 @@ import { MapWithMarker } from '~components/Layout/Map/Map'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolLocated } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
@@ -36,7 +36,7 @@ import { BookingFormData } from '~components/Bookings/Form'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 
-export const ToolDetail = ({ tool }: { tool: Tool }) => {
+export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
   const { categories, transports } = useInfoContext()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -157,7 +157,7 @@ export const ToolDetail = ({ tool }: { tool: Tool }) => {
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
                         <MapWithMarker
-                          {...tool.location}
+                          latLng={tool.location}
                           markerProps={{ showExactLocation: user?.id === tool.userId }}
                         />
                       </Box>

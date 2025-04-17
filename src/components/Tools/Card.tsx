@@ -5,18 +5,17 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolDTO } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { lightText } from '~theme/common'
 import { ToolImageAvailability } from './shared/ToolImage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 
 interface ToolCardProps {
-  tool: Tool
+  tool: ToolDTO
 }
 
 export const ToolCard = ({ tool }: ToolCardProps) => {
-  const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { user } = useAuth()

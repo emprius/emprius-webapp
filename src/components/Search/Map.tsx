@@ -1,7 +1,7 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster'
 import '@changey/react-leaflet-markercluster/dist/styles.min.css'
-import L, { LatLngExpression } from 'leaflet'
+import L, { LatLng, LatLngExpression } from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
@@ -12,12 +12,11 @@ import { useTranslation } from 'react-i18next'
 import { IoMdHome } from 'react-icons/io'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { EmpriusLocation } from '~components/Layout/Map/types'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolLocated } from '~components/Tools/types'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
 import { Avatar } from '~components/Images/Avatar'
 import { EmpriusCircle, EmpriusMarker } from '~components/Layout/Map/Map'
-import { toLatLng } from '~src/utils'
 
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
@@ -30,13 +29,13 @@ const HomeIcon = L.divIcon({
 })
 
 export interface SearchMapProps {
-  tools: Tool[]
-  center: EmpriusLocation
+  tools: ToolLocated[]
+  center: LatLng
 }
 
 export const Map = ({ tools, center }: SearchMapProps) => {
   const { user } = useAuth()
-  const latlngCenter = center ? toLatLng(center) : MAP_DEFAULTS.CENTER
+  const latlngCenter = center ? center : MAP_DEFAULTS.CENTER
   const { t } = useTranslation()
 
   const groupedTools = useMemo(
@@ -44,7 +43,7 @@ export const Map = ({ tools, center }: SearchMapProps) => {
       tools.reduce(
         (acc, tool) => {
           if (!tool.location) return acc
-          const loc = toLatLng(tool.location)
+          const loc = tool.location
           const key = `${loc.lat}-${loc.lng}`
           if (!acc[key]) acc[key] = []
           acc[key].push(tool)

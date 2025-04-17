@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImages } from '~components/Images/queries'
 import { ROUTES } from '~src/router/routes'
-import { ToolForm } from './Form'
-import { UpdateToolParams, useUpdateTool } from './queries'
-import { Tool, ToolFormData } from './types'
+import { ToolForm, ToolFormData } from './Form'
+import { useUpdateTool } from './queries'
+import { Tool, UpdateToolParams } from './types'
 
 interface EditToolFormProps {
   initialData: Tool

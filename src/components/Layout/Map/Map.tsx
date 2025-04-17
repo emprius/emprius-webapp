@@ -1,10 +1,8 @@
-import L, { LatLngExpression } from 'leaflet'
+import L, { LatLng, LatLngExpression } from 'leaflet'
 import { Circle, MapContainer, MapContainerProps, Marker, TileLayer } from 'react-leaflet'
 import React, { PropsWithChildren, useMemo } from 'react'
 import { MAP_DEFAULTS } from '~utils/constants'
-import { EmpriusLocation } from '~components/Layout/Map/types'
 import { colors } from '~theme/colors'
-import { toLatLng } from '~src/utils'
 
 type EmpriusMarkerProps = {
   position: LatLngExpression
@@ -13,15 +11,16 @@ type EmpriusMarkerProps = {
   // markerProps?: Omit<React.ComponentProps<typeof Marker>, 'position'>
 } & PropsWithChildren
 
-type MapMarkerProps = { showMarker?: boolean; markerProps?: Omit<EmpriusMarkerProps, 'position'> } & EmpriusLocation &
-  MapContainerProps
+type MapMarkerProps = {
+  showMarker?: boolean
+  markerProps?: Omit<EmpriusMarkerProps, 'position'>
+  latLng: LatLng
+} & MapContainerProps
 
-export const MapWithMarker = ({ latitude, longitude, showMarker = true, markerProps, ...rest }: MapMarkerProps) => {
-  const latlng = useMemo(() => toLatLng({ latitude, longitude }), [latitude, longitude])
-
+export const MapWithMarker = ({ latLng, showMarker = true, markerProps, ...rest }: MapMarkerProps) => {
   return (
     <MapContainer
-      center={latlng}
+      center={latLng}
       zoom={MAP_DEFAULTS.ZOOM}
       scrollWheelZoom={true}
       style={{ height: '100%', width: '100%' }}
@@ -30,7 +29,7 @@ export const MapWithMarker = ({ latitude, longitude, showMarker = true, markerPr
       {...rest}
     >
       <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
-      {showMarker && <EmpriusMarker position={latlng} {...markerProps} />}
+      {showMarker && <EmpriusMarker position={latLng} {...markerProps} />}
     </MapContainer>
   )
 }

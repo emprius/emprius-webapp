@@ -69,7 +69,7 @@ export const UserProfile = (user: UserProfileType) => {
         </Stack>
         {user.location && (
           <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
-            <MapWithMarker {...user.location} markerProps={{ showExactLocation: isCurrentUser }} />
+            <MapWithMarker latLng={user.location} markerProps={{ showExactLocation: isCurrentUser }} />
           </Box>
         )}
       </Stack>

@@ -5,7 +5,7 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import ErrorComponent from '~components/Layout/ErrorComponent'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ToolCard } from '~components/Tools/Card'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolDTO } from '~components/Tools/types'
 import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 

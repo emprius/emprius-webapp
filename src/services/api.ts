@@ -4,9 +4,8 @@ import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
 import type { RateSubmission, UnifiedRating } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
-import { createToolParams, UpdateToolParams } from '~components/Tools/queries'
-import { Tool, ToolsListResponse } from '~components/Tools/types'
-import { EditProfileFormData, UserProfile } from '~components/Users/types'
+import { CreateToolDTO, ToolDTO, ToolsListResponse, UpdateToolParams } from '~components/Tools/types'
+import { EditProfileFormData, EditProfileFormDataDTO, GetUsersDTO, UserProfileDTO } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
@@ -85,7 +84,7 @@ async function apiRequest<T>(promise: Promise<AxiosResponse<ApiResponse<T>>>): P
 export const auth = {
   login: (data: ILoginParams) => apiRequest(api.post<ApiResponse<LoginResponse>>('/login', data)),
   register: (data: IRegisterParams) => apiRequest(api.post<ApiResponse<LoginResponse>>('/register', data)),
-  getCurrentUser: () => apiRequest(api.get<ApiResponse<UserProfile>>('/profile')),
+  getCurrentUser: () => apiRequest(api.get<ApiResponse<UserProfileDTO>>('/profile')),
 }
 
 // Tools endpoints
@@ -94,14 +93,14 @@ export const tools = {
   getUserToolsById: (userId: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/tools/user/${userId}`)),
   searchTools: (params: SearchParams) =>
     apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
-  getById: (id: string) => apiRequest(api.get<ApiResponse<Tool>>(`/tools/${id}`)),
-  create: (data: createToolParams) =>
+  getById: (id: string) => apiRequest(api.get<ApiResponse<ToolDTO>>(`/tools/${id}`)),
+  create: (data: CreateToolDTO) =>
     apiRequest(
-      api.post<ApiResponse<Tool>>('/tools', {
+      api.post<ApiResponse<ToolDTO>>('/tools', {
         ...data,
       })
     ),
-  update: ({ id, ...data }: UpdateToolParams) => apiRequest(api.put<ApiResponse<Tool>>(`/tools/${id}`, data)),
+  update: ({ id, ...data }: Partial<CreateToolDTO>) => apiRequest(api.put<ApiResponse<ToolDTO>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
   getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/ratings`)),
 }
@@ -121,11 +120,10 @@ export const bookings = {
 
 // Users endpoints
 export const users = {
-  updateProfile: (data: Partial<EditProfileFormData>) =>
-    apiRequest(api.post<ApiResponse<UserProfile>>('/profile', data)),
-  getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfile>>(`/users/${userId}`)),
-  getList: (page: number = 0) =>
-    apiRequest(api.get<ApiResponse<{ users: UserProfile[] }>>('/users', { params: { page } })),
+  updateProfile: (data: Partial<EditProfileFormDataDTO>) =>
+    apiRequest(api.post<ApiResponse<UserProfileDTO>>('/profile', data)),
+  getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfileDTO>>(`/users/${userId}`)),
+  getList: (page: number = 0) => apiRequest(api.get<ApiResponse<GetUsersDTO>>('/users', { params: { page } })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
 }

@@ -1,12 +1,13 @@
 import { Image } from '~components/Images/ServerImage'
 import { EmpriusLocation } from '~components/Layout/Map/types'
+import { LatLng } from 'leaflet'
 
 export interface DateRange {
   from: number
   to: number
 }
 
-export interface Tool {
+export type Tool = {
   userId: string
   id: number
   title: string
@@ -15,7 +16,6 @@ export interface Tool {
   isAvailable?: boolean
   images: Image[]
   toolCategory?: number // Category ID
-  location?: EmpriusLocation
   rating: number
   estimatedValue?: number
   height?: number
@@ -25,20 +25,36 @@ export interface Tool {
   actualUserId?: string
 }
 
-export interface ToolsListResponse {
-  tools: Tool[]
+export type ToolLocated = {
+  location?: LatLng
+} & Tool
+
+export type ToolDTO = Omit<Tool, 'location'> & {
+  location?: EmpriusLocation
 }
 
-export interface ToolFormData {
-  id?: number
+export interface ToolsListResponse {
+  tools: ToolDTO[]
+}
+
+export type CreateToolParams = {
   title: string
-  description: string
-  isAvailable: boolean
-  images: FileList
-  toolCategory?: number
-  location?: EmpriusLocation
-  estimatedValue: number
-  height: number
-  weight: number
+  description?: string
+  isAvailable?: boolean
+  images: string[]
+  toolCategory?: number // uint
+  location: LatLng
+  estimatedValue?: number // uint64
+  height?: number // uint64
+  weight?: number // uint64
   isNomadic?: boolean
+}
+
+export type UpdateToolParams = CreateToolParams & {
+  id: string
+}
+
+export type CreateToolDTO = Omit<CreateToolParams, 'location'> & {
+  id?: string
+  location?: EmpriusLocation
 }

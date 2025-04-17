@@ -6,10 +6,11 @@ import { useTool } from '~components/Tools/queries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { useTranslation } from 'react-i18next'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolDTO } from '~components/Tools/types'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Booking } from '~components/Bookings/types'
+import toolTitle from '~components/Tools/shared/ToolTitle'
 
 export const Detail = () => {
   const { id } = useParams<{ id: string }>()
@@ -23,7 +24,7 @@ export const Detail = () => {
     booking: bookingFromState,
     tool: toolFromState,
     userId: userIdFromState,
-  } = (location.state as { booking?: Booking; tool?: Tool; userId?: string }) || {}
+  } = (location.state as { booking?: Booking; tool?: ToolDTO; userId?: string }) || {}
 
   const {
     data: booking,

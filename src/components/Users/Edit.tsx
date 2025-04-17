@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
-import { EditProfileFormData, EditProfileFormProps } from '~components/Users/types'
+import { EditProfileFormData, UserProfile } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'
 import { AUTH_FORM } from '~utils/constants'
 import { Avatar, AvatarProps, avatarSizeToPixels } from '../Images/Avatar'
@@ -30,6 +30,10 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useAuth } from '~components/Auth/AuthContext'
 import { INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
+
+export interface EditProfileFormProps {
+  initialData: Omit<UserProfile, 'rating' | 'tokens' | 'id' | 'email'>
+}
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
   const { user } = useAuth()

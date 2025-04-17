@@ -1,7 +1,7 @@
 import { Icon, Skeleton, Stack, Text, TextProps } from '@chakra-ui/react'
 import { icons } from '~theme/icons'
 import React from 'react'
-import { Tool } from '~components/Tools/types'
+import { Tool, ToolDTO } from '~components/Tools/types'
 
 /**
  * This component shows the nomadic icon among with tool title

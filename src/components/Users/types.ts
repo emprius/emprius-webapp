@@ -1,12 +1,13 @@
 import { EmpriusLocation } from '~components/Layout/Map/types'
+import { LatLng } from 'leaflet'
 
-export interface UserProfile {
+export type UserProfile = {
   id: string
   name: string
   email: string
   avatarHash?: string
   rating: number
-  location?: EmpriusLocation
+  location?: LatLng
   active: boolean
   tokens: number
   community?: string
@@ -17,23 +18,24 @@ export interface UserProfile {
   // bio?: string
 }
 
-export interface EditProfileFormData {
+export type UserProfileDTO = Omit<UserProfile, 'location'> & {
+  location?: EmpriusLocation
+}
+
+export type EditProfileFormData = {
   name: string
   actualPassword?: string
   password?: string
   confirmPassword?: string
-  location?: EmpriusLocation
+  location?: LatLng
   active: boolean
   avatar?: string // b64 string
   community?: string
 }
 
-export interface EditProfileFormProps {
-  initialData: {
-    name: string
-    location?: EmpriusLocation
-    active: boolean
-    avatarHash?: string
-    community?: string
-  }
+export type EditProfileFormDataDTO = Omit<UserProfileDTO, 'location'> & {
+  location?: EmpriusLocation
 }
+
+export type GetUsersDTO = { users: UserProfileDTO[] }
+export type GetUsers = { users: UserProfile[] }

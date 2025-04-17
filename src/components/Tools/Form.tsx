@@ -20,7 +20,6 @@ import {
   Text,
   Textarea,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
 import React, { useEffect, useState } from 'react'
@@ -34,8 +33,14 @@ import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { lighterText } from '~theme/common'
-import { ToolFormData } from './types'
 import { icons } from '~theme/icons'
+import { CreateToolParams } from '~components/Tools/types'
+
+export type ToolFormData = Omit<CreateToolParams, 'images'> & {
+  images: FileList
+} & {
+  id?: number
+}
 
 interface ToolFormProps {
   initialData?: Partial<ToolFormData>
@@ -265,7 +270,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <FormSubmitMessage isError={isError} error={error} />
         </Stack>
         <Stack direction='row' spacing={4} justify='space-between' w={'full'} align={'start'} wrap={'wrap-reverse'}>
-          {isEdit && <DeleteToolButton toolId={initialData.id} disabled={isLoading} />}
+          {isEdit && initialData?.id && <DeleteToolButton toolId={initialData?.id} disabled={isLoading} />}
           <Stack direction='row' spacing={4} justify='flex-end' flex={1}>
             <Button onClick={() => navigate(-1)} variant='ghost'>
               {t('common.cancel')}

@@ -1,8 +1,9 @@
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { EmpriusLocation } from '~components/Layout/Map/types'
-import { UserProfile } from '~components/Users/types'
+import { UserProfile, UserProfileDTO } from '~components/Users/types'
 import { UserKeys } from '~components/Users/queries'
+import { toLatLng } from '~src/utils'
 
 export interface ILoginParams {
   email: string
@@ -38,9 +39,15 @@ export const useRegister = (
     ...options,
   })
 }
-export const useCurrentUser = (options?: Omit<UseQueryOptions<UserProfile>, 'queryKey' | 'mutationFn'>) =>
+export const useCurrentUser = (
+  options?: Omit<UseQueryOptions<UserProfileDTO, Error, UserProfile>, 'queryKey' | 'mutationFn'>
+) =>
   useQuery({
     queryKey: UserKeys.currentUser,
     queryFn: () => api.auth.getCurrentUser(),
+    select: (data): UserProfile => ({
+      ...data,
+      location: toLatLng(data?.location),
+    }),
     ...options,
   })
