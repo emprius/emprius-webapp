@@ -14,7 +14,6 @@ export function registerServiceWorker() {
       onRegisteredSW(swScriptUrl, registration) {
         if (registration) {
           setInterval(() => {
-            console.log('Interval!')
             registration.update()
           }, UPDATE_PWA_INTERVAL) // Check for updates every hour
         }
