@@ -13,7 +13,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
 import { LuWeight } from 'react-icons/lu'
@@ -35,6 +35,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { BookingFormData } from '~components/Bookings/Form'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
+import { MdSocialDistance } from 'react-icons/md'
+import { calculateDistance, toLatLng } from '~src/utils'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -56,13 +58,24 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
 
   const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
   const isOwner = tool.userId === user?.id
+  // Cannot book (cannot select dates and booking form is hide) when:
   // If is owner and tool is not nomadic or
   // tool is nomadic and is actual user or
   // tool is nomadic and not actual user and is the owner
-  const canNotBook =
-    (!tool.isNomadic && isOwner) ||
-    (tool.isNomadic && tool.actualUserId === user.id) ||
-    (tool.isNomadic && !tool.actualUserId && isOwner)
+  const canNotBook = useMemo(
+    () =>
+      (!tool.isNomadic && isOwner) ||
+      (tool.isNomadic && tool.actualUserId === user.id) ||
+      (tool.isNomadic && !tool.actualUserId && isOwner),
+    [tool?.isNomadic, tool?.actualUserId, isOwner, user?.id]
+  )
+
+  const isTooFarAway = useMemo(() => {
+    if (tool?.maxDistance && !canNotBook) {
+      return tool?.maxDistance < calculateDistance(toLatLng(user.location), toLatLng(tool.location))
+    }
+    return false
+  }, [user?.location, tool?.location, canNotBook])
 
   return (
     <FormProvider {...formMethods}>
@@ -120,6 +133,14 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
                         <Stack direction='row' align='center'>
                           <LuWeight size={20} />
                           <Text>{tool.weight && `${tool.weight}kg`}</Text>
+                        </Stack>
+                      )}
+                      {!!tool.maxDistance && (
+                        <Stack direction='row' align='center'>
+                          <MdSocialDistance size={20} />
+                          <Text>
+                            {t('tools.max_distance')}: {tool.maxDistance}
+                          </Text>
                         </Stack>
                       )}
                     </SimpleGrid>
@@ -192,9 +213,9 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
               )}
               <AvailabilityCalendar
                 reservedDates={tool.reservedDates || []}
-                isSelectable={tool.isAvailable && !canNotBook}
+                isSelectable={tool.isAvailable && !canNotBook && !isTooFarAway}
               />
-              <BookingFormWrapper tool={tool} canNotBook={canNotBook} />
+              <BookingFormWrapper tool={tool} canNotBook={canNotBook} isTooFarAway={isTooFarAway} />
             </Stack>
           </GridItem>
         </Grid>
@@ -203,7 +224,15 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   )
 }
 
-const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: boolean }) => {
+const BookingFormWrapper = ({
+  tool,
+  canNotBook,
+  isTooFarAway,
+}: {
+  tool: Tool
+  canNotBook: boolean
+  isTooFarAway: boolean
+}) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
@@ -211,7 +240,7 @@ const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: bool
   if (!isAuthenticated) {
     return (
       <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-        <Text color='gray.600' mb={4}>
+        <Text sx={lightText} mb={4}>
           {t('tools.login_to_book')}
         </Text>
         <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
@@ -224,7 +253,7 @@ const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: bool
   if (!tool.isAvailable) {
     return (
       <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-        <Text color='gray.600' mb={4}>
+        <Text sx={lightText} mb={4}>
           {t('tools.not_available')}
         </Text>
         <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
@@ -236,6 +265,20 @@ const BookingFormWrapper = ({ tool, canNotBook }: { tool: Tool; canNotBook: bool
 
   if (canNotBook) {
     return null
+  }
+
+  if (isTooFarAway) {
+    return (
+      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+        <Text sx={lightText}>{t('bookings.is_too_far_away', { defaultValue: 'The tool is to far away' })}</Text>
+        <Text color='gray.600' mb={4} sx={lightText}>
+          {t('bookings.is_too_far_away_desc', { defaultValue: 'Tool settings set a maximum loan distance' })}
+        </Text>
+        <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
+          {t('tools.find_other')}
+        </Link>
+      </Box>
+    )
   }
 
   return <BookingForm tool={tool} />
