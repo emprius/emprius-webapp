@@ -3,14 +3,15 @@ import api from '~src/services/api'
 import { EmpriusLocation } from '~components/Layout/Map/types'
 import { UserProfile, UserProfileDTO } from '~components/Users/types'
 import { UserKeys } from '~components/Users/queries'
-import { toLatLng } from '~src/utils'
+import { toEmpriusLocation, toLatLng } from '~src/utils'
+import { RegisterFormData } from '~components/Auth/Register'
 
 export interface ILoginParams {
   email: string
   password: string
 }
 
-export interface IRegisterParams {
+export type IRegisterParams = {
   email: string
   invitationToken: string
   name?: string
@@ -32,10 +33,11 @@ export const useLogin = (options?: Omit<UseMutationOptions<LoginResponse, Error,
 }
 
 export const useRegister = (
-  options?: Omit<UseMutationOptions<LoginResponse, Error, IRegisterParams>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<LoginResponse, Error, RegisterFormData>, 'mutationFn'>
 ) => {
   return useMutation({
-    mutationFn: (params: IRegisterParams) => api.auth.register(params),
+    mutationFn: (params: RegisterFormData) =>
+      api.auth.register({ ...params, location: toEmpriusLocation(params.location) }),
     ...options,
   })
 }

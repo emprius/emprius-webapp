@@ -22,10 +22,12 @@ import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
 import { ROUTES } from '~src/router/routes'
 import { AUTH_FORM } from '~utils/constants'
+import { LatLng } from 'leaflet'
 
-interface RegisterFormData extends IRegisterParams {
+export type RegisterFormData = {
   confirmPassword: string
-}
+  location: LatLng
+} & Omit<IRegisterParams, 'location'>
 
 export const Register = () => {
   const { t } = useTranslation()
@@ -49,8 +51,7 @@ export const Register = () => {
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     // Remove confirmPassword before sending to backend
-    const { confirmPassword, ...registerData } = data
-    await mutateAsync(registerData)
+    await mutateAsync(data)
       // todo(konv1): use route constants
       .then(() => navigate(ROUTES.HOME))
       .catch((error) => {
