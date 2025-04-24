@@ -31,7 +31,7 @@ import { INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 import { icons } from '~theme/icons'
 
 export interface EditProfileFormProps {
-  initialData: Omit<UserProfile, 'rating' | 'tokens' | 'id' | 'email'>
+  initialData: Pick<UserProfile, 'name' | 'location' | 'active' | 'avatarHash' | 'community'>
 }
 
 export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
