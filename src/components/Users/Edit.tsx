@@ -1,4 +1,3 @@
-import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -6,13 +5,12 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
+  Icon,
   IconButton,
   Image,
   Input,
   Stack,
   Switch,
-  Text,
   useToast,
   VStack,
 } from '@chakra-ui/react'
@@ -30,6 +28,7 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useAuth } from '~components/Auth/AuthContext'
 import { INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
+import { icons } from '~theme/icons'
 
 export interface EditProfileFormProps {
   initialData: Omit<UserProfile, 'rating' | 'tokens' | 'id' | 'email'>
@@ -248,7 +247,7 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
       <>
         <IconButton
           aria-label='Edit avatar'
-          icon={<EditIcon />}
+          icon={<Icon as={icons.edit} />}
           position='absolute'
           bottom='0'
           right='0'

@@ -2,6 +2,7 @@ import { FiMenu, FiMessageCircle, FiPlus, FiSearch, FiStar, FiTool, FiUser, FiUs
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 import { FaHeartbeat, FaCalendar, FaRoute } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
+import { EditIcon } from '@chakra-ui/icons'
 
 export const icons = {
   user: FiUser,
@@ -19,4 +20,5 @@ export const icons = {
   inbox: ImBoxAdd,
   calendar: FaCalendar,
   nomadic: FaRoute,
+  edit: EditIcon,
 }
