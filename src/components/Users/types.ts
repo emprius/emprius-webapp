@@ -18,8 +18,23 @@ export type UserProfile = {
   // bio?: string
 }
 
-export type UserProfileDTO = Omit<UserProfile, 'location'> & {
+export type UserProfileDTO = Omit<UserProfile, 'location' | 'inviteCodes'> & {
   location?: EmpriusLocation
+}
+
+export type Invite = {
+  code: string
+  createdOn: Date
+}
+
+type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
+
+export type OwnUserProfile = UserProfile & {
+  inviteCodes?: Invite[]
+}
+
+export type OwnUserProfileDTO = UserProfileDTO & {
+  inviteCodes?: InviteDTO[]
 }
 
 export type EditProfileFormData = {

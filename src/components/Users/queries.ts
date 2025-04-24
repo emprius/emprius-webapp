@@ -4,7 +4,7 @@ import api, { users } from '~src/services/api'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 
 export const UserKeys = {
-  currentUser: ['currentUser'],
+  currentUser: ['user', 'current'],
   userId: (userId: string) => ['user', userId],
   users: (page: number) => ['users', page],
 }
@@ -44,3 +44,15 @@ export const useUsers = ({ page }: { page: number }) =>
     queryKey: UserKeys.users(page),
     queryFn: () => users.getList(page),
   })
+
+export const useRequestMoreCodes = () => {
+  const client = useQueryClient()
+  return useMutation({
+    mutationKey: ['requestMoreCodes'],
+    mutationFn: () => users.getMoreCodes(),
+    onSuccess: async (data) => {
+      await client.invalidateQueries({ queryKey: UserKeys.currentUser })
+      return data
+    },
+  })
+}

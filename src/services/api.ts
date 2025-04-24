@@ -126,6 +126,7 @@ export const users = {
   getList: (page: number = 0) => apiRequest(api.get<ApiResponse<GetUsersDTO>>('/users', { params: { page } })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
+  getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
 }
 
 // images
