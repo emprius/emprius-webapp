@@ -67,7 +67,9 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
         <Text fontWeight='bold' wordBreak='break-word'>
           {user.name}
         </Text>
-        {showRating && <ShowRatingStars rating={user.rating} size='sm' {...ratingProps} />}
+        {showRating && (
+          <ShowRatingStars rating={user.rating} ratingCount={user.ratingCount} size='sm' {...ratingProps} />
+        )}
       </Stack>
     </Flex>
   )
