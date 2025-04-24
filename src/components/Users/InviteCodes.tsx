@@ -164,7 +164,7 @@ const InviteCodes = ({ codes }: { codes: Invite[] }) => {
         </Table>
       )}
       <VStack align={'end'} mt={4}>
-        <Button isLoading={isPending} onClick={requestMoreCodes}>
+        <Button isLoading={isPending} onClick={requestMoreCodes} disabled={!!codes?.length}>
           {t('invite_codes.request_more_codes', { defaultValue: 'Request more codes' })}
         </Button>
         <Text sx={lighterText}>

@@ -31,7 +31,7 @@ export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingC
       </HStack>
       {showCount && (
         <Text fontSize={size === 'sm' ? 'sm' : 'md'} sx={lightText}>
-          {rating.toFixed(0)}%{ratingCount !== undefined && ` (${ratingCount})`}
+          {rating?.toFixed(0)}%{ratingCount !== undefined && ` (${ratingCount})`}
         </Text>
       )}
     </HStack>
