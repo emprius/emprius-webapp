@@ -11,14 +11,14 @@ export const UserKeys = {
 
 export const useUpdateUserProfile = () => {
   const client = useQueryClient()
-  return useMutation<UserProfileDTO, Error, EditProfileFormData>({
+  return useMutation<UserProfileDTO, Error, Partial<EditProfileFormData>>({
     mutationFn: (data) => {
-      return api.users.updateProfile({ ...data, location: toEmpriusLocation(data.location) })
+      return api.users.updateProfile({ ...data, ...(data.location && { location: toEmpriusLocation(data.location) }) })
     },
     mutationKey: ['updateProfile'],
-    // Invalidate profile query after mutation
     onSuccess: async (data) => {
       await client.invalidateQueries({ queryKey: UserKeys.currentUser })
+      await client.invalidateQueries({ queryKey: UserKeys.userId(data.id) })
       return data
     },
   })

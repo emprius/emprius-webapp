@@ -11,11 +11,10 @@ export type UserProfile = {
   active: boolean
   tokens: number
   community?: string
-  // notExists
-  // ratingCount: number
-  // createdAt: string
-  // updatedAt: string
-  // bio?: string
+  ratingCount: number
+  createdAt: string
+  lastSeen: string
+  bio?: string
 }
 
 export type UserProfileDTO = Omit<UserProfile, 'location' | 'inviteCodes'> & {
@@ -46,6 +45,7 @@ export type EditProfileFormData = {
   active: boolean
   avatar?: string // b64 string
   community?: string
+  bio?: string
 }
 
 export type EditProfileFormDataDTO = Omit<UserProfileDTO, 'location'> & {
