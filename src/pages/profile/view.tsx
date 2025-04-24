@@ -16,7 +16,7 @@ export const View = () => {
       <Flex gap={2} align='center' direction={'column'}>
         <UserProfile {...user} />
         <VStack pb={4} w={'full'}>
-          {user?.invites && <InviteCodes codes={user?.invites} />}
+          <InviteCodes codes={user?.inviteCodes} />
           <Button leftIcon={<FiLogOut />} onClick={logout} colorScheme='red'>
             {t('nav.logout')}
           </Button>

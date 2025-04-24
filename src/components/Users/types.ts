@@ -1,6 +1,13 @@
 import { EmpriusLocation } from '~components/Layout/Map/types'
 import { LatLng } from 'leaflet'
 
+export type Invite = {
+  code: string
+  createdOn: Date
+}
+
+type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
+
 export type UserProfile = {
   id: string
   name: string
@@ -11,7 +18,7 @@ export type UserProfile = {
   active: boolean
   tokens: number
   community?: string
-  invites?: string[]
+  inviteCodes?: Invite[]
   // notExists
   // ratingCount: number
   // createdAt: string
@@ -19,8 +26,9 @@ export type UserProfile = {
   // bio?: string
 }
 
-export type UserProfileDTO = Omit<UserProfile, 'location'> & {
+export type UserProfileDTO = Omit<UserProfile, 'location' | 'inviteCodes'> & {
   location?: EmpriusLocation
+  inviteCodes?: InviteDTO[]
 }
 
 export type EditProfileFormData = {

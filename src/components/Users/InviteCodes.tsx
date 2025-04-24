@@ -19,11 +19,11 @@ import {
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { lighterText, lightText } from '~theme/common'
-import { EditProfileFormData } from '~components/Users/types'
-import { useRequestMoreCodes, useUpdateUserProfile } from '~components/Users/queries'
+import { Invite } from '~components/Users/types'
+import { useRequestMoreCodes } from '~components/Users/queries'
 import { ROUTES } from '~src/router/routes'
 
-const InviteCodes = ({ codes }: { codes: string[] }) => {
+const InviteCodes = ({ codes }: { codes: Invite[] }) => {
   const [isSharing, setIsSharing] = useState(false)
   const { t } = useTranslation()
   const toast = useToast()
@@ -55,7 +55,7 @@ const InviteCodes = ({ codes }: { codes: string[] }) => {
   const handleShare = async (invite: string) => {
     setIsSharing(true)
     try {
-      const inviteUrl = `${window.location.href}${ROUTES.AUTH.REGISTER}?invite=${invite}`
+      const inviteUrl = `${window.location.host}${ROUTES.AUTH.REGISTER}?invite=${invite}`
       if (isWebShareSupported) {
         await navigator.share({
           title: 'Check this out',
@@ -104,6 +104,7 @@ const InviteCodes = ({ codes }: { codes: string[] }) => {
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const datef = t('invite_codes.datef', { defaultValue: 'P' })
 
   return (
     <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
@@ -116,42 +117,52 @@ const InviteCodes = ({ codes }: { codes: string[] }) => {
             'Invite codes and invite links are used during registration and allow others to create an account. They do not expire and can be shared freely.',
         })}
       </Text>
-      <Table variant='simple'>
-        <Thead>
-          <Tr>
-            <Th>{t('invite_codes.code', { defaultValue: 'Invite code' })}</Th>
-            <Th>{t('invite_codes.share_link', { defaultValue: 'Invite link' })}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {codes.map((item, index) => (
-            <Tr key={index}>
-              <Td>
-                {item}
-                <IconButton
-                  aria-label='Copy text'
-                  icon={<CopyIcon />}
-                  size='sm'
-                  ml={2}
-                  onClick={() => handleCopy(item)}
-                  variant='ghost'
-                />
-              </Td>
-              <Td>
-                <Button
-                  leftIcon={<ExternalLinkIcon />}
-                  colorScheme='blue'
-                  size='sm'
-                  onClick={() => handleShare(item)}
-                  disabled={isSharing}
-                >
-                  {t('invite_codes.invite_link', { defaultValue: 'Invite' })}
-                </Button>
-              </Td>
+      {codes && (
+        <Table variant='simple'>
+          <Thead>
+            <Tr>
+              <Th>{t('invite_codes.code', { defaultValue: 'Invite code' })}</Th>
+              <Th>{t('invite_codes.created_on', { defaultValue: 'Created on' })}</Th>
+              <Th>{t('invite_codes.share_link', { defaultValue: 'Invite link' })}</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {codes?.map(({ code, createdOn }, index) => (
+              <Tr key={index}>
+                <Td>
+                  {code}
+                  <IconButton
+                    aria-label='Copy text'
+                    icon={<CopyIcon />}
+                    size='sm'
+                    ml={2}
+                    onClick={() => handleCopy(code)}
+                    variant='ghost'
+                  />
+                </Td>
+                <Td>
+                  {t('invite_codes.date_formatted', {
+                    date: createdOn,
+                    format: datef,
+                    defaultValue: '{{ date, format }}',
+                  })}
+                </Td>
+                <Td>
+                  <Button
+                    leftIcon={<ExternalLinkIcon />}
+                    colorScheme='blue'
+                    size='sm'
+                    onClick={() => handleShare(code)}
+                    disabled={isSharing}
+                  >
+                    {t('invite_codes.invite_link', { defaultValue: 'Invite' })}
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
       <VStack align={'end'} mt={4}>
         <Button isLoading={isPending} onClick={requestMoreCodes}>
           {t('invite_codes.request_more_codes', { defaultValue: 'Request more codes' })}

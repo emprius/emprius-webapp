@@ -1,10 +1,11 @@
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { EmpriusLocation } from '~components/Layout/Map/types'
-import { UserProfile, UserProfileDTO } from '~components/Users/types'
+import { Invite, UserProfile, UserProfileDTO } from '~components/Users/types'
 import { UserKeys } from '~components/Users/queries'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 import { RegisterFormData } from '~components/Auth/Register'
+import { convertToDate } from '~utils/dates'
 
 export interface ILoginParams {
   email: string
@@ -50,6 +51,12 @@ export const useCurrentUser = (
     select: (data): UserProfile => ({
       ...data,
       location: toLatLng(data?.location),
+      inviteCodes: data.inviteCodes.map(
+        (invite): Invite => ({
+          ...invite,
+          createdOn: convertToDate(invite.createdOn),
+        })
+      ),
     }),
     ...options,
   })
