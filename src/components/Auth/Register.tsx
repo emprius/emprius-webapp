@@ -50,8 +50,8 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
   } = useForm<RegisterFormData>({
     mode: 'onChange',
     defaultValues: {
-      invitationToken: defaultInvitationToken
-    }
+      invitationToken: defaultInvitationToken,
+    },
   })
 
   const password = watch('password')

@@ -72,7 +72,7 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
 
   const isTooFarAway = useMemo(() => {
     if (tool?.maxDistance && !canNotBook) {
-      return tool?.maxDistance < calculateDistance(toLatLng(user.location), toLatLng(tool.location))
+      return tool?.maxDistance < calculateDistance(user.location, tool.location)
     }
     return false
   }, [user?.location, tool?.location, canNotBook])
