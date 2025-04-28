@@ -93,11 +93,11 @@ const RatingHistory = () => {
 export const View = () => {
   const { pendingRatingsCount } = usePendingActions()
   const { t } = useTranslation()
-  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const { setData } = useOutletContext<TitlePageLayoutContext>()
 
   useEffect(() => {
-    setTitle(t('rating.ratings'))
-  }, [setTitle, t])
+    setData(t('rating.ratings'))
+  }, [setData, t])
 
   const tabs: TabConfig[] = [
     {

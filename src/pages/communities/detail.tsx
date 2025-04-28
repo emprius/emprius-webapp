@@ -14,7 +14,7 @@ export const Detail = () => {
   useEffect(() => {
     // Set the page title when community data is loaded
     if (community) {
-      setTitle(community.name)
+      setData(community.name)
     }
   }, [community, setTitle])
 

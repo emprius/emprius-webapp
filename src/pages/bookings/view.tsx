@@ -14,13 +14,13 @@ import { icons } from '~theme/icons'
 
 const BookingList = ({ type }: { type: 'request' | 'petition' }) => {
   const { t } = useTranslation()
-  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const { setData } = useOutletContext<TitlePageLayoutContext>()
   const query = type === 'request' ? useBookingRequests() : useBookingPetitions()
   const { data: bookings, isLoading, error } = query
 
   useEffect(() => {
-    setTitle(type === 'request' ? t('bookings.tool_requests') : t('bookings.my_petitions'))
-  }, [setTitle, type, t])
+    setData(type === 'request' ? t('bookings.tool_requests') : t('bookings.my_petitions'))
+  }, [setData, type, t])
 
   if (isLoading) return <LoadingSpinner />
   if (!bookings?.length) {

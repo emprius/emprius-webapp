@@ -6,12 +6,12 @@ import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
 
 export const Invites = () => {
   const { t } = useTranslation()
-  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
-  
+  const { setData } = useOutletContext<TitlePageLayoutContext>()
+
   useEffect(() => {
     // Set the page title
-    setTitle(t('communities.pending_invites'))
-  }, [setTitle, t])
-  
+    setData(t('communities.pending_invites'))
+  }, [setData, t])
+
   return <CommunityInvites />
 }
