@@ -4,19 +4,17 @@ import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
 import type { RateSubmission, UnifiedRating } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
-import { CreateToolDTO, ToolDTO, ToolsListResponse, UpdateToolParams } from '~components/Tools/types'
-import { EditProfileFormData, EditProfileFormDataDTO, GetUsersDTO, UserProfileDTO } from '~components/Users/types'
+import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/types'
+import { EditProfileFormDataDTO, UserProfileDTO } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
 import {
   Community,
-  CommunityDetailResponse,
   CommunityInvitesResponse,
-  CommunityResponse,
   CommunityUsersResponse,
   CreateCommunityParams,
-  UpdateCommunityParams
+  UpdateCommunityParams,
 } from '~components/communities/types'
 
 // Exception to throw when an API return 401
@@ -137,6 +135,8 @@ export const users = {
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
+  // Get all communities for a specific user
+  getUserCommunities: (userId: string) => apiRequest(api.get<ApiResponse<Community[]>>(`/users/${userId}/communities`)),
 }
 
 // images
@@ -148,149 +148,32 @@ export const images = {
 
 // Communities endpoints
 export const communities = {
-  // Get all communities for the current user
-  getCommunities: () => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      communities: [
-        {
-          id: '1',
-          name: 'Community 1',
-          imageHash: 'hash1',
-          members: [{ id: '1', role: 'owner' }]
-        },
-        {
-          id: '2',
-          name: 'Community 2',
-          imageHash: 'hash2',
-          members: [{ id: '1', role: 'user' }]
-        }
-      ]
-    } as CommunityResponse)
-  },
-
-  // Get all communities for a specific user
-  getUserCommunities: (userId: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve([
-      {
-        id: '1',
-        name: 'Community 1',
-        imageHash: 'hash1',
-        members: [{ id: userId, role: 'owner' as const }]
-      },
-      {
-        id: '2',
-        name: 'Community 2',
-        imageHash: 'hash2',
-        members: [{ id: userId, role: 'user' as const }]
-      }
-    ] as Community[])
-  },
-
-  // Get a specific community by ID
-  getCommunityById: (id: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      id,
-      name: `Community ${id}`,
-      imageHash: `hash${id}`,
-      members: [
-        { id: '1', role: 'owner' },
-        { id: '2', role: 'user' },
-        { id: '3', role: 'user' }
-      ]
-    } as CommunityDetailResponse)
-  },
-
-  // Get users in a community
-  getCommunityUsers: (id: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      users: [
-        { id: '1', name: 'User 1', email: 'user1@example.com', rating: 4.5, active: true, tokens: 100 },
-        { id: '2', name: 'User 2', email: 'user2@example.com', rating: 3.8, active: true, tokens: 50 },
-        { id: '3', name: 'User 3', email: 'user3@example.com', rating: 4.2, active: true, tokens: 75 }
-      ]
-    } as CommunityUsersResponse)
-  },
-
   // Create a new community
-  createCommunity: (data: CreateCommunityParams) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      id: Math.random().toString(36).substring(7),
-      name: data.name,
-      imageHash: data.imageHash,
-      members: [{ id: '1', role: 'owner' }]
-    } as Community)
-  },
-
-  // Update a community
-  updateCommunity: ({ id, ...data }: UpdateCommunityParams) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      id,
-      name: data.name || `Community ${id}`,
-      imageHash: data.imageHash || `hash${id}`,
-      members: [{ id: '1', role: 'owner' }]
-    } as Community)
-  },
-
-  // Delete a community
-  deleteCommunity: (id: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve()
-  },
-
+  createCommunity: (data: CreateCommunityParams) => apiRequest(api.post<ApiResponse<Community>>(`/communities`, data)),
+  // Get a specific community by ID
+  getCommunityById: (id: string) => apiRequest(api.get<ApiResponse<Community>>(`/communities/${id}`)),
+  // Update community
+  updateCommunity: (id: string, data: UpdateCommunityParams) =>
+    apiRequest(api.put<ApiResponse<Community>>(`/communities/${id}`, data)),
+  // Delete
+  deleteCommunity: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/communities/${id}`)),
+  // Get users in a community
+  getCommunityMembers: (id: string) =>
+    apiRequest(api.get<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),
   // Invite a user to a community
-  inviteUser: (communityId: string, userId: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve()
-  },
-
-  // Leave a community
-  leaveCommunity: (communityId: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve()
-  },
-
+  inviteUser: (id: string, userId: string) =>
+    apiRequest(api.post<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members/${userId}`)),
+  // Leave community
+  leaveCommunity: (id: string) =>
+    apiRequest(api.delete<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),
+  // Remove a user to a community
+  removeUser: (id: string, userId: string) =>
+    apiRequest(api.delete<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members/${userId}`)),
   // Get pending invites for the current user
-  getInvites: () => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve({
-      invites: [
-        {
-          id: '1',
-          communityId: '3',
-          communityName: 'Community 3',
-          imageHash: 'hash3',
-          invitedBy: 'User 2',
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: '2',
-          communityId: '4',
-          communityName: 'Community 4',
-          imageHash: 'hash4',
-          invitedBy: 'User 3',
-          createdAt: new Date().toISOString()
-        }
-      ]
-    } as CommunityInvitesResponse)
-  },
-
-  // Accept a community invite
-  acceptInvite: (inviteId: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve()
-  },
-
-  // Refuse a community invite
-  refuseInvite: (inviteId: string) => {
-    // TODO: Replace with actual API call when backend is ready
-    return Promise.resolve()
-  }
+  getInvites: () => apiRequest(api.get<ApiResponse<CommunityInvitesResponse>>(`/communities/invites`)),
+  // Update invite status
+  updateInvite: (id, status: 'REJECTED' | 'ACCEPTED' | 'CANCELED') =>
+    apiRequest(api.put<ApiResponse<CommunityInvitesResponse>>(`/communities/invites/${id}`, { status: status })),
 }
 
 // Info endpoints

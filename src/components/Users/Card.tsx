@@ -2,7 +2,7 @@ import { Flex, FlexProps, HStack, Skeleton, Stack, StackProps, Text, useColorMod
 import { UseQueryOptions } from '@tanstack/react-query/build/modern'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { UserProfile, UserProfileDTO } from '~components/Users/types'
+import { UserPreview, UserProfile, UserProfileDTO } from '~components/Users/types'
 
 import { ROUTES } from '~src/router/routes'
 import { Avatar, AvatarSize } from '../Images/Avatar'
@@ -13,7 +13,7 @@ type UserMiniCardProps = {
   userId: string
   avatarSize?: AvatarSize
   direction?: StackProps['direction']
-  placeholderData?: UserProfileDTO
+  placeholderData?: UserPreview
   showRating?: boolean
   showAvatar?: boolean
   ratingProps?: Omit<RatingProps, 'rating'>
@@ -29,6 +29,8 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   ratingProps,
   ...flexProps
 }) => {
+  // todo(kon): use user preview for that instead of the whole user profile which is not needed
+  // @ts-ignore
   const { data: user, isLoading } = useUserProfile(userId, { placeholderData })
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')

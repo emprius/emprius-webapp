@@ -133,13 +133,9 @@ export const CommunityForm: React.FC<CommunityFormProps> = ({ initialData, isEdi
             <Box mt={4} maxW='200px'>
               <Image src={preview} alt={t('communities.preview')} borderRadius='md' />
             </Box>
-          ) : initialData?.imageHash ? (
+          ) : initialData?.image ? (
             <Box mt={4} maxW='200px'>
-              <ServerImage
-                imageId={initialData.imageHash}
-                alt={initialData.name}
-                fallbackSrc='/assets/logos/tool-fallback.svg'
-              />
+              <ServerImage imageId={initialData.image} alt={initialData.name} />
             </Box>
           ) : (
             <Text mt={2} color='gray.500'>

@@ -2,21 +2,31 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { CommunityFormData, CreateCommunityParams, UpdateCommunityParams } from './types'
 import { useUploadImage, useUploadImages } from '~components/Images/queries'
+import { useAuth } from '~components/Auth/AuthContext'
+import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 
 export const CommunityKeys = {
-  all: ['communities'],
+  user: (id: string) => ['communities', 'user', id],
   detail: (id: string) => ['communities', id],
-  users: (id: string) => ['communities', id, 'users'],
+  members: (id: string) => ['communities', id, 'members'],
   invites: ['communities', 'invites'],
-  userCommunities: (userId: string) => ['communities', 'user', userId],
 }
 
-// Get all communities the current user belongs to
-export const useCommunities = () => {
+// Get all communities the current user belongs to specific user
+export const useUserCommunities = (userId: string) => {
   return useQuery({
-    queryKey: CommunityKeys.all,
-    queryFn: () => api.communities.getCommunities(),
+    queryKey: CommunityKeys.user(userId),
+    queryFn: () => api.users.getUserCommunities(userId),
+    enabled: !!userId,
   })
+}
+
+// Get all communities the current user belongs to specific user
+export const useDefaultUserCommunities = () => {
+  const {
+    user: { id },
+  } = useAuth()
+  return useUserCommunities(id)
 }
 
 // Get a specific community's details
@@ -31,8 +41,8 @@ export const useCommunityDetail = (id: string) => {
 // Get users in a community
 export const useCommunityUsers = (id: string) => {
   return useQuery({
-    queryKey: CommunityKeys.users(id),
-    queryFn: () => api.communities.getCommunityUsers(id),
+    queryKey: CommunityKeys.members(id),
+    queryFn: () => api.communities.getCommunityMembers(id),
     enabled: !!id,
   })
 }
@@ -49,6 +59,9 @@ export const useCommunityInvites = () => {
 export const useCreateCommunity = () => {
   const queryClient = useQueryClient()
   const { mutateAsync: uploadImage } = useUploadImage()
+  const {
+    user: { id },
+  } = useAuth()
 
   return useMutation({
     mutationFn: async (data: CommunityFormData) => {
@@ -58,12 +71,12 @@ export const useCreateCommunity = () => {
 
       if (data.image) {
         // Upload the image and get the hash
-        params.imageHash = (await uploadImage(data.image, {})).hash
+        params.image = (await uploadImage(data.image, {})).hash
       }
       return api.communities.createCommunity(params)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.all })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.user(id) })
     },
   })
 }
@@ -72,6 +85,9 @@ export const useCreateCommunity = () => {
 export const useUpdateCommunity = () => {
   const queryClient = useQueryClient()
   const { mutateAsync: uploadImage } = useUploadImage()
+  const {
+    user: { id },
+  } = useAuth()
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: CommunityFormData }) => {
@@ -82,14 +98,14 @@ export const useUpdateCommunity = () => {
 
       if (data.image) {
         // Upload the image and get the hash
-        params.imageHash = (await uploadImage(data.image, {})).hash
+        params.image = (await uploadImage(data.image, {})).hash
       }
 
-      return api.communities.updateCommunity(params)
+      return api.communities.updateCommunity(id, params)
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.detail(variables.id) })
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.all })
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.detail(variables.id) })
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.user(id) })
     },
   })
 }
@@ -97,11 +113,14 @@ export const useUpdateCommunity = () => {
 // Delete a community
 export const useDeleteCommunity = () => {
   const queryClient = useQueryClient()
+  const {
+    user: { id },
+  } = useAuth()
 
   return useMutation({
     mutationFn: (id: string) => api.communities.deleteCommunity(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.all })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.user(id) })
     },
   })
 }
@@ -117,45 +136,68 @@ export const useInviteUserToCommunity = () => {
 // Leave a community
 export const useLeaveCommunity = () => {
   const queryClient = useQueryClient()
+  const {
+    user: { id },
+  } = useAuth()
 
   return useMutation({
     mutationFn: (communityId: string) => api.communities.leaveCommunity(communityId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.all })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.user(id) })
     },
   })
 }
 
 // Accept a community invite
-export const useAcceptInvite = () => {
+export const useAcceptCommunityInvite = () => {
   const queryClient = useQueryClient()
+  const {
+    user: { id },
+  } = useAuth()
 
   return useMutation({
-    mutationFn: (inviteId: string) => api.communities.acceptInvite(inviteId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.invites })
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.all })
+    mutationFn: (inviteId: string) => api.communities.updateInvite(inviteId, 'ACCEPTED'),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.invites })
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.user(id) })
+      await queryClient.invalidateQueries({ queryKey: PendingActionsKeys })
     },
   })
 }
 
 // Refuse a community invite
-export const useRefuseInvite = () => {
+export const useRefuseCommunityInvite = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (inviteId: string) => api.communities.refuseInvite(inviteId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CommunityKeys.invites })
+    mutationFn: (inviteId: string) => api.communities.updateInvite(inviteId, 'REJECTED'),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: CommunityKeys.invites })
+      await queryClient.invalidateQueries({ queryKey: PendingActionsKeys })
     },
   })
 }
 
-// Get communities for a specific user
-export const useUserCommunities = (userId: string) => {
-  return useQuery({
-    queryKey: CommunityKeys.userCommunities(userId),
-    queryFn: () => api.communities.getUserCommunities(userId),
-    enabled: !!userId,
+// Refuse a community invite
+export const useRemoveCommunityUser = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ communityId, userId }: { communityId: string; userId: string }) =>
+      api.communities.removeUser(communityId, userId),
+    onSuccess: (res, { communityId }) => {
+      queryClient.invalidateQueries({ queryKey: CommunityKeys.detail(communityId) })
+    },
+  })
+}
+
+export const useCancelCommunityInvite = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (inviteId: string) => api.communities.updateInvite(inviteId, 'CANCELED'),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CommunityKeys.invites })
+    },
   })
 }

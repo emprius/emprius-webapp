@@ -3,7 +3,7 @@ import { Button, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-u
 import { FiPlus } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useCommunities } from './queries'
+import { useDefaultUserCommunities, useUserCommunities } from './queries'
 import { CommunityCard } from './Card'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
@@ -14,8 +14,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 
 export const CommunitiesList: React.FC = () => {
   const { t } = useTranslation()
-  const { data, isLoading, isError } = useCommunities()
-  const bgColor = useColorModeValue('white', 'gray.800')
+  const { isLoading, isError, error, data } = useDefaultUserCommunities()
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -25,32 +24,20 @@ export const CommunitiesList: React.FC = () => {
     return <ElementNotFound icon={icons.users} title={t('common.error')} desc={t('common.something_went_wrong')} />
   }
 
-  if (!data?.communities || data.communities.length === 0) {
+  if (!data || data?.length === 0) {
     return (
-      <Stack spacing={6} p={6} bg={bgColor} borderRadius='lg' align='center'>
-        <ElementNotFound
-          icon={icons.users}
-          title={t('communities.no_communities')}
-          desc={t('communities.no_communities_desc')}
-        />
-        <Button as={RouterLink} to={ROUTES.COMMUNITIES.NEW} leftIcon={<FiPlus />} colorScheme='primary'>
-          {t('communities.create_community')}
-        </Button>
-      </Stack>
+      <ElementNotFound
+        icon={icons.users}
+        title={t('communities.no_communities')}
+        desc={t('communities.no_communities_desc')}
+      />
     )
   }
 
   return (
     <Stack spacing={6}>
-      <Flex justify='space-between' align='center'>
-        <Heading size='md'>{t('communities.your_communities')}</Heading>
-        <Button as={RouterLink} to={ROUTES.COMMUNITIES.NEW} leftIcon={<FiPlus />} colorScheme='primary' size='sm'>
-          {t('communities.create_community')}
-        </Button>
-      </Flex>
-
       <ResponsiveSimpleGrid>
-        {data.communities.map((community) => (
+        {data.map((community) => (
           <CommunityCard key={community.id} community={community} />
         ))}
       </ResponsiveSimpleGrid>

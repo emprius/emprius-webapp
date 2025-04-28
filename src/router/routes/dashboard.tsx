@@ -20,11 +20,9 @@ const UserDetailPage = lazy(() => import('~src/pages/users/detail').then((m) => 
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
 
 // Communities pages
-const CommunitiesListPage = lazy(() => import('~src/pages/communities/list').then((m) => ({ default: m.List })))
 const CommunityDetailPage = lazy(() => import('~src/pages/communities/detail').then((m) => ({ default: m.Detail })))
 const CommunityNewPage = lazy(() => import('~src/pages/communities/new').then((m) => ({ default: m.New })))
 const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then((m) => ({ default: m.Edit })))
-const CommunityInvitesPage = lazy(() => import('~src/pages/communities/invites').then((m) => ({ default: m.Invites })))
 
 const RatingElements = [
   {

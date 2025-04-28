@@ -1,57 +1,52 @@
-import { UserProfile } from '~components/Users/types'
+import { UserPreview } from '~components/Users/types'
 
 export type CommunityRole = 'owner' | 'user'
-
-export interface CommunityMember {
-  id: string
-  role: CommunityRole
-}
 
 export interface Community {
   id: string
   name: string
-  imageHash?: string
-  members: CommunityMember[]
+  ownerId: string
+  image?: string
+  membersCount: number
 }
 
 export interface CommunityResponse {
   communities: Community[]
 }
 
-export interface CommunityDetailResponse {
-  id: string
-  name: string
-  imageHash?: string
-  members: CommunityMember[]
-}
+// export interface Community {
+//   id: string
+//   name: string
+//   image?: string
+//   ownerId: string
+//   membersCount: number
+// }
 
-export interface CommunityUsersResponse {
-  users: UserProfile[]
-}
+export type CommunityUsersResponse = Array<UserPreview & { role: CommunityRole }>
 
 export interface CommunityInvite {
   id: string
   communityId: string
-  communityName: string
-  imageHash?: string
-  invitedBy: string
+  userId: string
+  inviterId: string
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED'
   createdAt: string
+  community: {
+    name: string
+    image: string
+  }
 }
 
-export interface CommunityInvitesResponse {
-  invites: CommunityInvite[]
-}
+export type CommunityInvitesResponse = CommunityInvite[]
 
 export interface CreateCommunityParams {
   name: string
-  imageHash?: string
+  image?: string
 }
 
-export interface UpdateCommunityParams {
+export type UpdateCommunityParams = {
   id: string
-  name?: string
-  imageHash?: string
-}
+} & Partial<CreateCommunityParams>
 
 export interface CommunityFormData {
   name: string

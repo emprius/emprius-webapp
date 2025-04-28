@@ -1,6 +1,0 @@
-export * from './list'
-export * from './detail'
-export * from './new'
-export * from './edit'
-export * from './invites'
-export * from './view'
