@@ -25,6 +25,7 @@ import { useInviteUserToCommunity } from './queries'
 import { useUsers } from '~components/Users/queries'
 import { UserProfile, UserProfileDTO } from '~components/Users/types'
 import { Avatar } from '~components/Images/Avatar'
+import { useAuth } from '~components/Auth/AuthContext'
 
 interface InviteUserModalProps {
   isOpen: boolean
@@ -38,6 +39,7 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
   const [searchTerm, setSearchTerm] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [selectedUser, setSelectedUser] = useState<UserProfileDTO | null>(null)
+  const { user: selfUser } = useAuth()
 
   // Implement our own debounce with useEffect
   useEffect(() => {
@@ -48,13 +50,12 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
     return () => clearTimeout(timer)
   }, [searchTerm])
 
-  // Use the updated users query with search parameter
-  const { data, isLoading } = useUsers({ page: 0 })
+  // Use the updated users query with username search parameter
+  const { data, isLoading } = useUsers({ page: 0, username: debouncedSearch })
   const { mutateAsync: inviteUser, isPending } = useInviteUserToCommunity()
 
-  // Filter users client-side based on search term
-  const filteredUsers =
-    data?.users?.filter((user) => user.name.toLowerCase().includes(debouncedSearch.toLowerCase())) || []
+  // Users are now filtered server-side based on the username parameter
+  const filteredUsers = data?.users.filter((user) => user.id !== selfUser.id) || []
 
   const handleInvite = async () => {
     if (!selectedUser) return

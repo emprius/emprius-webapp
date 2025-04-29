@@ -130,8 +130,8 @@ export const users = {
   updateProfile: (data: Partial<EditProfileFormDataDTO>) =>
     apiRequest(api.post<ApiResponse<UserProfileDTO>>('/profile', data)),
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfileDTO>>(`/users/${userId}`)),
-  getList: (page: number = 0, search?: string) =>
-    apiRequest(api.get<ApiResponse<{ users: UserProfileDTO[] }>>('/users', { params: { page, search } })),
+  getList: (page: number = 0, username?: string) =>
+    apiRequest(api.get<ApiResponse<{ users: UserProfileDTO[] }>>('/users', { params: { page, username } })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
