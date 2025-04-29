@@ -37,6 +37,7 @@ import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
 import { calculateDistance, toLatLng } from '~src/utils'
+import { CommunityCardLittle } from '~components/communities/Card'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -174,6 +175,16 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
                         </Text>
                         <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
                       </>
+                    )}
+                    {tool?.communities && (
+                      <Stack>
+                        <Text fontWeight='medium' mb={2} color='primary.500'>
+                          {t('communities.tool_of_communities', { defaultValue: 'Communities' })}
+                        </Text>
+                        <Stack direction={'row'} wrap={'wrap'}>
+                          {tool?.communities?.map((id) => <CommunityCardLittle id={id} />)}
+                        </Stack>
+                      </Stack>
                     )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>

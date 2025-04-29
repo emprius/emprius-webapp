@@ -1,12 +1,15 @@
 import React from 'react'
-import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, Heading, HStack, Icon, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Community } from './types'
 import { ROUTES } from '~src/router/routes'
 import { ServerImage } from '~components/Images/ServerImage'
 import { useAuth } from '~components/Auth/AuthContext'
+import { Avatar, AvatarSize } from '~components/Images/Avatar'
+import { useCommunityDetail } from '~components/communities/queries'
+import { icons } from '~theme/icons'
 
-interface CommunityCardProps {
+type CommunityCardProps = {
   community: Community
 }
 
@@ -54,5 +57,56 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
         </Flex>
       </Box>
     </Box>
+  )
+}
+
+type CommunityCardLittleProps = {
+  id: string
+  avatarSize?: AvatarSize
+}
+
+export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, avatarSize = 'md' }) => {
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const { data, isLoading } = useCommunityDetail(id)
+
+  if (isLoading) {
+    return (
+      <HStack spacing={4}>
+        <Skeleton height='32px' width='32px' borderRadius='full' />
+        <Stack spacing={2}>
+          <Skeleton height='16px' width='120px' />
+          <Skeleton height='14px' width='80px' />
+        </Stack>
+      </HStack>
+    )
+  }
+
+  if (!data) {
+    return null
+  }
+
+  return (
+    <Flex
+      flex={1}
+      align='center'
+      gap={4}
+      p={4}
+      bg={bgColor}
+      as={RouterLink}
+      to={`${ROUTES.COMMUNITIES.DETAIL.replace(':id', data.id)}`}
+    >
+      <Avatar username={data.name} avatarHash={data.image} size={avatarSize} isSquare />
+      <Stack direction={'column'} spacing={1}>
+        <HStack spacing={2}>
+          <Icon as={icons.communities} />
+          <Text fontWeight='bold' wordBreak='break-word'>
+            {data.name}
+          </Text>
+        </HStack>
+        <Text fontSize='sm' color='gray.500'>
+          {data?.membersCount} members
+        </Text>
+      </Stack>
+    </Flex>
   )
 }
