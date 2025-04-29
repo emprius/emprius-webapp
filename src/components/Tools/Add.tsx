@@ -47,11 +47,8 @@ export const AddTool = () => {
     let imageHashes: string[] = []
     imageHashes = await uploadImages(data.images)
     await createTool({
-      title: data.title,
-      description: data.description,
+      ...data,
       images: imageHashes,
-      toolCategory: data.toolCategory,
-      location: data.location,
       estimatedValue: Number(data.estimatedValue) || 0,
       height: Number(data.height),
       weight: Number(data.weight),
