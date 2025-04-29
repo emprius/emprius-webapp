@@ -40,12 +40,6 @@ export const BottomNav = () => {
         count: pendingRatingsCount,
         additionalPath: [ROUTES.RATINGS.HISTORY, ROUTES.RATINGS.PENDING],
       },
-      {
-        icon: icons.users,
-        path: pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST,
-        count: pendingInvitesCount,
-        additionalPath: [ROUTES.COMMUNITIES.LIST, ROUTES.COMMUNITIES.INVITES],
-      },
     ],
     [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
   )

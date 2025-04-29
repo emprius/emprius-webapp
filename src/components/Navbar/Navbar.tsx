@@ -22,7 +22,7 @@ import { usePendingActions } from '~components/Layout/Contexts/PendingActionsPro
 import { ContextSearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
-import { BadgeIcon } from '../Layout/BadgeIcon'
+import { BadgeCounter, BadgeIcon } from '../Layout/BadgeIcon'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
@@ -143,26 +143,21 @@ export const Navbar = () => {
                   <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                     {t('user.list_title')}
                   </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.COMMUNITIES.LIST} icon={icons.users({})}>
-                    {t('communities.title')}
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.COMMUNITIES.INVITES} icon={icons.users({})}>
-                    {t('communities.invites')}
-                    {pendingInvitesCount > 0 && (
-                      <Box
-                        ml={2}
-                        px={2}
-                        py={1}
-                        fontSize='xs'
-                        fontWeight='bold'
-                        lineHeight='none'
-                        color='white'
-                        bg='red.500'
-                        borderRadius='full'
-                      >
-                        {pendingInvitesCount}
-                      </Box>
-                    )}
+                  <MenuItem
+                    as={RouterLink}
+                    to={pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST}
+                    icon={icons.communities({})}
+                  >
+                    <BadgeCounter
+                      count={pendingInvitesCount}
+                      w={'min-content'}
+                      badgeProps={{
+                        right: -5,
+                        top: -1,
+                      }}
+                    >
+                      {t('communities.title', { defaultValue: 'Communities' })}
+                    </BadgeCounter>
                   </MenuItem>
                   <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>
