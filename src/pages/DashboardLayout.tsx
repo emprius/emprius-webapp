@@ -39,7 +39,7 @@ const SideNav = () => {
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
       {
-        icon: icons.users,
+        icon: icons.communities,
         label: t('communities.title'),
         // Show invites tab if there are pending invites
         path: pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST,

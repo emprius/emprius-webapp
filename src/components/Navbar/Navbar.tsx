@@ -175,7 +175,7 @@ export const Navbar = () => {
               to={isDashboardLayout ? ROUTES.SEARCH : ROUTES.PROFILE.VIEW}
               minW={avatarSizeToPixels['sm']}
             >
-              <UserAvatar size='sm' userId={user?.id} />
+              <UserAvatar size='sm' id={user?.id} />
             </Link>
           </>
         )}

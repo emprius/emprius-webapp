@@ -70,7 +70,7 @@ const MessageBubbles = ({
       direction={isRight ? 'row-reverse' : 'row'}
       {...flexProps}
     >
-      <UserAvatar userId={id} size='sm' linkProfile />
+      <UserAvatar id={id} size='sm' linkProfile />
       <Bubble isAuthor={isAuthor} isRight={isRight}>
         <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
           <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
