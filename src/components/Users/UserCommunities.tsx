@@ -1,13 +1,13 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Divider, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { useUserCommunities } from '~components/Communities/queries'
 import { useAuth } from '~components/Auth/AuthContext'
-import { CommunityCard } from '~components/Communities/Card'
+import { CommunityCard, CommunityCardLittle } from '~components/Communities/Card'
 
 export const UserCommunities = () => {
   const { t } = useTranslation()
@@ -42,7 +42,10 @@ export const UserCommunities = () => {
     <Stack spacing={6}>
       <Stack spacing={4}>
         {communities.map((community) => (
-          <CommunityCard key={community.id} community={community} />
+          <>
+            <CommunityCardLittle key={community.id} id={community.id} />
+            <Divider />
+          </>
         ))}
       </Stack>
     </Stack>

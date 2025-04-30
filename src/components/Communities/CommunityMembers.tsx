@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  Flex,
-  Heading,
-  Stack,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Button, Flex, Heading, Stack, useDisclosure } from '@chakra-ui/react'
 import { FiUserPlus } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { icons } from '~theme/icons'
@@ -32,8 +26,8 @@ export const CommunityMembers: React.FC = () => {
         <Heading size='md'>{t('communities.members')}</Heading>
 
         {isOwner && (
-          <Button leftIcon={<FiUserPlus />} colorScheme='primary' size='sm' onClick={onOpen}>
-            {t('communities.invite_user')}
+          <Button leftIcon={<FiUserPlus />} colorScheme='primary' onClick={onOpen}>
+            {t('communities.invite_user', { defaultValue: 'Invite user' })}
           </Button>
         )}
       </Flex>
@@ -53,10 +47,8 @@ export const CommunityMembers: React.FC = () => {
           ))}
         </Stack>
       )}
-      
-      {community && (
-        <InviteUserModal isOpen={isOpen} onClose={onClose} communityId={community.id} />
-      )}
+
+      {community && <InviteUserModal isOpen={isOpen} onClose={onClose} communityId={community.id} />}
     </>
   )
 }

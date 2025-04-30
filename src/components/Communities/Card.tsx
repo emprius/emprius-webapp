@@ -8,6 +8,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar, AvatarSize } from '~components/Images/Avatar'
 import { useCommunityDetail } from '~components/Communities/queries'
 import { icons } from '~theme/icons'
+import { useTranslation } from 'react-i18next'
 
 type CommunityCardProps = {
   community: Community
@@ -43,7 +44,10 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
 
       <Box p={4}>
         <Heading size='md' mb={2} noOfLines={1}>
-          {community.name}
+          <HStack>
+            <Icon as={icons.communities} />
+            <Box>{community.name}</Box>
+          </HStack>
         </Heading>
 
         <Flex justify='space-between' align='center' mt={2}>
@@ -67,6 +71,7 @@ type CommunityCardLittleProps = {
 
 export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, avatarSize = 'md' }) => {
   const bgColor = useColorModeValue('white', 'gray.800')
+  const { t } = useTranslation()
   const { data, isLoading } = useCommunityDetail(id)
 
   if (isLoading) {
@@ -104,7 +109,7 @@ export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, av
           </Text>
         </HStack>
         <Text fontSize='sm' color='gray.500'>
-          {data?.membersCount} members
+          {t('communities.member_count', { defaultValue: '{{ count }} members', count: data?.membersCount })}
         </Text>
       </Stack>
     </Flex>

@@ -12,6 +12,8 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -181,9 +183,9 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
                         <Text fontWeight='medium' mb={2} color='primary.500'>
                           {t('communities.tool_of_communities', { defaultValue: 'Communities' })}
                         </Text>
-                        <Stack direction={'row'} wrap={'wrap'}>
-                          {tool?.communities?.map((id) => <CommunityCardLittle id={id} />)}
-                        </Stack>
+                        <SimpleGrid minChildWidth='200px' spacing={1}>
+                          {tool?.communities?.map((id) => <CommunityCardLittle key={id} id={id} />)}
+                        </SimpleGrid>
                       </Stack>
                     )}
                     {tool.location && (

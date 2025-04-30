@@ -1,5 +1,17 @@
 import React from 'react'
-import { Box, Button, Flex, Heading, IconButton, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Stack,
+  Text,
+  useColorModeValue,
+  useToast,
+} from '@chakra-ui/react'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -105,7 +117,10 @@ export const CommunityDetail: React.FC = () => {
       <Box p={6}>
         <Flex justify='space-between' align='flex-start'>
           <Heading size='lg' mb={4}>
-            {community.name}
+            <HStack>
+              <Icon as={icons.communities} />
+              <Box>{community.name}</Box>
+            </HStack>
           </Heading>
 
           <Stack direction='row'>
@@ -129,7 +144,7 @@ export const CommunityDetail: React.FC = () => {
         </Flex>
 
         <Text color='gray.500' mb={4}>
-          {t('communities.member_count', { count: community.membersCount })}
+          {t('communities.member_count', { defaultValue: '{{ count }} members', count: community.membersCount })}
         </Text>
       </Box>
     </Box>
