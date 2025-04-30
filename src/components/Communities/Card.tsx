@@ -6,7 +6,7 @@ import { ROUTES } from '~src/router/routes'
 import { ServerImage } from '~components/Images/ServerImage'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar, AvatarSize } from '~components/Images/Avatar'
-import { useCommunityDetail } from '~components/communities/queries'
+import { useCommunityDetail } from '~components/Communities/queries'
 import { icons } from '~theme/icons'
 
 type CommunityCardProps = {

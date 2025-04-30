@@ -15,7 +15,7 @@ import {
   CommunityUsersResponse,
   CreateCommunityParams,
   UpdateCommunityParams,
-} from '~components/communities/types'
+} from '~components/Communities/types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {

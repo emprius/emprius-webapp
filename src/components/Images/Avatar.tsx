@@ -5,7 +5,7 @@ import { ASSETS } from '~utils/constants'
 import { useUserProfile } from '~components/Users/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
-import { useCommunityDetail } from '~components/communities/queries'
+import { useCommunityDetail } from '~components/Communities/queries'
 import api from '~src/services/api'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'

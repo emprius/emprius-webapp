@@ -37,7 +37,7 @@ import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
 import { calculateDistance, toLatLng } from '~src/utils'
-import { CommunityCardLittle } from '~components/communities/Card'
+import { CommunityCardLittle } from '~components/Communities/Card'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
