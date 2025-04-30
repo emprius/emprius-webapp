@@ -61,6 +61,14 @@ const RootRoutesElements = [
           </SuspenseLoader>
         ),
       },
+      {
+        path: ROUTES.USERS.TABS.COMMUNITIES,
+        element: (
+          <SuspenseLoader>
+            <UserDetail />
+          </SuspenseLoader>
+        ),
+      },
     ],
   },
 ]

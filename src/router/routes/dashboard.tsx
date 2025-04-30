@@ -16,7 +16,6 @@ const BookingsPage = lazy(() => import('~src/pages/bookings/view').then((m) => (
 const BookingDetailPage = lazy(() => import('~src/pages/bookings/detail').then((m) => ({ default: m.Detail })))
 const UserRatingsPage = lazy(() => import('~src/pages/ratings/view').then((m) => ({ default: m.View })))
 const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
-const UserDetailPage = lazy(() => import('~src/pages/users/detail').then((m) => ({ default: m.Detail })))
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
 
 // Communities pages
@@ -180,30 +179,6 @@ const UserElements = [
         element: (
           <SuspenseLoader>
             <UsersListPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        path: ROUTES.USERS.TABS.TOOLS,
-        element: (
-          <SuspenseLoader>
-            <UserDetailPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        path: ROUTES.USERS.TABS.RATINGS,
-        element: (
-          <SuspenseLoader>
-            <UserDetailPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        path: ROUTES.USERS.TABS.COMMUNITIES,
-        element: (
-          <SuspenseLoader>
-            <UserDetailPage />
           </SuspenseLoader>
         ),
       },
