@@ -31,10 +31,13 @@ export const ROUTES = {
   },
   COMMUNITIES: {
     LIST: '/communities/list',
-    DETAIL: '/communities/:id',
+    DETAIL: '/communities/:id/members', // Default tab is members
+    TABS: {
+      MEMBERS: '/communities/:id/members',
+      TOOLS: '/communities/:id/tools',
+    },
     EDIT: '/communities/:id/edit',
     NEW: '/communities/new',
-    USERS: '/communities/:id/users',
     INVITES: '/communities/invites',
   },
   AUTH: {

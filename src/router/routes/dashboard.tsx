@@ -133,6 +133,22 @@ const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').the
 
 const CommunityElements = [
   {
+    path: ROUTES.COMMUNITIES.DETAIL,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
+    path: ROUTES.COMMUNITIES.TABS.TOOLS,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
     element: <TitlePageLayout />,
     children: [
       {
@@ -148,14 +164,6 @@ const CommunityElements = [
         element: (
           <SuspenseLoader>
             <CommunitiesViewPage />
-          </SuspenseLoader>
-        ),
-      },
-      {
-        path: ROUTES.COMMUNITIES.DETAIL,
-        element: (
-          <SuspenseLoader>
-            <CommunityDetailPage />
           </SuspenseLoader>
         ),
       },

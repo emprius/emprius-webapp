@@ -73,9 +73,6 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       if (matchPath(ROUTES.COMMUNITIES.EDIT, pathname)) {
         return `${t('pages.communities.edit')} | ${baseTitle}`
       }
-      if (matchPath(ROUTES.COMMUNITIES.USERS, pathname)) {
-        return `${t('pages.communities.users')} | ${baseTitle}`
-      }
       return baseTitle
   }
 }
