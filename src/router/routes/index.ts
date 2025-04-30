@@ -30,7 +30,7 @@ export const ROUTES = {
     },
   },
   COMMUNITIES: {
-    LIST: '/communities',
+    LIST: '/communities/list',
     DETAIL: '/communities/:id',
     EDIT: '/communities/:id/edit',
     NEW: '/communities/new',
