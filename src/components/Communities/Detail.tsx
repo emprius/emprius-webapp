@@ -11,6 +11,7 @@ import {
   Text,
   useColorModeValue,
   useToast,
+  VStack,
 } from '@chakra-ui/react'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom'
@@ -143,9 +144,17 @@ export const CommunityDetail: React.FC = () => {
           </Stack>
         </Flex>
 
-        <Text color='gray.500' mb={4}>
-          {t('communities.member_count', { defaultValue: '{{ count }} members', count: community.membersCount })}
-        </Text>
+        <Flex direction={'column'} mb={4} gap={1}>
+          <Text color='gray.500'>
+            {t('communities.member_count', { defaultValue: '{{ count }} members', count: community.membersCount })}
+          </Text>
+          <Text color='gray.500'>
+            {t('communities.tools_count', {
+              defaultValue: '{{ count }} shared tools',
+              count: community.toolsCount ?? 0,
+            })}
+          </Text>
+        </Flex>
       </Box>
     </Box>
   )

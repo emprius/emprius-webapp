@@ -8,19 +8,8 @@ export interface Community {
   ownerId: string
   image?: string
   membersCount: number
+  toolsCount: number
 }
-
-export interface CommunityResponse {
-  communities: Community[]
-}
-
-// export interface Community {
-//   id: string
-//   name: string
-//   image?: string
-//   ownerId: string
-//   membersCount: number
-// }
 
 export type CommunityUsersResponse = Array<UserPreview & { role: CommunityRole }>
 
