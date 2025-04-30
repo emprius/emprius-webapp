@@ -157,6 +157,8 @@ export const communities = {
     apiRequest(api.put<ApiResponse<Community>>(`/communities/${id}`, data)),
   // Delete
   deleteCommunity: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/communities/${id}`)),
+  // Get community tools
+  getCommunityTools: (id: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/communities/${id}/tools`)),
   // Get users in a community
   getCommunityMembers: (id: string) =>
     apiRequest(api.get<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),

@@ -9,6 +9,7 @@ export const CommunityKeys = {
   user: (id: string) => ['communities', 'user', id],
   detail: (id: string) => ['communities', id],
   members: (id: string) => ['communities', id, 'members'],
+  tools: (id: string) => ['communities', id, 'tools'],
   invites: ['communities', 'invites'],
 }
 
@@ -43,6 +44,15 @@ export const useCommunityUsers = (id: string) => {
   return useQuery({
     queryKey: CommunityKeys.members(id),
     queryFn: () => api.communities.getCommunityMembers(id),
+    enabled: !!id,
+  })
+}
+
+// Get tools in a community
+export const useCommunityTools = (id: string) => {
+  return useQuery({
+    queryKey: CommunityKeys.tools(id),
+    queryFn: () => api.communities.getCommunityTools(id),
     enabled: !!id,
   })
 }
