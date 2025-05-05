@@ -40,6 +40,7 @@ import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
 import { calculateDistance, toLatLng } from '~src/utils'
 import { CommunityCardLittle } from '~components/Communities/Card'
+import { UserProfile } from '~components/Users/types'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -60,25 +61,15 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   })
 
   const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
-  const isOwner = tool.userId === user?.id
-  // Cannot book (cannot select dates and booking form is hide) when:
-  // If is owner and tool is not nomadic or
-  // tool is nomadic and is actual user or
-  // tool is nomadic and not actual user and is the owner
-  const canNotBook = useMemo(
-    () =>
-      (!tool.isNomadic && isOwner) ||
-      (tool.isNomadic && tool.actualUserId === user.id) ||
-      (tool.isNomadic && !tool.actualUserId && isOwner),
-    [tool?.isNomadic, tool?.actualUserId, isOwner, user?.id]
-  )
+
+  const canBook = canUserBookTool(tool, user)
 
   const isTooFarAway = useMemo(() => {
-    if (tool?.maxDistance && !canNotBook) {
+    if (tool?.maxDistance && canBook) {
       return tool?.maxDistance < calculateDistance(user.location, tool.location)
     }
     return false
-  }, [user?.location, tool?.location, canNotBook])
+  }, [user?.location, tool?.location, canBook])
 
   return (
     <FormProvider {...formMethods}>
@@ -226,9 +217,9 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
               )}
               <AvailabilityCalendar
                 reservedDates={tool.reservedDates || []}
-                isSelectable={tool.isAvailable && !canNotBook && !isTooFarAway}
+                isSelectable={tool.isAvailable && canBook && !isTooFarAway}
               />
-              <BookingFormWrapper tool={tool} canNotBook={canNotBook} isTooFarAway={isTooFarAway} />
+              <BookingFormWrapper tool={tool} canBook={canBook} isTooFarAway={isTooFarAway} />
             </Stack>
           </GridItem>
         </Grid>
@@ -239,11 +230,11 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
 
 const BookingFormWrapper = ({
   tool,
-  canNotBook,
+  canBook,
   isTooFarAway,
 }: {
   tool: Tool
-  canNotBook: boolean
+  canBook: boolean
   isTooFarAway: boolean
 }) => {
   const { t } = useTranslation()
@@ -276,7 +267,7 @@ const BookingFormWrapper = ({
     )
   }
 
-  if (canNotBook) {
+  if (!canBook) {
     return null
   }
 
@@ -295,4 +286,36 @@ const BookingFormWrapper = ({
   }
 
   return <BookingForm tool={tool} />
+}
+
+export function canUserBookTool(tool: Tool, user: UserProfile): boolean {
+  const isOwner = tool.userId === user.id
+  const isActualUser = tool.actualUserId === user.id
+
+  const isCommunityParticipant = tool.communities?.length
+    ? user.communities?.some(({ id }) => tool.communities?.includes(id))
+    : true
+
+  // Case 1: Tool is not nomadic and user is the owner → cannot book
+  if (!tool.isNomadic && isOwner) {
+    return false
+  }
+
+  // Case 2: Tool is nomadic and user is the actual user → cannot book
+  if (tool.isNomadic && isActualUser) {
+    return false
+  }
+
+  // Case 3: Tool is nomadic, has no actual user, and user is the owner → cannot book
+  if (tool.isNomadic && !tool.actualUserId && isOwner) {
+    return false
+  }
+
+  // Case 4: Tool belongs to a community and user is not a participant → cannot book
+  if (tool.communities?.length > 0 && !isCommunityParticipant) {
+    return false
+  }
+
+  // All checks passed → can book
+  return true
 }
