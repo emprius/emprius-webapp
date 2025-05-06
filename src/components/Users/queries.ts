@@ -6,7 +6,7 @@ import { toEmpriusLocation, toLatLng } from '~src/utils'
 export const UserKeys = {
   currentUser: ['user', 'current'],
   userId: (userId: string) => ['user', userId],
-  users: (page: number) => ['users', page],
+  users: (page: number, username?: string) => ['users', page, username],
 }
 
 export const useUpdateUserProfile = () => {
@@ -39,10 +39,10 @@ export const useUserProfile = (
     ...options,
   })
 
-export const useUsers = ({ page }: { page: number }) =>
+export const useUsers = ({ page, username }: { page: number; username?: string }) =>
   useQuery<GetUsersDTO>({
-    queryKey: UserKeys.users(page),
-    queryFn: () => users.getList(page),
+    queryKey: UserKeys.users(page, username),
+    queryFn: () => users.getList(page, username),
   })
 
 export const useRequestMoreCodes = () => {

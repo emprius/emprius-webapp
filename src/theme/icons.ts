@@ -3,6 +3,7 @@ import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 import { FaHeartbeat, FaCalendar, FaRoute } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { EditIcon } from '@chakra-ui/icons'
+import { RiUserCommunityFill } from 'react-icons/ri'
 
 export const icons = {
   user: FiUser,
@@ -21,4 +22,5 @@ export const icons = {
   calendar: FaCalendar,
   nomadic: FaRoute,
   edit: EditIcon,
+  communities: RiUserCommunityFill,
 }

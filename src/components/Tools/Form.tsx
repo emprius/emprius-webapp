@@ -3,9 +3,11 @@ import {
   Box,
   Button,
   Collapse,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   Icon,
   IconButton,
   Input,
@@ -21,12 +23,14 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Select } from 'chakra-react-select'
+import { Select, chakraComponents } from 'chakra-react-select'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { Avatar } from '~components/Images/Avatar'
 import { Image, ServerImage } from '~components/Images/ServerImage'
+import { useDefaultUserCommunities } from '~components/Communities/queries'
 import { useInfoContext } from '~components/Layout/Contexts/InfoContext'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
@@ -38,7 +42,6 @@ import { CreateToolParams } from '~components/Tools/types'
 
 export type ToolFormData = Omit<CreateToolParams, 'images'> & {
   images: FileList
-} & {
   id?: number
 }
 
@@ -173,6 +176,8 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         </Text>
         <Switch mt={2} size={'lg'} {...register('isNomadic')} />
       </FormControl>
+      <CommunitiesSelector control={control} setValue={setValue} watch={watch} errors={errors} />
+
       <LocationPicker name='location' control={control} isRequired={true} />
 
       {existingImages.length > 0 && (
@@ -312,6 +317,107 @@ interface MaybeFreeProps {
   setValue: (name: keyof ToolFormData, value: any) => void
   watch: (name: keyof ToolFormData) => any
   errors: any
+}
+
+interface CommunitiesSelectorProps {
+  control: any
+  setValue: (name: keyof ToolFormData, value: any) => void
+  watch: (name: keyof ToolFormData) => any
+  errors: any
+}
+
+const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ control, setValue, watch, errors }) => {
+  const { t } = useTranslation()
+  const { data: userCommunities, isLoading } = useDefaultUserCommunities()
+
+  // If there are no communities or still loading, return null
+  if ((!userCommunities || userCommunities.length === 0) && !isLoading) {
+    return null
+  }
+
+  // Custom option component to display community avatar and name
+  const CustomOption = ({ children, ...props }: any) => {
+    return (
+      <chakraComponents.Option {...props}>
+        <HStack>
+          <Avatar avatarHash={props.data.avatarHash} username={props.data.label} size='xs' />
+          <span>{children}</span>
+        </HStack>
+      </chakraComponents.Option>
+    )
+  }
+
+  // Custom multi-value component to display selected communities with avatars
+  const CustomMultiValueContainer = ({ children, ...props }: any) => {
+    return (
+      <chakraComponents.MultiValueContainer {...props}>
+        <HStack>
+          <Avatar avatarHash={props.data.avatarHash} username={props.data.label} size='2xs' />
+          {children}
+        </HStack>
+      </chakraComponents.MultiValueContainer>
+    )
+  }
+
+  return (
+    <FormControl isInvalid={!!errors.communities}>
+      <FormLabel>{t('tools.communities', { defaultValue: 'Share with Communities' })}</FormLabel>
+      <Text fontSize='sm' sx={lighterText}>
+        {t('tools.communities_description', {
+          defaultValue: 'The tool will only be visible for the members of the communities where you share it',
+        })}
+      </Text>
+      <Controller
+        name='communities'
+        control={control}
+        render={({ field }) => (
+          <Select
+            isMulti
+            options={userCommunities?.map((community) => ({
+              value: community.id,
+              label: community.name,
+              avatarHash: community.image,
+            }))}
+            placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
+            onChange={(newValue: any) => {
+              setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
+            }}
+            value={
+              userCommunities && watch('communities')
+                ? watch('communities')
+                    .map((id: string) => {
+                      const community = userCommunities.find((c) => c.id === id)
+                      return community
+                        ? {
+                            value: community.id,
+                            label: community.name,
+                            avatarHash: community.image,
+                          }
+                        : null
+                    })
+                    .filter(Boolean)
+                : []
+            }
+            components={{
+              Option: CustomOption,
+              MultiValueContainer: CustomMultiValueContainer,
+            }}
+            chakraStyles={{
+              menuList: (provided) => ({
+                ...provided,
+                zIndex: 9999,
+              }),
+              menu: (provided) => ({
+                ...provided,
+                zIndex: 9999,
+              }),
+            }}
+          />
+        )}
+      />
+      <FormErrorMessage>{errors.communities?.message}</FormErrorMessage>
+    </FormControl>
+  )
 }
 
 const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors }) => {

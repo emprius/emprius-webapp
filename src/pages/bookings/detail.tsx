@@ -16,7 +16,7 @@ export const Detail = () => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const location = useLocation()
-  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const { setData } = useOutletContext<TitlePageLayoutContext>()
   const { user } = useAuth()
 
   // Check if we have state passed from navigation
@@ -46,8 +46,8 @@ export const Detail = () => {
 
   // Set title
   useEffect(() => {
-    setTitle('')
-  }, [setTitle, t])
+    setData('')
+  }, [setData, t])
 
   if (isLoading) {
     return <LoadingSpinner />

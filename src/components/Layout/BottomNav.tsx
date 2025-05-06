@@ -17,7 +17,7 @@ type MenuItem = {
 }
 
 export const BottomNav = () => {
-  const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
+  const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -41,7 +41,7 @@ export const BottomNav = () => {
         additionalPath: [ROUTES.RATINGS.HISTORY, ROUTES.RATINGS.PENDING],
       },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
   )
 
   return (

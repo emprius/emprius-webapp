@@ -79,16 +79,11 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     const allImageHashes = [...existingImages, ...newImageHashes]
 
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
-      title: data.title,
-      description: data.description,
-      toolCategory: data.toolCategory,
+      ...data,
       estimatedValue: Number(data.estimatedValue),
       height: Number(data.height),
       weight: Number(data.weight),
-      location: data.location,
       images: allImageHashes,
-      isAvailable: data.isAvailable,
-      isNomadic: data.isNomadic,
     }
 
     await mutateAsync({

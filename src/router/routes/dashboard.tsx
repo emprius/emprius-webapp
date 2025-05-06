@@ -18,6 +18,11 @@ const UserRatingsPage = lazy(() => import('~src/pages/ratings/view').then((m) =>
 const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ default: m.List })))
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
 
+// Communities pages
+const CommunityDetailPage = lazy(() => import('~src/pages/communities/detail').then((m) => ({ default: m.Detail })))
+const CommunityNewPage = lazy(() => import('~src/pages/communities/new').then((m) => ({ default: m.New })))
+const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then((m) => ({ default: m.Edit })))
+
 const RatingElements = [
   {
     element: <TitlePageLayout />,
@@ -102,6 +107,81 @@ const DashboardForms = [
           </SuspenseLoader>
         ),
       },
+      {
+        path: ROUTES.COMMUNITIES.NEW,
+        element: (
+          <SuspenseLoader>
+            <CommunityNewPage />
+          </SuspenseLoader>
+        ),
+      },
+      {
+        path: ROUTES.COMMUNITIES.EDIT,
+        element: (
+          <SuspenseLoader>
+            <CommunityEditPage />
+          </SuspenseLoader>
+        ),
+      },
+    ],
+  },
+]
+
+// Import the new view component
+const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').then((m) => ({ default: m.View })))
+
+const CommunityElements = [
+  {
+    path: ROUTES.COMMUNITIES.DETAIL,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
+    path: ROUTES.COMMUNITIES.TABS.TOOLS,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
+    element: <TitlePageLayout />,
+    children: [
+      {
+        path: ROUTES.COMMUNITIES.LIST,
+        element: (
+          <SuspenseLoader>
+            <CommunitiesViewPage />
+          </SuspenseLoader>
+        ),
+      },
+      {
+        path: ROUTES.COMMUNITIES.INVITES,
+        element: (
+          <SuspenseLoader>
+            <CommunitiesViewPage />
+          </SuspenseLoader>
+        ),
+      },
+    ],
+  },
+]
+
+const UserElements = [
+  {
+    element: <TitlePageLayout />,
+    children: [
+      {
+        path: ROUTES.USERS.LIST,
+        element: (
+          <SuspenseLoader>
+            <UsersListPage />
+          </SuspenseLoader>
+        ),
+      },
     ],
   },
 ]
@@ -140,19 +220,8 @@ const DashboardRoutesElements = [
           ...DashboardForms,
           ...BookingElements,
           ...RatingElements,
-          {
-            element: <TitlePageLayout />,
-            children: [
-              {
-                path: ROUTES.USERS.LIST,
-                element: (
-                  <SuspenseLoader>
-                    <UsersListPage />
-                  </SuspenseLoader>
-                ),
-              },
-            ],
-          },
+          ...CommunityElements,
+          ...UserElements,
         ],
       },
     ],

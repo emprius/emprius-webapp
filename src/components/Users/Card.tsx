@@ -1,8 +1,19 @@
-import { Flex, FlexProps, HStack, Skeleton, Stack, StackProps, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Badge,
+  BadgeProps,
+  Flex,
+  FlexProps,
+  HStack,
+  Skeleton,
+  Stack,
+  StackProps,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { UseQueryOptions } from '@tanstack/react-query/build/modern'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { UserProfile, UserProfileDTO } from '~components/Users/types'
+import { UserPreview, UserProfile, UserProfileDTO } from '~components/Users/types'
 
 import { ROUTES } from '~src/router/routes'
 import { Avatar, AvatarSize } from '../Images/Avatar'
@@ -13,10 +24,12 @@ type UserMiniCardProps = {
   userId: string
   avatarSize?: AvatarSize
   direction?: StackProps['direction']
-  placeholderData?: UserProfileDTO
+  placeholderData?: UserPreview
   showRating?: boolean
   showAvatar?: boolean
   ratingProps?: Omit<RatingProps, 'rating'>
+  badge?: string
+  badgeProps?: BadgeProps
 } & FlexProps
 
 export const UserCard: React.FC<UserMiniCardProps> = ({
@@ -27,8 +40,12 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   showRating = true,
   showAvatar = true,
   ratingProps,
+  badge,
+  badgeProps,
   ...flexProps
 }) => {
+  // todo(kon): use user preview for that instead of the whole user profile which is not needed
+  // @ts-ignore
   const { data: user, isLoading } = useUserProfile(userId, { placeholderData })
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -64,9 +81,16 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
     >
       {showAvatar && <Avatar username={user.name} avatarHash={user.avatarHash} size={avatarSize} />}
       <Stack direction={direction} spacing={1}>
-        <Text fontWeight='bold' wordBreak='break-word'>
-          {user.name}
-        </Text>
+        <HStack>
+          <Text fontWeight='bold' wordBreak='break-word'>
+            {user.name}
+          </Text>
+          {badge && (
+            <Badge colorScheme='green' {...badgeProps}>
+              {badge}
+            </Badge>
+          )}
+        </HStack>
         {showRating && (
           <ShowRatingStars rating={user.rating} ratingCount={user.ratingCount} size='sm' {...ratingProps} />
         )}

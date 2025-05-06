@@ -5,6 +5,8 @@ import { ASSETS } from '~utils/constants'
 import { useUserProfile } from '~components/Users/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
+import { useCommunityDetail } from '~components/Communities/queries'
+import api from '~src/services/api'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
@@ -19,24 +21,23 @@ export const avatarSizeToPixels: Record<AvatarSize, string> = {
   '2xl': '128px',
 }
 
-export interface AvatarProps {
+export type AvatarProps = {
   avatarHash?: string
   username?: string
   size?: AvatarSize
+  isSquare?: boolean
 }
 
-export const UserAvatar = ({
-  userId,
-  size = '2xl',
-  linkProfile,
-}: {
-  userId: string
+export type LinkedAvatarProps = {
+  id: string
   linkProfile?: boolean
-} & Pick<AvatarProps, 'size'>) => {
-  const { data: user } = useUserProfile(userId)
+} & Pick<AvatarProps, 'size'>
+
+export const UserAvatar = ({ id, size = '2xl', linkProfile }: LinkedAvatarProps) => {
+  const { data: user } = useUserProfile(id)
   if (linkProfile) {
     return (
-      <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', userId)} minW={avatarSizeToPixels[size]}>
+      <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', id)} minW={avatarSizeToPixels[size]}>
         <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
       </Link>
     )
@@ -44,20 +45,13 @@ export const UserAvatar = ({
   return <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl' }) => {
-  if (username && !avatarHash) {
-    return <ChakraAvatar name={username} size={size} />
-  }
-
+export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl', isSquare = false }) => {
   return (
-    <ServerImage
-      imageId={avatarHash || ''}
-      fallbackSrc={ASSETS.AVATAR_FALLBACK}
-      alt='Avatar'
-      borderRadius='full'
-      boxSize={avatarSizeToPixels[size]}
-      objectFit='cover'
-      thumbnail
+    <ChakraAvatar
+      src={api.images.getImage(avatarHash, true)}
+      name={username}
+      size={size}
+      borderRadius={isSquare ? 'md' : 'full'}
     />
   )
 }

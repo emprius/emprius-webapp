@@ -12,6 +12,8 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -37,6 +39,7 @@ import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
 import { calculateDistance, toLatLng } from '~src/utils'
+import { CommunityCardLittle } from '~components/Communities/Card'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -174,6 +177,16 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
                         </Text>
                         <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
                       </>
+                    )}
+                    {tool?.communities && (
+                      <Stack>
+                        <Text fontWeight='medium' mb={2} color='primary.500'>
+                          {t('communities.tool_of_communities', { defaultValue: 'Communities' })}
+                        </Text>
+                        <SimpleGrid minChildWidth='200px' spacing={1}>
+                          {tool?.communities?.map((id) => <CommunityCardLittle key={id} id={id} />)}
+                        </SimpleGrid>
+                      </Stack>
                     )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>

@@ -6,6 +6,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 export type ProfilePendings = {
   pendingRatingsCount: number
   pendingRequestsCount: number
+  pendingInvitesCount: number
 }
 
 type PendingActionsContextType = {
@@ -15,6 +16,7 @@ type PendingActionsContextType = {
 const PendingActionsContext = createContext<PendingActionsContextType>({
   pendingRatingsCount: 0,
   pendingRequestsCount: 0,
+  pendingInvitesCount: 0,
   isLoading: false,
 })
 
@@ -34,6 +36,7 @@ export const PendingActionsProvider = ({ children }: { children: React.ReactNode
   const value = {
     pendingRatingsCount: data?.pendingRatingsCount ?? 0,
     pendingRequestsCount: data?.pendingRequestsCount ?? 0,
+    pendingInvitesCount: data?.pendingInvitesCount ?? 0,
     isLoading,
   }
 

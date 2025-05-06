@@ -26,7 +26,19 @@ export const ROUTES = {
     TABS: {
       TOOLS: '/users/:id/tools',
       RATINGS: '/users/:id/ratings',
+      COMMUNITIES: '/users/:id/communities',
     },
+  },
+  COMMUNITIES: {
+    LIST: '/communities/list',
+    DETAIL: '/communities/:id/members', // Default tab is members
+    TABS: {
+      MEMBERS: '/communities/:id/members',
+      TOOLS: '/communities/:id/tools',
+    },
+    EDIT: '/communities/:id/edit',
+    NEW: '/communities/new',
+    INVITES: '/communities/invites',
   },
   AUTH: {
     LOGIN: '/login',

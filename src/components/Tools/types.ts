@@ -24,6 +24,7 @@ export type Tool = {
   isNomadic?: boolean
   actualUserId?: string
   maxDistance?: number
+  communities?: string[] // Array of community IDs where this tool is shared
 }
 
 export type ToolLocated = {
@@ -50,6 +51,7 @@ export type CreateToolParams = {
   weight?: number // uint64
   isNomadic?: boolean
   maxDistance?: number
+  communities?: string[] // Array of community IDs where this tool is shared
 }
 
 export type UpdateToolParams = CreateToolParams & {

@@ -22,7 +22,7 @@ import { usePendingActions } from '~components/Layout/Contexts/PendingActionsPro
 import { ContextSearchBar } from '~components/Search/SearchBar'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
-import { BadgeIcon } from '../Layout/BadgeIcon'
+import { BadgeCounter, BadgeIcon } from '../Layout/BadgeIcon'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
@@ -31,7 +31,7 @@ import logo from '/assets/logos/logo.png'
 export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
-  const { pendingRatingsCount, pendingRequestsCount } = usePendingActions()
+  const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
   const location = useLocation()
 
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -143,6 +143,22 @@ export const Navbar = () => {
                   <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                     {t('user.list_title')}
                   </MenuItem>
+                  <MenuItem
+                    as={RouterLink}
+                    to={pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST}
+                    icon={icons.communities({})}
+                  >
+                    <BadgeCounter
+                      count={pendingInvitesCount}
+                      w={'min-content'}
+                      badgeProps={{
+                        right: -5,
+                        top: -1,
+                      }}
+                    >
+                      {t('communities.title', { defaultValue: 'Communities' })}
+                    </BadgeCounter>
+                  </MenuItem>
                   <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>
               </Menu>
@@ -154,7 +170,7 @@ export const Navbar = () => {
               to={isDashboardLayout ? ROUTES.SEARCH : ROUTES.PROFILE.VIEW}
               minW={avatarSizeToPixels['sm']}
             >
-              <UserAvatar size='sm' userId={user?.id} />
+              <UserAvatar size='sm' id={user?.id} />
             </Link>
           </>
         )}

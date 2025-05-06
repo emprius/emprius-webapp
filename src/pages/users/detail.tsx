@@ -13,6 +13,7 @@ import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { UserTools } from '~components/Users/UserTools'
 import { UserRatings } from '~components/Users/UserRatings'
+import { UserCommunities } from '~components/Users/UserCommunities'
 
 export const Detail = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -44,6 +45,11 @@ export const Detail = () => {
       path: ROUTES.USERS.TABS.RATINGS.replace(':id', id),
       label: t('common.ratings'),
       content: <UserRatings />,
+    },
+    {
+      path: ROUTES.USERS.TABS.COMMUNITIES.replace(':id', id),
+      label: t('communities.title'),
+      content: <UserCommunities />,
     },
   ]
 

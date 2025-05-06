@@ -6,11 +6,11 @@ import { UsersList } from '~components/Users/List'
 
 export const List = () => {
   const { t } = useTranslation()
-  const { setTitle } = useOutletContext<TitlePageLayoutContext>()
+  const { setData } = useOutletContext<TitlePageLayoutContext>()
 
   useEffect(() => {
-    setTitle(t('users.list_title'))
-  }, [setTitle])
+    setData(t('users.list_title'))
+  }, [setData])
 
   return <UsersList />
 }

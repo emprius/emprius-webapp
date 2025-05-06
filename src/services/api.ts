@@ -4,11 +4,18 @@ import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
 import type { RateSubmission, UnifiedRating } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
-import { CreateToolDTO, ToolDTO, ToolsListResponse, UpdateToolParams } from '~components/Tools/types'
-import { EditProfileFormData, EditProfileFormDataDTO, GetUsersDTO, UserProfileDTO } from '~components/Users/types'
+import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/types'
+import { EditProfileFormDataDTO, UserProfileDTO } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
+import {
+  Community,
+  CommunityInvitesResponse,
+  CommunityUsersResponse,
+  CreateCommunityParams,
+  UpdateCommunityParams,
+} from '~components/Communities/types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -123,17 +130,52 @@ export const users = {
   updateProfile: (data: Partial<EditProfileFormDataDTO>) =>
     apiRequest(api.post<ApiResponse<UserProfileDTO>>('/profile', data)),
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfileDTO>>(`/users/${userId}`)),
-  getList: (page: number = 0) => apiRequest(api.get<ApiResponse<GetUsersDTO>>('/users', { params: { page } })),
+  getList: (page: number = 0, username?: string) =>
+    apiRequest(api.get<ApiResponse<{ users: UserProfileDTO[] }>>('/users', { params: { page, username } })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
+  // Get all communities for a specific user
+  getUserCommunities: (userId: string) => apiRequest(api.get<ApiResponse<Community[]>>(`/users/${userId}/communities`)),
 }
 
 // images
 export const images = {
   uploadImage: (content: string) => apiRequest(api.post<ApiResponse<ImageUploadResponse>>('/images', { content })),
   getImage: (hash: string, thumbnail?: boolean) =>
-    `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}`,
+    hash?.length ? `${api.defaults.baseURL}/images/${hash}${thumbnail ? '?thumbnail=true' : ''}` : '',
+}
+
+// Communities endpoints
+export const communities = {
+  // Create a new community
+  createCommunity: (data: CreateCommunityParams) => apiRequest(api.post<ApiResponse<Community>>(`/communities`, data)),
+  // Get a specific community by ID
+  getCommunityById: (id: string) => apiRequest(api.get<ApiResponse<Community>>(`/communities/${id}`)),
+  // Update community
+  updateCommunity: (id: string, data: UpdateCommunityParams) =>
+    apiRequest(api.put<ApiResponse<Community>>(`/communities/${id}`, data)),
+  // Delete
+  deleteCommunity: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/communities/${id}`)),
+  // Get community tools
+  getCommunityTools: (id: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/communities/${id}/tools`)),
+  // Get users in a community
+  getCommunityMembers: (id: string) =>
+    apiRequest(api.get<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),
+  // Invite a user to a community
+  inviteUser: (id: string, userId: string) =>
+    apiRequest(api.post<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members/${userId}`)),
+  // Leave community
+  leaveCommunity: (id: string) =>
+    apiRequest(api.delete<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),
+  // Remove a user to a community
+  removeUser: (id: string, userId: string) =>
+    apiRequest(api.delete<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members/${userId}`)),
+  // Get pending invites for the current user
+  getInvites: () => apiRequest(api.get<ApiResponse<CommunityInvitesResponse>>(`/communities/invites`)),
+  // Update invite status
+  updateInvite: (id, status: 'REJECTED' | 'ACCEPTED' | 'CANCELED') =>
+    apiRequest(api.put<ApiResponse<CommunityInvitesResponse>>(`/communities/invites/${id}`, { status: status })),
 }
 
 // Info endpoints
@@ -148,4 +190,5 @@ export default {
   users,
   images,
   info,
+  communities,
 }
