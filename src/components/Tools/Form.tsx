@@ -6,7 +6,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  HStack,
   Icon,
   IconButton,
   Input,
@@ -22,14 +21,12 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Select, chakraComponents } from 'chakra-react-select'
-import React, { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Select } from 'chakra-react-select'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { Avatar } from '~components/Images/Avatar'
 import { Image, ServerImage } from '~components/Images/ServerImage'
-import { useDefaultUserCommunities } from '~components/Communities/queries'
 import { useInfoContext } from '~components/Layout/Contexts/InfoContext'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
@@ -39,6 +36,8 @@ import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { CreateToolParams, ToolDetail } from '~components/Tools/types'
 import { useAuth } from '~components/Auth/AuthContext'
+import { MaybeFree } from '~components/Tools/Form/MaybeFree'
+import { CommunitiesSelector } from '~components/Tools/Form/CommunitiesSelector'
 
 export type ToolFormData = Omit<CreateToolParams, 'images'> & {
   images: FileList
@@ -317,184 +316,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
             </Button>
           </Stack>
         </Stack>
-      </Stack>
-    </Stack>
-  )
-}
-
-interface MaybeFreeProps {
-  control: any
-  setValue: (name: keyof ToolFormData, value: any) => void
-  watch: (name: keyof ToolFormData) => any
-  errors: any
-}
-
-interface CommunitiesSelectorProps {
-  control: any
-  setValue: (name: keyof ToolFormData, value: any) => void
-  watch: (name: keyof ToolFormData) => any
-  errors: any
-}
-
-const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ control, setValue, watch, errors }) => {
-  const { t } = useTranslation()
-  const { data: userCommunities, isLoading } = useDefaultUserCommunities()
-
-  // If there are no communities or still loading, return null
-  if ((!userCommunities || userCommunities.length === 0) && !isLoading) {
-    return null
-  }
-
-  // Custom option component to display community avatar and name
-  const CustomOption = ({ children, ...props }: any) => {
-    return (
-      <chakraComponents.Option {...props}>
-        <HStack>
-          <Avatar avatarHash={props.data.avatarHash} username={props.data.label} size='xs' />
-          <span>{children}</span>
-        </HStack>
-      </chakraComponents.Option>
-    )
-  }
-
-  // Custom multi-value component to display selected communities with avatars
-  const CustomMultiValueContainer = ({ children, ...props }: any) => {
-    return (
-      <chakraComponents.MultiValueContainer {...props}>
-        <HStack>
-          <Avatar avatarHash={props.data.avatarHash} username={props.data.label} size='2xs' />
-          {children}
-        </HStack>
-      </chakraComponents.MultiValueContainer>
-    )
-  }
-
-  return (
-    <FormControl isInvalid={!!errors.communities}>
-      <FormLabel>{t('tools.communities', { defaultValue: 'Share with Communities' })}</FormLabel>
-      <Text fontSize='sm' sx={lighterText}>
-        {t('tools.communities_description', {
-          defaultValue: 'The tool will only be visible for the members of the communities where you share it',
-        })}
-      </Text>
-      <Controller
-        name='communities'
-        control={control}
-        render={({ field }) => (
-          <Select
-            isMulti
-            options={userCommunities?.map((community) => ({
-              value: community.id,
-              label: community.name,
-              avatarHash: community.image,
-            }))}
-            placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
-            onChange={(newValue: any) => {
-              setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
-            }}
-            value={
-              userCommunities && watch('communities')
-                ? watch('communities')
-                    .map((id: string) => {
-                      const community = userCommunities.find((c) => c.id === id)
-                      return community
-                        ? {
-                            value: community.id,
-                            label: community.name,
-                            avatarHash: community.image,
-                          }
-                        : null
-                    })
-                    .filter(Boolean)
-                : []
-            }
-            components={{
-              Option: CustomOption,
-              MultiValueContainer: CustomMultiValueContainer,
-            }}
-            chakraStyles={{
-              menuList: (provided) => ({
-                ...provided,
-                zIndex: 9999,
-              }),
-              menu: (provided) => ({
-                ...provided,
-                zIndex: 9999,
-              }),
-            }}
-          />
-        )}
-      />
-      <FormErrorMessage>{errors.communities?.message}</FormErrorMessage>
-    </FormControl>
-  )
-}
-
-const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors }) => {
-  const { t } = useTranslation()
-  const [isFree, setIsFree] = useState(false)
-
-  useEffect(() => {
-    // Check initial value and set switch state
-    const value = watch('estimatedValue')
-    if (value === 0) {
-      setIsFree(true)
-    }
-  }, [])
-
-  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked
-    setIsFree(checked)
-    if (checked) {
-      setValue('estimatedValue', 0)
-    }
-  }
-
-  return (
-    <Stack spacing={2}>
-      <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
-        <FormControl display='flex' flexDirection={'column'} alignItems='start' width='auto' gap={1}>
-          <FormLabel htmlFor='isFree' mr={3}>
-            {t('tools.is_free')}
-          </FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
-            {t('tools.tool_is_free_description', {
-              defaultValue: 'No cost associated for loan the tool',
-            })}
-          </Text>
-          <Switch mt={4} id='isFree' isChecked={isFree} onChange={handleSwitchChange} size={'lg'} />
-        </FormControl>
-        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.estimatedValue} isRequired={!isFree}>
-          <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
-            {t('tools.tool_estimated_value_description', {
-              defaultValue:
-                'Set the estimated value of your tool. If the tool is not free, this value will be used to calculate the cost per day.',
-            })}
-          </Text>
-          <Controller
-            name='estimatedValue'
-            control={control}
-            rules={{
-              validate: (value) => {
-                if (!isFree && (!value || value <= 0)) {
-                  return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
-                }
-                return true
-              },
-            }}
-            render={({ field }) => (
-              <NumberInput min={0} precision={0} isDisabled={isFree} {...field}>
-                <NumberInputField placeholder={t('tools.enter_estimated_value')} />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            )}
-          />
-          <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
-        </FormControl>
       </Stack>
     </Stack>
   )
