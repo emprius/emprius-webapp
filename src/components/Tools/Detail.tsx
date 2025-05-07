@@ -62,14 +62,7 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
 
   const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
 
-  const canBook = canUserBookTool(tool, user)
-
-  const isTooFarAway = useMemo(() => {
-    if (tool?.maxDistance && canBook) {
-      return tool?.maxDistance < calculateDistance(user.location, tool.location)
-    }
-    return false
-  }, [user?.location, tool?.location, canBook])
+  const canBook = useMemo(() => canUserBookTool(tool, user), [tool, user])
 
   return (
     <FormProvider {...formMethods}>
@@ -217,9 +210,9 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
               )}
               <AvailabilityCalendar
                 reservedDates={tool.reservedDates || []}
-                isSelectable={tool.isAvailable && canBook && !isTooFarAway}
+                isSelectable={tool.isAvailable && canBook.canBook}
               />
-              <BookingFormWrapper tool={tool} canBook={canBook} isTooFarAway={isTooFarAway} />
+              <BookingFormWrapper tool={tool} canBook={canBook} />
             </Stack>
           </GridItem>
         </Grid>
@@ -228,15 +221,7 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   )
 }
 
-const BookingFormWrapper = ({
-  tool,
-  canBook,
-  isTooFarAway,
-}: {
-  tool: Tool
-  canBook: boolean
-  isTooFarAway: boolean
-}) => {
+const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: CanBook }) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const { isAuthenticated, user } = useAuth()
@@ -267,55 +252,80 @@ const BookingFormWrapper = ({
     )
   }
 
-  if (!canBook) {
-    return null
+  switch (canBook.why) {
+    case 'isTooFarAway':
+      return (
+        <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+          <Text sx={lightText}>{t('bookings.is_too_far_away', { defaultValue: 'The tool is to far away' })}</Text>
+          <Text color='gray.600' mb={4} sx={lightText}>
+            {t('bookings.is_too_far_away_desc', { defaultValue: 'Tool settings set a maximum loan distance' })}
+          </Text>
+          <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
+            {t('tools.find_other')}
+          </Link>
+        </Box>
+      )
+    case 'isNotInCommunity':
+      return (
+        <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
+          <Text sx={lightText}>
+            {t('bookings.you_are_not_community_member', { defaultValue: 'Yoy are not member of the community' })}
+          </Text>
+          <Text color='gray.600' mb={4} sx={lightText}>
+            {t('bookings.not_community_member_description', {
+              defaultValue: 'This tool belongs into a community and your are not member of it',
+            })}
+          </Text>
+          <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
+            {t('tools.find_other')}
+          </Link>
+        </Box>
+      )
   }
 
-  if (isTooFarAway) {
-    return (
-      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-        <Text sx={lightText}>{t('bookings.is_too_far_away', { defaultValue: 'The tool is to far away' })}</Text>
-        <Text color='gray.600' mb={4} sx={lightText}>
-          {t('bookings.is_too_far_away_desc', { defaultValue: 'Tool settings set a maximum loan distance' })}
-        </Text>
-        <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
-          {t('tools.find_other')}
-        </Link>
-      </Box>
-    )
+  if (!canBook.canBook) {
+    return null
   }
 
   return <BookingForm tool={tool} />
 }
 
-export function canUserBookTool(tool: Tool, user: UserProfile): boolean {
+type CannotBookCase = 'isOwner' | 'isActualUser' | 'isNotInCommunity' | 'isTooFarAway' | null
+type CanBook = { canBook: boolean; why: CannotBookCase }
+
+export function canUserBookTool(tool: ToolLocated, user: UserProfile): CanBook {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
+
+  // Case 1: Tool is not nomadic and user is the owner → cannot book
+  if (!tool.isNomadic && isOwner) {
+    return { canBook: false, why: 'isOwner' }
+  }
+
+  // Case 2: Tool is nomadic and user is the actual user → cannot book
+  if (tool.isNomadic && isActualUser) {
+    return { canBook: false, why: 'isActualUser' }
+  }
+
+  // Case 3: Tool is nomadic, has no actual user, and user is the owner → cannot book
+  if (tool.isNomadic && !tool.actualUserId && isOwner) {
+    return { canBook: false, why: 'isOwner' }
+  }
 
   const isCommunityParticipant = tool.communities?.length
     ? user.communities?.some(({ id }) => tool.communities?.includes(id))
     : true
 
-  // Case 1: Tool is not nomadic and user is the owner → cannot book
-  if (!tool.isNomadic && isOwner) {
-    return false
-  }
-
-  // Case 2: Tool is nomadic and user is the actual user → cannot book
-  if (tool.isNomadic && isActualUser) {
-    return false
-  }
-
-  // Case 3: Tool is nomadic, has no actual user, and user is the owner → cannot book
-  if (tool.isNomadic && !tool.actualUserId && isOwner) {
-    return false
-  }
-
   // Case 4: Tool belongs to a community and user is not a participant → cannot book
   if (tool.communities?.length > 0 && !isCommunityParticipant) {
-    return false
+    return { canBook: false, why: 'isNotInCommunity' }
+  }
+
+  // Case 5: Tool is too far away → cannot book
+  if (tool?.maxDistance && tool?.maxDistance < calculateDistance(user.location, tool.location)) {
+    return { canBook: false, why: 'isTooFarAway' }
   }
 
   // All checks passed → can book
-  return true
+  return { canBook: true, why: null }
 }
