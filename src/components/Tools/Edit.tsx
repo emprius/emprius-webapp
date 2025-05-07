@@ -13,12 +13,14 @@ interface EditToolFormProps {
   initialData: Tool
 }
 
-export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, ...initial } }) => {
+export const EditTool: React.FC<EditToolFormProps> = ({ initialData }) => {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const toast = useToast()
   const { user } = useAuth()
   const navigate = useNavigate()
+  const images = initialData.images
+
   const {
     mutateAsync: uploadImages,
     isPending: uploadImagesIsPending,
@@ -53,7 +55,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
   })
 
   // Only allow editing if the current user is the tool owner
-  if (user?.id !== initial.userId) {
+  if (user?.id !== initialData.userId) {
     return <Text color='red.500'>{t('tools.not_owner')}</Text>
   }
 
@@ -87,14 +89,11 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
     }
 
     await mutateAsync({
-      id: initial.id.toString(),
+      id: initialData.id.toString(),
       ...updatedFields,
     })
   }
 
-  const initialData = {
-    ...initial,
-  }
   const isLoading = updateToolIsPending || uploadImagesIsPending
   const isError = isUpdateError || isImageError
   const error = updateError || imageError
@@ -112,8 +111,8 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData: { images, .
       isError={isError}
       error={error}
       onDeleteExistingImage={handleDeleteExistingImage}
-      isEdit
       validateImages={validateImages}
+      tool={initialData}
     />
   )
 }

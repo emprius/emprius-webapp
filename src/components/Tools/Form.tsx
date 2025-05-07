@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Collapse,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -38,7 +37,8 @@ import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
-import { CreateToolParams } from '~components/Tools/types'
+import { CreateToolParams, ToolDetail } from '~components/Tools/types'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export type ToolFormData = Omit<CreateToolParams, 'images'> & {
   images: FileList
@@ -54,8 +54,8 @@ interface ToolFormProps {
   error?: any
   existingImages?: Image[]
   onDeleteExistingImage?: (index: number) => void
-  isEdit?: boolean
   validateImages?: (images: FileList) => string | true
+  tool?: ToolDetail
 }
 
 export const ToolForm: React.FC<ToolFormProps> = ({
@@ -67,12 +67,13 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   error,
   existingImages = [],
   onDeleteExistingImage,
-  isEdit,
   validateImages,
+  tool,
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { categories } = useInfoContext()
+  const { user } = useAuth()
 
   const {
     register,
@@ -93,6 +94,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   }
 
   const { isOpen, onToggle } = useDisclosure()
+  const isNomadicChangeDisabled = !!tool && tool?.actualUserId && tool?.actualUserId !== user.id
 
   return (
     <Stack as='form' onSubmit={handleSubmit(handleFormSubmit)} spacing={6}>
@@ -174,7 +176,15 @@ export const ToolForm: React.FC<ToolFormProps> = ({
               'Tools change location every time they are rented. Once rented, they stay at the new location until rented again.',
           })}
         </Text>
-        <Switch mt={2} size={'lg'} {...register('isNomadic')} />
+        <Switch mt={2} size={'lg'} {...register('isNomadic')} disabled={isNomadicChangeDisabled} />
+        {isNomadicChangeDisabled && (
+          <FormHelperText>
+            {t('tools.nomadic_change_disabled', {
+              defaultValue:
+                "You can't change this option until the tool is back with you. Create and pick booking to get it back to your location",
+            })}
+          </FormHelperText>
+        )}
       </FormControl>
       <CommunitiesSelector control={control} setValue={setValue} watch={watch} errors={errors} />
 
@@ -297,7 +307,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <FormSubmitMessage isError={isError} error={error} />
         </Stack>
         <Stack direction='row' spacing={4} justify='space-between' w={'full'} align={'start'} wrap={'wrap-reverse'}>
-          {isEdit && initialData?.id && <DeleteToolButton toolId={initialData?.id} disabled={isLoading} />}
+          {tool?.id && <DeleteToolButton toolId={initialData?.id} disabled={isLoading} />}
           <Stack direction='row' spacing={4} justify='flex-end' flex={1}>
             <Button onClick={() => navigate(-1)} variant='ghost'>
               {t('common.cancel')}
