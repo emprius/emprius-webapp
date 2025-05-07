@@ -7,40 +7,33 @@ import {
   Grid,
   GridItem,
   Icon,
-  Link,
   SimpleGrid,
   Stack,
   Text,
   useColorModeValue,
-  Wrap,
-  WrapItem,
 } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiBox, FiDollarSign, FiTag } from 'react-icons/fi'
 import { LuWeight } from 'react-icons/lu'
-import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { BookingForm } from '~components/Bookings/Form'
+import { BookingFormData } from '~components/Bookings/Form'
 import { useInfoContext } from '~components/Layout/Contexts/InfoContext'
 import { ImageCarousel } from '~components/Images/ImageCarousel'
 import { MapWithMarker } from '~components/Layout/Map/Map'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { Tool, ToolLocated } from '~components/Tools/types'
+import { ToolLocated } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
-import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { FormProvider, useForm } from 'react-hook-form'
-import { BookingFormData } from '~components/Bookings/Form'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
-import { calculateDistance, toLatLng } from '~src/utils'
 import { CommunityCardLittle } from '~components/Communities/Card'
-import { UserProfile } from '~components/Users/types'
+import { BookingFormWrapper, canUserBookTool } from '~components/Tools/FormWrapper'
 
 export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
   const { t } = useTranslation()
@@ -219,113 +212,4 @@ export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
       </Container>
     </FormProvider>
   )
-}
-
-const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: CanBook }) => {
-  const { t } = useTranslation()
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const { isAuthenticated, user } = useAuth()
-
-  if (!isAuthenticated) {
-    return (
-      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-        <Text sx={lightText} mb={4}>
-          {t('tools.login_to_book')}
-        </Text>
-        <Link as={RouterLink} to={ROUTES.AUTH.LOGIN} color='primary.500' fontWeight='medium'>
-          {t('nav.login')}
-        </Link>
-      </Box>
-    )
-  }
-
-  if (!tool.isAvailable) {
-    return (
-      <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-        <Text sx={lightText} mb={4}>
-          {t('tools.not_available')}
-        </Text>
-        <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
-          {t('tools.find_other')}
-        </Link>
-      </Box>
-    )
-  }
-
-  switch (canBook.why) {
-    case 'isTooFarAway':
-      return (
-        <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-          <Text sx={lightText}>{t('bookings.is_too_far_away', { defaultValue: 'The tool is to far away' })}</Text>
-          <Text color='gray.600' mb={4} sx={lightText}>
-            {t('bookings.is_too_far_away_desc', { defaultValue: 'Tool settings set a maximum loan distance' })}
-          </Text>
-          <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
-            {t('tools.find_other')}
-          </Link>
-        </Box>
-      )
-    case 'isNotInCommunity':
-      return (
-        <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-          <Text sx={lightText}>
-            {t('bookings.you_are_not_community_member', { defaultValue: 'Yoy are not member of the community' })}
-          </Text>
-          <Text color='gray.600' mb={4} sx={lightText}>
-            {t('bookings.not_community_member_description', {
-              defaultValue: 'This tool belongs into a community and your are not member of it',
-            })}
-          </Text>
-          <Link as={RouterLink} to={ROUTES.SEARCH} color='primary.500' fontWeight='medium'>
-            {t('tools.find_other')}
-          </Link>
-        </Box>
-      )
-  }
-
-  if (!canBook.canBook) {
-    return null
-  }
-
-  return <BookingForm tool={tool} />
-}
-
-type CannotBookCase = 'isOwner' | 'isActualUser' | 'isNotInCommunity' | 'isTooFarAway' | null
-type CanBook = { canBook: boolean; why: CannotBookCase }
-
-export function canUserBookTool(tool: ToolLocated, user: UserProfile): CanBook {
-  const isOwner = tool.userId === user.id
-  const isActualUser = tool.actualUserId === user.id
-
-  // Case 1: Tool is not nomadic and user is the owner → cannot book
-  if (!tool.isNomadic && isOwner) {
-    return { canBook: false, why: 'isOwner' }
-  }
-
-  // Case 2: Tool is nomadic and user is the actual user → cannot book
-  if (tool.isNomadic && isActualUser) {
-    return { canBook: false, why: 'isActualUser' }
-  }
-
-  // Case 3: Tool is nomadic, has no actual user, and user is the owner → cannot book
-  if (tool.isNomadic && !tool.actualUserId && isOwner) {
-    return { canBook: false, why: 'isOwner' }
-  }
-
-  const isCommunityParticipant = tool.communities?.length
-    ? user.communities?.some(({ id }) => tool.communities?.includes(id))
-    : true
-
-  // Case 4: Tool belongs to a community and user is not a participant → cannot book
-  if (tool.communities?.length > 0 && !isCommunityParticipant) {
-    return { canBook: false, why: 'isNotInCommunity' }
-  }
-
-  // Case 5: Tool is too far away → cannot book
-  if (tool?.maxDistance && tool?.maxDistance < calculateDistance(user.location, tool.location)) {
-    return { canBook: false, why: 'isTooFarAway' }
-  }
-
-  // All checks passed → can book
-  return { canBook: true, why: null }
 }
