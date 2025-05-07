@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDefaultUserCommunities } from '~components/Communities/queries'
 import { chakraComponents, Select } from 'chakra-react-select'
-import { FormControl, FormErrorMessage, FormLabel, HStack, Text } from '@chakra-ui/react'
+import { Box, FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
 import { Avatar } from '~components/Images/Avatar'
 import { lighterText } from '~theme/common'
 import { Controller } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
+import { icons } from '~theme/icons'
 
 interface CommunitiesSelectorProps {
   control: any
@@ -18,6 +19,7 @@ interface CommunitiesSelectorProps {
 export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ control, setValue, watch, errors }) => {
   const { t } = useTranslation()
   const { data: userCommunities, isLoading } = useDefaultUserCommunities()
+  const [shareGlobally, setShareGlobally] = useState(true)
 
   // If there are no communities or still loading, return null
   if ((!userCommunities || userCommunities.length === 0) && !isLoading) {
@@ -48,64 +50,98 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
     )
   }
 
+  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked
+    setShareGlobally(checked)
+    if (checked) {
+      setValue('communities', [])
+    }
+  }
+
   return (
-    <FormControl isInvalid={!!errors.communities}>
-      <FormLabel>{t('tools.communities', { defaultValue: 'Share with Communities' })}</FormLabel>
-      <Text fontSize='sm' sx={lighterText}>
-        {t('tools.communities_description', {
-          defaultValue: 'The tool will only be visible for the members of the communities where you share it',
-        })}
-      </Text>
-      <Controller
-        name='communities'
-        control={control}
-        render={({ field }) => (
-          <Select
-            isDisabled={true}
-            isMulti
-            options={userCommunities?.map((community) => ({
-              value: community.id,
-              label: community.name,
-              avatarHash: community.image,
-            }))}
-            placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
-            onChange={(newValue: any) => {
-              setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
-            }}
-            value={
-              userCommunities && watch('communities')
-                ? watch('communities')
-                    .map((id: string) => {
-                      const community = userCommunities.find((c) => c.id === id)
-                      return community
-                        ? {
-                            value: community.id,
-                            label: community.name,
-                            avatarHash: community.image,
-                          }
-                        : null
-                    })
-                    .filter(Boolean)
-                : []
-            }
-            components={{
-              Option: CustomOption,
-              MultiValueContainer: CustomMultiValueContainer,
-            }}
-            chakraStyles={{
-              menuList: (provided) => ({
-                ...provided,
-                zIndex: 9999,
-              }),
-              menu: (provided) => ({
-                ...provided,
-                zIndex: 9999,
-              }),
-            }}
+    <Stack spacing={2}>
+      <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
+        <FormControl display='flex' flexDirection={'column'} alignItems='start' width='auto' gap={1}>
+          <FormLabel htmlFor='isFree'>
+            <HStack>
+              <Icon as={icons.globe} />
+              <Box>
+                {t('tools.share_globally', {
+                  defaultValue: 'Share globally',
+                })}
+              </Box>
+            </HStack>
+          </FormLabel>
+          <Text fontSize='sm' sx={lighterText}>
+            {t('tools.share_globally_desc', {
+              defaultValue: 'Share this tool with everybody',
+            })}
+          </Text>
+          <Switch mt={4} id='isFree' isChecked={shareGlobally} onChange={handleSwitchChange} size={'lg'} />
+        </FormControl>
+        <FormControl flex={1} isDisabled={shareGlobally} isInvalid={!!errors.communities} isRequired={!shareGlobally}>
+          <FormLabel display={'flex'} alignItems={'center'} gap={2} htmlFor='communities'>
+            <Icon as={icons.communities} />
+            <Box>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Box>
+          </FormLabel>
+          <Text fontSize='sm' sx={lighterText}>
+            {t('tools.communities_description', {
+              defaultValue: 'The tool will only be visible for the members of the communities where you share it',
+            })}
+          </Text>
+          <Controller
+            name='communities'
+            control={control}
+            disabled={shareGlobally}
+            render={({ field }) => (
+              <Select
+                isDisabled={shareGlobally}
+                isMulti
+                options={userCommunities?.map((community) => ({
+                  value: community.id,
+                  label: community.name,
+                  avatarHash: community.image,
+                }))}
+                placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
+                onChange={(newValue: any) => {
+                  setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
+                }}
+                value={
+                  userCommunities && watch('communities')
+                    ? watch('communities')
+                        .map((id: string) => {
+                          const community = userCommunities.find((c) => c.id === id)
+                          return community
+                            ? {
+                                value: community.id,
+                                label: community.name,
+                                avatarHash: community.image,
+                              }
+                            : null
+                        })
+                        .filter(Boolean)
+                    : []
+                }
+                components={{
+                  Option: CustomOption,
+                  MultiValueContainer: CustomMultiValueContainer,
+                }}
+                chakraStyles={{
+                  menuList: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                  }),
+                  menu: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                  }),
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <FormErrorMessage>{errors.communities?.message}</FormErrorMessage>
-    </FormControl>
+          <FormErrorMessage>{errors.communities?.message}</FormErrorMessage>
+        </FormControl>
+      </Stack>
+    </Stack>
   )
 }

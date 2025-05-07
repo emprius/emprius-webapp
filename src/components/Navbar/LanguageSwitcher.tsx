@@ -3,6 +3,7 @@ import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from 
 import { FiGlobe } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { LanguagesSlice } from '~i18n/languages.mjs'
+import { icons } from '~theme/icons'
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation()
@@ -17,7 +18,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <Menu>
-      <MenuButton as={Button} variant='ghost' leftIcon={<FiGlobe />} size='sm'>
+      <MenuButton as={Button} variant='ghost' leftIcon={icons.globe({})} size='sm'>
         {languages[i18n.language] || 'English'}
       </MenuButton>
       <MenuList bg={menuBg}>

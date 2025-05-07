@@ -157,12 +157,11 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </FormControl>
 
-      <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
       <FormControl
         display='flex'
         flexDirection={'column'}
         alignItems='start'
-        pt={{ base: 0, md: 6 }}
+        // pt={{ base: 0, md: 6 }}
         justifyContent={{ base: 'start', md: 'end' }}
       >
         <FormLabel mb='0'>
@@ -185,6 +184,8 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           </FormHelperText>
         )}
       </FormControl>
+      <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
+
       <CommunitiesSelector control={control} setValue={setValue} watch={watch} errors={errors} />
 
       <LocationPicker name='location' control={control} isRequired={true} />
