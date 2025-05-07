@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { IoMdHome } from 'react-icons/io'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { EmpriusLocation } from '~components/Layout/Map/types'
-import { Tool, ToolLocated } from '~components/Tools/types'
+import { Tool, ToolDetail } from '~components/Tools/types'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
 import { Avatar } from '~components/Images/Avatar'
@@ -29,7 +29,7 @@ const HomeIcon = L.divIcon({
 })
 
 export interface SearchMapProps {
-  tools: ToolLocated[]
+  tools: ToolDetail[]
   center: LatLng
 }
 

@@ -27,7 +27,7 @@ export type Tool = {
   communities?: string[] // Array of community IDs where this tool is shared
 }
 
-export type ToolLocated = {
+export type ToolDetail = {
   location?: LatLng
 } & Tool
 

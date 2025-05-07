@@ -24,7 +24,7 @@ import { MapWithMarker } from '~components/Layout/Map/Map'
 import { AvailabilityCalendar } from '~components/Tools/AvailabilityCalendar'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { ToolLocated } from '~components/Tools/types'
+import { ToolDetail as ToolDetailType } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
@@ -35,9 +35,9 @@ import { MdSocialDistance } from 'react-icons/md'
 import { CommunityCardLittle } from '~components/Communities/Card'
 import { BookingFormWrapper, canUserBookTool } from '~components/Tools/FormWrapper'
 
-export const ToolDetail = ({ tool }: { tool: ToolLocated }) => {
+export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
   const { t } = useTranslation()
-  const { categories, transports } = useInfoContext()
+  const { categories } = useInfoContext()
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
   const { user } = useAuth()

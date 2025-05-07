@@ -4,7 +4,7 @@ import { lightText } from '~theme/common'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import React from 'react'
-import { Tool, ToolLocated } from '~components/Tools/types'
+import { Tool, ToolDetail } from '~components/Tools/types'
 import { UserProfile } from '~components/Users/types'
 import { calculateDistance } from '~src/utils'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -93,7 +93,7 @@ const CannotBookInfoCard = ({
 type CannotBookCase = 'isOwner' | 'isActualUser' | 'isNotInCommunity' | 'isTooFarAway' | 'isNomadicBooked' | null
 type CanBook = { canBook: boolean; why: CannotBookCase }
 
-export function canUserBookTool(tool: ToolLocated, user: UserProfile): CanBook {
+export function canUserBookTool(tool: ToolDetail, user: UserProfile): CanBook {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
 

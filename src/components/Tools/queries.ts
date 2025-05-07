@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api, { tools } from '~src/services/api'
-import { CreateToolParams, Tool, ToolDTO, ToolLocated, ToolsListResponse, UpdateToolParams } from './types'
+import { CreateToolParams, Tool, ToolDTO, ToolDetail, ToolsListResponse, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { UnifiedRating } from '~components/Ratings/types'
@@ -16,13 +16,13 @@ export const ToolsKeys = {
 
 export const useTool = (
   id: string,
-  options?: Omit<UseQueryOptions<ToolDTO, Error, ToolLocated>, 'queryKey' | 'queryFn' | 'select'>
+  options?: Omit<UseQueryOptions<ToolDTO, Error, ToolDetail>, 'queryKey' | 'queryFn' | 'select'>
 ) => {
   const { t } = useTranslation()
   const query = useQuery({
     queryKey: ToolsKeys.tool(id),
     queryFn: () => api.tools.getById(id),
-    select: (data): ToolLocated => ({
+    select: (data): ToolDetail => ({
       ...data,
       location: toLatLng(data?.location),
     }),
