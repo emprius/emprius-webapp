@@ -1,25 +1,11 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  CardHeader,
-  Flex,
-  Hide,
-  HStack,
-  Icon,
-  Link,
-  Skeleton,
-  Stack,
-  StackProps,
-  Text,
-} from '@chakra-ui/react'
+import { Box, Card, CardBody, CardHeader, Flex, Hide, Skeleton, Stack, Text } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+
+import { useNavigate } from 'react-router-dom'
 import { ActionButtons } from '~components/Bookings/Actions'
 import { BookingDates, BookingStatusTitle } from '~components/Bookings/BookingDates'
-import { StatusBadge } from '~components/Bookings/StatusBage'
+import { BookingBadges } from '~components/Bookings/StatusBage'
 import { useTool } from '~components/Tools/queries'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
@@ -98,7 +84,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
             {/* Status badge for small screens */}
             <Hide above={'md'}>
               <Box position='absolute' top={1} left={1} zIndex={1}>
-                <StatusBadge status={booking.bookingStatus} />
+                <BookingBadges status={booking.bookingStatus} isNomadic={booking.isNomadic} />
               </Box>
             </Hide>
           </Box>
@@ -109,7 +95,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
               {/* Status badge for big screens */}
               <Hide below={'md'}>
                 <Box position='absolute' top={-2} right={-3} zIndex={1}>
-                  <StatusBadge status={booking.bookingStatus} />
+                  <BookingBadges status={booking.bookingStatus} isNomadic={booking.isNomadic} />
                 </Box>
               </Hide>
               {/* Booking Summary Section */}

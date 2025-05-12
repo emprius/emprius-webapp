@@ -1,15 +1,25 @@
 import { useTranslation } from 'react-i18next'
-import { Badge } from '@chakra-ui/react'
+import { Badge, HStack } from '@chakra-ui/react'
 import { BookingStatus } from '~components/Bookings/types'
+import NomadicBadge from '~components/Tools/shared/NomadicBadge'
 
 interface StatusBadgeProps {
   status: BookingStatus
+  isNomadic?: boolean
 }
 
+export const BookingBadges = ({ status, isNomadic }: StatusBadgeProps) => {
+  return (
+    <HStack>
+      {isNomadic && <NomadicBadge />}
+      <StatusBadge status={status} />
+    </HStack>
+  )
+}
 export const StatusBadge = ({ status }: StatusBadgeProps) => {
   const { t } = useTranslation()
-  let colorScheme = ''
-  let text = ''
+  let colorScheme: string
+  let text: string
   switch (status) {
     case BookingStatus.PICKED:
       colorScheme = 'green'

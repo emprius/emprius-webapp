@@ -19,18 +19,18 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { StyledCalendar } from '~components/Layout/StyledCalendar'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegCalendarAlt } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
 import { ActionButtons } from '~components/Bookings/Actions'
-import { BookingDates, BookingStatusTitle } from '~components/Bookings/BookingDates'
-import { StatusBadge } from '~components/Bookings/StatusBage'
+import { BookingStatusTitle } from '~components/Bookings/BookingDates'
+import { BookingBadges } from '~components/Bookings/StatusBage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
-import { DateRange, Tool } from '~components/Tools/types'
+import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
 import { lighterText, lightText } from '~theme/common'
@@ -39,7 +39,6 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { Earned } from '~components/Bookings/Card'
 import { RatingComments } from '~components/Ratings/RatingComments'
 import { useGetBookingRatings } from '~components/Ratings/queries'
-import { UnifiedRating } from '~components/Ratings/types'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { Booking, BookingStatus } from '~components/Bookings/types'
@@ -332,7 +331,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
                 {t('bookings.reference', { id: booking.id })}
               </Text>
             </Stack>
-            <StatusBadge status={booking.bookingStatus} />
+            <BookingBadges status={booking.bookingStatus} isNomadic={booking.isNomadic} />
           </Flex>
         </Box>
         <Box mb={6}>
