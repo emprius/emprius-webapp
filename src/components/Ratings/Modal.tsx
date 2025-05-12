@@ -228,3 +228,43 @@ export const SuccessModal = () => {
     </Modal>
   )
 }
+
+export const AcceptNomadicAlert = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isLoading,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+  isLoading: boolean
+}) => {
+  const { t } = useTranslation()
+  return (
+    <AlertDialog isOpen={isOpen} leastDestructiveRef={React.useRef(null)} onClose={onClose}>
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            {t('bookings.accept_nomadic_request', { defaultValue: 'This tool is nomadic!' })}
+          </AlertDialogHeader>
+
+          <AlertDialogBody>
+            {t('bookings.accept_nomadic_request_message', {
+              defaultValue:
+                'This tool is nomadic. Once picked up, it remains with the current user until it is booked by someone else or you request it back by making another booking.',
+            })}
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button onClick={onClose} disabled={isLoading}>
+              {t('common.cancel')}
+            </Button>
+            <Button onClick={onConfirm} ml={3} isLoading={isLoading}>
+              {t('common.confirm')}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
+  )
+}

@@ -9,9 +9,8 @@ import {
   useReturnBooking,
   usePickedBooking,
 } from '~components/Bookings/queries'
-import { PickedAlertDialog, RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
+import { AcceptNomadicAlert, PickedAlertDialog, RatingModal, ReturnAlertDialog } from '~components/Ratings/Modal'
 import { icons } from '~theme/icons'
-import { useAuth } from '~components/Auth/AuthContext'
 import { useBookingActions } from '~components/Bookings/ActionsProvider'
 import { Booking, BookingStatus } from '~components/Bookings/types'
 
@@ -23,14 +22,20 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
   const { error, onSuccess, onError } = useBookingActions()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { mutateAsync: acceptBooking, isPending: isAcceptPending } = useAcceptBooking(booking, {
+  const { mutateAsync, isPending: isAcceptPending } = useAcceptBooking(booking, {
     onError: (error) => onError(error, t('bookings.accept_error')),
   })
 
   const { mutateAsync: denyBooking, isPending: isDenyPending } = useDenyBooking(booking, {
     onError: (error) => onError(error, t('bookings.deny_error')),
   })
+
+  const acceptBooking = async () => {
+    await mutateAsync(bookingId)
+    onSuccess(t('bookings.approve_success'))
+  }
 
   const handleDeny = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -40,8 +45,11 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
 
   const handleApprove = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    await acceptBooking(bookingId)
-    onSuccess(t('bookings.approve_success'))
+    if (booking.isNomadic) {
+      onOpen()
+    } else {
+      await acceptBooking()
+    }
   }
 
   const isPending = isAcceptPending || isDenyPending
@@ -69,6 +77,7 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
       >
         {t('bookings.deny')}
       </Button>
+      <AcceptNomadicAlert onConfirm={acceptBooking} isLoading={isAcceptPending} onClose={onClose} isOpen={isOpen} />
     </>
   )
 }

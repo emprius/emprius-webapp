@@ -97,17 +97,17 @@ export function canUserBookTool(tool: ToolDetail, user: UserProfile): CanBook {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
 
-  // Case 1: Tool is not nomadic and user is the owner → cannot book
+  // Tool is not nomadic and user is the owner
   if (!tool.isNomadic && isOwner) {
     return { canBook: false, why: 'isOwner' }
   }
 
-  // Case 2: Tool is nomadic and user is the actual user → cannot book
+  // Tool is nomadic and user is the actual user
   if (tool.isNomadic && isActualUser) {
     return { canBook: false, why: 'isActualUser' }
   }
 
-  // Case 3: Tool is nomadic, has no actual user, and user is the owner → cannot book
+  // Tool is nomadic, has no actual user, and user is the owner
   if (tool.isNomadic && !tool.actualUserId && isOwner) {
     return { canBook: false, why: 'isOwner' }
   }
@@ -116,17 +116,17 @@ export function canUserBookTool(tool: ToolDetail, user: UserProfile): CanBook {
     ? user.communities?.some(({ id }) => tool.communities?.includes(id))
     : true
 
-  // Case 4: Tool belongs to a community and user is not a participant → cannot book
+  // Tool belongs to a community and user is not a participant
   if (tool.communities?.length > 0 && !isCommunityParticipant) {
     return { canBook: false, why: 'isNotInCommunity' }
   }
 
-  // Case 5: Tool is too far away → cannot book
+  // Tool is too far away
   if (tool?.maxDistance && tool?.maxDistance < calculateDistance(user.location, tool.location)) {
     return { canBook: false, why: 'isTooFarAway' }
   }
 
-  // Case 6: is nomadic and is booked
+  // is nomadic and is booked
   if (tool.isNomadic && tool.reservedDates?.length > 0) {
     const now = new Date()
 
