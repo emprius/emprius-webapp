@@ -11,7 +11,7 @@ interface StatusBadgeProps {
 export const BookingBadges = ({ status, isNomadic }: StatusBadgeProps) => {
   return (
     <HStack>
-      {isNomadic && <NomadicBadge />}
+      {isNomadic && <NomadicBadge fontSize='sm' fontWeight='medium' />}
       <StatusBadge status={status} />
     </HStack>
   )

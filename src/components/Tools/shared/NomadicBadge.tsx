@@ -9,8 +9,6 @@ const NomadicBadge = (props: BadgeProps) => {
       px={3}
       py={1.5}
       borderRadius='full'
-      fontSize='sm'
-      fontWeight='medium'
       textTransform='uppercase'
       letterSpacing='wide'
       {...props}

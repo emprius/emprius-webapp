@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Icon,
   SimpleGrid,
   Stack,
@@ -34,6 +35,7 @@ import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { MdSocialDistance } from 'react-icons/md'
 import { CommunityCardLittle } from '~components/Communities/Card'
 import { BookingFormWrapper, canUserBookTool } from '~components/Tools/FormWrapper'
+import NomadicBadge from '~components/Tools/shared/NomadicBadge'
 
 export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
   const { t } = useTranslation()
@@ -69,11 +71,18 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                 <Stack p={6} spacing={6}>
                   <Stack spacing={4}>
                     <Stack spacing={1}>
-                      <Stack direction='row' align='center' justify='space-between'>
+                      <Stack
+                        direction={{ base: 'column-reverse', md: 'row' }}
+                        align={{ base: 'start', md: 'center' }}
+                        justify='space-between'
+                      >
                         <ToolTitle fontSize='3xl' fontWeight='bold' color={'primary.500'} tool={tool} />
-                        <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
-                          {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
-                        </Badge>
+                        <HStack>
+                          {tool.isNomadic && <NomadicBadge px={2} py={1} />}
+                          <Badge colorScheme={tool.isAvailable ? 'green' : 'gray'} px={2} py={1} borderRadius='full'>
+                            {t(`tools.${tool.isAvailable ? 'available' : 'unavailable'}`)}
+                          </Badge>
+                        </HStack>
                       </Stack>
                       <CostDay
                         tool={tool}
