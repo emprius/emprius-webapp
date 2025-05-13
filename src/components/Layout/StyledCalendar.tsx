@@ -307,7 +307,7 @@ export const StyledCalendar = ({
           },
         },
         // Special styling for when today is also selected as start or end date
-        '.react-calendar__tile--now.rangeBothEnds': {
+        '.rangeBothEnds': {
           backgroundColor: `${selectedColor} !important`,
           color: useColorModeValue('black', 'white') + ' !important',
           borderRadius: '50% !important',
