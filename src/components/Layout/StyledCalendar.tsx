@@ -3,6 +3,7 @@ import React from 'react'
 import Calendar, { CalendarProps } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { DateRange } from '~components/Tools/types'
+import { isDateReserved } from '~utils/dates'
 
 export type StyledCalendarProps = {
   // Core functionality
@@ -34,25 +35,13 @@ export const StyledCalendar = ({
   const navButtonDisabledColor = useColorModeValue('gray.300', 'gray.600')
   const navLabelColor = useColorModeValue(theme.colors.primary[700], theme.colors.primary[300])
 
-  const isDateReserved = (date: Date) => {
-    return reservedDates.some((range) => {
-      const fromDate = new Date(range.from * 1000)
-      const toDate = new Date(range.to * 1000)
-      // Set dates time to 00:00:00 to avoid timezone issues
-      fromDate.setHours(0, 0, 0, 0)
-      toDate.setHours(0, 0, 0, 0)
-
-      return date >= fromDate && date <= toDate
-    })
-  }
-
   const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     const classes = []
 
     // Only apply styling to day view
     if (view === 'month') {
       // Check if date is reserved and identify if it's the first or last date in a reserved range
-      if (isDateReserved(date)) {
+      if (isDateReserved(date, reservedDates)) {
         // Check if it's the first date in a reserved range
         const isFirstReservedDate = reservedDates.some((range) => {
           const fromDate = new Date(range.from * 1000)
@@ -151,7 +140,7 @@ export const StyledCalendar = ({
       }
 
       // Disable reserved dates for selection if onDateClick is provided
-      return onDateClick ? isDateReserved(date) : false
+      return onDateClick ? isDateReserved(date, reservedDates) : false
     }
 
     // For decade view (showing years), don't disable anything

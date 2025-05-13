@@ -5,6 +5,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { useFormContext } from 'react-hook-form'
 import { StyledCalendar } from '~components/Layout/StyledCalendar'
 import { DateRange } from '~components/Tools/types'
+import { isDateReserved } from '~utils/dates'
 
 interface ToolAvailabilityCalendarProps {
   reservedDates: DateRange[]
@@ -57,22 +58,10 @@ export const AvailabilityCalendar = ({ reservedDates, isSelectable = true }: Too
     return `${year}-${month}-${day}`
   }
 
-  const isDateReserved = (date: Date) => {
-    return reservedDates.some((range) => {
-      const fromDate = new Date(range.from * 1000)
-      const toDate = new Date(range.to * 1000)
-      // Set dates time to 00:00:00 to avoid timezone issues
-      fromDate.setHours(0, 0, 0, 0)
-      toDate.setHours(0, 0, 0, 0)
-
-      return date >= fromDate && date <= toDate
-    })
-  }
-
   // Check if there are any reserved dates between start and end
   const hasReservedDatesInRange = (start: Date, end: Date) => {
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      if (isDateReserved(new Date(d))) {
+      if (isDateReserved(new Date(d), reservedDates)) {
         return true
       }
     }
@@ -86,7 +75,7 @@ export const AvailabilityCalendar = ({ reservedDates, isSelectable = true }: Too
     }
 
     // Prevent selecting reserved dates
-    if (isDateReserved(value)) {
+    if (isDateReserved(value, reservedDates)) {
       return
     }
 

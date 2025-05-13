@@ -1,3 +1,5 @@
+import { DateRange } from '~components/Tools/types'
+
 export type DateInput = Date | number | string
 
 /**
@@ -32,3 +34,15 @@ export const addDayToDate = (date: DateInput) => {
 }
 
 export const DateToEpoch = (date: DateInput) => Math.floor(new Date(date).getTime() / 1000)
+
+export const isDateReserved = (date: Date, reservedDates: DateRange[]) => {
+  return reservedDates.some((range) => {
+    const fromDate = new Date(range.from * 1000)
+    const toDate = new Date(range.to * 1000)
+    // Set dates time to 00:00:00 to avoid timezone issues
+    fromDate.setHours(0, 0, 0, 0)
+    toDate.setHours(0, 0, 0, 0)
+
+    return date >= fromDate && date <= toDate
+  })
+}
