@@ -29,6 +29,7 @@ import { ToolDetail as ToolDetailType } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
+import { ToolHistory } from '~components/Tools/ToolHistory'
 import { FormProvider, useForm } from 'react-hook-form'
 import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
@@ -187,6 +188,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
               </Box>
 
               <ToolRatings toolId={tool.id.toString()} />
+              {tool.isNomadic && <ToolHistory toolId={tool.id.toString()} />}
             </Stack>
           </GridItem>
 

@@ -24,7 +24,7 @@ type UserMiniCardProps = {
   userId: string
   avatarSize?: AvatarSize
   direction?: StackProps['direction']
-  placeholderData?: UserPreview
+  placeholderData?: Partial<UserPreview>
   showRating?: boolean
   showAvatar?: boolean
   ratingProps?: Omit<RatingProps, 'rating'>

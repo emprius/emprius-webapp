@@ -2,10 +2,10 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ILoginParams, IRegisterParams, LoginResponse } from '~components/Auth/queries'
 import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
-import type { RateSubmission, UnifiedRating } from '~components/Ratings/types'
+import { RateSubmission, UnifiedRating } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
 import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/types'
-import { EditProfileFormDataDTO, UserProfileDTO } from '~components/Users/types'
+import { EditProfileFormDataDTO, ToolHistoryResponse, UserProfileDTO } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
@@ -110,6 +110,7 @@ export const tools = {
   update: ({ id, ...data }: Partial<CreateToolDTO>) => apiRequest(api.put<ApiResponse<ToolDTO>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
   getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/ratings`)),
+  getHistory: (id: string) => apiRequest(api.get<ApiResponse<ToolHistoryResponse>>(`/tools/${id}/history`)),
 }
 
 // Bookings endpoints

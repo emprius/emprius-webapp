@@ -5,13 +5,15 @@ import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { UnifiedRating } from '~components/Ratings/types'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
-import { UserProfile } from '~components/Users/types'
+import { ToolHistoryEntry, ToolHistoryResponse, UserProfile } from '~components/Users/types'
+import { convertToDate } from '~utils/dates'
 
 export const ToolsKeys = {
   tools: ['tools'],
   userTools: (userId: string): QueryKey => ['tools', 'user', userId],
   tool: (id: string): QueryKey => ['tool', id],
   toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
+  toolHistory: (id: string): QueryKey => ['tool', id, 'history'],
 }
 
 export const useTool = (
@@ -110,6 +112,24 @@ export const useToolRatings = (
     queryKey: ToolsKeys.toolRatings(id),
     queryFn: () => api.tools.getRatings(id),
     enabled: !!id,
+    ...options,
+  })
+}
+
+export const useToolHistory = (
+  id: string,
+  options?: Omit<UseQueryOptions<ToolHistoryResponse, Error, ToolHistoryEntry[]>, 'queryKey' | 'queryFn' | 'select'>
+) => {
+  return useQuery({
+    queryKey: ToolsKeys.toolHistory(id),
+    queryFn: () => api.tools.getHistory(id),
+    enabled: !!id,
+    select: (data) =>
+      data.map((entry) => ({
+        ...entry,
+        location: toLatLng(entry.location),
+        pickupDate: convertToDate(entry.pickupDate),
+      })),
     ...options,
   })
 }

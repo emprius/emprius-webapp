@@ -404,7 +404,15 @@
     "update_failed": "Failed to update tool",
     "update_success": "Tool updated successfully",
     "value_must_be_greater_than_zero": "Value must be greater than 0",
-    "weight": "Weight (kg)"
+    "weight": "Weight (kg)",
+    "history": "Tool History",
+    "no_history": "No history yet",
+    "no_history_desc": "This tool has not been borrowed yet.",
+    "history_error": "Error loading tool history",
+    "history_error_desc": "There was an error loading the tool history.",
+    "borrowed_by": "Borrowed by {{name}}",
+    "pickup_date": "Pickup date: {{date}}",
+    "location": "Location: {{lat}}, {{lng}}"
   },
   "user": {
     "activate": "Activate profile",

@@ -61,3 +61,17 @@ export type EditProfileFormDataDTO = Omit<UserProfileDTO, 'location'> & {
 
 export type GetUsersDTO = { users: UserProfileDTO[] }
 export type GetUsers = { users: UserProfile[] }
+export type ToolHistoryEntry = {
+  id: string
+  userId: string
+  userName: string
+  pickupDate: Date
+  location: LatLng
+  bookingId: string
+}
+export type ToolHistoryEntryDTO = Omit<ToolHistoryEntry, 'location' | 'pickupDate'> & {
+  location: EmpriusLocation
+  pickupDate: number
+}
+// The API returns an array of these
+export type ToolHistoryResponse = ToolHistoryEntryDTO[]
