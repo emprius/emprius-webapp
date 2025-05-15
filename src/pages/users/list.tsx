@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useOutletContext } from 'react-router-dom'
 import { TitlePageLayoutContext } from '~src/pages/TitlePageLayout'
-import { UsersList } from '~components/Users/List'
+import { UsersListNavigator } from '~components/Users/List'
 
 export const List = () => {
   const { t } = useTranslation()
@@ -12,5 +12,5 @@ export const List = () => {
     setData(t('users.list_title'))
   }, [setData])
 
-  return <UsersList />
+  return <UsersListNavigator />
 }

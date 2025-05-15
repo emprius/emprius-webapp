@@ -16,6 +16,8 @@ import {
   Text,
   Box,
   Flex,
+  VStack,
+  HStack,
 } from '@chakra-ui/react'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -26,6 +28,7 @@ import { useUsers } from '~components/Users/queries'
 import { UserProfile, UserProfileDTO } from '~components/Users/types'
 import { Avatar } from '~components/Images/Avatar'
 import { useAuth } from '~components/Auth/AuthContext'
+import { lighterText } from '~theme/common'
 
 interface InviteUserModalProps {
   isOpen: boolean
@@ -36,10 +39,14 @@ interface InviteUserModalProps {
 export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, communityId }) => {
   const { t } = useTranslation()
   const toast = useToast()
+  const { user: selfUser } = useAuth()
   const [searchTerm, setSearchTerm] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [selectedUser, setSelectedUser] = useState<UserProfileDTO | null>(null)
-  const { user: selfUser } = useAuth()
+
+  // Use the updated users query with username search parameter
+  const { data, isLoading } = useUsers({ page: 0, username: debouncedSearch })
+  const { mutateAsync: inviteUser, isPending } = useInviteUserToCommunity()
 
   // Implement our own debounce with useEffect
   useEffect(() => {
@@ -49,10 +56,6 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
 
     return () => clearTimeout(timer)
   }, [searchTerm])
-
-  // Use the updated users query with username search parameter
-  const { data, isLoading } = useUsers({ page: 0, username: debouncedSearch })
-  const { mutateAsync: inviteUser, isPending } = useInviteUserToCommunity()
 
   // Users are now filtered server-side based on the username parameter
   const filteredUsers = data?.users.filter((user) => user.id !== selfUser.id) || []
@@ -119,7 +122,12 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
                       <Box marginRight={3}>
                         <Avatar username={user.name} avatarHash={user.avatarHash} size='sm' />
                       </Box>
-                      <Text fontWeight='medium'>{user.name}</Text>
+                      <Flex direction={'column'} gap={0}>
+                        <Text fontWeight='medium'>{user.name}</Text>
+                        <Text fontSize={'xs'} sx={lighterText}>
+                          {user.id}
+                        </Text>
+                      </Flex>
                     </Flex>
                   ))}
                 </Stack>
