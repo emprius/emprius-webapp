@@ -37,7 +37,6 @@ const SideNav = () => {
         count: pendingRatingsCount,
         additionalPath: [ROUTES.RATINGS.PENDING, ROUTES.RATINGS.HISTORY],
       },
-      { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
       {
         icon: icons.communities,
         label: t('communities.title'),
@@ -45,6 +44,7 @@ const SideNav = () => {
         path: pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST,
         count: pendingInvitesCount,
       },
+      { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
     [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
   )

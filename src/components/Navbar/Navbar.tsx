@@ -140,9 +140,6 @@ export const Navbar = () => {
                   <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
                     {t('nav.settings')}
                   </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
-                    {t('user.list_title')}
-                  </MenuItem>
                   <MenuItem
                     as={RouterLink}
                     to={pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST}
@@ -158,6 +155,9 @@ export const Navbar = () => {
                     >
                       {t('communities.title', { defaultValue: 'Communities' })}
                     </BadgeCounter>
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
+                    {t('user.list_title')}
                   </MenuItem>
                   <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>
