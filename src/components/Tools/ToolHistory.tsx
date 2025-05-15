@@ -123,7 +123,7 @@ export const ToolHistory: React.FC<ToolHistoryProps> = ({ toolId }) => {
 
                 {/* Map */}
                 <Box mt={3} w='full' height='150px' borderRadius='md' overflow='hidden'>
-                  <MapWithMarker latLng={entry.location} />
+                  <MapWithMarker latLng={entry.location} markerProps={{ showExactLocation: false }} />
                 </Box>
               </Box>
             </Flex>

@@ -66,7 +66,7 @@ export const EmpriusMarker = ({ position, count, showExactLocation = true, child
 export const EmpriusCircle = ({ center }: { center: LatLngExpression }) => (
   <Circle
     center={center}
-    radius={1000}
+    radius={MAP_DEFAULTS.CIRCLE_RADIUS}
     pathOptions={{
       fillColor: colors.secondary['300'],
       color: colors.secondary['400'],

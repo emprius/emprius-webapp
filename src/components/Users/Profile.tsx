@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BiWallet } from 'react-icons/bi'
 import { FiHome, FiMail } from 'react-icons/fi'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
 import { MapWithMarker } from '~components/Layout/Map/Map'
@@ -19,6 +19,7 @@ export const UserProfile = (user: UserProfileType) => {
   const navigate = useNavigate()
   const { user: currentUser } = useAuth()
   const isCurrentUser = user.id === currentUser?.id
+  const { id } = useParams<{ id: string }>() // If urlId defined on the url the user is looking the public profile
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -140,7 +141,7 @@ export const UserProfile = (user: UserProfileType) => {
 
         {user.location && (
           <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
-            <MapWithMarker latLng={user.location} markerProps={{ showExactLocation: isCurrentUser }} />
+            <MapWithMarker latLng={user.location} markerProps={{ showExactLocation: !id }} />
           </Box>
         )}
       </Stack>

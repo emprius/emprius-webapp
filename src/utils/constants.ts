@@ -51,6 +51,7 @@ export const MAP_DEFAULTS = {
     tooltipAnchor: [16, -28],
     shadowSize: [41, 41],
   }),
+  CIRCLE_RADIUS: 1000,
 } as const
 
 /**
