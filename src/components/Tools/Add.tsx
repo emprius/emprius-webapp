@@ -49,7 +49,7 @@ export const AddTool = () => {
     await createTool({
       ...data,
       images: imageHashes,
-      estimatedValue: Number(data.estimatedValue) || 0,
+      toolValuation: Number(data.toolValuation) || 0,
       height: Number(data.height),
       weight: Number(data.weight),
       isNomadic: data?.isNomadic ?? false,
@@ -67,7 +67,7 @@ export const AddTool = () => {
       isLoading={isLoading}
       isError={isError}
       error={error}
-      initialData={{ location: user.location, estimatedValue: 0 }}
+      initialData={{ location: user.location, toolValuation: 0 }}
     />
   )
 }

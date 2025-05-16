@@ -82,7 +82,8 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData }) => {
 
     const updatedFields: Omit<UpdateToolParams, 'id'> = {
       ...data,
-      estimatedValue: Number(data.estimatedValue),
+      toolValuation: Number(data.toolValuation),
+      cost: Number(data.cost),
       height: Number(data.height),
       weight: Number(data.weight),
       images: allImageHashes,

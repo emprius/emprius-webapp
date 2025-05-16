@@ -22,15 +22,17 @@ interface MaybeFreeProps {
   setValue: (name: keyof ToolFormData, value: any) => void
   watch: (name: keyof ToolFormData) => any
   errors: any
+  estimatedDailyCost: number
+  cost: number
 }
 
-export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors }) => {
+export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors, estimatedDailyCost, cost }) => {
   const { t } = useTranslation()
   const [isFree, setIsFree] = useState(false)
 
   useEffect(() => {
     // Check initial value and set switch state
-    const value = watch('estimatedValue')
+    const value = watch('toolValuation')
     if (value === 0) {
       setIsFree(true)
     }
@@ -40,7 +42,8 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
     const checked = e.target.checked
     setIsFree(checked)
     if (checked) {
-      setValue('estimatedValue', 0)
+      setValue('toolValuation', 0)
+      setValue('cost', 0)
     }
   }
 
@@ -58,7 +61,8 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
           </Text>
           <Switch mt={4} id='isFree' isChecked={isFree} onChange={handleSwitchChange} size={'lg'} />
         </FormControl>
-        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.estimatedValue} isRequired={!isFree}>
+        {/*<Stack>*/}
+        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.toolValuation} isRequired={!isFree}>
           <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
           <Text fontSize='sm' sx={lighterText}>
             {t('tools.tool_estimated_value_description', {
@@ -67,7 +71,7 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
             })}
           </Text>
           <Controller
-            name='estimatedValue'
+            name='toolValuation'
             control={control}
             rules={{
               validate: (value) => {
@@ -78,7 +82,7 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
               },
             }}
             render={({ field }) => (
-              <NumberInput min={0} precision={0} isDisabled={isFree} {...field}>
+              <NumberInput mt={2} min={0} precision={0} isDisabled={isFree} {...field}>
                 <NumberInputField placeholder={t('tools.enter_estimated_value')} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -87,9 +91,51 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
               </NumberInput>
             )}
           />
-          <FormErrorMessage>{errors.estimatedValue?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.toolValuation?.message}</FormErrorMessage>
         </FormControl>
       </Stack>
+      {estimatedDailyCost && (
+        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.cost}>
+          <FormLabel>{t('tools.price_per_day', { defaultValue: 'Price per day' })}</FormLabel>
+          <Text fontSize='sm' sx={lighterText}>
+            {t('tools.price_per_day_description', {
+              defaultValue:
+                'You can set a custom daily price for your tool, but it must not exceed the estimated daily cost  ' +
+                "({{estimatedDailyCost }} {{, tokenSymbol }}), which is based on the tool's value.",
+              estimatedDailyCost: estimatedDailyCost,
+            })}
+          </Text>
+          <Controller
+            name='cost'
+            control={control}
+            defaultValue={cost}
+            rules={{
+              validate: (value) => {
+                if (!isFree && (!value || value <= 0)) {
+                  return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
+                }
+                if (!isFree && Number(value) > estimatedDailyCost) {
+                  return t('tools.value_must_be_less_than', {
+                    defaultValue: 'Value must be less than tool estimated value {{ cost }} {{, tokenSymbol }}',
+                    cost: estimatedDailyCost,
+                  })
+                }
+                return true
+              },
+            }}
+            render={({ field }) => (
+              <NumberInput mt={2} min={0} precision={0} isDisabled={isFree} {...field}>
+                <NumberInputField placeholder={t('tools.enter_custom_cost', { defaultValue: 'Add custom cost' })} />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            )}
+          />
+          <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
+        </FormControl>
+      )}
     </Stack>
   )
 }

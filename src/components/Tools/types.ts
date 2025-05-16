@@ -13,11 +13,12 @@ export type Tool = {
   title: string
   description?: string
   cost?: number
+  toolValuation?: number
+  estimatedDailyCost?: number
   isAvailable?: boolean
   images: Image[]
   toolCategory?: number // Category ID
   rating: number
-  estimatedValue?: number
   height?: number
   weight?: number
   reservedDates: DateRange[] | null
@@ -46,12 +47,13 @@ export type CreateToolParams = {
   images: string[]
   toolCategory?: number // uint
   location: LatLng
-  estimatedValue?: number // uint64
+  toolValuation?: number // uint64
   height?: number // uint64
   weight?: number // uint64
   isNomadic?: boolean
   maxDistance?: number
   communities?: string[] // Array of community IDs where this tool is shared
+  cost?: number
 }
 
 export type UpdateToolParams = CreateToolParams & {

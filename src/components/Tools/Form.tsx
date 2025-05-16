@@ -73,6 +73,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   const navigate = useNavigate()
   const { categories } = useInfoContext()
   const { user } = useAuth()
+  const isToolEditMode = !!tool
 
   const {
     register,
@@ -93,7 +94,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   }
 
   const { isOpen, onToggle } = useDisclosure()
-  const isNomadicChangeDisabled = !!tool && tool?.actualUserId && tool?.actualUserId !== user.id
+  const isNomadicChangeDisabled = isToolEditMode && tool?.actualUserId && tool?.actualUserId !== user.id
 
   return (
     <Stack as='form' onSubmit={handleSubmit(handleFormSubmit)} spacing={6}>
@@ -161,7 +162,6 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         display='flex'
         flexDirection={'column'}
         alignItems='start'
-        // pt={{ base: 0, md: 6 }}
         justifyContent={{ base: 'start', md: 'end' }}
       >
         <FormLabel mb='0'>
@@ -184,10 +184,16 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           </FormHelperText>
         )}
       </FormControl>
-      <MaybeFree control={control} setValue={setValue} watch={watch} errors={errors} />
 
+      <MaybeFree
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+        cost={tool?.cost}
+        estimatedDailyCost={tool?.estimatedDailyCost}
+      />
       <CommunitiesSelector control={control} setValue={setValue} watch={watch} errors={errors} />
-
       <LocationPicker name='location' control={control} isRequired={true} />
 
       {existingImages.length > 0 && (
@@ -307,7 +313,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <FormSubmitMessage isError={isError} error={error} />
         </Stack>
         <Stack direction='row' spacing={4} justify='space-between' w={'full'} align={'start'} wrap={'wrap-reverse'}>
-          {tool?.id && <DeleteToolButton toolId={initialData?.id} disabled={isLoading} />}
+          {isToolEditMode && <DeleteToolButton toolId={initialData?.id} disabled={isLoading} />}
           <Stack direction='row' spacing={4} justify='flex-end' flex={1}>
             <Button onClick={() => navigate(-1)} variant='ghost'>
               {t('common.cancel')}

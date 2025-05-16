@@ -104,11 +104,11 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                           <Text>{categories.find((c) => c.id === tool.toolCategory)?.name}</Text>
                         </Stack>
                       )}
-                      {!!tool.estimatedValue && (
+                      {!!tool.toolValuation && (
                         <Stack direction='row' align='center'>
                           <FiDollarSign size={20} />
                           <Text>
-                            {t('tools.estimated_value')}: {tool.estimatedValue}
+                            {t('tools.estimated_value')}: {tool.toolValuation}
                           </Text>
                         </Stack>
                       )}
