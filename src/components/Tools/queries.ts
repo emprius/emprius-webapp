@@ -1,4 +1,5 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
 import api, { tools } from '~src/services/api'
 import { CreateToolParams, Tool, ToolDTO, ToolDetail, ToolsListResponse, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +8,8 @@ import { UnifiedRating } from '~components/Ratings/types'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 import { ToolHistoryEntry, ToolHistoryResponse, UserProfile } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
+import { useSearchTerm } from '~components/Layout/SearchTerm/SearchTermContext'
+import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 
 export const ToolsKeys = {
   toolsOwner: ['tools', 'owner'], // Used to invalidate queries
@@ -53,11 +56,25 @@ export const useTool = (
 
 export type UseToolsParams = { page?: number; term?: string }
 
-export const useTools = ({ page, term }: UseToolsParams) =>
-  useQuery({
+export const useTools = () => {
+  const { debouncedSearch: term, prevTermRef } = useSearchTerm()
+  const { page, setPage } = useRoutedPagination()
+
+  // Reset page to 0 only when search term changes from previous value
+  useEffect(() => {
+    // Only reset page if term has changed from previous value and setPage is available
+    if (term !== prevTermRef.current) {
+      setPage(0)
+    }
+    // Update the previous term reference
+    prevTermRef.current = term
+  }, [term, prevTermRef, page])
+
+  return useQuery({
     queryKey: ToolsKeys.toolsList(page, term),
     queryFn: () => api.tools.getUserTools({ page, term }),
   })
+}
 
 export const useUserTools = (
   userId: string,
