@@ -46,11 +46,8 @@ export const RoutedPaginationProvider = ({ ...rest }: PropsWithChildren<{}>) => 
   // Generate URL with updated page query param
   const getPathForPage = (page: number, queryParams?: string) => {
     const params = new URLSearchParams(queryParams || location.search)
-    if (page > 0) {
-      params.set('page', page.toString())
-    } else {
-      params.delete('page')
-    }
+    // Always set the page parameter, even for page 0 (which will be displayed as page 1)
+    params.set('page', (page + 1).toString())
 
     return `${location.pathname}?${params.toString()}`
   }

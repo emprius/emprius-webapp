@@ -167,13 +167,15 @@ export const Pagination = ({ maxButtons = 10, buttonProps, inputProps, paginatio
 export const RoutedPagination = ({ maxButtons = 7, buttonProps, pagination, ...rest }: PaginationProps) => {
   const { getPathForPage, setPage, page } = useRoutedPagination()
 
+  if (!pagination) return null
+
   const totalPages = pagination.pages
 
   return (
     <PaginationButtons
       goToPage={(page) => setPage(page)}
       createPageButton={(i) => (
-        <RoutedPageButton key={i} to={getPathForPage(i + 1)} page={i} currentPage={page} {...buttonProps} />
+        <RoutedPageButton key={i} to={getPathForPage(i)} page={i} currentPage={page} {...buttonProps} />
       )}
       currentPage={page}
       totalPages={totalPages}
