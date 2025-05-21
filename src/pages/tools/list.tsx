@@ -23,6 +23,7 @@ const PaginatedList = () => {
   if (isLoading) {
     return <LoadingSpinner />
   }
+
   if (isError) {
     return <ErrorComponent error={error} />
   }

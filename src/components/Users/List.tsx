@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import React, { useEffect, useState } from 'react'
-import { Button, Flex, FormControl, FormLabel, HStack, Input, Text, VStack } from '@chakra-ui/react'
+import React from 'react'
+import { Button, Flex, HStack, Text } from '@chakra-ui/react'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { UserCard } from '~components/Users/Card'
@@ -9,32 +9,36 @@ import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { useUsers } from '~components/Users/queries'
 import { UserProfileDTO } from '~components/Users/types'
+import { SearchTermBar } from '~components/Layout/SearchTerm/SearchTermBar'
+import { SearchTermProvider, useSearchTerm } from '~components/Layout/SearchTerm/SearchTermContext'
 
 export const UsersListNavigator = () => {
   const { t } = useTranslation()
   const [page, setPage] = React.useState(0)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
-  const { data, isLoading } = useUsers({ page, username: debouncedSearch })
 
-  // Implement our own debounce with useEffect
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm)
-    }, 300)
+  return (
+    <SearchTermProvider>
+      <UsersListWithSearch page={page} setPage={setPage} />
+    </SearchTermProvider>
+  )
+}
 
-    return () => clearTimeout(timer)
-  }, [searchTerm])
+const UsersListWithSearch = ({
+  page,
+  setPage,
+}: {
+  page: number
+  setPage: (page: number | ((prevPage: number) => number)) => void
+}) => {
+  const { t } = useTranslation()
+  const { debouncedSearch: username } = useSearchTerm()
+  const { data, isLoading } = useUsers({ page, username })
 
   const users = data?.users
 
   return (
     <Flex direction={'column'} gap={6} w='100%'>
-      <Input
-        placeholder={t('communities.search_placeholder')}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        value={searchTerm}
-      />
+      <SearchTermBar placeholder={t('communities.search_placeholder')} />
       <UsersList users={users} isLoading={isLoading} />
       <HStack justify='center' spacing={4}>
         <Button leftIcon={<FiChevronLeft />} onClick={() => setPage((p) => Math.max(0, p - 1))} isDisabled={page === 0}>
