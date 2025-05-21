@@ -19,7 +19,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { avatarSizeToPixels, UserAvatar } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
-import { ContextSearchBar } from '~components/Search/SearchBar'
+import { ContextSearchBarForm } from '~components/Search/SearchBarForm'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeCounter, BadgeIcon } from '../Layout/BadgeIcon'
@@ -62,7 +62,7 @@ export const Navbar = () => {
 
         {isAuthenticated && location.pathname !== ROUTES.HOME && (
           <Flex flex={1} align={'center'}>
-            <ContextSearchBar />
+            <ContextSearchBarForm />
           </Flex>
         )}
         <Button

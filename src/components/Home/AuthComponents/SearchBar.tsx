@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { SearchBar } from '~components/Search/SearchBar'
+import { SearchBarForm } from '~components/Search/SearchBarForm'
 import { useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
 
@@ -25,5 +25,5 @@ export const LandingSearchBar = () => {
     setTerm(value)
   }
 
-  return <SearchBar onSubmit={handleSubmit} term={searchValue} setTerm={setValue} w={'full'} maxW={'full'} px={4} />
+  return <SearchBarForm onSubmit={handleSubmit} term={searchValue} setTerm={setValue} w={'full'} maxW={'full'} px={4} />
 }

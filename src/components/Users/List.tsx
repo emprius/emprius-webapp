@@ -9,17 +9,16 @@ import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 import { useUsers } from '~components/Users/queries'
 import { UserProfileDTO } from '~components/Users/types'
-import { SearchTermBar } from '~components/Layout/SearchTerm/SearchTermBar'
-import { SearchTermProvider, useSearchTerm } from '~components/Layout/SearchTerm/SearchTermContext'
+import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
+import { DebouncedSearchProvider, useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 
 export const UsersListNavigator = () => {
-  const { t } = useTranslation()
   const [page, setPage] = React.useState(0)
 
   return (
-    <SearchTermProvider>
+    <DebouncedSearchProvider>
       <UsersListWithSearch page={page} setPage={setPage} />
-    </SearchTermProvider>
+    </DebouncedSearchProvider>
   )
 }
 
@@ -31,14 +30,14 @@ const UsersListWithSearch = ({
   setPage: (page: number | ((prevPage: number) => number)) => void
 }) => {
   const { t } = useTranslation()
-  const { debouncedSearch: username } = useSearchTerm()
+  const { debouncedSearch: username } = useDebouncedSearch()
   const { data, isLoading } = useUsers({ page, username })
 
   const users = data?.users
 
   return (
     <Flex direction={'column'} gap={6} w='100%'>
-      <SearchTermBar placeholder={t('communities.search_placeholder')} />
+      <DebouncedSearchBar placeholder={t('communities.search_placeholder')} />
       <UsersList users={users} isLoading={isLoading} />
       <HStack justify='center' spacing={4}>
         <Button leftIcon={<FiChevronLeft />} onClick={() => setPage((p) => Math.max(0, p - 1))} isDisabled={page === 0}>

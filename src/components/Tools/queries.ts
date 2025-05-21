@@ -1,14 +1,14 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import api, { tools } from '~src/services/api'
 import { CreateToolParams, Tool, ToolDTO, ToolDetail, ToolsListResponse, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { UnifiedRating } from '~components/Ratings/types'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
-import { ToolHistoryEntry, ToolHistoryResponse, UserProfile } from '~components/Users/types'
+import { ToolHistoryEntry, ToolHistoryResponse } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
-import { useSearchTerm } from '~components/Layout/SearchTerm/SearchTermContext'
+import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 
 export const ToolsKeys = {
@@ -57,7 +57,7 @@ export const useTool = (
 export type UseToolsParams = { page?: number; term?: string }
 
 export const useTools = () => {
-  const { debouncedSearch: term, prevTermRef } = useSearchTerm()
+  const { debouncedSearch: term, prevTermRef } = useDebouncedSearch()
   const { page, setPage } = useRoutedPagination()
 
   // Reset page to 0 only when search term changes from previous value

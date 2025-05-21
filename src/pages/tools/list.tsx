@@ -5,14 +5,14 @@ import { MainContainer } from '~components/Layout/LayoutComponents'
 import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 import { HStack, useColorModeValue, VStack } from '@chakra-ui/react'
-import { SearchTermProvider } from '~components/Layout/SearchTerm/SearchTermContext'
-import { SearchTermBar } from '~components/Layout/SearchTerm/SearchTermBar'
+import { DebouncedSearchProvider } from '~components/Layout/Search/DebouncedSearchContext'
+import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 
 export const List = () => (
   <RoutedPaginationProvider>
-    <SearchTermProvider>
+    <DebouncedSearchProvider>
       <PaginatedList />
-    </SearchTermProvider>
+    </DebouncedSearchProvider>
   </RoutedPaginationProvider>
 )
 
@@ -24,7 +24,7 @@ const PaginatedList = () => {
   return (
     <MainContainer>
       <HStack w={'full'} justifyContent={'center'} bg={bgColor} borderColor={borderColor} borderRadius='2xl' mb={4}>
-        <SearchTermBar />
+        <DebouncedSearchBar />
       </HStack>
       <ToolList tools={toolsResponse?.tools || []} isLoading={isLoading} error={error} isError={isError} />
       <HStack w={'full'} justifyContent={'center'} mt={4}>

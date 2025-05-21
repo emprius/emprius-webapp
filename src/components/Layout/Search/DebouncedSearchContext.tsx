@@ -1,21 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useRef, MutableRefObject } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-interface SearchTermContextType {
+interface DebouncedSearchContextType {
   searchTerm: string
   debouncedSearch: string
   setSearchTerm: (term: string) => void
   prevTermRef: MutableRefObject<string>
 }
 
-interface SearchTermProviderProps {
+interface DebouncedSearchProviderProps {
   children: React.ReactNode
   debounceTime?: number
 }
 
-const SearchTermContext = createContext<SearchTermContextType | undefined>(undefined)
+const DebouncedSearchContext = createContext<DebouncedSearchContextType | undefined>(undefined)
 
-export const SearchTermProvider = ({ children, debounceTime = 300 }: SearchTermProviderProps) => {
+export const DebouncedSearchProvider = ({ children, debounceTime = 300 }: DebouncedSearchProviderProps) => {
   const navigate = useNavigate()
   // Read current query params
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search])
@@ -43,16 +43,16 @@ export const SearchTermProvider = ({ children, debounceTime = 300 }: SearchTermP
   }, [searchTerm, debounceTime])
 
   return (
-    <SearchTermContext.Provider value={{ searchTerm, debouncedSearch, setSearchTerm, prevTermRef }}>
+    <DebouncedSearchContext.Provider value={{ searchTerm, debouncedSearch, setSearchTerm, prevTermRef }}>
       {children}
-    </SearchTermContext.Provider>
+    </DebouncedSearchContext.Provider>
   )
 }
 
-export const useSearchTerm = () => {
-  const context = useContext(SearchTermContext)
+export const useDebouncedSearch = () => {
+  const context = useContext(DebouncedSearchContext)
   if (context === undefined) {
-    throw new Error('useLocalSearch must be used within a LocalSearchProvider')
+    throw new Error('useDebouncedSearch must be used within a DebouncedSearchProvider')
   }
   return context
 }
