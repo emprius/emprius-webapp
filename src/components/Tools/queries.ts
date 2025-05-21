@@ -9,7 +9,8 @@ import { ToolHistoryEntry, ToolHistoryResponse, UserProfile } from '~components/
 import { convertToDate } from '~utils/dates'
 
 export const ToolsKeys = {
-  tools: ['tools'],
+  toolsOwner: ['tools', 'owner'], // Used to invalidate queries
+  toolsList: (page?: number, term?: string): QueryKey => ['tools', 'owner', page, term],
   userTools: (userId: string): QueryKey => ['tools', 'user', userId],
   tool: (id: string): QueryKey => ['tool', id],
   toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
@@ -50,10 +51,12 @@ export const useTool = (
   return query
 }
 
-export const useTools = () =>
+export type UseToolsParams = { page?: number; term?: string }
+
+export const useTools = ({ page, term }: UseToolsParams) =>
   useQuery({
-    queryKey: ToolsKeys.tools,
-    queryFn: () => api.tools.getUserTools(),
+    queryKey: ToolsKeys.toolsList(page, term),
+    queryFn: () => api.tools.getUserTools({ page, term }),
   })
 
 export const useUserTools = (
@@ -73,7 +76,7 @@ export const useDeleteTool = () => {
     mutationFn: (id: string) => api.tools.delete(id),
     onSuccess: (data, id) => {
       // Invalidate tool queries to refetch updated data
-      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
       queryClient.removeQueries({ queryKey: ToolsKeys.tool(id) })
     },
   })
@@ -84,7 +87,7 @@ export const useCreateTool = (options?: Omit<UseMutationOptions<ToolDTO, Error, 
   return useMutation({
     mutationFn: (tool) => tools.create({ ...tool, location: toEmpriusLocation(tool.location) }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
     },
     ...options,
   })
@@ -97,7 +100,7 @@ export const useUpdateTool = (
   return useMutation({
     mutationFn: (tool) => tools.update({ ...tool, location: toEmpriusLocation(tool.location) }),
     onSuccess: (data, params) => {
-      queryClient.invalidateQueries({ queryKey: ToolsKeys.tools })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
     },
     ...options,

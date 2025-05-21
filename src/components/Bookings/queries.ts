@@ -122,7 +122,7 @@ export const useCreateBooking = () =>
 
 // util function to invalidate queries using a client
 const invalidateQueries = (client: QueryClient, toolId?: string, bookingId?: string) => {
-  client.invalidateQueries({ queryKey: BookingKeys.bookingsLists || ToolsKeys.tools })
+  client.invalidateQueries({ queryKey: BookingKeys.bookingsLists || ToolsKeys.toolsOwner })
   if (toolId) client.invalidateQueries({ queryKey: ToolsKeys.tool(toolId) })
   if (bookingId) client.invalidateQueries({ queryKey: BookingKeys.detail(bookingId) })
 }

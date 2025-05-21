@@ -16,6 +16,7 @@ import {
   CreateCommunityParams,
   UpdateCommunityParams,
 } from '~components/Communities/types'
+import { UseToolsParams } from '~components/Tools/queries'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -40,9 +41,22 @@ interface ApiResponseHeader {
   message: string
 }
 
-export interface ApiResponse<T> {
+export type ApiResponse<T> = {
   data?: T
   header: ApiResponseHeader
+}
+
+export type PaginationInfo = {
+  pagination: {
+    current: number
+    pageSize: number
+    total: number
+    pages: number
+  }
+}
+
+export type PaginatedApiResponse<T> = Omit<ApiResponse<T>, 'data'> & {
+  data: T & PaginationInfo
 }
 
 const api = axios.create({
@@ -96,7 +110,8 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getUserTools: () => apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools')),
+  getUserTools: (params: UseToolsParams) =>
+    apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools`, { params })),
   getUserToolsById: (userId: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/tools/user/${userId}`)),
   searchTools: (params: SearchParams) =>
     apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
