@@ -9,7 +9,7 @@ import { ROUTES } from '~src/router/routes'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 import { Box, HStack, useColorModeValue, VStack } from '@chakra-ui/react'
 export const List = () => (
-  <RoutedPaginationProvider path={ROUTES.TOOLS.LIST}>
+  <RoutedPaginationProvider>
     <PaginatedList />
   </RoutedPaginationProvider>
 )
