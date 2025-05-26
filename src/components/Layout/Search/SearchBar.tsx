@@ -23,7 +23,7 @@ export const SearchBar = ({ term, setTerm, ...rest }: SearchBarProps) => {
         </InputLeftElement>
       )}
       <Input
-        value={term}
+        value={term ?? ''}
         onChange={(e) => setTerm(e.target.value)}
         placeholder={t('search.placeholder')}
         bg='white'
