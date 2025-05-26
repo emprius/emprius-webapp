@@ -2,18 +2,15 @@ import React from 'react'
 import { useTools } from '~components/Tools/queries'
 import { ToolList } from '~components/Tools/List'
 import { MainContainer } from '~components/Layout/LayoutComponents'
-import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 import { HStack, useColorModeValue, VStack } from '@chakra-ui/react'
-import { DebouncedSearchProvider } from '~components/Layout/Search/DebouncedSearchContext'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 
 export const List = () => (
-  <RoutedPaginationProvider>
-    <DebouncedSearchProvider>
-      <PaginatedList />
-    </DebouncedSearchProvider>
-  </RoutedPaginationProvider>
+  <SearchAndPagination>
+    <PaginatedList />
+  </SearchAndPagination>
 )
 
 const PaginatedList = () => {

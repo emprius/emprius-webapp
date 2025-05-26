@@ -112,7 +112,8 @@ export const auth = {
 export const tools = {
   getUserTools: (params: UseToolsParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools`, { params })),
-  getUserToolsById: (userId: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/tools/user/${userId}`)),
+  getUserToolsById: (userId: string, params: UseToolsParams) =>
+    apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools/user/${userId}`, { params })),
   searchTools: (params: SearchParams) =>
     apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<ToolDTO>>(`/tools/${id}`)),

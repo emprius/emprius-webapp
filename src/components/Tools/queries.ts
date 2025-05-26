@@ -14,7 +14,7 @@ import { useRoutedPagination } from '~components/Layout/Pagination/PaginationPro
 export const ToolsKeys = {
   toolsOwner: ['tools', 'owner'], // Used to invalidate queries
   toolsList: (page?: number, term?: string): QueryKey => ['tools', 'owner', page, term],
-  userTools: (userId: string): QueryKey => ['tools', 'user', userId],
+  userTools: (userId: string, page?: number, term?: string): QueryKey => ['tools', 'user', userId, page, term],
   tool: (id: string): QueryKey => ['tool', id],
   toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
   toolHistory: (id: string): QueryKey => ['tool', id, 'history'],
@@ -57,18 +57,8 @@ export const useTool = (
 export type UseToolsParams = { page?: number; term?: string }
 
 export const useTools = () => {
-  const { debouncedSearch: term, prevTermRef } = useDebouncedSearch()
-  const { page, setPage } = useRoutedPagination()
-
-  // Reset page to 0 only when search term changes from previous value
-  useEffect(() => {
-    // Only reset page if term has changed from previous value and setPage is available
-    if (term !== prevTermRef.current) {
-      setPage(0)
-    }
-    // Update the previous term reference
-    prevTermRef.current = term
-  }, [term, prevTermRef, page])
+  const { debouncedSearch: term } = useDebouncedSearch()
+  const { page } = useRoutedPagination()
 
   return useQuery({
     queryKey: ToolsKeys.toolsList(page, term),
@@ -78,14 +68,17 @@ export const useTools = () => {
 
 export const useUserTools = (
   userId: string,
-  options?: Omit<UseQueryOptions<ToolsListResponse, Error>, 'queryKey' | 'queryFn'>
-) =>
-  useQuery({
-    queryKey: ToolsKeys.userTools(userId),
-    queryFn: () => api.tools.getUserToolsById(userId),
+  options?: Omit<UseQueryOptions<Awaited<ReturnType<typeof api.tools.getUserToolsById>>, Error>, 'queryKey' | 'queryFn'>
+) => {
+  const { debouncedSearch: term } = useDebouncedSearch()
+  const { page } = useRoutedPagination()
+  return useQuery({
+    queryKey: ToolsKeys.userTools(userId, page, term),
+    queryFn: () => api.tools.getUserToolsById(userId, { term, page }),
     enabled: !!userId,
     ...options,
   })
+}
 
 export const useDeleteTool = () => {
   const queryClient = useQueryClient()
