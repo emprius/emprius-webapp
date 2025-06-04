@@ -11,7 +11,7 @@ import { PaginationInfo } from '~src/services/api'
 import { useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
 import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
-import { Stack, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Stack, useBreakpointValue } from '@chakra-ui/react'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
 
 export const Requests = () => {
@@ -32,7 +32,9 @@ const BookingList = (data: BookingListProps) => {
   return (
     <RoutedPaginationProvider>
       <PaginatedBookingList {...data} />
-      <RoutedPagination pagination={data?.data?.pagination} />
+      <Box mt={4}>
+        <RoutedPagination pagination={data?.data?.pagination} />
+      </Box>
     </RoutedPaginationProvider>
   )
 }
