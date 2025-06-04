@@ -37,7 +37,7 @@ const BookingList = ({ type }: { type: 'request' | 'petition' }) => {
   )
 }
 
-export const View = () => {
+export const List = () => {
   const location = useLocation()
   const isRequests = location.pathname === ROUTES.BOOKINGS.REQUESTS
   const isMobile = useBreakpointValue({ base: true, md: false })
