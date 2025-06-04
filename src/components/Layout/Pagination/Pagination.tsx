@@ -1,10 +1,12 @@
 import { ReactElement, useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { EllipsisButton } from './EllipsisButton'
-import { Box, Button, ButtonGroup, ButtonGroupProps, ButtonProps, InputProps, Text } from '@chakra-ui/react'
+import { Button, ButtonGroup, ButtonGroupProps, ButtonProps, InputProps, Text } from '@chakra-ui/react'
 import { PaginationInfo } from '~src/services/api'
 import { usePagination, useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 import { useTranslation } from 'react-i18next'
+
+export type PaginationApiParams = { page?: number }
 
 export type PaginationProps = ButtonGroupProps & {
   maxButtons?: number | false
@@ -167,7 +169,7 @@ export const Pagination = ({ maxButtons = 10, buttonProps, inputProps, paginatio
 export const RoutedPagination = ({ maxButtons = 7, buttonProps, pagination, ...rest }: PaginationProps) => {
   const { getPathForPage, setPage, page } = useRoutedPagination()
 
-  if (!pagination) return null
+  if (!pagination || pagination.total <= 0) return null
 
   const totalPages = pagination.pages
 
