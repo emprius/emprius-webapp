@@ -16,7 +16,7 @@ type ToolImageAvailabilityProps = {
   isAvailable: boolean
 } & ToolImageProps
 
-export const ToolImageAvailability = ({ isAvailable, isLoading, ...rest }: ToolImageAvailabilityProps) => {
+export const ToolImageAvailability = ({ isAvailable, ...rest }: ToolImageAvailabilityProps) => {
   const { t } = useTranslation()
   const tooltipLabel = isAvailable ? t('tools.available') : t('tools.unavailable')
 

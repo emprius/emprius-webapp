@@ -73,9 +73,10 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
           <Box position='relative'>
             <ToolImageAvailability
               maxW={{ base: 'full', md: '160px' }}
+              minW={{ base: 'full', md: '160px' }}
               minH={{ base: 'inherit', md: cardMinH }}
               objectFit='cover'
-              imageId={tool?.images?.length ? tool?.images[0] : ''}
+              imageId={tool?.images?.length ? tool?.images[0] : undefined}
               isAvailable={tool?.isAvailable}
               isLoading={isLoading}
               toolId={tool?.id}
