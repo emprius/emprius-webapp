@@ -17,6 +17,7 @@ import {
   UpdateCommunityParams,
 } from '~components/Communities/types'
 import { UseToolsParams } from '~components/Tools/queries'
+import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -131,8 +132,10 @@ export const tools = {
 
 // Bookings endpoints
 export const bookings = {
-  getIncoming: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests/incoming')),
-  getOutgoing: () => apiRequest(api.get<ApiResponse<Booking[]>>('/bookings/requests/outgoing')),
+  getIncoming: (params: PaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<{ bookings: Booking[] }>>('/bookings/requests/incoming', { params })),
+  getOutgoing: (params: PaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<{ bookings: Booking[] }>>('/bookings/requests/outgoing', { params })),
   getBooking: (id) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),

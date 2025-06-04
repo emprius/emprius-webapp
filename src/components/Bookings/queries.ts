@@ -12,11 +12,12 @@ import { ToolsKeys } from '~components/Tools/queries'
 import { RatingsKeys } from '~components/Ratings/queries'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 import { Booking, CreateBookingData } from '~components/Bookings/types'
+import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 
 export const BookingKeys = {
   bookingsLists: ['bookings'] as const,
-  requests: ['bookings', 'requests'] as const,
-  petitions: ['bookings', 'petitions'] as const,
+  requests: (page: number): QueryKey => ['bookings', 'requests', page] as const,
+  petitions: (page: number): QueryKey => ['bookings', 'petitions', page] as const,
   detail: (id): QueryKey => ['booking', id] as const,
 }
 
@@ -33,19 +34,27 @@ export const useBookingDetail = ({
     ...options,
   })
 
-export const useBookingRequests = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
-  useQuery({
-    queryKey: BookingKeys.requests,
-    queryFn: () => api.bookings.getIncoming(),
+export const useBookingRequests = (
+  options?: Omit<UseQueryOptions<Awaited<ReturnType<typeof api.bookings.getIncoming>>, Error>, 'queryKey' | 'queryFn'>
+) => {
+  const { page } = useRoutedPagination()
+  return useQuery({
+    queryKey: BookingKeys.requests(page),
+    queryFn: () => api.bookings.getIncoming({ page: page }),
     ...options,
   })
+}
 
-export const useBookingPetitions = (options?: Omit<UseQueryOptions<Booking[]>, 'queryKey' | 'queryFn'>) =>
-  useQuery({
-    queryKey: BookingKeys.petitions,
-    queryFn: () => api.bookings.getOutgoing(),
+export const useBookingPetitions = (
+  options?: Omit<UseQueryOptions<Awaited<ReturnType<typeof api.bookings.getOutgoing>>, Error>, 'queryKey' | 'queryFn'>
+) => {
+  const { page } = useRoutedPagination()
+  return useQuery({
+    queryKey: BookingKeys.petitions(page),
+    queryFn: () => api.bookings.getOutgoing({ page: page }),
     ...options,
   })
+}
 
 export type BookingActionsReturnType = null
 export type BookingActionsParams = string

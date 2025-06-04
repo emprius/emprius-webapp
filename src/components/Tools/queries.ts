@@ -10,6 +10,7 @@ import { ToolHistoryEntry, ToolHistoryResponse } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
 import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 
 export const ToolsKeys = {
   toolsOwner: ['tools', 'owner'], // Used to invalidate queries
@@ -54,7 +55,7 @@ export const useTool = (
   return query
 }
 
-export type UseToolsParams = { page?: number; term?: string }
+export type UseToolsParams = { term?: string } & PaginationApiParams
 
 export const useTools = () => {
   const { debouncedSearch: term } = useDebouncedSearch()
