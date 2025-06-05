@@ -1,7 +1,6 @@
 import { useMutation, UseMutationOptions, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { useEffect } from 'react'
 import api, { tools } from '~src/services/api'
-import { CreateToolParams, Tool, ToolDTO, ToolDetail, ToolsListResponse, UpdateToolParams } from './types'
+import { CreateToolParams, Tool, ToolDetail, ToolDTO, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { UnifiedRating } from '~components/Ratings/types'
@@ -10,7 +9,6 @@ import { ToolHistoryEntry, ToolHistoryResponse } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
 import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
-import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 
 export const ToolsKeys = {
   toolsOwner: ['tools', 'owner'], // Used to invalidate queries
@@ -54,8 +52,6 @@ export const useTool = (
 
   return query
 }
-
-export type UseToolsParams = { term?: string } & PaginationApiParams
 
 export const useTools = () => {
   const { debouncedSearch: term } = useDebouncedSearch()

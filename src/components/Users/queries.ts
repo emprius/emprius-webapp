@@ -40,9 +40,9 @@ export const useUserProfile = (
   })
 
 export const useUsers = ({ page, username }: { page: number; username?: string }) =>
-  useQuery<GetUsersDTO>({
+  useQuery({
     queryKey: UserKeys.users(page, username),
-    queryFn: () => users.getList(page, username),
+    queryFn: () => users.getList({ page, term: username }),
   })
 
 export const useRequestMoreCodes = () => {

@@ -169,7 +169,7 @@ export const Pagination = ({ maxButtons = 10, buttonProps, inputProps, paginatio
 export const RoutedPagination = ({ maxButtons = 7, buttonProps, pagination, ...rest }: PaginationProps) => {
   const { getPathForPage, setPage, page } = useRoutedPagination()
 
-  if (!pagination || pagination.total <= 0) return null
+  if (!pagination || pagination.pages < 2) return null
 
   const totalPages = pagination.pages
 

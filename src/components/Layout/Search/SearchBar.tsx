@@ -7,6 +7,8 @@ import { useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 
+export type SearchApiParams = { term?: string }
+
 export type SearchBarProps = {
   term: string
   setTerm: (term: string) => void

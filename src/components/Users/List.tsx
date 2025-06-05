@@ -11,26 +11,22 @@ import { useUsers } from '~components/Users/queries'
 import { UserProfileDTO } from '~components/Users/types'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { DebouncedSearchProvider, useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
+import { usePagination, useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 
 export const UsersListNavigator = () => {
-  const [page, setPage] = React.useState(0)
-
   return (
-    <DebouncedSearchProvider>
-      <UsersListWithSearch page={page} setPage={setPage} />
-    </DebouncedSearchProvider>
+    <SearchAndPagination>
+      <UsersListWithSearch />
+    </SearchAndPagination>
   )
 }
 
-const UsersListWithSearch = ({
-  page,
-  setPage,
-}: {
-  page: number
-  setPage: (page: number | ((prevPage: number) => number)) => void
-}) => {
+const UsersListWithSearch = () => {
   const { t } = useTranslation()
   const { debouncedSearch: username } = useDebouncedSearch()
+  const { page } = useRoutedPagination()
   const { data, isLoading } = useUsers({ page, username })
 
   const users = data?.users
@@ -39,21 +35,7 @@ const UsersListWithSearch = ({
     <Flex direction={'column'} gap={6} w='100%'>
       <DebouncedSearchBar placeholder={t('communities.search_placeholder')} />
       <UsersList users={users} isLoading={isLoading} />
-      <HStack justify='center' spacing={4}>
-        <Button leftIcon={<FiChevronLeft />} onClick={() => setPage((p) => Math.max(0, p - 1))} isDisabled={page === 0}>
-          {t('common.previous')}
-        </Button>
-        <Text>
-          {t('common.page')} {page + 1}
-        </Text>
-        <Button
-          rightIcon={<FiChevronRight />}
-          onClick={() => setPage((p) => p + 1)}
-          isDisabled={!users || users.length < 16} // API returns 16 items per page
-        >
-          {t('common.next')}
-        </Button>
-      </HStack>
+      <RoutedPagination pagination={data?.pagination} />
     </Flex>
   )
 }

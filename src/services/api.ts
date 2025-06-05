@@ -16,8 +16,8 @@ import {
   CreateCommunityParams,
   UpdateCommunityParams,
 } from '~components/Communities/types'
-import { UseToolsParams } from '~components/Tools/queries'
 import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
+import { SearchAndPaginationApiParams } from '~components/Layout/Search/SearchAndPagination'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -111,9 +111,9 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getUserTools: (params: UseToolsParams) =>
+  getUserTools: (params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools`, { params })),
-  getUserToolsById: (userId: string, params: UseToolsParams) =>
+  getUserToolsById: (userId: string, params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools/user/${userId}`, { params })),
   searchTools: (params: SearchParams) =>
     apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
@@ -151,8 +151,8 @@ export const users = {
   updateProfile: (data: Partial<EditProfileFormDataDTO>) =>
     apiRequest(api.post<ApiResponse<UserProfileDTO>>('/profile', data)),
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfileDTO>>(`/users/${userId}`)),
-  getList: (page: number = 0, username?: string) =>
-    apiRequest(api.get<ApiResponse<{ users: UserProfileDTO[] }>>('/users', { params: { page, username } })),
+  getList: (params: SearchAndPaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<{ users: UserProfileDTO[] }>>('/users', { params })),
   getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),

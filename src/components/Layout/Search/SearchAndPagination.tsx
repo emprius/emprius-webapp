@@ -1,6 +1,8 @@
 import { PropsWithChildren, useEffect } from 'react'
 import { RoutedPaginationProvider, useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 import { DebouncedSearchProvider, useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
+import { SearchApiParams } from '~components/Layout/Search/SearchBar'
+import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 
 /**
  * This component combines search and pagination functionality.
@@ -35,3 +37,4 @@ const ResetPageOnSearch = ({ children }: PropsWithChildren) => {
 
   return <>{children}</>
 }
+export type SearchAndPaginationApiParams = SearchApiParams & PaginationApiParams
