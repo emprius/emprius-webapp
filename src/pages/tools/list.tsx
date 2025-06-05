@@ -25,7 +25,15 @@ const PaginatedList = () => {
       </HStack>
       <ToolList tools={toolsResponse?.tools || []} isLoading={isLoading} error={error} isError={isError} />
       <HStack w={'full'} justifyContent={'center'} mt={4}>
-        <VStack bg={bgColor} w={'min-content'} p={4} borderWidth={1} borderColor={borderColor} borderRadius='lg'>
+        <VStack
+          bg={bgColor}
+          minW={124}
+          w={'min-content'}
+          p={4}
+          borderWidth={1}
+          borderColor={borderColor}
+          borderRadius='lg'
+        >
           <RoutedPagination pagination={toolsResponse?.pagination} />
         </VStack>
       </HStack>
