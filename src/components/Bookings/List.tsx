@@ -6,10 +6,9 @@ import ErrorComponent from '~components/Layout/ErrorComponent'
 import { BookingCard, BookingCardType } from '~components/Bookings/Card'
 import React from 'react'
 import { UseQueryResult } from '@tanstack/react-query'
-import { Booking } from '~components/Bookings/types'
+import { BookingsListResponse } from '~components/Bookings/types'
 import { PaginationInfo } from '~src/services/api'
 import { useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
-import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 
@@ -25,16 +24,16 @@ export const Petitions = () => {
 
 type BookingListProps = {
   type: BookingCardType
-} & UseQueryResult<{ bookings: Booking[] } & PaginationInfo, Error>
+} & UseQueryResult<BookingsListResponse & PaginationInfo, Error>
 
 const BookingList = (data: BookingListProps) => {
   return (
-    <RoutedPaginationProvider>
+    <>
       <PaginatedBookingList {...data} />
       <Box mt={4}>
         <RoutedPagination pagination={data?.data?.pagination} />
       </Box>
-    </RoutedPaginationProvider>
+    </>
   )
 }
 

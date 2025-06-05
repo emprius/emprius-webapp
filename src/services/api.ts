@@ -8,7 +8,7 @@ import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/typ
 import { EditProfileFormDataDTO, ToolHistoryResponse, UserProfileDTO } from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
-import { Booking, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
+import { Booking, BookingsListResponse, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
 import {
   Community,
   CommunityInvitesResponse,
@@ -133,9 +133,9 @@ export const tools = {
 // Bookings endpoints
 export const bookings = {
   getIncoming: (params: PaginationApiParams) =>
-    apiRequest(api.get<PaginatedApiResponse<{ bookings: Booking[] }>>('/bookings/requests/incoming', { params })),
+    apiRequest(api.get<PaginatedApiResponse<BookingsListResponse>>('/bookings/requests/incoming', { params })),
   getOutgoing: (params: PaginationApiParams) =>
-    apiRequest(api.get<PaginatedApiResponse<{ bookings: Booking[] }>>('/bookings/requests/outgoing', { params })),
+    apiRequest(api.get<PaginatedApiResponse<BookingsListResponse>>('/bookings/requests/outgoing', { params })),
   getBooking: (id) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),

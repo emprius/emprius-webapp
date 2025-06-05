@@ -34,3 +34,5 @@ export interface CreateBookingData {
   contact?: string
   comments?: string
 }
+
+export type BookingsListResponse = { bookings: Booking[] }
