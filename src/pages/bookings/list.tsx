@@ -11,7 +11,7 @@ import { Petitions, Requests } from '~components/Bookings/List'
 export const List = () => {
   const location = useLocation()
   const isRequests = location.pathname === ROUTES.BOOKINGS.REQUESTS
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  const isMobile = useBreakpointValue({ base: true, md: false }, { ssr: false })
   const { t } = useTranslation()
   const { setData } = useOutletContext<TitlePageLayoutContext>()
 

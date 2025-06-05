@@ -11,8 +11,7 @@ import { PaginationInfo } from '~src/services/api'
 import { useBookingPetitions, useBookingRequests } from '~components/Bookings/queries'
 import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
-import { Box, Stack, useBreakpointValue } from '@chakra-ui/react'
-import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 
 export const Requests = () => {
   const query = useBookingRequests()
@@ -42,7 +41,6 @@ const BookingList = (data: BookingListProps) => {
 const PaginatedBookingList = ({ data, type, isLoading, error }: BookingListProps) => {
   const { t } = useTranslation()
   const bookings = data?.bookings
-  const isMobile = useBreakpointValue({ base: true, md: false })
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -56,29 +54,11 @@ const PaginatedBookingList = ({ data, type, isLoading, error }: BookingListProps
     return <ErrorComponent error={error} />
   }
 
-  // todo(kon): This is rendered before it becames false, idk why!
-  if (isMobile) {
-    return (
-      <ResponsiveSimpleGrid>
-        {bookings.map((booking) => (
-          <BookingCard key={booking.id} booking={booking} type={type} />
-        ))}
-      </ResponsiveSimpleGrid>
-    )
-  }
-
   return (
-    <Stack spacing={4}>
+    <SimpleGrid columns={{ base: 1, sm: 2, md: 1 }} spacing={4} autoRows='auto'>
       {bookings.map((booking) => (
         <BookingCard key={booking.id} booking={booking} type={type} />
       ))}
-    </Stack>
+    </SimpleGrid>
   )
-  /*return (<>*/
-  /*  // <Stack spacing={4}>*/
-  /*    {bookings.map((booking) => (*/
-  /*      <BookingCard key={booking.id} booking={booking} type={type} />*/
-  /*    ))}*/
-  /*  // </Stack>*/
-  /*)*/
 }

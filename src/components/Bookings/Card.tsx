@@ -83,7 +83,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
               alt={tool?.title}
             />
             {/* Status badge for small screens */}
-            <Hide above={'md'}>
+            <Hide above={'md'} ssr={false}>
               <Box position='absolute' top={1} left={1} zIndex={1}>
                 <BookingBadges status={booking.bookingStatus} isNomadic={booking.isNomadic} />
               </Box>
@@ -94,7 +94,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
           <Stack direction={'row'} spacing={{ base: 4 }} align='stretch' h={'full'}>
             <Stack spacing={0} flex='1' position='relative' h={'full'}>
               {/* Status badge for big screens */}
-              <Hide below={'md'}>
+              <Hide below={'md'} ssr={false}>
                 <Box position='absolute' top={-2} right={-3} zIndex={1}>
                   <BookingBadges status={booking.bookingStatus} isNomadic={booking.isNomadic} />
                 </Box>
