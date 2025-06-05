@@ -5,10 +5,13 @@ import { BookingKeys } from '~components/Bookings/queries'
 import { useUploadImages } from '~components/Images/queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
+import { QueryKey } from '@tanstack/react-query/build/modern/index'
+import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 
 export const RatingsKeys = {
   ratingsLists: ['ratings'] as const,
-  pending: ['ratings', 'pending'] as const,
+  pending: (page?: number): QueryKey => ['ratings', 'pending', page] as const,
+  allPendings: ['ratings', 'pending'] as const,
   userRatings: (userId: string) => ['ratings', 'user', userId] as const,
   bookingRatings: (bookingId: string) => ['ratings', 'booking', bookingId] as const,
   submitted: ['ratings', 'submitted'] as const,
@@ -17,9 +20,10 @@ export const RatingsKeys = {
 }
 
 export const useGetPendingRatings = () => {
+  const { page } = useRoutedPagination()
   return useQuery({
-    queryKey: RatingsKeys.pending,
-    queryFn: () => api.bookings.getPendingRatings(),
+    queryKey: RatingsKeys.pending(page),
+    queryFn: () => api.bookings.getPendingRatings({ page }),
   })
 }
 

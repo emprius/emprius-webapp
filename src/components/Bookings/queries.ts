@@ -105,7 +105,7 @@ export const useReturnBooking = (booking: Booking, options?: BookingActionOption
     mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'RETURNED' }),
     onSuccess: async (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
-      await client.invalidateQueries({ queryKey: RatingsKeys.pending })
+      await client.invalidateQueries({ queryKey: RatingsKeys.allPendings })
       await client.invalidateQueries({ queryKey: PendingActionsKeys })
     },
     ...options,
