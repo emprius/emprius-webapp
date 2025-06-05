@@ -1,6 +1,5 @@
 import { HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
-import { lightText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { StackProps } from '@chakra-ui/react/dist/types/stack/stack'
 
@@ -30,7 +29,7 @@ export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingC
         ))}
       </HStack>
       {showCount && (
-        <Text fontSize={size === 'sm' ? 'sm' : 'md'} sx={lightText}>
+        <Text fontSize={size === 'sm' ? 'sm' : 'md'} color='lightText'>
           {ratingCount !== undefined && `(${ratingCount})`}
         </Text>
       )}

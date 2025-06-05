@@ -28,7 +28,6 @@ import { useUsers } from '~components/Users/queries'
 import { UserProfile, UserProfileDTO } from '~components/Users/types'
 import { Avatar } from '~components/Images/Avatar'
 import { useAuth } from '~components/Auth/AuthContext'
-import { lighterText } from '~theme/common'
 
 interface InviteUserModalProps {
   isOpen: boolean
@@ -124,7 +123,7 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
                       </Box>
                       <Flex direction={'column'} gap={0}>
                         <Text fontWeight='medium'>{user.name}</Text>
-                        <Text fontSize={'xs'} sx={lighterText}>
+                        <Text fontSize={'xs'} color='lighterText'>
                           {user.id}
                         </Text>
                       </Flex>

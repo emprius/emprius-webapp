@@ -13,7 +13,6 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react'
-import { lighterText } from '~theme/common'
 import { Controller } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
 
@@ -54,7 +53,7 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
           <FormLabel htmlFor='isFree' mr={3}>
             {t('tools.is_free')}
           </FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
+          <Text fontSize='sm' color='lighterText'>
             {t('tools.tool_is_free_description', {
               defaultValue: 'No cost associated for loan the tool',
             })}
@@ -64,7 +63,7 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
         {/*<Stack>*/}
         <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.toolValuation} isRequired={!isFree}>
           <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
+          <Text fontSize='sm' color='lighterText'>
             {t('tools.tool_estimated_value_description', {
               defaultValue:
                 'Set the estimated value of your tool. If the tool is not free, this value will be used to calculate the cost per day.',
@@ -97,7 +96,7 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, 
       {estimatedDailyCost && (
         <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.cost}>
           <FormLabel>{t('tools.price_per_day', { defaultValue: 'Price per day' })}</FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
+          <Text fontSize='sm' color='lighterText'>
             {t('tools.price_per_day_description', {
               defaultValue:
                 'You can set a custom daily price for your tool, but it must not exceed the estimated daily cost  ' +

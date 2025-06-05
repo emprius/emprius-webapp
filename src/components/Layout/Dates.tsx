@@ -1,6 +1,5 @@
 import { Skeleton, Text, TextProps } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { lightText } from '~theme/common'
 
 export const DateRangeTotal = ({
   begin,
@@ -16,7 +15,7 @@ export const DateRangeTotal = ({
   const datef = t('bookings.datef')
   return (
     <Skeleton isLoaded={isLoaded}>
-      <Text fontSize='md' sx={lightText} {...props}>
+      <Text fontSize='md' color='lightText' {...props}>
         {t('bookings.date_range_total', { date: { begin, end }, format: datef })}
       </Text>
     </Skeleton>

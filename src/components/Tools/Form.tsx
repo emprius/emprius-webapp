@@ -32,7 +32,6 @@ import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { MultipleImageSelector } from '~components/Images/MultipleImageSelector'
 import { DeleteToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { CreateToolParams, ToolDetail } from '~components/Tools/types'
 import { useAuth } from '~components/Auth/AuthContext'
@@ -168,7 +167,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
           <Icon as={icons.nomadic} mr={2} />
           {t('tools.nomadic', { defaultValue: 'Nomadic' })}
         </FormLabel>
-        <Text fontSize='sm' sx={lighterText}>
+        <Text fontSize='sm' color='lighterText'>
           {t('tools.nomadic_description', {
             defaultValue:
               'Tools change location every time they are rented. Once rented, they stay at the new location until rented again.',

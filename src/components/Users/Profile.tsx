@@ -11,7 +11,6 @@ import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { BioEditor } from '~components/Users/BioEditor'
 import { UserProfile as UserProfileType } from '~components/Users/types'
 import { ROUTES } from '~src/router/routes'
-import { lightText, lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 
 export const UserProfile = (user: UserProfileType) => {
@@ -61,7 +60,7 @@ export const UserProfile = (user: UserProfileType) => {
                 direction='row'
                 align='center'
                 spacing={1}
-                sx={lighterText}
+                color={'lighterText'}
                 wrap={'wrap'}
                 justify={{ base: 'center', md: 'inherit' }}
               >
@@ -84,16 +83,16 @@ export const UserProfile = (user: UserProfileType) => {
               <Stack
                 direction={'row'}
                 spacing={2}
-                sx={lighterText}
+                color='lighterText'
                 wrap={'wrap'}
                 justify={{ base: 'center', md: 'inherit' }}
               >
-                <Stack direction='row' align='center' spacing={2} sx={lightText}>
+                <Stack direction='row' align='center' spacing={2} color='lightText'>
                   <FiMail />
                   <Text>{user.email}</Text>
                 </Stack>
                 {user.community && (
-                  <Stack direction='row' align='center' spacing={2} sx={lightText}>
+                  <Stack direction='row' align='center' spacing={2} color='lightText'>
                     <FiHome />
                     <Text>{user.community}</Text>
                   </Stack>

@@ -4,7 +4,6 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Box, Card, CardBody, Flex, Heading, Link, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { addDayToDate, convertToDate } from '~utils/dates'
 import { UserCard } from '~components/Users/Card'
-import { lightText } from '~theme/common'
 import { DateRangeTotal } from '~components/Layout/Dates'
 import { RatingComments } from '~components/Ratings/RatingComments'
 import React from 'react'
@@ -87,7 +86,7 @@ const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
           />
           <Skeleton isLoaded={!isLoading}>
             <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking?.id)}>
-              <Text sx={lightText} fontSize='sm'>
+              <Text color='lightText' fontSize='sm'>
                 <Trans
                   i18nKey={'tools.lent_from_to'}
                   values={{

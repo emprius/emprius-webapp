@@ -7,7 +7,6 @@ import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { Tool, ToolDTO } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
-import { lightText } from '~theme/common'
 import { ToolImageAvailability } from './shared/ToolImage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 
@@ -64,7 +63,7 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
               <CostDay tool={tool} />
             </Flex>
 
-            <Text fontSize='md' noOfLines={2} title={tool.description} sx={lightText}>
+            <Text fontSize='md' noOfLines={2} title={tool.description} color='lightText'>
               {tool.description}
             </Text>
           </Stack>

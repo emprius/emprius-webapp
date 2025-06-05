@@ -4,7 +4,6 @@ import { useDefaultUserCommunities } from '~components/Communities/queries'
 import { chakraComponents, Select } from 'chakra-react-select'
 import { Box, FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
 import { Avatar } from '~components/Images/Avatar'
-import { lighterText } from '~theme/common'
 import { Controller } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
 import { icons } from '~theme/icons'
@@ -72,7 +71,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
               </Box>
             </HStack>
           </FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
+          <Text fontSize='sm' color='lighterText'>
             {t('tools.share_globally_desc', {
               defaultValue: 'Share this tool with everybody',
             })}
@@ -84,7 +83,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
             <Icon as={icons.communities} />
             <Box>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Box>
           </FormLabel>
-          <Text fontSize='sm' sx={lighterText}>
+          <Text fontSize='sm' color='lighterText'>
             {t('tools.communities_description', {
               defaultValue: 'The tool will only be visible for the members of the communities where you share it',
             })}

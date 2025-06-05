@@ -2,7 +2,6 @@ import { Flex, HStack, Icon, Stack, StackProps, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FaArrowRight } from 'react-icons/fa'
 import { DateRangeTotal } from '~components/Layout/Dates'
-import { lighterText, lightText } from '~theme/common'
 import { addDayToDate } from '~utils/dates'
 import { useMemo } from 'react'
 import { icons } from '~theme/icons'
@@ -21,7 +20,7 @@ export const BookingDates = ({ booking }: BookingDatesProps) => {
 
   return (
     <Stack spacing={1}>
-      <Flex align={'center'} fontSize='md' wrap={'wrap'} sx={lightText}>
+      <Flex align={'center'} fontSize='md' wrap={'wrap'} color='lightText'>
         {t('bookings.date_formatted', { date: begin, format: datef })}
         <Icon as={FaArrowRight} mx={2} />
         {t('bookings.date_formatted', { date: end, format: datef })}
@@ -61,7 +60,7 @@ export const BookingStatusTitle = ({
   }, [booking, now])
 
   return (
-    <HStack sx={lighterText} fontSize={{ base: 'xl', md: '2xl' }} {...props}>
+    <HStack color='lighterText' fontSize={{ base: 'xl', md: '2xl' }} {...props}>
       <Icon as={isRequest ? icons.outbox : icons.inbox} />
       <Text>{title}</Text>
     </HStack>

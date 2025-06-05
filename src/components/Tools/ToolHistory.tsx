@@ -1,27 +1,12 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-  useColorModeValue,
-  VStack,
-  Circle,
-  Divider,
-  HStack,
-  Skeleton,
-} from '@chakra-ui/react'
+import { Box, Flex, Heading, Text, useColorModeValue, VStack, Circle, HStack } from '@chakra-ui/react'
 import React from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { FiCalendar, FiMapPin, FiUser } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { MapWithMarker } from '~components/Layout/Map/Map'
 import { useToolHistory } from '~components/Tools/queries'
-import { lightText, lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { UserCard } from '~components/Users/Card'
-import { format } from 'date-fns'
 
 interface ToolHistoryProps {
   toolId: string

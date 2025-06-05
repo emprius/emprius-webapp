@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react'
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
-import { lighterText, lightText } from '~theme/common'
 import { Invite } from '~components/Users/types'
 import { useRequestMoreCodes } from '~components/Users/queries'
 import { ROUTES } from '~src/router/routes'
@@ -111,7 +110,7 @@ const InviteCodes = ({ codes }: { codes: Invite[] }) => {
       <Heading size='md' mb={4}>
         {t('invite_codes.title', { defaultValue: 'Invite codes' })}
       </Heading>
-      <Text sx={lightText} mb={4}>
+      <Text color='lightText' mb={4}>
         {t('invite_codes.helper_desc', {
           defaultValue:
             'Invite codes and invite links are used during registration and allow others to create an account. They do not expire and can be shared freely.',
@@ -167,7 +166,7 @@ const InviteCodes = ({ codes }: { codes: Invite[] }) => {
         <Button isLoading={isPending} onClick={requestMoreCodes} disabled={!!codes?.length}>
           {t('invite_codes.request_more_codes', { defaultValue: 'Request more codes' })}
         </Button>
-        <Text sx={lighterText}>
+        <Text color='lighterText'>
           {t('invite_codes.get_more_codes', {
             defaultValue: 'If you run out of codes, click the button to get additional ones.',
           })}

@@ -11,7 +11,6 @@ import { CostDay } from '~components/Tools/shared/CostDay'
 import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { lighterText } from '~theme/common'
 import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingComment } from './Details'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
@@ -197,7 +196,7 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
   const amount = cost * getDaysBetweenDates(booking.startDate, addDayToDate(booking.endDate))
 
   return (
-    <Text fontSize='sm' sx={lighterText}>
+    <Text fontSize='sm' color='lighterText'>
       {isRequest
         ? t('bookings.total_earned', {
             amount,
@@ -223,7 +222,7 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
 //     }
 //   }
 //   return (
-//     <HStack sx={lighterText} fontSize='sm' {...props}>
+//     <HStack color='lighterText' fontSize='sm' {...props}>
 //       <Icon as={data.icon} />
 //       <Text>{data.title}</Text>
 //     </HStack>

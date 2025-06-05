@@ -33,7 +33,6 @@ import { ToolImageAvailability } from '~components/Tools/shared/ToolImage'
 import { Tool } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
 import { ROUTES } from '~src/router/routes'
-import { lighterText, lightText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Earned } from '~components/Bookings/Card'
@@ -200,7 +199,7 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
               {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
             </HStack>
 
-            <Text fontSize='md' title={tool.description} sx={lightText}>
+            <Text fontSize='md' title={tool.description} color='lightText'>
               {tool.description}
             </Text>
           </Stack>
@@ -327,7 +326,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
           <Flex justify='space-between' align='center' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
             <Stack spacing={1}>
               <BookingStatusTitle isRequest={isRequest} booking={booking} fontWeight='bold' />
-              <Text fontSize='sm' sx={lighterText}>
+              <Text fontSize='sm' color='lighterText'>
                 {t('bookings.reference', { id: booking.id })}
               </Text>
             </Stack>
@@ -340,10 +339,10 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         {booking.isNomadic && (
           <Flex direction={'column'} gap={1} mb={6}>
             <Stack direction='row' align='center'>
-              <Icon sx={lightText} as={icons.nomadic} />
-              <Text sx={lightText}>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
+              <Icon color='lightText' as={icons.nomadic} />
+              <Text color='lightText'>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
             </Stack>
-            <Text sx={lighterText}>{t('tools.nomadic_description')}</Text>
+            <Text color='lighterText'>{t('tools.nomadic_description')}</Text>
           </Flex>
         )}
         {/* Main Content */}

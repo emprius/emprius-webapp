@@ -1,6 +1,5 @@
 import { Box, Link, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { lightText } from '~theme/common'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import React from 'react'
@@ -76,11 +75,11 @@ const CannotBookInfoCard = ({
   const { t } = useTranslation()
   return (
     <Box bg={bgColor} p={6} borderRadius='lg' boxShadow='sm' textAlign='center'>
-      <Text sx={lightText} mb={4}>
+      <Text color='lightText' mb={4}>
         {title}
       </Text>
       {description && (
-        <Text color='gray.600' mb={4} sx={lightText}>
+        <Text mb={4} color='lightText'>
           {description}
         </Text>
       )}

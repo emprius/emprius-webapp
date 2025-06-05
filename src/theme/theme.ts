@@ -28,6 +28,12 @@ const theme = extendTheme({
     heading: 'Montserrat, system-ui, sans-serif',
     body: 'Roboto, system-ui, sans-serif',
   },
+  semanticTokens: {
+    colors: {
+      lightText: { default: 'gray.700', _dark: 'gray.400' },
+      lighterText: { default: 'gray.500', _dark: 'gray.400' },
+    },
+  },
   styles: {
     global: (props: { colorMode: string }) => ({
       body: {

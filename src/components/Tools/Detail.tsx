@@ -27,7 +27,6 @@ import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
 import { ToolDetail as ToolDetailType } from '~components/Tools/types'
 import { UserCard } from '~components/Users/Card'
-import { lighterText, lightText } from '~theme/common'
 import { ToolRatings } from '~components/Ratings/ToolRatingsCard'
 import { ToolHistory } from '~components/Tools/ToolHistory'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -87,7 +86,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                       </Stack>
                       <CostDay
                         tool={tool}
-                        sx={lightText}
+                        color='lightText'
                         fontSize='2xl'
                         fontWeight='bold'
                         badgeProps={{
@@ -96,7 +95,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                         }}
                       />
                     </Stack>
-                    {tool?.description && <Text sx={lightText}>{tool.description}</Text>}
+                    {tool?.description && <Text color='lightText'>{tool.description}</Text>}
                     <SimpleGrid spacing={4} columns={{ base: 2 }}>
                       {!!tool.toolCategory && (
                         <Stack direction='row' align='center'>
@@ -140,7 +139,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                           <Icon as={icons.nomadic} />
                           <Text>{t('tools.this_tool_is_nomadic', { defaultValue: 'This tool is nomadic' })}</Text>
                         </Stack>
-                        <Text sx={lighterText}>{t('tools.nomadic_description')}</Text>
+                        <Text color='lighterText'>{t('tools.nomadic_description')}</Text>
                       </Flex>
                     )}
                     <Divider my={4} />

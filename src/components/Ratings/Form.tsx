@@ -33,7 +33,6 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { useAuth } from '~components/Auth/AuthContext'
-import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 import { Booking } from '~components/Bookings/types'
 
@@ -59,7 +58,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
 
   return (
     <Flex direction={'column'} gap={2}>
-      <HStack sx={lighterText} fontSize='sm'>
+      <HStack color='lighterText' fontSize='sm'>
         <Icon as={icon} />
         <Text>{title}</Text>
       </HStack>

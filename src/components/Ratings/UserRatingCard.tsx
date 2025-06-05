@@ -11,7 +11,6 @@ import { format } from 'date-fns'
 import { UserCard } from '~components/Users/Card'
 import { ToolImage } from '~components/Tools/shared/ToolImage'
 import { icons } from '~theme/icons'
-import { lighterText } from '~theme/common'
 import { RatingComments } from '~components/Ratings/RatingComments'
 
 interface UnifiedRatingCardProps {
@@ -84,7 +83,7 @@ export const UserRatingCard = ({ rating, actualUser }: UnifiedRatingCardProps) =
 
             <Box flex='1'>
               <HStack fontSize='sm' fontWeight='medium' mb={1} wrap={'wrap'}>
-                <Icon as={isOwner ? icons.outbox : icons.inbox} sx={lighterText} />
+                <Icon as={isOwner ? icons.outbox : icons.inbox} color='lighterText' />
                 {titleText}
                 <UserCard
                   userId={otherUser.id}

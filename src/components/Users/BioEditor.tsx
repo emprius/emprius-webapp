@@ -17,7 +17,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUpdateUserProfile } from './queries'
 import { UserProfile } from './types'
-import { lighterText } from '~theme/common'
 import { icons } from '~theme/icons'
 
 interface BioEditorProps {
@@ -111,12 +110,12 @@ export const BioEditor: React.FC<BioEditorProps> = ({ user, isCurrentUser }) => 
   return (
     <HStack>
       {user.bio && (
-        <Text fontStyle='italic' sx={lighterText}>
+        <Text fontStyle='italic' color='lighterText'>
           {user.bio}
         </Text>
       )}
       {!user.bio && isCurrentUser && (
-        <Text fontStyle='italic' sx={lighterText}>
+        <Text fontStyle='italic' color='lighterText'>
           {t('user.add_your_bio', { defaultValue: 'How are you feeling today?' })}
         </Text>
       )}
