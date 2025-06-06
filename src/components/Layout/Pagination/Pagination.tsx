@@ -146,10 +146,13 @@ const PaginationButtons = ({
   )
 }
 
-export const Pagination = ({ maxButtons = 10, buttonProps, inputProps, pagination, ...rest }: PaginationProps) => {
+export const Pagination = ({ maxButtons = 8, buttonProps, inputProps, pagination, ...rest }: PaginationProps) => {
   const { setPage } = usePagination()
-  const totalPages = pagination.pages + 1
-  const page = pagination.current
+
+  if (!pagination || pagination.pages < 2) return null
+
+  const totalPages = pagination?.pages
+  const page = pagination?.current
 
   return (
     <PaginationButtons
@@ -166,7 +169,7 @@ export const Pagination = ({ maxButtons = 10, buttonProps, inputProps, paginatio
   )
 }
 
-export const RoutedPagination = ({ maxButtons = 7, buttonProps, pagination, ...rest }: PaginationProps) => {
+export const RoutedPagination = ({ maxButtons = 8, buttonProps, pagination, ...rest }: PaginationProps) => {
   const { getPathForPage, setPage, page } = useRoutedPagination()
 
   if (!pagination || pagination.pages < 2) return null
