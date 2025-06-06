@@ -4,12 +4,12 @@ import {
   ButtonProps,
   Flex,
   HStack,
-  IconButton,
   Stack,
   Text,
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -22,13 +22,25 @@ import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { defaultFilterValues, SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
+import { useNavigate } from 'react-router-dom'
+import { PaginationProvider, usePagination } from '~components/Layout/Pagination/PaginationProvider'
+import { Pagination } from '~components/Layout/Pagination/Pagination'
 
-export const SearchPage = () => {
+export const SearchPage = () => (
+  <PaginationProvider>
+    <SearchPagePaginated />
+  </PaginationProvider>
+)
+
+const SearchPagePaginated = () => {
   const { user } = useAuth()
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure()
   const { isOpen: isOpenSideNav, onToggle: onToggleSideNav } = useDisclosure({ defaultIsOpen: false })
   const [isMapView, setIsMapView] = useState(false)
   const isMobile = useBreakpointValue({ base: true, lg: false })
+  const { page } = usePagination()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   const { filters, setFilters, result, isPending, error, isError } = useSearch()
 
@@ -54,6 +66,11 @@ export const SearchPage = () => {
       setFilters({ ...filters })
     }
   }, [])
+
+  // Add page into filters when change
+  useEffect(() => {
+    setFilters({ ...filters, page })
+  }, [page])
 
   const toggleView = () => setIsMapView(!isMapView)
   const tools = result?.tools || []
@@ -88,6 +105,19 @@ export const SearchPage = () => {
             {!isMapView && (
               <Box flex={1} px={4} pb={8} pt={{ base: 14, lg: 12 }} overflowY='auto'>
                 <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
+                <HStack w={'full'} justifyContent={'center'} mt={4}>
+                  <VStack
+                    bg={bgColor}
+                    minW={124}
+                    w={'min-content'}
+                    p={4}
+                    borderWidth={1}
+                    borderColor={borderColor}
+                    borderRadius='lg'
+                  >
+                    <Pagination pagination={result?.pagination} />
+                  </VStack>
+                </HStack>
               </Box>
             )}
           </Flex>

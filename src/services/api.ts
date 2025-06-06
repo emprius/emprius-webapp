@@ -116,7 +116,7 @@ export const tools = {
   getUserToolsById: (userId: string, params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools/user/${userId}`, { params })),
   searchTools: (params: SearchParams) =>
-    apiRequest(api.get<ApiResponse<ToolsListResponse>>('/tools/search', { params })),
+    apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>('/tools/search', { params })),
   getById: (id: string) => apiRequest(api.get<ApiResponse<ToolDTO>>(`/tools/${id}`)),
   create: (data: CreateToolDTO) =>
     apiRequest(
