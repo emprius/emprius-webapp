@@ -1,17 +1,17 @@
 import {
   Box,
   Button,
+  ButtonProps,
   Flex,
   HStack,
   IconButton,
-  IconButtonProps,
   Stack,
   Text,
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FaFilter } from 'react-icons/fa'
@@ -25,9 +25,10 @@ import { Map } from './Map'
 
 export const SearchPage = () => {
   const { user } = useAuth()
-  const bgColor = useColorModeValue('gray.50', 'gray.900')
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure()
+  const { isOpen: isOpenSideNav, onToggle: onToggleSideNav } = useDisclosure({ defaultIsOpen: false })
   const [isMapView, setIsMapView] = useState(false)
+  const isMobile = useBreakpointValue({ base: true, lg: false })
 
   const { filters, setFilters, result, isPending, error, isError } = useSearch()
 
@@ -38,6 +39,14 @@ export const SearchPage = () => {
   const onSubmit = (data: SearchFilters) => {
     setFilters({ ...filters, ...data })
   }
+
+  const openFilters = useCallback(() => {
+    if (isMobile) {
+      onOpenDrawer()
+    } else {
+      onToggleSideNav()
+    }
+  }, [isMobile, isOpenSideNav])
 
   // Do a search on load
   useEffect(() => {
@@ -55,12 +64,18 @@ export const SearchPage = () => {
       <Box h='100vh'>
         <Box h='100vh' position='relative'>
           <Flex h='100vh'>
-            <SideNav isMapView={isMapView} toggleView={toggleView} methods={methods} onSubmit={onSubmit} />
+            <SideNav isMapView={isMapView} isOpen={isOpenSideNav} methods={methods} onSubmit={onSubmit} />
             {/*Floating buttons to open filters and switch view*/}
-            <Box position='fixed' top={20} right={4} zIndex={2} display={{ base: 'flex', lg: 'none' }}>
+            <Box position='absolute' top={2} right={4} zIndex={2}>
               <HStack spacing={2}>
-                <ToggleFiltersButton onClick={onOpen} />
-                <ToggleMapButton isMapView={isMapView} onClick={toggleView} />
+                <ToggleFiltersButton onClick={openFilters} zIndex={999} borderRadius={'sm'} size={'sm'} />
+                <ToggleMapButton
+                  isMapView={isMapView}
+                  onClick={toggleView}
+                  zIndex={999}
+                  borderRadius={'sm'}
+                  size={'sm'}
+                />
               </HStack>
             </Box>
             {/*Map View*/}
@@ -71,42 +86,50 @@ export const SearchPage = () => {
             )}
             {/*List View*/}
             {!isMapView && (
-              <Box flex={1} px={4} pb={8} pt={{ base: 14, lg: 8 }} overflowY='auto'>
+              <Box flex={1} px={4} pb={8} pt={{ base: 14, lg: 12 }} overflowY='auto'>
                 <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
               </Box>
             )}
           </Flex>
         </Box>
-        <FiltersDrawer isOpen={isOpen} onClose={onClose} />
+        <FiltersDrawer isOpen={isOpenDrawer} onClose={onCloseDrawer} />
       </Box>
     </FormProvider>
   )
 }
 
-type ToggleButtonProps = Omit<IconButtonProps, 'aria-label' | 'icon'>
-const ToggleMapButton = ({ isMapView, ...rest }: { isMapView: boolean } & ToggleButtonProps) => (
-  <IconButton
-    aria-label={isMapView ? 'Switch to list view' : 'Switch to map view'}
-    icon={isMapView ? <FaRegRectangleList /> : <FiMap />}
-    variant={'solid'}
-    {...rest}
-  />
-)
+type ToggleButtonProps = Omit<ButtonProps, 'aria-label' | 'icon'>
+const ToggleMapButton = ({ isMapView, ...rest }: { isMapView: boolean } & ToggleButtonProps) => {
+  const { t } = useTranslation()
+  let text = t('search.switch_to_map_view', { defaultValue: 'Switch to map view' })
+  if (isMapView) {
+    text = t('search.switch_to_list_view', { defaultValue: 'Switch to list view' })
+  }
+  return (
+    <Button aria-label={text} leftIcon={isMapView ? <FaRegRectangleList /> : <FiMap />} variant={'solid'} {...rest}>
+      {text}
+    </Button>
+  )
+}
 
-const ToggleFiltersButton = (props: ToggleButtonProps) => (
-  <IconButton aria-label='Filters' icon={<FaFilter />} {...props} />
-)
+const ToggleFiltersButton = (props: ToggleButtonProps) => {
+  const { t } = useTranslation()
+  return (
+    <Button aria-label='Filters' leftIcon={<FaFilter />} {...props}>
+      {t('search.filters')}
+    </Button>
+  )
+}
 
 interface SideNavProps {
   isMapView: boolean
-  toggleView: () => void
+  isOpen: boolean
   methods: any
   onSubmit: (data: SearchFilters) => void
 }
 
-const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSubmit }) => {
+const SideNav: React.FC<SideNavProps> = ({ isMapView, isOpen, methods, onSubmit }) => {
   const { t } = useTranslation()
-  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false })
   const isMobile = useBreakpointValue({ base: true, lg: false })
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -137,25 +160,6 @@ const SideNav: React.FC<SideNavProps> = ({ isMapView, toggleView, methods, onSub
           </Button>
         </Stack>
       </Stack>
-      <ToggleFiltersButton
-        position='absolute'
-        right='-14px'
-        top='5'
-        onClick={onToggle}
-        zIndex={999}
-        borderRadius={'sm'}
-        size={'sm'}
-      />
-      <ToggleMapButton
-        position='absolute'
-        right='-14px'
-        top={16}
-        onClick={toggleView}
-        isMapView={isMapView}
-        zIndex={999}
-        borderRadius={'sm'}
-        size={'sm'}
-      />
     </Stack>
   )
 }
