@@ -6,6 +6,7 @@ import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 import { HStack, useColorModeValue, VStack } from '@chakra-ui/react'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
+import { useTranslation } from 'react-i18next'
 
 export const List = () => (
   <SearchAndPagination>
@@ -14,6 +15,7 @@ export const List = () => (
 )
 
 const PaginatedList = () => {
+  const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { data: toolsResponse, isLoading, error, isError } = useTools()
@@ -21,7 +23,9 @@ const PaginatedList = () => {
   return (
     <MainContainer>
       <HStack w={'full'} justifyContent={'center'} bg={bgColor} borderColor={borderColor} borderRadius='2xl' mb={4}>
-        <DebouncedSearchBar />
+        <DebouncedSearchBar
+          placeholder={t('tools.filter_tools', { defaultValue: 'Filter by tool name or description' })}
+        />
       </HStack>
       <ToolList tools={toolsResponse?.tools || []} isLoading={isLoading} error={error} isError={isError} />
       {toolsResponse?.pagination?.pages > 1 && (

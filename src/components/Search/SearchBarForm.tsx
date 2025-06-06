@@ -22,7 +22,7 @@ export const SearchBarForm = ({
 
   return (
     <Box as='form' onSubmit={onSubmit} display='flex' alignItems='center' maxW='600px' flex={1} mx={4} {...rest}>
-      <SearchBar term={term} setTerm={setTerm} />
+      <SearchBar term={term} setTerm={setTerm} placeholder={t('search.placeholder')} />
     </Box>
   )
 }

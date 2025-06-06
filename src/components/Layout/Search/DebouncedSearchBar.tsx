@@ -10,5 +10,5 @@ interface LocalSearchBarProps extends Omit<InputProps, 'value' | 'onChange'> {
 export const DebouncedSearchBar = ({ placeholder, ...props }: LocalSearchBarProps) => {
   const { searchTerm, setSearchTerm } = useDebouncedSearch()
 
-  return <SearchBar setTerm={setSearchTerm} term={searchTerm} />
+  return <SearchBar setTerm={setSearchTerm} term={searchTerm} placeholder={placeholder} />
 }

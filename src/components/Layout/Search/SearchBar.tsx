@@ -11,10 +11,11 @@ export type SearchApiParams = { term?: string }
 
 export type SearchBarProps = {
   term: string
+  placeholder?: string
   setTerm: (term: string) => void
 }
 
-export const SearchBar = ({ term, setTerm, ...rest }: SearchBarProps) => {
+export const SearchBar = ({ term, setTerm, placeholder }: SearchBarProps) => {
   const { t } = useTranslation()
 
   return (
@@ -27,7 +28,7 @@ export const SearchBar = ({ term, setTerm, ...rest }: SearchBarProps) => {
       <Input
         value={term ?? ''}
         onChange={(e) => setTerm(e.target.value)}
-        placeholder={t('search.placeholder')}
+        placeholder={placeholder}
         bg='white'
         type={'search'}
         w={'full'}
