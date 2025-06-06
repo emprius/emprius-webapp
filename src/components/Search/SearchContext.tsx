@@ -62,6 +62,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     // Perform only if is on search route
     if (window.location.pathname !== ROUTES.SEARCH) return
+    // todo(kon): do a deep compare to see if the search is needed to be performed
+    // Now is executed two times
     performSearch()
   }, [filters])
 
