@@ -131,9 +131,9 @@ const SearchPagePaginated = () => {
 type ToggleButtonProps = Omit<ButtonProps, 'aria-label' | 'icon'>
 const ToggleMapButton = ({ isMapView, ...rest }: { isMapView: boolean } & ToggleButtonProps) => {
   const { t } = useTranslation()
-  let text = t('search.switch_to_map_view', { defaultValue: 'Switch to map view' })
+  let text = t('search.switch_to_map_view', { defaultValue: 'Switch map' })
   if (isMapView) {
-    text = t('search.switch_to_list_view', { defaultValue: 'Switch to list view' })
+    text = t('search.switch_to_list_view', { defaultValue: 'Switch list' })
   }
   return (
     <Button aria-label={text} leftIcon={isMapView ? <FaRegRectangleList /> : <FiMap />} variant={'solid'} {...rest}>
