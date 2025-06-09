@@ -42,15 +42,10 @@ interface FilterMenuProps {
 export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
   const { handleSubmit } = useFormContext()
   const { t } = useTranslation()
-  const { filters, setFilters, setFiltersWithURLUpdate } = useSearch()
+  const { filters, setFilters } = useSearch()
 
   const onSubmit = (data: SearchFilters) => {
-    setFiltersWithURLUpdate({ ...filters, ...data })
-    // if (setFiltersWithURLUpdate) {
-    //   setFiltersWithURLUpdate({ ...filters, ...data })
-    // } else {
-    //   setFilters({ ...filters, ...data })
-    // }
+    setFilters({ ...filters, ...data })
   }
 
   return (
