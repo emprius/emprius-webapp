@@ -11,7 +11,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FaFilter } from 'react-icons/fa'
@@ -22,9 +22,10 @@ import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { defaultFilterValues, SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { PaginationProvider, usePagination } from '~components/Layout/Pagination/PaginationProvider'
 import { Pagination } from '~components/Layout/Pagination/Pagination'
+import { deserializeFiltersFromURL, serializeFiltersToURL, hasSearchFiltersInURL } from '~utils/searchParams'
 
 export const SearchPage = () => (
   <PaginationProvider>
@@ -37,16 +38,25 @@ const SearchPagePaginated = () => {
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure()
   const { isOpen: isOpenSideNav, onToggle: onToggleSideNav } = useDisclosure({ defaultIsOpen: false })
   const [isMapView, setIsMapView] = useState(false)
+  const [hasInitialized, setHasInitialized] = useState(false)
   const isMobile = useBreakpointValue({ base: true, lg: false })
   const { page } = usePagination()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const { filters, setFilters, result, isPending, error, isError } = useSearch()
 
-  const methods = useForm<SearchFilters>({
-    defaultValues: { ...defaultFilterValues, ...filters },
-  })
+  const methods = useForm<SearchFilters>({})
+
+  // Handle filter changes and update URL
+  const handleFiltersChange = useCallback(
+    (filters: SearchFilters) => {
+      const newParams = serializeFiltersToURL(filters)
+      setSearchParams(newParams, { replace: true })
+    },
+    [setSearchParams]
+  )
 
   const onSubmit = (data: SearchFilters) => {
     setFilters({ ...filters, ...data })
@@ -60,16 +70,33 @@ const SearchPagePaginated = () => {
     }
   }, [isMobile, isOpenSideNav])
 
-  // Do a search on load
+  // Apply URL filters on mount if they exist
   useEffect(() => {
-    if (!result) {
+    if (!hasInitialized && hasSearchFiltersInURL(searchParams)) {
+      const deserializedFilters = deserializeFiltersFromURL(searchParams)
+      const urlFilters = { ...defaultFilterValues, ...deserializedFilters }
+      setFilters(urlFilters)
+      methods.reset(urlFilters)
+      setHasInitialized(true)
+    } else if (!hasInitialized) {
+      // No URL filters, perform default search
       setFilters({ ...filters })
+      setHasInitialized(true)
     }
-  }, [])
+  }, [hasInitialized, searchParams, setFilters, filters])
+
+  // Update URL when filters change (after initialization)
+  useEffect(() => {
+    if (hasInitialized && result) {
+      handleFiltersChange(filters)
+    }
+  }, [filters, result, hasInitialized, handleFiltersChange])
 
   // Add page into filters when change
   useEffect(() => {
-    setFilters({ ...filters, page })
+    if (hasInitialized && result) {
+      setFilters({ ...filters, page })
+    }
   }, [page])
 
   const toggleView = () => setIsMapView(!isMapView)
