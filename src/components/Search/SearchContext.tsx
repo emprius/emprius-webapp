@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { SearchParams, useSearchTools } from '~components/Search/queries'
 import { ROUTES } from '~src/router/routes'
+import { deepEqual } from '~utils/compare'
 
 export const DISTANCE_MAX = 250
 export const DISTANCE_DEFAULT = DISTANCE_MAX
@@ -41,6 +42,7 @@ export const defaultFilterValues: Partial<SearchFilters> = {
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filters, setFilters] = useState<SearchFilters>(defaultFilterValues)
   const [term, setTerm] = useState<string>('')
+  const previousFilterRef = useRef<SearchFilters>()
   const { data, mutate, isPending, error, isError } = useSearchTools()
 
   const performSearch = () => {
@@ -62,8 +64,9 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     // Perform only if is on search route
     if (window.location.pathname !== ROUTES.SEARCH) return
-    // todo(kon): do a deep compare to see if the search is needed to be performed
-    // Now is executed two times
+    // If filters haven't changed, skip search
+    if (deepEqual(previousFilterRef.current, filters)) return
+    previousFilterRef.current = filters
     performSearch()
   }, [filters])
 
