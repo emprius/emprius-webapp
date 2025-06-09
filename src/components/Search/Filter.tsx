@@ -21,8 +21,8 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
-import React from 'react'
-import { useFormContext } from 'react-hook-form'
+import React, { useCallback, useMemo } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useInfoContext } from '~components/Layout/Contexts/InfoContext'
 import {
@@ -70,116 +70,152 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
   )
 }
 
-export const FiltersForm = () => {
+export const FiltersForm = React.memo(() => {
   const { t } = useTranslation()
   const { categories } = useInfoContext()
   const { setValue, watch } = useFormContext<SearchFilters>()
 
-  const handleCategoryChange = (newValue: any) => {
+  // Memoize category change handler to prevent re-creation on every render
+  const handleCategoryChange = useCallback((newValue: any) => {
     if (!newValue) {
       setValue('categories', undefined)
       return
     }
     const categoryIds = newValue.map((item: any) => parseInt(item.value))
     setValue('categories', categoryIds)
-  }
+  }, [setValue])
 
-  const handleDistanceChange = (value: number) => {
-    setValue('distance', value)
-  }
+  // Memoize category options to prevent re-creation on every render
+  const categoryOptions = useMemo(() => 
+    categories.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })), [categories]
+  )
 
-  const handleMaxCostChange = (value: number) => {
-    setValue('maxCost', value)
-  }
+  // Memoize category values to prevent re-creation on every render
+  const categoryValues = useMemo(() => 
+    watch('categories')?.map((id: number) => ({
+      value: id,
+      label: categories.find((c) => c.id === id)?.name,
+    })), [watch('categories'), categories]
+  )
 
   return (
     <Stack spacing={6} pb={6}>
-      <FormControl>
-        <FormLabel>{t('search.distance')} (km)</FormLabel>
-        <HStack spacing={4}>
-          <Slider
-            flex='1'
-            defaultValue={DISTANCE_DEFAULT}
-            min={1}
-            max={DISTANCE_MAX}
-            step={1}
-            value={watch('distance')}
-            onChange={handleDistanceChange}
-          >
-            <SliderTrack>
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb />
-          </Slider>
-          <NumberInput
-            maxW='100px'
-            min={1}
-            max={DISTANCE_MAX}
-            step={1}
-            value={watch('distance') || DISTANCE_MAX}
-            onChange={(_, value) => handleDistanceChange(value)}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </HStack>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>
-          {t('search.max_cost')} ({t('common.token_symbol')})
-        </FormLabel>
-        <HStack spacing={4}>
-          <Slider
-            flex='1'
-            defaultValue={MAX_COST_DEFAULT}
-            min={0}
-            max={MAX_COST_MAX}
-            step={10}
-            value={watch('maxCost') || 0}
-            onChange={handleMaxCostChange}
-          >
-            <SliderTrack>
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb />
-          </Slider>
-          <NumberInput
-            maxW='100px'
-            min={0}
-            max={MAX_COST_MAX}
-            step={10}
-            value={watch('maxCost') || 0}
-            onChange={(_, value) => handleMaxCostChange(value)}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </HStack>
-      </FormControl>
+      <DistanceController />
+      <MaxCostController />
 
       <FormControl>
         <FormLabel>{t('search.category')}</FormLabel>
         <Select
           isMulti
-          value={watch('categories')?.map((id: number) => ({
-            value: id,
-            label: categories.find((c) => c.id === id)?.name,
-          }))}
+          value={categoryValues}
           onChange={handleCategoryChange}
-          options={categories.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))}
+          options={categoryOptions}
           placeholder={t('tools.select_category', { defaultValue: 'Select category' })}
         />
       </FormControl>
     </Stack>
   )
-}
+})
+
+FiltersForm.displayName = 'FiltersForm'
+
+// Memoized distance controller component to prevent re-renders
+const DistanceController = React.memo(() => {
+  const { t } = useTranslation()
+  
+  return (
+    <Controller
+      name='distance'
+      defaultValue={DISTANCE_DEFAULT}
+      render={({ field }) => (
+        <FormControl>
+          <FormLabel>{t('search.distance')} (km)</FormLabel>
+          <HStack spacing={4}>
+            <Slider
+              flex='1'
+              min={1}
+              max={DISTANCE_MAX}
+              step={1}
+              value={field.value || DISTANCE_DEFAULT}
+              onChange={field.onChange}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+            <NumberInput
+              maxW='100px'
+              min={1}
+              max={DISTANCE_MAX}
+              step={1}
+              value={field.value || DISTANCE_DEFAULT}
+              onChange={(_, value) => field.onChange(value)}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+        </FormControl>
+      )}
+    />
+  )
+})
+
+DistanceController.displayName = 'DistanceController'
+
+// Memoized max cost controller component to prevent re-renders
+const MaxCostController = React.memo(() => {
+  const { t } = useTranslation()
+  
+  return (
+    <Controller
+      name='maxCost'
+      defaultValue={MAX_COST_DEFAULT}
+      render={({ field }) => (
+        <FormControl>
+          <FormLabel>
+            {t('search.max_cost')} ({t('common.token_symbol')})
+          </FormLabel>
+          <HStack spacing={4}>
+            <Slider
+              flex='1'
+              min={0}
+              max={MAX_COST_MAX}
+              step={10}
+              value={field.value || MAX_COST_DEFAULT}
+              onChange={field.onChange}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+            <NumberInput
+              maxW='100px'
+              min={0}
+              max={MAX_COST_MAX}
+              step={10}
+              value={field.value || MAX_COST_DEFAULT}
+              onChange={(_, value) => field.onChange(value)}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+        </FormControl>
+      )}
+    />
+  )
+})
+
+MaxCostController.displayName = 'MaxCostController'
