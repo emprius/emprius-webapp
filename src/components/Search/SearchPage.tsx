@@ -26,6 +26,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { PaginationProvider, usePagination } from '~components/Layout/Pagination/PaginationProvider'
 import { Pagination } from '~components/Layout/Pagination/Pagination'
 import { deserializeFiltersFromURL, serializeFiltersToURL, hasSearchFiltersInURL } from '~utils/searchParams'
+import { SearchParams } from '~components/Search/queries'
 
 export const SearchPage = () => (
   <PaginationProvider>
@@ -45,13 +46,13 @@ const SearchPagePaginated = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { filters, setFilters, result, isPending, error, isError } = useSearch()
+  const { term, setTerm, filters, setFilters, result, isPending, error, isError } = useSearch()
 
   const methods = useForm<SearchFilters>({})
 
   // Handle filter changes and update URL
   const handleFiltersChange = useCallback(
-    (filters: SearchFilters) => {
+    (filters: SearchParams) => {
       const newParams = serializeFiltersToURL(filters)
       setSearchParams(newParams, { replace: true })
     },
@@ -76,6 +77,9 @@ const SearchPagePaginated = () => {
       const deserializedFilters = deserializeFiltersFromURL(searchParams)
       const urlFilters = { ...defaultFilterValues, ...deserializedFilters }
       setFilters(urlFilters)
+      if (urlFilters.term) {
+        setTerm(urlFilters.term)
+      }
       methods.reset(urlFilters)
       setHasInitialized(true)
     } else if (!hasInitialized) {
@@ -88,9 +92,9 @@ const SearchPagePaginated = () => {
   // Update URL when filters change (after initialization)
   useEffect(() => {
     if (hasInitialized && result) {
-      handleFiltersChange(filters)
+      handleFiltersChange({ ...filters, term })
     }
-  }, [filters, result, hasInitialized, handleFiltersChange])
+  }, [filters, term, result, hasInitialized, handleFiltersChange])
 
   // Add page into filters when change
   useEffect(() => {
