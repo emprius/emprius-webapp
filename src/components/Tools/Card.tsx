@@ -44,7 +44,6 @@ export const ToolCard = ({ tool }: ToolCardProps) => {
             imageId={tool?.images?.length ? tool?.images[0] : ''}
             isAvailable={tool?.isAvailable}
             isLoading={!tool}
-            toolId={tool?.id}
             alt={tool?.title}
           />
         </Box>
