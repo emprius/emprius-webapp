@@ -11,6 +11,7 @@ export const MAX_COST_DEFAULT = MAX_COST_MAX
 interface SearchContextType {
   filters: SearchParams
   setFilters: (filters: SearchParams) => void
+  lastSearchParams: SearchParams
   performSearch: () => void
   term: string
   setTerm: React.Dispatch<React.SetStateAction<string>>
@@ -41,6 +42,7 @@ export const defaultFilterValues: Partial<SearchFilters> = {
 }
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filters, setFilters] = useState<SearchFilters>(defaultFilterValues)
+  const [lastSearchParams, setLastSearchParams] = useState<SearchParams>()
   const [term, setTerm] = useState<string>('')
   const previousFilterRef = useRef<SearchFilters>()
   const { data, mutate, isPending, error, isError } = useSearchTools()
@@ -53,6 +55,9 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (term) {
       searchFilters['term'] = term
     }
+
+    // Store last search parameters to be used on url serialization
+    setLastSearchParams({ ...searchFilters })
 
     mutate({
       ...searchFilters,
@@ -76,6 +81,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         filters,
         setFilters,
         performSearch,
+        lastSearchParams,
         term,
         setTerm,
         isPending,

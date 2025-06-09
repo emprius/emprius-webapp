@@ -22,7 +22,7 @@ import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
 import { defaultFilterValues, SearchFilters, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { PaginationProvider, usePagination } from '~components/Layout/Pagination/PaginationProvider'
 import { Pagination } from '~components/Layout/Pagination/Pagination'
 import { deserializeFiltersFromURL, serializeFiltersToURL, hasSearchFiltersInURL } from '~utils/searchParams'
@@ -46,7 +46,7 @@ const SearchPagePaginated = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { term, setTerm, filters, setFilters, result, isPending, error, isError } = useSearch()
+  const { setTerm, filters, setFilters, result, isPending, error, isError, lastSearchParams } = useSearch()
 
   const methods = useForm<SearchFilters>({})
 
@@ -92,9 +92,9 @@ const SearchPagePaginated = () => {
   // Update URL when filters change (after initialization)
   useEffect(() => {
     if (hasInitialized && result) {
-      handleFiltersChange({ ...filters, term })
+      handleFiltersChange(lastSearchParams)
     }
-  }, [filters, term, result, hasInitialized, handleFiltersChange])
+  }, [lastSearchParams, result, hasInitialized, handleFiltersChange])
 
   // Add page into filters when change
   useEffect(() => {

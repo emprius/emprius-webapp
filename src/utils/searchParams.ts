@@ -9,6 +9,8 @@ export const serializeFiltersToURL = (filters: SearchParams): URLSearchParams =>
 
   if (filters.term) {
     params.set('term', filters.term)
+  } else {
+    params.delete('term')
   }
 
   if (filters.categories?.length) {
