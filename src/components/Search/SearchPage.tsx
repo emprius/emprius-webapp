@@ -105,19 +105,21 @@ const SearchPagePaginated = () => {
             {!isMapView && (
               <Box flex={1} px={4} pb={8} pt={{ base: 14, lg: 12 }} overflowY='auto'>
                 <ToolList tools={tools} isLoading={isPending} error={error} isError={isError} />
-                <HStack w={'full'} justifyContent={'center'} mt={4}>
-                  <VStack
-                    bg={bgColor}
-                    minW={124}
-                    w={'min-content'}
-                    p={4}
-                    borderWidth={1}
-                    borderColor={borderColor}
-                    borderRadius='lg'
-                  >
-                    <Pagination pagination={result?.pagination} />
-                  </VStack>
-                </HStack>
+                {result?.pagination?.pages > 1 && (
+                  <HStack w={'full'} justifyContent={'center'} mt={4}>
+                    <VStack
+                      bg={bgColor}
+                      minW={124}
+                      w={'min-content'}
+                      p={4}
+                      borderWidth={1}
+                      borderColor={borderColor}
+                      borderRadius='lg'
+                    >
+                      <Pagination pagination={result?.pagination} />
+                    </VStack>
+                  </HStack>
+                )}
               </Box>
             )}
           </Flex>
