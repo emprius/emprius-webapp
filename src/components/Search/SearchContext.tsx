@@ -70,7 +70,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Perform only if is on search route
     if (window.location.pathname !== ROUTES.SEARCH) return
     // If filters haven't changed, skip search
-    if (deepEqual(previousFilterRef.current, filters)) return
+    if (data && deepEqual(previousFilterRef.current, filters)) return
     previousFilterRef.current = filters
     performSearch()
   }, [filters])
