@@ -30,9 +30,9 @@ import {
   DISTANCE_MAX,
   MAX_COST_DEFAULT,
   MAX_COST_MAX,
-  SearchFilters,
   useSearch,
 } from '~components/Search/SearchContext'
+import { SearchParams } from '~components/Search/queries'
 
 interface FilterMenuProps {
   isOpen: boolean
@@ -44,7 +44,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
   const { t } = useTranslation()
   const { filters, setFilters } = useSearch()
 
-  const onSubmit = (data: SearchFilters) => {
+  const onSubmit = (data: SearchParams) => {
     setFilters({ ...filters, ...data })
   }
 
@@ -73,32 +73,39 @@ export const FiltersDrawer = ({ isOpen, onClose }: FilterMenuProps) => {
 export const FiltersForm = React.memo(() => {
   const { t } = useTranslation()
   const { categories } = useInfoContext()
-  const { setValue, watch } = useFormContext<SearchFilters>()
+  const { setValue, watch } = useFormContext<SearchParams>()
 
   // Memoize category change handler to prevent re-creation on every render
-  const handleCategoryChange = useCallback((newValue: any) => {
-    if (!newValue) {
-      setValue('categories', undefined)
-      return
-    }
-    const categoryIds = newValue.map((item: any) => parseInt(item.value))
-    setValue('categories', categoryIds)
-  }, [setValue])
+  const handleCategoryChange = useCallback(
+    (newValue: any) => {
+      if (!newValue) {
+        setValue('categories', undefined)
+        return
+      }
+      const categoryIds = newValue.map((item: any) => parseInt(item.value))
+      setValue('categories', categoryIds)
+    },
+    [setValue]
+  )
 
   // Memoize category options to prevent re-creation on every render
-  const categoryOptions = useMemo(() => 
-    categories.map((category) => ({
-      value: category.id,
-      label: category.name,
-    })), [categories]
+  const categoryOptions = useMemo(
+    () =>
+      categories.map((category) => ({
+        value: category.id,
+        label: category.name,
+      })),
+    [categories]
   )
 
   // Memoize category values to prevent re-creation on every render
-  const categoryValues = useMemo(() => 
-    watch('categories')?.map((id: number) => ({
-      value: id,
-      label: categories.find((c) => c.id === id)?.name,
-    })), [watch('categories'), categories]
+  const categoryValues = useMemo(
+    () =>
+      watch('categories')?.map((id: number) => ({
+        value: id,
+        label: categories.find((c) => c.id === id)?.name,
+      })),
+    [watch('categories'), categories]
   )
 
   return (
@@ -125,7 +132,7 @@ FiltersForm.displayName = 'FiltersForm'
 // Memoized distance controller component to prevent re-renders
 const DistanceController = React.memo(() => {
   const { t } = useTranslation()
-  
+
   return (
     <Controller
       name='distance'
@@ -173,7 +180,7 @@ DistanceController.displayName = 'DistanceController'
 // Memoized max cost controller component to prevent re-renders
 const MaxCostController = React.memo(() => {
   const { t } = useTranslation()
-  
+
   return (
     <Controller
       name='maxCost'

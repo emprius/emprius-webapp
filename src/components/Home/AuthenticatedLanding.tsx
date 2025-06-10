@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { ParallaxBanner, ParallaxBannerLayer, ParallaxProvider } from 'react-scroll-parallax'
 import { CategoryFilter } from '~components/Home/AuthComponents/Filters'
 import { LandingSearchBar } from '~components/Home/AuthComponents/SearchBar'
-import { useSearchTools } from '~components/Search/queries'
-import { defaultFilterValues, SearchFilters } from '~components/Search/SearchContext'
+import { SearchParams, useSearchTools } from '~components/Search/queries'
+import { defaultFilterValues } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import ovellesImg from '/assets/ovelles.jpg'
 import bannerImg from '/assets/logos/banner.png'
 
 export const AuthenticatedLanding = () => {
   const { data: tools, isPending, isError, error, mutate } = useSearchTools()
-  const [searchParams, setSearchParams] = useState<SearchFilters>({ ...defaultFilterValues, distance: 250000 })
+  const [searchParams, setSearchParams] = useState<SearchParams>({ ...defaultFilterValues, distance: 250000 })
 
   // Perform search when filters change
   useEffect(() => {

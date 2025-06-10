@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { SearchBarForm } from '~components/Search/SearchBarForm'
-import { useSearch } from '~components/Search/SearchContext'
+import { defaultFilterValues, useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
 
 export const LandingSearchBar = () => {
-  const { t } = useTranslation()
   const [searchValue, setSearchValue] = useState('') // Intermediate state used to not get the initialized term state
-  const { setTerm, performSearch } = useSearch()
+  const { setFilters } = useSearch()
   const navigate = useNavigate()
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,13 +15,15 @@ export const LandingSearchBar = () => {
     navigate(ROUTES.SEARCH)
     // Perform search after navigation
     setTimeout(() => {
-      performSearch()
+      setFilters({
+        ...defaultFilterValues,
+        term: searchValue,
+      })
     }, 0)
   }
 
   const setValue = (value: string) => {
     setSearchValue(value)
-    setTerm(value)
   }
 
   return <SearchBarForm onSubmit={handleSubmit} term={searchValue} setTerm={setValue} w={'full'} maxW={'full'} px={4} />

@@ -1,4 +1,4 @@
-import { SearchFilters, DISTANCE_DEFAULT, MAX_COST_DEFAULT } from '~components/Search/SearchContext'
+import { DISTANCE_DEFAULT, MAX_COST_DEFAULT } from '~components/Search/SearchContext'
 import { SearchParams } from '~components/Search/queries'
 
 /**
