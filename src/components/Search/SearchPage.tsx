@@ -19,7 +19,7 @@ import { FaRegRectangleList } from 'react-icons/fa6'
 import { FiMap } from 'react-icons/fi'
 import { useAuth } from '~components/Auth/AuthContext'
 import { FiltersDrawer, FiltersForm } from '~components/Search/Filter'
-import { defaultFilterValues, SearchFilters, useSearch } from '~components/Search/SearchContext'
+import { defaultFilterValues, useSearch } from '~components/Search/SearchContext'
 import { ToolList } from '~components/Tools/List'
 import { Map } from './Map'
 import { useSearchParams } from 'react-router-dom'
@@ -46,9 +46,9 @@ const SearchPagePaginated = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { filters, setFilters, result, isPending, error, isError, lastSearchParams } = useSearch()
+  const { filters, setFilters, setPage, result, isPending, error, isError, lastSearchParams } = useSearch()
 
-  const methods = useForm<SearchFilters>({})
+  const methods = useForm<SearchParams>({})
 
   // Handle filter changes and update URL
   const handleFiltersChange = useCallback(
@@ -59,7 +59,7 @@ const SearchPagePaginated = () => {
     [setSearchParams]
   )
 
-  const onSubmit = (data: SearchFilters) => {
+  const onSubmit = (data: SearchParams) => {
     setFilters({ ...filters, ...data })
   }
 
@@ -96,7 +96,7 @@ const SearchPagePaginated = () => {
   // Add page into filters when change
   useEffect(() => {
     if (hasInitialized && result) {
-      setFilters({ ...filters, page })
+      setPage(page)
     }
   }, [page])
 
@@ -185,7 +185,7 @@ interface SideNavProps {
   isMapView: boolean
   isOpen: boolean
   methods: any
-  onSubmit: (data: SearchFilters) => void
+  onSubmit: (data: SearchParams) => void
 }
 
 const SideNav: React.FC<SideNavProps> = ({ isMapView, isOpen, methods, onSubmit }) => {

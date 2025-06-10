@@ -12,11 +12,11 @@ interface SearchContextType {
   filters: SearchParams
   setFilters: (filters: SearchParams) => void
   lastSearchParams: SearchParams
-  performSearch: () => void
   isPending: ReturnType<typeof useSearchTools>['isPending']
   isError: ReturnType<typeof useSearchTools>['isError']
   error: ReturnType<typeof useSearchTools>['error']
   result: ReturnType<typeof useSearchTools>['data']
+  setPage: (page: number | undefined) => void
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined)
@@ -29,56 +29,71 @@ export const useSearch = () => {
   return context
 }
 
-export type SearchFilters = Omit<SearchParams, 'term'>
-
-export const defaultFilterValues: Partial<SearchFilters> = {
+export const defaultFilterValues: Partial<SearchParams> = {
   categories: undefined,
   transportOptions: undefined,
   distance: DISTANCE_DEFAULT,
   maxCost: MAX_COST_DEFAULT,
   mayBeFree: false,
+  page: 1,
 }
+
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filters, setFilters] = useState<SearchParams>(defaultFilterValues)
   const [lastSearchParams, setLastSearchParams] = useState<SearchParams>()
-  const previousFilterRef = useRef<SearchFilters>()
+  const previousFilterRef = useRef<SearchParams>()
   const { data, mutate, isPending, error, isError } = useSearchTools()
 
-  const performSearch = useCallback(() => {
-    const searchFilters = {
-      ...filters,
-    }
+  const performSearch = useCallback(
+    (actuals: SearchParams) => {
+      previousFilterRef.current = filters
+      const searchFilters = {
+        ...actuals,
+      }
 
-    // Store last search parameters to be used on url serialization
-    setLastSearchParams({ ...searchFilters })
+      // Store last search parameters to be used on url serialization
+      setLastSearchParams({ ...searchFilters })
 
-    mutate({
-      ...searchFilters,
-      distance: searchFilters.distance * 1000, // Convert to meters
-    })
-  }, [filters, mutate, setLastSearchParams])
+      mutate({
+        ...searchFilters,
+        // page: searchFilters?.page,
+        distance: searchFilters.distance * 1000, // Convert to meters
+      })
+    },
+    [filters, mutate, setLastSearchParams]
+  )
 
-  // Perform search on filters change
+  // Special callback to set page and perform search
+  const setPageWithFilters = useCallback(
+    (page: number) => {
+      performSearch({
+        ...filters,
+        page,
+      })
+    },
+    [filters]
+  )
+
+  // Perform search on filters change. Resets page
   useEffect(() => {
     // Perform only if is on search route
     if (window.location.pathname !== ROUTES.SEARCH) return
     // If filters haven't changed, skip search
     if (data && deepEqual(previousFilterRef.current, filters)) return
-    previousFilterRef.current = filters
-    performSearch()
-  }, [filters])
+    performSearch({ ...filters, page: 0 })
+  }, [filters, previousFilterRef])
 
   return (
     <SearchContext.Provider
       value={{
         filters,
         setFilters,
-        performSearch,
         lastSearchParams,
         isPending,
         error,
         isError,
         result: data,
+        setPage: setPageWithFilters,
       }}
     >
       {children}
