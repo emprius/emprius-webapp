@@ -13,8 +13,6 @@ interface SearchContextType {
   setFilters: (filters: SearchParams) => void
   lastSearchParams: SearchParams
   performSearch: () => void
-  term: string
-  setTerm: React.Dispatch<React.SetStateAction<string>>
   isPending: ReturnType<typeof useSearchTools>['isPending']
   isError: ReturnType<typeof useSearchTools>['isError']
   error: ReturnType<typeof useSearchTools>['error']
@@ -41,19 +39,14 @@ export const defaultFilterValues: Partial<SearchFilters> = {
   mayBeFree: false,
 }
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [filters, setFilters] = useState<SearchFilters>(defaultFilterValues)
+  const [filters, setFilters] = useState<SearchParams>(defaultFilterValues)
   const [lastSearchParams, setLastSearchParams] = useState<SearchParams>()
-  const [term, setTerm] = useState<string>('')
   const previousFilterRef = useRef<SearchFilters>()
   const { data, mutate, isPending, error, isError } = useSearchTools()
 
   const performSearch = () => {
     const searchFilters = {
       ...filters,
-    }
-
-    if (term) {
-      searchFilters['term'] = term
     }
 
     // Store last search parameters to be used on url serialization
@@ -82,8 +75,6 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setFilters,
         performSearch,
         lastSearchParams,
-        term,
-        setTerm,
         isPending,
         error,
         isError,

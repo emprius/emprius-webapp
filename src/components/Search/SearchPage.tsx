@@ -46,7 +46,7 @@ const SearchPagePaginated = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { setTerm, filters, setFilters, result, isPending, error, isError, lastSearchParams } = useSearch()
+  const { filters, setFilters, result, isPending, error, isError, lastSearchParams } = useSearch()
 
   const methods = useForm<SearchFilters>({})
 
@@ -77,9 +77,6 @@ const SearchPagePaginated = () => {
       const deserializedFilters = deserializeFiltersFromURL(searchParams)
       const urlFilters = { ...defaultFilterValues, ...deserializedFilters }
       setFilters(urlFilters)
-      if (urlFilters.term) {
-        setTerm(urlFilters.term)
-      }
       methods.reset(urlFilters)
       setHasInitialized(true)
     } else if (!hasInitialized) {

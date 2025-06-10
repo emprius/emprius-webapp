@@ -1,12 +1,11 @@
-import { Box, BoxProps, IconButton, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
-import React from 'react'
+import { Box, BoxProps } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiCloseCircleFill } from 'react-icons/ri'
-import { useNavigate } from 'react-router-dom'
-import { useSearch } from '~components/Search/SearchContext'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { defaultFilterValues, useSearch } from '~components/Search/SearchContext'
 import { ROUTES } from '~src/router/routes'
-import { icons } from '~theme/icons'
 import { SearchBar } from '~components/Layout/Search/SearchBar'
+import { deserializeFiltersFromURL, hasSearchFiltersInURL } from '~utils/searchParams'
 
 export const SearchBarForm = ({
   onSubmit,
@@ -28,14 +27,27 @@ export const SearchBarForm = ({
 }
 
 export const ContextSearchBarForm = () => {
-  const { performSearch, term, setTerm } = useSearch()
+  const { filters, setFilters } = useSearch()
   const navigate = useNavigate()
+  const [term, setTerm] = useState<string>('')
+  const [hasInitialized, setHasInitialized] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     navigate(ROUTES.SEARCH)
-    performSearch()
+    setFilters({ ...filters, term })
   }
+
+  // Set term from filters if available
+  useEffect(() => {
+    if (!hasInitialized && hasSearchFiltersInURL(searchParams)) {
+      const deserializedFilters = deserializeFiltersFromURL(searchParams)
+      if (deserializedFilters.term) {
+        setTerm(deserializedFilters.term)
+      }
+    }
+  }, [hasInitialized, searchParams, setFilters, filters])
 
   return <SearchBarForm onSubmit={handleSubmit} term={term} setTerm={setTerm} />
 }
