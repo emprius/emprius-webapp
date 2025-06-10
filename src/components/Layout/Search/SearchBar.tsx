@@ -1,4 +1,13 @@
-import { Box, BoxProps, IconButton, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
+import {
+  Box,
+  BoxProps,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputProps,
+  InputRightElement,
+} from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { RiCloseCircleFill } from 'react-icons/ri'
