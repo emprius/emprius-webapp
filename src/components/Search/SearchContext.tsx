@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { SearchParams, useSearchTools } from '~components/Search/queries'
 import { ROUTES } from '~src/router/routes'
 import { deepEqual } from '~utils/compare'
@@ -44,7 +44,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const previousFilterRef = useRef<SearchFilters>()
   const { data, mutate, isPending, error, isError } = useSearchTools()
 
-  const performSearch = () => {
+  const performSearch = useCallback(() => {
     const searchFilters = {
       ...filters,
     }
@@ -56,7 +56,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       ...searchFilters,
       distance: searchFilters.distance * 1000, // Convert to meters
     })
-  }
+  }, [filters, mutate, setLastSearchParams])
 
   // Perform search on filters change
   useEffect(() => {

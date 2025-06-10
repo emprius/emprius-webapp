@@ -11,7 +11,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
-import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FaFilter } from 'react-icons/fa'
