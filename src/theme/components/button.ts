@@ -2,7 +2,7 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/react'
 
 const baseStyle = {
   fontWeight: 'medium',
-  borderRadius: '2xl',
+  borderRadius: 'lg',
   transition: 'all 0.2s ease-in-out',
   _focus: {
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
