@@ -13,9 +13,10 @@ export type SearchBarProps = {
   term: string
   placeholder?: string
   setTerm: (term: string) => void
+  onDelete?: () => void
 }
 
-export const SearchBar = ({ term, setTerm, placeholder }: SearchBarProps) => {
+export const SearchBar = ({ term, setTerm, placeholder, onDelete }: SearchBarProps) => {
   const { t } = useTranslation()
 
   return (
@@ -38,6 +39,7 @@ export const SearchBar = ({ term, setTerm, placeholder }: SearchBarProps) => {
           <IconButton
             onClick={() => {
               setTerm('')
+              if (onDelete) onDelete()
             }}
             size='md'
             isRound
