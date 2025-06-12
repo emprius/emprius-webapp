@@ -8,9 +8,16 @@ import ErrorComponent from '~components/Layout/ErrorComponent'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { UserRatingCard } from '~components/Ratings/UserRatingCard'
-import { useAuth } from '~components/Auth/AuthContext'
+import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 
-export const UserRatings = () => {
+export const UserRatings = () => (
+  <RoutedPaginationProvider>
+    <UserRatingsPaginated />
+  </RoutedPaginationProvider>
+)
+
+const UserRatingsPaginated = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const { isLoading, error, data } = useGetUserRatings(id)
@@ -25,7 +32,7 @@ export const UserRatings = () => {
 
   // Filter out ratings where no one has rated
   const ratingsWithContent =
-    data?.filter((rating) => rating.owner.rating !== null || rating.requester.rating !== null) || []
+    data?.ratings?.filter((rating) => rating.owner.rating !== null || rating.requester.rating !== null) || []
 
   if (!ratingsWithContent.length) {
     return (
@@ -42,6 +49,7 @@ export const UserRatings = () => {
       {ratingsWithContent.map((rating, index) => (
         <UserRatingCard key={index} rating={rating} actualUser={id} />
       ))}
+      <RoutedPagination pagination={data.pagination} />
     </Stack>
   )
 }

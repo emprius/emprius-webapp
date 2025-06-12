@@ -3,7 +3,6 @@ import api, { tools } from '~src/services/api'
 import { CreateToolParams, Tool, ToolDetail, ToolDTO, UpdateToolParams } from './types'
 import { useTranslation } from 'react-i18next'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
-import { UnifiedRating } from '~components/Ratings/types'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 import { ToolHistoryEntry, ToolHistoryResponse } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
@@ -15,7 +14,7 @@ export const ToolsKeys = {
   toolsList: (page?: number, term?: string): QueryKey => ['tools', 'owner', page, term],
   userTools: (userId: string, page?: number, term?: string): QueryKey => ['tools', 'user', userId, page, term],
   tool: (id: string): QueryKey => ['tool', id],
-  toolRatings: (id: string): QueryKey => ['tool', id, 'rating'],
+  toolRatings: (id: string, page: number): QueryKey => ['tool', id, 'rating', page],
   toolHistory: (id: string): QueryKey => ['tool', id, 'history'],
 }
 
@@ -110,18 +109,6 @@ export const useUpdateTool = (
       queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
     },
-    ...options,
-  })
-}
-
-export const useToolRatings = (
-  id: string,
-  options?: Omit<UseQueryOptions<UnifiedRating[], Error>, 'queryKey' | 'queryFn'>
-) => {
-  return useQuery({
-    queryKey: ToolsKeys.toolRatings(id),
-    queryFn: () => api.tools.getRatings(id),
-    enabled: !!id,
     ...options,
   })
 }

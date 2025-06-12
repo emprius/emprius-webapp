@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ILoginParams, IRegisterParams, LoginResponse } from '~components/Auth/queries'
 import { InfoData } from '~components/Layout/Contexts/InfoContext'
 import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvider'
-import { RateSubmission, UnifiedRating } from '~components/Ratings/types'
+import { RateSubmission, UnifiedRating, UnifiedRatingsResponse } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
 import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/types'
 import { EditProfileFormDataDTO, ToolHistoryResponse, UserProfileDTO } from '~components/Users/types'
@@ -126,7 +126,8 @@ export const tools = {
     ),
   update: ({ id, ...data }: Partial<CreateToolDTO>) => apiRequest(api.put<ApiResponse<ToolDTO>>(`/tools/${id}`, data)),
   delete: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/tools/${id}`)),
-  getRatings: (id: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/tools/${id}/ratings`)),
+  getRatings: (id: string, params: PaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<UnifiedRatingsResponse>>(`/tools/${id}/ratings`, { params })),
   getHistory: (id: string) => apiRequest(api.get<ApiResponse<ToolHistoryResponse>>(`/tools/${id}/history`)),
 }
 
@@ -153,7 +154,8 @@ export const users = {
   getById: (userId: string) => apiRequest(api.get<ApiResponse<UserProfileDTO>>(`/users/${userId}`)),
   getList: (params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<{ users: UserProfileDTO[] }>>('/users', { params })),
-  getUserRatings: (userId: string) => apiRequest(api.get<ApiResponse<UnifiedRating[]>>(`/users/${userId}/ratings`)),
+  getUserRatings: (userId: string, params: PaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<UnifiedRatingsResponse>>(`/users/${userId}/ratings`, { params })),
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
   // Get all communities for a specific user

@@ -7,12 +7,13 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { ToolsKeys } from '~components/Tools/queries'
+import { UserKeys } from '~components/Users/queries'
 
 export const RatingsKeys = {
   ratingsLists: ['ratings'] as const,
   pending: (page?: number): QueryKey => ['ratings', 'pending', page] as const,
   allPendings: ['ratings', 'pending'] as const,
-  userRatings: (userId: string) => ['ratings', 'user', userId] as const,
   bookingRatings: (bookingId: string) => ['ratings', 'booking', bookingId] as const,
   submitted: ['ratings', 'submitted'] as const,
   received: ['ratings', 'received'] as const,
@@ -43,10 +44,11 @@ export const useGetBookingRatings = (
 export const useGetUserRatings = (userId?: string) => {
   const { user } = useAuth()
   const id = userId || user.id
+  const { page } = useRoutedPagination()
 
   return useQuery({
-    queryKey: RatingsKeys.userRatings(id),
-    queryFn: () => api.users.getUserRatings(id),
+    queryKey: UserKeys.userRatings(id, page),
+    queryFn: () => api.users.getUserRatings(id, { page }),
     enabled: !!id,
   })
 }
@@ -82,7 +84,7 @@ export const useSubmitRating = ({
         queryKey: RatingsKeys.ratingsLists,
       })
       await queryClient.invalidateQueries({
-        queryKey: RatingsKeys.userRatings(user.id),
+        queryKey: UserKeys.userRatings(user.id, 0), // Reset to first page after submission
       })
       await queryClient.invalidateQueries({
         queryKey: BookingKeys.bookingsLists,
@@ -96,5 +98,14 @@ export const useSubmitRating = ({
     },
     retry: false,
     ...options,
+  })
+}
+
+export const useToolRatings = (id: string) => {
+  const { page } = useRoutedPagination()
+  return useQuery({
+    queryKey: ToolsKeys.toolRatings(id, page),
+    queryFn: () => api.tools.getRatings(id, { page }),
+    enabled: !!id,
   })
 }

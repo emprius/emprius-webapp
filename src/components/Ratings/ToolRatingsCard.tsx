@@ -7,19 +7,27 @@ import { UserCard } from '~components/Users/Card'
 import { DateRangeTotal } from '~components/Layout/Dates'
 import { RatingComments } from '~components/Ratings/RatingComments'
 import React from 'react'
-import { useToolRatings } from '~components/Tools/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
+import { useToolRatings } from '~components/Ratings/queries'
+import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 
 interface ToolRatingsProps {
   toolId: string
 }
 
-export const ToolRatings = ({ toolId }: ToolRatingsProps) => {
+export const ToolRatings = (params: ToolRatingsProps) => (
+  <RoutedPaginationProvider>
+    <PaginatedToolRatings {...params} />
+  </RoutedPaginationProvider>
+)
+
+const PaginatedToolRatings = ({ toolId }: ToolRatingsProps) => {
   const { t } = useTranslation()
-  const { data: ratings, isLoading } = useToolRatings(toolId)
+  const { data, isLoading } = useToolRatings(toolId)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
@@ -31,7 +39,7 @@ export const ToolRatings = ({ toolId }: ToolRatingsProps) => {
     )
   }
 
-  if (!ratings || ratings.length === 0) {
+  if (!data?.ratings?.length) {
     return (
       <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
         <ElementNotFound
@@ -50,10 +58,11 @@ export const ToolRatings = ({ toolId }: ToolRatingsProps) => {
         {t('rating.ratings')}
       </Heading>
       <Stack spacing={2}>
-        {ratings.map((rating) => (
+        {data.ratings.map((rating) => (
           <RatingCard rating={rating} />
         ))}
       </Stack>
+      <RoutedPagination pagination={data.pagination} />
     </Box>
   )
 }

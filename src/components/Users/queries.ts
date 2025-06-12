@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { EditProfileFormData, GetUsers, GetUsersDTO, UserProfile, UserProfileDTO } from '~components/Users/types'
+import { EditProfileFormData, UserProfile, UserProfileDTO } from '~components/Users/types'
 import api, { users } from '~src/services/api'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 
 export const UserKeys = {
   currentUser: ['user', 'current'],
   userId: (userId: string) => ['user', userId],
+  userRatings: (userId: string, page: number) => ['user', userId, 'ratings', page] as const,
   users: (page: number, username?: string) => ['users', page, username],
 }
 

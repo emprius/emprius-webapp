@@ -9,8 +9,16 @@ import { SuccessModal } from '~components/Ratings/Modal'
 import { Stack } from '@chakra-ui/react'
 import { UserRatingCard } from '~components/Ratings/UserRatingCard'
 import React from 'react'
+import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 
-export const RatingHistory = () => {
+export const RatingHistory = () => (
+  <RoutedPaginationProvider>
+    <RatingHistoryPaginated />
+  </RoutedPaginationProvider>
+)
+
+const RatingHistoryPaginated = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { isLoading, error, data } = useGetUserRatings(user.id)
@@ -23,7 +31,7 @@ export const RatingHistory = () => {
     return <ErrorComponent error={error} />
   }
 
-  if (!data.length) {
+  if (!data?.ratings?.length) {
     return (
       <ElementNotFound
         icon={icons.ratings}
@@ -37,10 +45,11 @@ export const RatingHistory = () => {
     <>
       <SuccessModal />
       <Stack spacing={4}>
-        {data.map((rating, index) => (
+        {data.ratings.map((rating, index) => (
           <UserRatingCard key={index} rating={rating} actualUser={user.id} />
         ))}
       </Stack>
+      <RoutedPagination pagination={data.pagination} />
     </>
   )
 }

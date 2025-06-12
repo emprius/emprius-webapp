@@ -14,6 +14,10 @@ export interface UnifiedRating {
   requester: RatingParty
 }
 
+export type UnifiedRatingsResponse = {
+  ratings: UnifiedRating[]
+}
+
 export interface RateSubmission {
   bookingId: string
   rating: number
