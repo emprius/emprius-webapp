@@ -11,7 +11,17 @@ export interface Community {
   toolsCount: number
 }
 
-export type CommunityUsersResponse = Array<UserPreview & { role: CommunityRole }>
+export type CommunitiesListResponse = {
+  communities: Community[]
+}
+
+export type CommunityUsersResponse = {
+  users: Array<
+    UserPreview & {
+      role: CommunityRole
+    }
+  >
+}
 
 export interface CommunityInvite {
   id: string

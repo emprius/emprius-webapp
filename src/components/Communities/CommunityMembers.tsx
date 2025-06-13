@@ -17,6 +17,7 @@ import {
   AlertDialogOverlay,
   Box,
   HStack,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { FiUserPlus, FiUserMinus } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
@@ -28,17 +29,28 @@ import { InviteUserModal } from '~components/Communities/InviteUserModal'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { useParams } from 'react-router-dom'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
+import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
 
-export const CommunityMembers: React.FC = () => {
+export const CommunityMembers: React.FC = () => (
+  <SearchAndPagination>
+    <CommunityMembersPaginated />
+  </SearchAndPagination>
+)
+
+const CommunityMembersPaginated: React.FC = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const { user } = useAuth()
   const { data: community } = useCommunityDetail(id!)
   const isOwner = community?.ownerId === user?.id
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { data: usersData, isLoading: isLoadingUsers } = useCommunityUsers(id!)
+  const { data: paginatedUsers, isLoading: isLoadingUsers } = useCommunityUsers(id!)
   const toast = useToast()
   const { mutateAsync: removeUser, isPending: isRemoving } = useRemoveCommunityUser()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   // State for remove user confirmation dialog
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = React.useState(false)
@@ -77,6 +89,8 @@ export const CommunityMembers: React.FC = () => {
     }
   }
 
+  const usersData = paginatedUsers?.users || []
+
   return (
     <>
       <Flex justify='space-between' align='center' mb={4}>
@@ -88,6 +102,10 @@ export const CommunityMembers: React.FC = () => {
           </Button>
         )}
       </Flex>
+
+      <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} maxW='600px' w='full'>
+        <DebouncedSearchBar placeholder={t('communities.search_placeholder')} />
+      </HStack>
 
       {isLoadingUsers ? (
         <LoadingSpinner />
@@ -120,6 +138,7 @@ export const CommunityMembers: React.FC = () => {
               )}
             </HStack>
           ))}
+          <RoutedPagination pagination={paginatedUsers.pagination} />
         </>
       )}
       {community && <InviteUserModal isOpen={isOpen} onClose={onClose} communityId={community.id} />}
