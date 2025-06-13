@@ -170,7 +170,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                           {t('communities.tool_of_communities', { defaultValue: 'Communities' })}
                         </Text>
                         <SimpleGrid minChildWidth='200px' spacing={1}>
-                          {tool?.communities?.map((id) => <CommunityCardLittle key={id} id={id} />)}
+                          {tool?.communities?.map((id) => <CommunityCardLittle key={id} id={id} p={0} />)}
                         </SimpleGrid>
                       </Stack>
                     )}

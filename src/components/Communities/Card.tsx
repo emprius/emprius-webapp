@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Heading, HStack, Icon, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, FlexProps, Heading, HStack, Icon, Skeleton, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Community } from './types'
 import { ROUTES } from '~src/router/routes'
@@ -67,9 +67,9 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
 type CommunityCardLittleProps = {
   id: string
   avatarSize?: AvatarSize
-}
+} & FlexProps
 
-export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, avatarSize = 'md' }) => {
+export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, avatarSize = 'md', ...flexProps }) => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const { t } = useTranslation()
   const { data, isLoading } = useCommunityDetail(id)
@@ -99,6 +99,7 @@ export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, av
       bg={bgColor}
       as={RouterLink}
       to={`${ROUTES.COMMUNITIES.DETAIL.replace(':id', data.id)}`}
+      {...flexProps}
     >
       <Avatar username={data.name} avatarHash={data.image} size={avatarSize} isSquare />
       <Stack direction={'column'} spacing={1}>
