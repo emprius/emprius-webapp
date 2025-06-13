@@ -9,6 +9,7 @@ import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchCon
 
 export const CommunityKeys = {
   user: (id: string, page?: number) => ['communities', 'user', id, page],
+  userSearch: (id: string, term?: string) => ['communities', 'user', id, 'search', term],
   detail: (id: string) => ['communities', id],
   members: (id: string, page?: number, term?: string) => ['communities', id, 'members', page, term],
   tools: (id: string, page?: number, term?: string) => ['communities', id, 'tools', page, term],
@@ -18,9 +19,10 @@ export const CommunityKeys = {
 // Get all communities the current user belongs to specific user
 export const useUserCommunities = (userId: string) => {
   const { page } = useRoutedPagination()
+  const { debouncedSearch: term } = useDebouncedSearch()
   return useQuery({
     queryKey: CommunityKeys.user(userId, page),
-    queryFn: () => api.users.getUserCommunities(userId, { page }),
+    queryFn: () => api.users.getUserCommunities(userId, { page, term }),
     enabled: !!userId,
   })
 }
@@ -31,6 +33,30 @@ export const useDefaultUserCommunities = () => {
     user: { id },
   } = useAuth()
   return useUserCommunities(id)
+}
+
+// Search communities for the current user (for dropdowns/selectors)
+export const useSearchUserCommunities = (searchTerm?: string) => {
+  const {
+    user: { id },
+  } = useAuth()
+  return useQuery({
+    queryKey: CommunityKeys.userSearch(id, searchTerm),
+    queryFn: () => api.users.getUserCommunities(id, { term: searchTerm }),
+    enabled: !!id,
+  })
+}
+
+// Get all communities for the current user (without search, for resolving selected values)
+export const useAllUserCommunities = () => {
+  const {
+    user: { id },
+  } = useAuth()
+  return useQuery({
+    queryKey: CommunityKeys.userSearch(id, ''), // Use empty string for all communities
+    queryFn: () => api.users.getUserCommunities(id, {}),
+    enabled: !!id,
+  })
 }
 
 // Get a specific community's details

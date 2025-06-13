@@ -7,13 +7,13 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
-import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 
 export const CommunitiesList: React.FC = () => (
-  <RoutedPaginationProvider>
+  <SearchAndPagination>
     <CommunitiesListPaginated />
-  </RoutedPaginationProvider>
+  </SearchAndPagination>
 )
 
 const CommunitiesListPaginated: React.FC = () => {

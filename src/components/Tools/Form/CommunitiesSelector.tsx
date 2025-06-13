@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDefaultUserCommunities } from '~components/Communities/queries'
+import { useSearchUserCommunities, useAllUserCommunities } from '~components/Communities/queries'
 import { chakraComponents, Select } from 'chakra-react-select'
-import { Box, FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
 import { Avatar } from '~components/Images/Avatar'
 import { Controller } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
@@ -17,11 +17,31 @@ interface CommunitiesSelectorProps {
 
 export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ control, setValue, watch, errors }) => {
   const { t } = useTranslation()
-  const { data: userCommunities, isLoading } = useDefaultUserCommunities()
   const [shareGlobally, setShareGlobally] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
+
+  // Get all communities for resolving selected values
+  const { data: allCommunitiesData } = useAllUserCommunities()
+  
+  // Use the search query with debounced term for dropdown options
+  const { data: searchData, isLoading } = useSearchUserCommunities(debouncedSearchTerm || undefined)
+
+  // Use search results when searching, otherwise use all communities
+  const dropdownCommunities = debouncedSearchTerm ? (searchData?.communities || []) : (allCommunitiesData?.communities || [])
+  const allCommunities = allCommunitiesData?.communities || []
 
   // If there are no communities or still loading, return null
-  if ((!userCommunities || userCommunities.length === 0) && !isLoading) {
+  if (!allCommunities.length && !isLoading && !debouncedSearchTerm) {
     return null
   }
 
@@ -57,6 +77,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
     }
   }
 
+
   return (
     <Stack spacing={2}>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
@@ -64,11 +85,11 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
           <FormLabel htmlFor='isFree'>
             <HStack>
               <Icon as={icons.globe} />
-              <Box>
+              <Text>
                 {t('tools.share_globally', {
                   defaultValue: 'Share globally',
                 })}
-              </Box>
+              </Text>
             </HStack>
           </FormLabel>
           <Text fontSize='sm' color='lighterText'>
@@ -81,7 +102,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
         <FormControl flex={1} isDisabled={shareGlobally} isInvalid={!!errors.communities} isRequired={!shareGlobally}>
           <FormLabel display={'flex'} alignItems={'center'} gap={2} htmlFor='communities'>
             <Icon as={icons.communities} />
-            <Box>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Box>
+            <Text>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Text>
           </FormLabel>
           <Text fontSize='sm' color='lighterText'>
             {t('tools.communities_description', {
@@ -96,20 +117,28 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
               <Select
                 isDisabled={shareGlobally}
                 isMulti
-                options={userCommunities?.map((community) => ({
+                isSearchable
+                filterOption={() => true} // Disable client-side filtering since we're doing server-side
+                onInputChange={(inputValue) => setSearchTerm(inputValue)}
+                options={dropdownCommunities?.map((community) => ({
                   value: community.id,
                   label: community.name,
                   avatarHash: community.image,
                 }))}
                 placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
+                noOptionsMessage={() => 
+                  isLoading 
+                    ? t('common.loading', { defaultValue: 'Loading...' })
+                    : t('tools.no_communities_found', { defaultValue: 'No communities found' })
+                }
                 onChange={(newValue: any) => {
                   setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
                 }}
                 value={
-                  userCommunities && watch('communities')
+                  allCommunities && watch('communities')
                     ? watch('communities')
                         .map((id: string) => {
-                          const community = userCommunities.find((c) => c.id === id)
+                          const community = allCommunities.find((c) => c.id === id)
                           return community
                             ? {
                                 value: community.id,

@@ -160,7 +160,7 @@ export const users = {
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
   // Get all communities for a specific user
-  getUserCommunities: (userId: string, params: PaginationApiParams) =>
+  getUserCommunities: (userId: string, params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<CommunitiesListResponse>>(`/users/${userId}/communities`, { params })),
 }
 

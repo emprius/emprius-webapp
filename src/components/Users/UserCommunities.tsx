@@ -1,20 +1,21 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Divider, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Divider, HStack, Stack, useColorModeValue } from '@chakra-ui/react'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
 import { useUserCommunities } from '~components/Communities/queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { CommunityCardLittle } from '~components/Communities/Card'
-import { RoutedPaginationProvider } from '~components/Layout/Pagination/PaginationProvider'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
+import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 
 export const UserCommunities = () => (
-  <RoutedPaginationProvider>
+  <SearchAndPagination>
     <UserCommunitiesPaginated />
-  </RoutedPaginationProvider>
+  </SearchAndPagination>
 )
 
 const UserCommunitiesPaginated = () => {
@@ -48,6 +49,11 @@ const UserCommunitiesPaginated = () => {
 
   return (
     <Stack spacing={6}>
+      <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} maxW='600px' w='full'>
+        <DebouncedSearchBar
+          placeholder={t('tools.filter_tools', { defaultValue: 'Filter by tool name or description' })}
+        />
+      </HStack>
       <Stack spacing={4}>
         {data.communities.map((community) => (
           <>
