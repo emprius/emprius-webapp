@@ -1,18 +1,22 @@
 import React from 'react'
-import { Button, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import { FiPlus } from 'react-icons/fi'
-import { Link as RouterLink } from 'react-router-dom'
+import { Stack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { useDefaultUserCommunities, useUserCommunities } from './queries'
+import { useDefaultUserCommunities } from './queries'
 import { CommunityCard } from './Card'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { icons } from '~theme/icons'
-import { ROUTES } from '~src/router/routes'
 import { ResponsiveSimpleGrid } from '~components/Layout/LayoutComponents'
-import { useAuth } from '~components/Auth/AuthContext'
+import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
+import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 
-export const CommunitiesList: React.FC = () => {
+export const CommunitiesList: React.FC = () => (
+  <SearchAndPagination>
+    <CommunitiesListPaginated />
+  </SearchAndPagination>
+)
+
+const CommunitiesListPaginated: React.FC = () => {
   const { t } = useTranslation()
   const { isLoading, isError, error, data } = useDefaultUserCommunities()
 
@@ -24,7 +28,7 @@ export const CommunitiesList: React.FC = () => {
     return <ElementNotFound icon={icons.users} title={t('common.error')} desc={t('common.something_went_wrong')} />
   }
 
-  if (!data || data?.length === 0) {
+  if (!data?.communities?.length) {
     return (
       <ElementNotFound
         icon={icons.users}
@@ -37,10 +41,11 @@ export const CommunitiesList: React.FC = () => {
   return (
     <Stack spacing={6}>
       <ResponsiveSimpleGrid>
-        {data.map((community) => (
+        {data.communities.map((community) => (
           <CommunityCard key={community.id} community={community} />
         ))}
       </ResponsiveSimpleGrid>
+      <RoutedPagination pagination={data.pagination} />
     </Stack>
   )
 }

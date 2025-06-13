@@ -10,6 +10,7 @@ import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, BookingsListResponse, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
 import {
+  CommunitiesListResponse,
   Community,
   CommunityInvitesResponse,
   CommunityUsersResponse,
@@ -159,7 +160,8 @@ export const users = {
   getPendingActions: () => apiRequest(api.get<ApiResponse<ProfilePendings>>('/profile/pendings')),
   getMoreCodes: () => apiRequest(api.post<ApiResponse<void>>('/profile/invites')),
   // Get all communities for a specific user
-  getUserCommunities: (userId: string) => apiRequest(api.get<ApiResponse<Community[]>>(`/users/${userId}/communities`)),
+  getUserCommunities: (userId: string, params: SearchAndPaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<CommunitiesListResponse>>(`/users/${userId}/communities`, { params })),
 }
 
 // images
@@ -181,10 +183,11 @@ export const communities = {
   // Delete
   deleteCommunity: (id: string) => apiRequest(api.delete<ApiResponse<void>>(`/communities/${id}`)),
   // Get community tools
-  getCommunityTools: (id: string) => apiRequest(api.get<ApiResponse<ToolsListResponse>>(`/communities/${id}/tools`)),
+  getCommunityTools: (id: string, params: SearchAndPaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/communities/${id}/tools`, { params })),
   // Get users in a community
-  getCommunityMembers: (id: string) =>
-    apiRequest(api.get<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`)),
+  getCommunityMembers: (id: string, params: SearchAndPaginationApiParams) =>
+    apiRequest(api.get<PaginatedApiResponse<CommunityUsersResponse>>(`/communities/${id}/members`, { params })),
   // Invite a user to a community
   inviteUser: (id: string, userId: string) =>
     apiRequest(api.post<ApiResponse<CommunityUsersResponse>>(`/communities/${id}/members/${userId}`)),
