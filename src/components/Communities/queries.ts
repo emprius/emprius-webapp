@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { CommunityFormData, CreateCommunityParams, UpdateCommunityParams } from './types'
 import { useUploadImage, useUploadImages } from '~components/Images/queries'
@@ -35,12 +35,31 @@ export const useDefaultUserCommunities = () => {
   return useUserCommunities(id)
 }
 
+// Search communities for the current user (for dropdowns/selectors)
+export const useSearchUserCommunities = (searchTerm?: string) => {
+  const {
+    user: { id },
+  } = useAuth()
+  return useQuery({
+    queryKey: CommunityKeys.userSearch(id, searchTerm),
+    queryFn: () => api.users.getUserCommunities(id, { term: searchTerm }),
+    enabled: !!id,
+  })
+}
+
 // Get a specific community's details
-export const useCommunityDetail = (id: string) => {
+export const useCommunityDetail = (
+  id: string,
+  options?: Omit<
+    UseQueryOptions<Awaited<ReturnType<typeof api.communities.getCommunityById>>, Error>,
+    'queryKey' | 'queryFn'
+  >
+) => {
   return useQuery({
     queryKey: CommunityKeys.detail(id),
     queryFn: () => api.communities.getCommunityById(id),
     enabled: !!id,
+    ...options,
   })
 }
 
