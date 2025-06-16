@@ -38,9 +38,16 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { MaybeFree } from '~components/Tools/Form/MaybeFree'
 import { CommunitiesSelector } from '~components/Tools/Form/CommunitiesSelector'
 
-export type ToolFormData = Omit<CreateToolParams, 'images'> & {
+export type CommunityOption = {
+  value: string
+  label: string
+  avatarHash: string
+}
+
+export type ToolFormData = Omit<CreateToolParams, 'images' | 'communities'> & {
   images: FileList
   id?: number
+  communities?: CommunityOption[]
 }
 
 interface ToolFormProps {
@@ -192,7 +199,13 @@ export const ToolForm: React.FC<ToolFormProps> = ({
         cost={tool?.cost}
         estimatedDailyCost={tool?.estimatedDailyCost}
       />
-      <CommunitiesSelector control={control} setValue={setValue} watch={watch} errors={errors} />
+      <CommunitiesSelector
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+        hasCommunities={!!initialData?.communities?.length}
+      />
       <LocationPicker name='location' control={control} isRequired={true} />
 
       {existingImages.length > 0 && (

@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDefaultUserCommunities } from '~components/Communities/queries'
+import { useCommunityDetail, useSearchUserCommunities } from '~components/Communities/queries'
 import { chakraComponents, Select } from 'chakra-react-select'
-import { Box, FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
 import { Avatar } from '~components/Images/Avatar'
 import { Controller } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
@@ -13,17 +13,33 @@ interface CommunitiesSelectorProps {
   setValue: (name: keyof ToolFormData, value: any) => void
   watch: (name: keyof ToolFormData) => any
   errors: any
+  hasCommunities: boolean
 }
 
-export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ control, setValue, watch, errors }) => {
+export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({
+  control,
+  setValue,
+  watch,
+  errors,
+  hasCommunities,
+}) => {
   const { t } = useTranslation()
-  const { data: userCommunities, isLoading } = useDefaultUserCommunities()
-  const [shareGlobally, setShareGlobally] = useState(true)
+  const [shareGlobally, setShareGlobally] = useState(!hasCommunities)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
 
-  // If there are no communities or still loading, return null
-  if ((!userCommunities || userCommunities.length === 0) && !isLoading) {
-    return null
-  }
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
+
+  // Use the search query with debounced term for dropdown options
+  const { data: searchData, isLoading } = useSearchUserCommunities(debouncedSearchTerm || undefined)
+  const dropdownCommunities = searchData?.communities || []
 
   // Custom option component to display community avatar and name
   const CustomOption = ({ children, ...props }: any) => {
@@ -34,18 +50,6 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
           <span>{children}</span>
         </HStack>
       </chakraComponents.Option>
-    )
-  }
-
-  // Custom multi-value component to display selected communities with avatars
-  const CustomMultiValueContainer = ({ children, ...props }: any) => {
-    return (
-      <chakraComponents.MultiValueContainer {...props}>
-        <HStack>
-          <Avatar avatarHash={props.data.avatarHash} username={props.data.label} size='2xs' />
-          {children}
-        </HStack>
-      </chakraComponents.MultiValueContainer>
     )
   }
 
@@ -64,11 +68,11 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
           <FormLabel htmlFor='isFree'>
             <HStack>
               <Icon as={icons.globe} />
-              <Box>
+              <Text>
                 {t('tools.share_globally', {
                   defaultValue: 'Share globally',
                 })}
-              </Box>
+              </Text>
             </HStack>
           </FormLabel>
           <Text fontSize='sm' color='lighterText'>
@@ -81,7 +85,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
         <FormControl flex={1} isDisabled={shareGlobally} isInvalid={!!errors.communities} isRequired={!shareGlobally}>
           <FormLabel display={'flex'} alignItems={'center'} gap={2} htmlFor='communities'>
             <Icon as={icons.communities} />
-            <Box>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Box>
+            <Text>{t('tools.communities', { defaultValue: 'Share with Communities' })}</Text>
           </FormLabel>
           <Text fontSize='sm' color='lighterText'>
             {t('tools.communities_description', {
@@ -96,31 +100,24 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
               <Select
                 isDisabled={shareGlobally}
                 isMulti
-                options={userCommunities?.map((community) => ({
+                isSearchable
+                filterOption={() => true} // Disable client-side filtering since we're doing server-side
+                onInputChange={(inputValue) => setSearchTerm(inputValue)}
+                options={dropdownCommunities?.map((community) => ({
                   value: community.id,
                   label: community.name,
                   avatarHash: community.image,
                 }))}
                 placeholder={t('tools.select_communities', { defaultValue: 'Select communities' })}
-                onChange={(newValue: any) => {
-                  setValue('communities', newValue ? newValue.map((item: any) => item.value) : [])
-                }}
-                value={
-                  userCommunities && watch('communities')
-                    ? watch('communities')
-                        .map((id: string) => {
-                          const community = userCommunities.find((c) => c.id === id)
-                          return community
-                            ? {
-                                value: community.id,
-                                label: community.name,
-                                avatarHash: community.image,
-                              }
-                            : null
-                        })
-                        .filter(Boolean)
-                    : []
+                noOptionsMessage={() =>
+                  isLoading
+                    ? t('common.loading', { defaultValue: 'Loading...' })
+                    : t('tools.no_communities_found', { defaultValue: 'No communities found' })
                 }
+                onChange={(newValue: any) => {
+                  setValue('communities', newValue)
+                }}
+                value={watch('communities')}
                 components={{
                   Option: CustomOption,
                   MultiValueContainer: CustomMultiValueContainer,
@@ -142,5 +139,31 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ contro
         </FormControl>
       </Stack>
     </Stack>
+  )
+}
+
+// Custom multi-value component to display selected communities with avatars
+const CustomMultiValueContainer = ({ children, ...props }: any) => {
+  const { data } = useCommunityDetail(props.data.value, {
+    enabled: !!props.data.label,
+  })
+
+  const avatar = props.data.avatarHash || data?.image || ''
+  const label = props.data.label || data?.name || ''
+
+  return (
+    <chakraComponents.MultiValueContainer {...props}>
+      <HStack>
+        <Avatar avatarHash={avatar} username={label} size='2xs' isSquare />
+        {!props.data.label ? (
+          <>
+            {label}
+            {children[1]}
+          </>
+        ) : (
+          children
+        )}
+      </HStack>
+    </chakraComponents.MultiValueContainer>
   )
 }

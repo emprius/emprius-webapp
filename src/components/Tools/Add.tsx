@@ -53,6 +53,7 @@ export const AddTool = () => {
       height: Number(data.height),
       weight: Number(data.weight),
       isNomadic: data?.isNomadic ?? false,
+      communities: data?.communities?.map((c) => c.value) || [],
     })
   }
 

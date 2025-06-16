@@ -1,23 +1,28 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { CommunityFormData, CreateCommunityParams, UpdateCommunityParams } from './types'
 import { useUploadImage, useUploadImages } from '~components/Images/queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
+import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 
 export const CommunityKeys = {
-  user: (id: string) => ['communities', 'user', id],
+  user: (id: string, page?: number, term?: string) => ['communities', 'user', id, page, term],
+  userSearch: (id: string, term?: string) => ['communities', 'user', id, 'search', term],
   detail: (id: string) => ['communities', id],
-  members: (id: string) => ['communities', id, 'members'],
-  tools: (id: string) => ['communities', id, 'tools'],
+  members: (id: string, page?: number, term?: string) => ['communities', id, 'members', page, term],
+  tools: (id: string, page?: number, term?: string) => ['communities', id, 'tools', page, term],
   invites: ['communities', 'invites'],
 }
 
 // Get all communities the current user belongs to specific user
 export const useUserCommunities = (userId: string) => {
+  const { page } = useRoutedPagination()
+  const { debouncedSearch: term } = useDebouncedSearch()
   return useQuery({
-    queryKey: CommunityKeys.user(userId),
-    queryFn: () => api.users.getUserCommunities(userId),
+    queryKey: CommunityKeys.user(userId, page, term),
+    queryFn: () => api.users.getUserCommunities(userId, { page, term }),
     enabled: !!userId,
   })
 }
@@ -30,29 +35,52 @@ export const useDefaultUserCommunities = () => {
   return useUserCommunities(id)
 }
 
+// Search communities for the current user (for dropdowns/selectors)
+export const useSearchUserCommunities = (searchTerm?: string) => {
+  const {
+    user: { id },
+  } = useAuth()
+  return useQuery({
+    queryKey: CommunityKeys.userSearch(id, searchTerm),
+    queryFn: () => api.users.getUserCommunities(id, { term: searchTerm }),
+    enabled: !!id,
+  })
+}
+
 // Get a specific community's details
-export const useCommunityDetail = (id: string) => {
+export const useCommunityDetail = (
+  id: string,
+  options?: Omit<
+    UseQueryOptions<Awaited<ReturnType<typeof api.communities.getCommunityById>>, Error>,
+    'queryKey' | 'queryFn'
+  >
+) => {
   return useQuery({
     queryKey: CommunityKeys.detail(id),
     queryFn: () => api.communities.getCommunityById(id),
     enabled: !!id,
+    ...options,
   })
 }
 
 // Get users in a community
 export const useCommunityUsers = (id: string) => {
+  const { debouncedSearch: term } = useDebouncedSearch()
+  const { page } = useRoutedPagination()
   return useQuery({
-    queryKey: CommunityKeys.members(id),
-    queryFn: () => api.communities.getCommunityMembers(id),
+    queryKey: CommunityKeys.members(id, page, term),
+    queryFn: () => api.communities.getCommunityMembers(id, { page, term }),
     enabled: !!id,
   })
 }
 
 // Get tools in a community
 export const useCommunityTools = (id: string) => {
+  const { debouncedSearch: term } = useDebouncedSearch()
+  const { page } = useRoutedPagination()
   return useQuery({
-    queryKey: CommunityKeys.tools(id),
-    queryFn: () => api.communities.getCommunityTools(id),
+    queryKey: CommunityKeys.tools(id, page, term),
+    queryFn: () => api.communities.getCommunityTools(id, { page, term }),
     enabled: !!id,
   })
 }

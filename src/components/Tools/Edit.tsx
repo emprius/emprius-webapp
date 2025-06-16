@@ -1,11 +1,11 @@
 import { Text, useToast } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { useUploadImages } from '~components/Images/queries'
 import { ROUTES } from '~src/router/routes'
-import { ToolForm, ToolFormData } from './Form'
+import { CommunityOption, ToolForm, ToolFormData } from './Form'
 import { useUpdateTool } from './queries'
 import { Tool, UpdateToolParams } from './types'
 
@@ -20,6 +20,15 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData }) => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const images = initialData.images
+  const communities: CommunityOption[] = useMemo(
+    () =>
+      initialData?.communities?.map((id) => ({
+        value: id,
+        label: '',
+        avatarHash: '',
+      })) || [],
+    [initialData.communities]
+  )
 
   const {
     mutateAsync: uploadImages,
@@ -87,6 +96,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData }) => {
       height: Number(data.height),
       weight: Number(data.weight),
       images: allImageHashes,
+      communities: data?.communities?.map((c) => c.value) || [],
     }
 
     await mutateAsync({
@@ -103,6 +113,7 @@ export const EditTool: React.FC<EditToolFormProps> = ({ initialData }) => {
     <ToolForm
       initialData={{
         ...initialData,
+        communities,
         images: undefined, // Remove images from initial data as they're handled separately
       }}
       existingImages={existingImages}
