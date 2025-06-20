@@ -35,12 +35,17 @@ export type Invite = {
 
 type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
 
+export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted'
+export type NotificationPreferences = Map<NotificationPreferenceType, boolean>
+
 export type OwnUserProfile = UserProfile & {
   inviteCodes?: Invite[]
+  notificationPreferences?: NotificationPreferences
 }
 
 export type OwnUserProfileDTO = UserProfileDTO & {
   inviteCodes?: InviteDTO[]
+  notificationPreferences?: NotificationPreferences
 }
 
 export type EditProfileFormData = {

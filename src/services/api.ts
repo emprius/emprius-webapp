@@ -5,7 +5,12 @@ import { ProfilePendings } from '~components/Layout/Contexts/PendingActionsProvi
 import { RateSubmission, UnifiedRating, UnifiedRatingsResponse } from '~components/Ratings/types'
 import { SearchParams } from '~components/Search/queries'
 import { CreateToolDTO, ToolDTO, ToolsListResponse } from '~components/Tools/types'
-import { EditProfileFormDataDTO, ToolHistoryResponse, UserProfileDTO } from '~components/Users/types'
+import {
+  EditProfileFormDataDTO,
+  NotificationPreferences,
+  ToolHistoryResponse,
+  UserProfileDTO,
+} from '~components/Users/types'
 import { STORAGE_KEYS } from '~utils/constants'
 import { ImageUploadResponse } from '~components/Images/queries'
 import { Booking, BookingsListResponse, CreateBookingData, UpdateBookingStatus } from '~components/Bookings/types'
@@ -162,6 +167,8 @@ export const users = {
   // Get all communities for a specific user
   getUserCommunities: (userId: string, params: SearchAndPaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<CommunitiesListResponse>>(`/users/${userId}/communities`, { params })),
+  updateNotificationPreferences: (data: NotificationPreferences) =>
+    apiRequest(api.post<ApiResponse<void>>('/profile/notifications', { ...data })),
 }
 
 // images

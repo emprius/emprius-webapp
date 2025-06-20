@@ -6,6 +6,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { MainContainer } from '~components/Layout/LayoutComponents'
 import { UserProfile } from '~components/Users/Profile'
 import InviteCodes from '~components/Users/InviteCodes'
+import NotificationSettings from '~components/Users/NotificationSettings'
 
 export const View = () => {
   const { t } = useTranslation()
@@ -17,6 +18,7 @@ export const View = () => {
         <UserProfile {...user} />
         <VStack pb={4} w={'full'}>
           <InviteCodes codes={user?.inviteCodes} />
+          <NotificationSettings notificationPreferences={user.notificationPreferences} />
           <Button leftIcon={<FiLogOut />} onClick={logout} colorScheme='red'>
             {t('nav.logout')}
           </Button>

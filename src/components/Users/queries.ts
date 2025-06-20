@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
-import { EditProfileFormData, UserProfile, UserProfileDTO } from '~components/Users/types'
+import { EditProfileFormData, NotificationPreferences, UserProfile, UserProfileDTO } from '~components/Users/types'
 import api, { users } from '~src/services/api'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 
@@ -51,6 +51,18 @@ export const useRequestMoreCodes = () => {
   return useMutation({
     mutationKey: ['requestMoreCodes'],
     mutationFn: () => users.getMoreCodes(),
+    onSuccess: async (data) => {
+      await client.invalidateQueries({ queryKey: UserKeys.currentUser })
+      return data
+    },
+  })
+}
+
+export const useNotificationPreferences = () => {
+  const client = useQueryClient()
+  return useMutation({
+    mutationKey: ['notificationPreferences'],
+    mutationFn: (data: NotificationPreferences) => users.updateNotificationPreferences(data),
     onSuccess: async (data) => {
       await client.invalidateQueries({ queryKey: UserKeys.currentUser })
       return data
