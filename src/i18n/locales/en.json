@@ -3,7 +3,7 @@
     "offlineMessage": "You are currently offline. Some features may be limited."
   },
   "auth": {
-    "community": "Community",
+    "community": "Community project",
     "confirm_password": "Confirm Password",
     "email": "Email",
     "have_account": "Already have an account?",
