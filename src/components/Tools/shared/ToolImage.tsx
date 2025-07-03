@@ -23,28 +23,30 @@ export const ToolImageAvailability = ({ isAvailable, ...rest }: ToolImageAvailab
   return (
     <Box position='relative'>
       <ToolImage height='200px' {...rest} />
-      <Tooltip label={tooltipLabel} hasArrow>
-        <Badge
-          position='absolute'
-          top={2}
-          right={2}
-          colorScheme={isAvailable ? 'green' : 'orange'}
-          p={1}
-          borderRadius='full'
-          display='flex'
-          alignItems='center'
-          justifyContent='center'
-        >
-          <Icon as={isAvailable ? CheckCircleIcon : TiCancel} boxSize={4} />
-        </Badge>
-      </Tooltip>
+      {!rest.isLoading && (
+        <Tooltip label={tooltipLabel} hasArrow>
+          <Badge
+            position='absolute'
+            top={2}
+            right={2}
+            colorScheme={isAvailable ? 'green' : 'orange'}
+            p={1}
+            borderRadius='full'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Icon as={isAvailable ? CheckCircleIcon : TiCancel} boxSize={4} />
+          </Badge>
+        </Tooltip>
+      )}
     </Box>
   )
 }
 
 export const ToolImage = ({ toolId, isLoading, ...rest }: ToolImageProps) => {
   if (isLoading) {
-    return <Skeleton height='100%' />
+    return <Skeleton isLoaded={false} {...rest} />
   }
 
   if (!toolId) {
