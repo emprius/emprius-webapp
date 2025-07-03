@@ -81,7 +81,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   // is not available.
   let userNotFound = false
   let user: Partial<UserProfile> = data
-  if (!placeholderData?.active || (error && error instanceof ApiError && error.raw.status === 404)) {
+  if (placeholderData?.active === false || (error && error instanceof ApiError && error.raw.status === 404)) {
     userNotFound = true
     if (!user) {
       user = {
