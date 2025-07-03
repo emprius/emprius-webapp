@@ -1,11 +1,8 @@
-import { Avatar as ChakraAvatar, Box, Link } from '@chakra-ui/react'
+import { Avatar as ChakraAvatar, AvatarProps as ChakraAvatarProps, Box, Link } from '@chakra-ui/react'
 import React from 'react'
-import { ServerImage } from '~components/Images/ServerImage'
-import { ASSETS } from '~utils/constants'
 import { useUserProfile } from '~components/Users/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
-import { useCommunityDetail } from '~components/Communities/queries'
 import api from '~src/services/api'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
@@ -26,32 +23,34 @@ export type AvatarProps = {
   username?: string
   size?: AvatarSize
   isSquare?: boolean
+  props?: Omit<ChakraAvatarProps, 'name' | 'size' | 'borderRadius'>
 }
 
 export type LinkedAvatarProps = {
   id: string
   linkProfile?: boolean
-} & Pick<AvatarProps, 'size'>
+} & Pick<AvatarProps, 'size' | 'props'>
 
-export const UserAvatar = ({ id, size = '2xl', linkProfile }: LinkedAvatarProps) => {
+export const UserAvatar = ({ id, size = '2xl', linkProfile, props }: LinkedAvatarProps) => {
   const { data: user } = useUserProfile(id)
   if (linkProfile) {
     return (
       <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', id)} minW={avatarSizeToPixels[size]}>
-        <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
+        <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} {...props} />
       </Link>
     )
   }
   return <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl', isSquare = false }) => {
+export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl', isSquare = false, props }) => {
   return (
     <ChakraAvatar
       src={api.images.getImage(avatarHash, true)}
       name={username}
       size={size}
       borderRadius={isSquare ? 'md' : 'full'}
+      {...props}
     />
   )
 }
