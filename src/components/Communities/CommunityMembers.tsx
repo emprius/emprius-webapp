@@ -32,6 +32,8 @@ import { useParams } from 'react-router-dom'
 import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
+import ErrorComponent from '~components/Layout/ErrorComponent'
+import { Community } from '~components/Communities/types'
 
 export const CommunityMembers: React.FC = () => (
   <SearchAndPagination>
@@ -42,15 +44,46 @@ export const CommunityMembers: React.FC = () => (
 const CommunityMembersPaginated: React.FC = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
-  const { user } = useAuth()
-  const { data: community } = useCommunityDetail(id!)
-  const isOwner = community?.ownerId === user?.id
+  const { data: community, isLoading, error, isError } = useCommunityDetail(id!)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { data: paginatedUsers, isLoading: isLoadingUsers } = useCommunityUsers(id!)
-  const toast = useToast()
-  const { mutateAsync: removeUser, isPending: isRemoving } = useRemoveCommunityUser()
+  const { user } = useAuth()
+  const isOwner = community?.ownerId === user?.id
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (!id || isError || !community) {
+    return <ErrorComponent error={error ?? t('common.something_went_wrong')} />
+  }
+
+  return (
+    <>
+      <Flex justify='space-between' align='center' mb={4} gap={3} wrap={'wrap'}>
+        <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} maxW='600px' w='full'>
+          <DebouncedSearchBar placeholder={t('communities.search_placeholder')} />
+        </HStack>
+        {isOwner && (
+          <Button leftIcon={<FiUserPlus />} colorScheme='primary' onClick={onOpen}>
+            {t('communities.invite_user', { defaultValue: 'Invite user' })}
+          </Button>
+        )}
+      </Flex>
+      <CommunityUsersList id={id} community={community} />
+      <InviteUserModal isOpen={isOpen} onClose={onClose} communityId={community.id} />
+    </>
+  )
+}
+
+const CommunityUsersList = ({ id, community }: { id: string; community: Community }) => {
+  const { t } = useTranslation()
+  const { data, isLoading } = useCommunityUsers(id!)
+  const toast = useToast()
+  const { mutateAsync: removeUser, isPending: isRemoving } = useRemoveCommunityUser()
+  const { user } = useAuth()
+  const isOwner = community?.ownerId === user?.id
 
   // State for remove user confirmation dialog
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = React.useState(false)
@@ -89,57 +122,42 @@ const CommunityMembersPaginated: React.FC = () => {
     }
   }
 
-  const usersData = paginatedUsers?.users || []
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  const usersData = data?.users || []
+
+  if (!usersData || usersData.length === 0) {
+    return (
+      <ElementNotFound icon={icons.users} title={t('communities.no_members')} desc={t('communities.no_members_desc')} />
+    )
+  }
 
   return (
     <>
-      <Flex justify='space-between' align='center' mb={4} gap={3} wrap={'wrap'}>
-        <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} maxW='600px' w='full'>
-          <DebouncedSearchBar placeholder={t('communities.search_placeholder')} />
+      {usersData.map((member) => (
+        <HStack key={member.id}>
+          <UserCard
+            userId={member.id}
+            placeholderData={member}
+            maxW={'300px'}
+            borderWidth={0}
+            badge={community?.ownerId === member.id && t('communities.admin')}
+          />
+          {isOwner && community?.ownerId !== member.id && (
+            <IconButton
+              aria-label={t('communities.remove_user')}
+              icon={<FiUserMinus />}
+              colorScheme='red'
+              variant='ghost'
+              isLoading={isRemoving && userToRemove?.id === member.id}
+              onClick={() => handleRemoveClick(member.id, member.name)}
+            />
+          )}
         </HStack>
-        {isOwner && (
-          <Button leftIcon={<FiUserPlus />} colorScheme='primary' onClick={onOpen}>
-            {t('communities.invite_user', { defaultValue: 'Invite user' })}
-          </Button>
-        )}
-      </Flex>
-
-      {isLoadingUsers ? (
-        <LoadingSpinner />
-      ) : !usersData || usersData.length === 0 ? (
-        <ElementNotFound
-          icon={icons.users}
-          title={t('communities.no_members')}
-          desc={t('communities.no_members_desc')}
-        />
-      ) : (
-        <>
-          {usersData.map((member) => (
-            <HStack key={member.id}>
-              <UserCard
-                userId={member.id}
-                placeholderData={member}
-                maxW={'300px'}
-                borderWidth={0}
-                badge={community?.ownerId === member.id && t('communities.admin')}
-              />
-              {isOwner && community?.ownerId !== member.id && (
-                <IconButton
-                  aria-label={t('communities.remove_user')}
-                  icon={<FiUserMinus />}
-                  colorScheme='red'
-                  variant='ghost'
-                  isLoading={isRemoving && userToRemove?.id === member.id}
-                  onClick={() => handleRemoveClick(member.id, member.name)}
-                />
-              )}
-            </HStack>
-          ))}
-          <RoutedPagination pagination={paginatedUsers.pagination} />
-        </>
-      )}
-      {community && <InviteUserModal isOpen={isOpen} onClose={onClose} communityId={community.id} />}
-
+      ))}
+      <RoutedPagination pagination={data.pagination} />
       {/* Remove user confirmation dialog */}
       <AlertDialog
         isOpen={isRemoveDialogOpen}

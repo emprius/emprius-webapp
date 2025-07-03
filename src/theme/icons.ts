@@ -4,9 +4,11 @@ import { FaHeartbeat, FaCalendar, FaRoute } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { EditIcon } from '@chakra-ui/icons'
 import { RiUserCommunityFill } from 'react-icons/ri'
+import { SlUser } from 'react-icons/sl'
 
 export const icons = {
   user: FiUser,
+  userInactive: SlUser,
   users: FiUsers,
   tools: FiTool,
   ratings: FiStar,

@@ -32,15 +32,15 @@ export type LinkedAvatarProps = {
 } & Pick<AvatarProps, 'size' | 'props'>
 
 export const UserAvatar = ({ id, size = '2xl', linkProfile, props }: LinkedAvatarProps) => {
-  const { data: user } = useUserProfile(id)
-  if (linkProfile) {
+  const { data } = useUserProfile(id)
+  if (linkProfile && data) {
     return (
       <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', id)} minW={avatarSizeToPixels[size]}>
-        <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} {...props} />
+        <Avatar username={data?.name} avatarHash={data?.avatarHash} size={size} {...props} />
       </Link>
     )
   }
-  return <Avatar username={user?.name} avatarHash={user?.avatarHash} size={size} />
+  return <Avatar username={data?.name} avatarHash={data?.avatarHash} size={size} />
 }
 
 export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl', isSquare = false, props }) => {
