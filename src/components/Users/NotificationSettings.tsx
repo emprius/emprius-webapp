@@ -54,7 +54,7 @@ const NotificationSettings = ({ notificationPreferences }: { notificationPrefere
             }
 
             return (
-              <>
+              <Box key={key}>
                 <HStack key={key} justifyContent='space-between' my={2}>
                   <Flex direction={'column'}>
                     <Text as={'b'}>{title}</Text>
@@ -66,7 +66,7 @@ const NotificationSettings = ({ notificationPreferences }: { notificationPrefere
                   <Switch {...register(key)} />
                 </HStack>
                 <Divider />
-              </>
+              </Box>
             )
           })}
         </Box>

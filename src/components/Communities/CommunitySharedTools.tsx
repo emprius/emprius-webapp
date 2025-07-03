@@ -3,7 +3,7 @@ import { useCommunityTools } from '~components/Communities/queries'
 import { useParams } from 'react-router-dom'
 import { ToolList } from '~components/Tools/List'
 import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
-import { HStack, useColorModeValue, VStack } from '@chakra-ui/react'
+import { Box, HStack, useColorModeValue, VStack } from '@chakra-ui/react'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { useTranslation } from 'react-i18next'
 import { RoutedPagination } from '~components/Layout/Pagination/Pagination'
@@ -28,7 +28,9 @@ export const CommunitySharedToolsPaginated: React.FC = () => {
           placeholder={t('tools.filter_tools', { defaultValue: 'Filter by tool name or description' })}
         />
       </HStack>
-      <ToolList isLoading={isLoading} isError={isError} error={error} tools={data?.tools} />
+      <Box w='full'>
+        <ToolList isLoading={isLoading} isError={isError} error={error} tools={data?.tools} />
+      </Box>
       <RoutedPagination pagination={data?.pagination} />
     </VStack>
   )
