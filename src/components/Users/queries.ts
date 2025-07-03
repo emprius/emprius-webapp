@@ -35,7 +35,7 @@ export const useUserProfile = (
     queryFn: () => api.users.getById(userId),
     select: (data): UserProfile => ({
       ...data,
-      location: toLatLng(data?.location ?? { latitude: 0, longitude: 0 }),
+      ...(data.location && { location: toLatLng(data.location) }),
     }),
     ...options,
   })

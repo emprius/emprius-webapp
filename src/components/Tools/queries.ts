@@ -104,7 +104,8 @@ export const useUpdateTool = (
 ) => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (tool) => tools.update({ ...tool, location: toEmpriusLocation(tool.location) }),
+    mutationFn: (tool) =>
+      tools.update({ ...tool, ...(tool.location && { location: toEmpriusLocation(tool.location) }) }),
     onSuccess: (data, params) => {
       queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
       queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
