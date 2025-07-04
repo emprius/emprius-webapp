@@ -59,7 +59,7 @@ const PaginatedToolRatings = ({ toolId }: ToolRatingsProps) => {
       </Heading>
       <Stack spacing={2}>
         {data.ratings.map((rating) => (
-          <RatingCard rating={rating} />
+          <RatingCard key={rating.id} rating={rating} />
         ))}
       </Stack>
       <RoutedPagination pagination={data.pagination} />
