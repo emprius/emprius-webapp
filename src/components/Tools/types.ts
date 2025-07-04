@@ -9,6 +9,7 @@ export interface DateRange {
 
 export type Tool = {
   userId: string
+  userActive: string
   id: number
   title: string
   description?: string
@@ -24,6 +25,7 @@ export type Tool = {
   reservedDates: DateRange[] | null
   isNomadic?: boolean
   actualUserId?: string
+  actualUserActive?: boolean
   maxDistance?: number
   communities?: string[] // Array of community IDs where this tool is shared
 }

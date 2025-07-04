@@ -25,6 +25,17 @@ export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: Can
   }
 
   switch (canBook.why) {
+    case 'userNotActive':
+      return (
+        <CannotBookInfoCard
+          title={t('bookings.user_is_not_active', { defaultValue: 'The user is not active' })}
+          description={t('bookings.user_is_not_active_desc', {
+            defaultValue:
+              'The tool holder have deactivated their profile. You cannot book this tool until they reactivate it.',
+          })}
+        />
+      )
+
     case 'isTooFarAway':
       return (
         <CannotBookInfoCard
@@ -89,12 +100,24 @@ const CannotBookInfoCard = ({
     </Box>
   )
 }
-type CannotBookCase = 'isOwner' | 'isActualUser' | 'isNotInCommunity' | 'isTooFarAway' | 'isNomadicBooked' | null
+type CannotBookCase =
+  | 'isOwner'
+  | 'isActualUser'
+  | 'isNotInCommunity'
+  | 'isTooFarAway'
+  | 'isNomadicBooked'
+  | 'userNotActive'
+  | null
 type CanBook = { canBook: boolean; why: CannotBookCase }
 
-export function canUserBookTool(tool: ToolDetail, user: UserProfile): CanBook {
+export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook => {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
+
+  // User is not active
+  if (!tool.userActive || tool?.actualUserActive === false) {
+    return { canBook: false, why: 'userNotActive' }
+  }
 
   // Tool is not nomadic and user is the owner
   if (!tool.isNomadic && isOwner) {
