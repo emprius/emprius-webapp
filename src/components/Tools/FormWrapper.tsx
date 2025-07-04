@@ -25,6 +25,16 @@ export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: Can
   }
 
   switch (canBook.why) {
+    case 'selfUserNotActive':
+      return (
+        <CannotBookInfoCard
+          title={t('bookings.self_user_is_not_active', { defaultValue: 'Your profile is not active' })}
+          description={t('bookings.self_user_is_not_active_desc', {
+            defaultValue:
+              'If you want to book a tool your profile must be active. Change your profile settings to activate it',
+          })}
+        />
+      )
     case 'userNotActive':
       return (
         <CannotBookInfoCard
@@ -107,12 +117,18 @@ type CannotBookCase =
   | 'isTooFarAway'
   | 'isNomadicBooked'
   | 'userNotActive'
+  | 'selfUserNotActive'
   | null
 type CanBook = { canBook: boolean; why: CannotBookCase }
 
 export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook => {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
+
+  // Self user not active
+  if (!user.active) {
+    return { canBook: false, why: 'selfUserNotActive' }
+  }
 
   // User is not active
   if (!tool.userActive || tool?.actualUserActive === false) {
