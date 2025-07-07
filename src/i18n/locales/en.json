@@ -79,6 +79,8 @@
     "select_dates_on_calendar": "Please select dates on the calendar",
     "select_end_date": "Select end date",
     "select_start_date": "Select start date",
+    "self_user_is_not_active": "Your profile is not active",
+    "self_user_is_not_active_desc": "If you want to book a tool your profile must be active. Change your profile settings to activate it",
     "start_date": "Start Date",
     "status": {
       "ACCEPTED": "ACCEPTED",
@@ -106,6 +108,8 @@
     "total_earned": "Total Earned: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total Spent: {{amount}} {{,tokenSymbol}}",
     "try_again": "Please try again later",
+    "user_is_not_active": "The user is not active",
+    "user_is_not_active_desc": "The tool holder have deactivated their profile. You cannot book this tool until they reactivate it.",
     "users_info": "Users Information",
     "you_are_not_community_member": "Yoy are not member of the community"
   },
@@ -293,6 +297,16 @@
     "total_results_one": "Total {{count}}",
     "total_results_other": "Total {{count}}"
   },
+  "profile": {
+    "notifications": {
+      "booking_accepted": "Outgoing requests accepted",
+      "booking_accepted_desc": "A tool you requested to other user is accepted",
+      "incoming_requests": "New incoming request",
+      "incoming_requests_desc": "Some user requested a tool you own or a nomadic tool on your guard",
+      "notification_preferences": "Notification Preferences",
+      "notification_preferences_desc": "Activate or deactivate email notifications for various events."
+    }
+  },
   "pwa": {
     "firefox_step1": "1. Open the menu",
     "install_instructions": "Install the app on your device to easily access it anytime. No app store. No download. No hassle.",
@@ -394,8 +408,6 @@
     "my_tools": "My Tools",
     "name": "Tool Name",
     "no_communities_found": "No communities found",
-    "no_history": "No history yet",
-    "no_history_desc": "This tool has not been borrowed yet.",
     "no_tools_found": "No tools found",
     "no_tools_found_desc": "No tools match your search criteria. Try adjusting your filters.",
     "nomadic": "Nomadic",
@@ -458,7 +470,8 @@
     "user_not_found_desc": "The user you're looking for doesn't exist or has been removed."
   },
   "users": {
-    "list_title": "Users"
+    "list_title": "Users",
+    "not_active": "Not active"
   },
   "validation": {
     "email": "Invalid email address",
