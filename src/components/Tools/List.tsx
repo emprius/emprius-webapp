@@ -14,27 +14,30 @@ export const ToolList = ({
   isLoading,
   error,
   isError,
+  showErrors = true,
 }: {
   tools: Tool[]
   isLoading?: boolean
   isError?: boolean
   error?: Error
+  showErrors?: boolean // Show error messages or empty state when no tools are found, used on authenticated landing page
 }) => {
   const { t } = useTranslation()
 
   if (isLoading) return <LoadingSpinner />
 
-  if (isError) {
+  if (isError && showErrors) {
     return <ErrorComponent error={error} />
   }
 
-  if (tools.length === 0) {
+  if (tools.length === 0 && showErrors) {
     return (
       <Box textAlign='center' mt={8}>
         <ElementNotFound icon={icons.tools} title={t('tools.no_tools_found')} desc={t('tools.no_tools_found_desc')} />
       </Box>
     )
   }
+
   return (
     <ResponsiveSimpleGrid>
       {tools.map((tool) => (

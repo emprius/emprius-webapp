@@ -35,7 +35,7 @@ export const defaultFilterValues: Partial<SearchParams> = {
   distance: DISTANCE_DEFAULT,
   maxCost: MAX_COST_DEFAULT,
   mayBeFree: false,
-  page: 1,
+  page: 0,
 }
 
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

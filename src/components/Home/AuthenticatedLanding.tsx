@@ -84,7 +84,14 @@ export const AuthenticatedLanding = () => {
           </ParallaxBannerLayer>
         </ParallaxBanner>
         <Container maxW='container.xl' mt={8}>
-          <ToolList tools={tools?.tools || []} isLoading={isPending} isError={isError} error={error} />
+          `{' '}
+          <ToolList
+            tools={tools?.tools || []}
+            isLoading={isPending}
+            isError={isError}
+            error={error}
+            showErrors={false}
+          />
         </Container>
       </Box>
     </ParallaxProvider>
