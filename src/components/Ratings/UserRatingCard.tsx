@@ -58,55 +58,67 @@ export const UserRatingCard = ({ rating, actualUser }: UnifiedRatingCardProps) =
     )
   }
 
+  const link = ROUTES.BOOKINGS.DETAIL.replace(':id', rating.bookingId)
+
   return (
     <Card variant='outline' mb={4} borderColor={borderColor} _hover={{ bg: bgHover }} transition='background 0.2s'>
       <CardBody>
-        <RouterLink
-          to={ROUTES.BOOKINGS.DETAIL.replace(':id', rating.bookingId)}
-          state={{
-            booking,
-            tool,
-          }}
-        >
-          {/* Header with tool info */}
-          <Flex gap={4} align='start' mb={4}>
-            <Box width='50px' height='50px' borderRadius='md' overflow='hidden'>
-              <ToolImage
-                imageId={tool?.images?.[0]}
-                alt={tool?.title}
-                toolId={tool?.id}
-                width='100%'
-                height='100%'
-                isLoading={isLoadingTool}
-              />
-            </Box>
+        {/* Header with tool info */}
+        <Flex gap={4} align='start' mb={4}>
+          <Box width='50px' height='50px' borderRadius='md' overflow='hidden'>
+            <ToolImage
+              imageId={tool?.images?.[0]}
+              alt={tool?.title}
+              toolId={tool?.id}
+              width='100%'
+              height='100%'
+              isLoading={isLoadingTool}
+            />
+          </Box>
 
-            <Box flex='1'>
-              <HStack fontSize='sm' fontWeight='medium' mb={1} wrap={'wrap'}>
-                <Icon as={isOwner ? icons.outbox : icons.inbox} color='lighterText' />
-                {titleText}
-                <UserCard
-                  userId={otherUser.id}
-                  direction={'row'}
-                  avatarSize={'2xs'}
-                  showRating={false}
-                  borderWidth={0}
-                  p={0}
-                  gap={1}
-                  bgColor={'transparent'}
-                />
-              </HStack>
-              <Skeleton isLoaded={!isLoadingBooking} maxW={'250px'}>
-                {booking && (
+          <Box flex='1'>
+            <HStack fontSize='sm' fontWeight='medium' mb={1} wrap={'wrap'}>
+              <RouterLink
+                to={link}
+                state={{
+                  booking,
+                  tool,
+                }}
+              >
+                <HStack wrap={'wrap'}>
+                  <Icon as={isOwner ? icons.outbox : icons.inbox} color='lighterText' />
+                  {titleText}
+                </HStack>
+              </RouterLink>
+              <UserCard
+                userId={otherUser.id}
+                direction={'row'}
+                avatarSize={'2xs'}
+                showRating={false}
+                borderWidth={0}
+                p={0}
+                gap={1}
+                bgColor={'transparent'}
+              />
+            </HStack>
+            <Skeleton isLoaded={!isLoadingBooking} maxW={'250px'}>
+              {booking && (
+                <RouterLink
+                  to={link}
+                  state={{
+                    booking,
+                    tool,
+                  }}
+                >
                   <Text fontSize='xs' color='gray.500'>
                     {format(new Date(booking.startDate * 1000), datef)} -{' '}
                     {format(new Date(booking.endDate * 1000), datef)}
                   </Text>
-                )}
-              </Skeleton>
-            </Box>
-          </Flex>
-        </RouterLink>
+                </RouterLink>
+              )}
+            </Skeleton>
+          </Box>
+        </Flex>
         <Box maxW={{ base: '100%', lg: '60%' }}>
           <RatingComments {...rating} />
         </Box>
