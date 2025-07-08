@@ -38,15 +38,7 @@ export const ToolHistory: React.FC<ToolHistoryProps> = ({ toolId }) => {
   }
 
   if (historyEntries.length === 0) {
-    return (
-      <Box bg={bgColor} borderWidth={1} borderColor={borderColor} borderRadius='lg' p={6}>
-        <ElementNotFound
-          icon={icons.tools}
-          title={t('tools.no_history', { defaultValue: 'No history yet' })}
-          desc={t('tools.no_history_desc', { defaultValue: 'This tool has not been borrowed yet.' })}
-        />
-      </Box>
-    )
+    return null
   }
 
   const datef = t('tools.nomadic_datef', { defaultValue: 'PP' })
