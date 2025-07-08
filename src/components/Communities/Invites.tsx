@@ -8,6 +8,8 @@ import { ServerImage } from '~components/Images/ServerImage'
 import { icons } from '~theme/icons'
 import { convertToDate } from '~utils/dates'
 import { UserCard } from '~components/Users/Card'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '~src/router/routes'
 
 export const CommunityInvites: React.FC = () => {
   const { t } = useTranslation()
@@ -80,44 +82,51 @@ export const CommunityInvites: React.FC = () => {
       <Heading size='lg'>{t('communities.pending_invites')}</Heading>
 
       <Stack spacing={4}>
-        {data.map((invite) => (
-          <Box key={invite.id} p={4} bg={bgColor} borderRadius='lg' borderWidth='1px' borderColor={borderColor}>
-            <Flex justify='space-between' align='center' flexWrap={{ base: 'wrap', md: 'nowrap' }} gap={4}>
-              <Flex gap={4} flex='1' align='center'>
-                <Box width='60px' height='60px' borderRadius='md' overflow='hidden' flexShrink={0}>
-                  <ServerImage
-                    imageId={invite?.community.image}
-                    alt={invite?.community.name}
-                    fallbackSrc='/assets/logos/tool-fallback.svg'
-                  />
-                </Box>
-                <Box>
-                  <Heading size='md' mb={1}>
-                    {invite?.community.name}
-                  </Heading>
-                  <Text fontSize='sm' color='lighterText'>
-                    {t('communities.invited_time', { date: convertToDate(invite.createdAt) })}
-                  </Text>
-                  <Inviter inviterId={invite.inviterId} />
-                </Box>
-              </Flex>
+        {data.map((invite) => {
+          const link = `${ROUTES.COMMUNITIES.DETAIL.replace(':id', invite.communityId)}`
+          return (
+            <Box key={invite.id} p={4} bg={bgColor} borderRadius='lg' borderWidth='1px' borderColor={borderColor}>
+              <Flex justify='space-between' align='center' flexWrap={{ base: 'wrap', md: 'nowrap' }} gap={4}>
+                <Flex gap={4} flex='1' align='center'>
+                  <Box
+                    as={RouterLink}
+                    to={link}
+                    width='60px'
+                    height='60px'
+                    borderRadius='md'
+                    overflow='hidden'
+                    flexShrink={0}
+                  >
+                    <ServerImage imageId={invite?.community.image} alt={invite?.community.name} />
+                  </Box>
+                  <Box>
+                    <Heading size='md' mb={1} as={RouterLink} to={link}>
+                      {invite?.community.name}
+                    </Heading>
+                    <Text fontSize='sm' color='lighterText'>
+                      {t('communities.invited_time', { date: convertToDate(invite.createdAt) })}
+                    </Text>
+                    <Inviter inviterId={invite.inviterId} />
+                  </Box>
+                </Flex>
 
-              <Stack direction={{ base: 'column', sm: 'row' }} spacing={2}>
-                <Button
-                  colorScheme='red'
-                  variant='outline'
-                  onClick={() => handleRefuse(invite.id)}
-                  isLoading={isRefusing}
-                >
-                  {t('communities.refuse')}
-                </Button>
-                <Button colorScheme='primary' onClick={() => handleAccept(invite.id)} isLoading={isAccepting}>
-                  {t('communities.accept')}
-                </Button>
-              </Stack>
-            </Flex>
-          </Box>
-        ))}
+                <Stack direction={{ base: 'column', sm: 'row' }} spacing={2}>
+                  <Button
+                    colorScheme='red'
+                    variant='outline'
+                    onClick={() => handleRefuse(invite.id)}
+                    isLoading={isRefusing}
+                  >
+                    {t('communities.refuse')}
+                  </Button>
+                  <Button colorScheme='primary' onClick={() => handleAccept(invite.id)} isLoading={isAccepting}>
+                    {t('communities.accept')}
+                  </Button>
+                </Stack>
+              </Flex>
+            </Box>
+          )
+        })}
       </Stack>
     </Stack>
   )
