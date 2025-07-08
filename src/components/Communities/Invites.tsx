@@ -1,12 +1,13 @@
 import React from 'react'
-import { Box, Button, Flex, Heading, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react'
-import { useTranslation } from 'react-i18next'
+import { Box, Button, Flex, Heading, HStack, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react'
+import { Trans, useTranslation } from 'react-i18next'
 import { useCommunityInvites, useAcceptCommunityInvite, useRefuseCommunityInvite } from './queries'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { ServerImage } from '~components/Images/ServerImage'
 import { icons } from '~theme/icons'
-import { formatDistanceToNow } from 'date-fns'
+import { convertToDate } from '~utils/dates'
+import { UserCard } from '~components/Users/Card'
 
 export const CommunityInvites: React.FC = () => {
   const { t } = useTranslation()
@@ -94,14 +95,10 @@ export const CommunityInvites: React.FC = () => {
                   <Heading size='md' mb={1}>
                     {invite?.community.name}
                   </Heading>
-                  <Text fontSize='sm' color='gray.500'>
-                    {t('communities.invited_by', { name: invite.inviterId })}
+                  <Text fontSize='sm' color='lighterText'>
+                    {t('communities.invited_time', { date: convertToDate(invite.createdAt) })}
                   </Text>
-                  <Text fontSize='sm' color='gray.500'>
-                    {t('communities.invited_time', {
-                      time: formatDistanceToNow(new Date(invite.createdAt), { addSuffix: true }),
-                    })}
-                  </Text>
+                  <Inviter inviterId={invite.inviterId} />
                 </Box>
               </Flex>
 
@@ -123,5 +120,31 @@ export const CommunityInvites: React.FC = () => {
         ))}
       </Stack>
     </Stack>
+  )
+}
+
+const Inviter = ({ inviterId }: { inviterId: string }) => {
+  return (
+    <HStack fontSize='sm' color='lighterText'>
+      <Trans
+        i18nKey={'communities.invited_by'}
+        components={{
+          userCard: (
+            <UserCard
+              userId={inviterId}
+              p={0}
+              gap={2}
+              direction={'row'}
+              fontSize={'sm'}
+              avatarSize={'2xs'}
+              justify={'start'}
+              borderWidth={0}
+              showRating={false}
+              showAvatar={true}
+            />
+          ),
+        }}
+      />
+    </HStack>
   )
 }
