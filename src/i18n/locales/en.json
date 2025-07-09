@@ -59,7 +59,7 @@
     "nomadic_owner": "Holder",
     "nomadic_owner_desc": "Person who is holding the nomadic tool",
     "nomadic_tool_booked": "This nomadic tool is actually booked",
-    "not_community_member_description": "Booking won't be available until the actual user finishes the booking",
+    "not_community_member_description": "This tool belongs into a community and your are not member of it",
     "not_found": "Booking Not Found",
     "not_found_desc": "The booking you are looking for could not be found.",
     "on_time_pick_notice": "Great! This tool is being picked up on the expected date",

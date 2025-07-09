@@ -68,7 +68,7 @@ export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: Can
       return (
         <CannotBookInfoCard
           title={t('bookings.nomadic_tool_booked', { defaultValue: 'This nomadic tool is actually booked' })}
-          description={t('bookings.not_community_member_description', {
+          description={t('bookings.nomadic_tool_booked_description', {
             defaultValue: "Booking won't be available until the actual user finishes the booking",
           })}
         />
@@ -110,6 +110,7 @@ const CannotBookInfoCard = ({
     </Box>
   )
 }
+
 type CannotBookCase =
   | 'isOwner'
   | 'isActualUser'
@@ -119,6 +120,7 @@ type CannotBookCase =
   | 'userNotActive'
   | 'selfUserNotActive'
   | null
+
 type CanBook = { canBook: boolean; why: CannotBookCase }
 
 export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook => {
