@@ -89,7 +89,8 @@
       "PENDING": "PENDIENTE",
       "PICKED": "RECOGIDO",
       "REJECTED": "RECHAZADO",
-      "RETURNED": "DEVUELTO"
+      "RETURNED": "DEVUELTO",
+      "LAPSED": "VENCIDO"
     },
     "success": "Reserva exitosa",
     "tool_info": "Información de la herramienta",

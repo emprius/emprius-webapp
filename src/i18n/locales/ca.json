@@ -89,7 +89,8 @@
       "PENDING": "PENDENT",
       "PICKED": "RECOLLIT",
       "REJECTED": "REBUTJAT",
-      "RETURNED": "RETORNAT"
+      "RETURNED": "RETORNAT",
+      "LAPSED": "VENÇUT"
     },
     "success": "Reserva exitosa",
     "tool_info": "Informació de l'eina",

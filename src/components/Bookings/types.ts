@@ -5,9 +5,10 @@ export enum BookingStatus {
   REJECTED = 'REJECTED', // Denied by the owner
   PICKED = 'PICKED', // Tool has been picked up by the requester
   RETURNED = 'RETURNED', // Completed by both parties
+  LAPSED = 'LAPSED', // 'LAPSED' is a custom status for bookings that have expired
 }
 
-export interface Booking {
+export type Booking = {
   id: string
   toolId: string
   fromUserId: string

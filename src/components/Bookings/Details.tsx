@@ -170,7 +170,6 @@ const ToolInfo = ({ tool, booking, isRequest }: { tool: Tool; booking: Booking; 
                 imageId={tool.images?.[0] ?? ''}
                 isAvailable={tool.isAvailable}
                 isLoading={!tool}
-                toolId={tool.id}
                 alt={tool.title}
                 w={'100%'}
                 maxW={imageSize}
@@ -315,7 +314,6 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
   const { user } = useAuth()
   const { t } = useTranslation()
   const isRequest = booking.toUserId === user.id
-  const headerBg = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   return (

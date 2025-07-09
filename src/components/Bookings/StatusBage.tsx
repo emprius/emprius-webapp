@@ -45,9 +45,11 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
       text = t(`bookings.status.PENDING`)
       colorScheme = 'yellow'
       break
+    case BookingStatus.LAPSED:
+      text = t(`bookings.status.LAPSED`)
+      break
     default:
-      text = BookingStatus.PENDING
-      colorScheme = 'yellow'
+      return null
   }
 
   return (

@@ -143,7 +143,7 @@ export const bookings = {
     apiRequest(api.get<PaginatedApiResponse<BookingsListResponse>>('/bookings/requests/incoming', { params })),
   getOutgoing: (params: PaginationApiParams) =>
     apiRequest(api.get<PaginatedApiResponse<BookingsListResponse>>('/bookings/requests/outgoing', { params })),
-  getBooking: (id) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
+  getBooking: (id: string) => apiRequest(api.get<ApiResponse<Booking>>(`/bookings/${id}`)),
   create: (data: CreateBookingData) => apiRequest(api.post<ApiResponse<Booking>>('/bookings', data)),
   update: (id: string, data: UpdateBookingStatus) => apiRequest(api.put<ApiResponse<Booking>>(`/bookings/${id}`, data)),
   getPendingRatings: (params: PaginationApiParams) =>

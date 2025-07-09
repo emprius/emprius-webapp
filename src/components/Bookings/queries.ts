@@ -6,13 +6,31 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from '@tanstack/react-query'
-import api from '~src/services/api'
+import api, { PaginationInfo } from '~src/services/api'
 import { QueryKey } from '@tanstack/react-query/build/modern/index'
 import { ToolsKeys } from '~components/Tools/queries'
 import { RatingsKeys } from '~components/Ratings/queries'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
-import { Booking, CreateBookingData } from '~components/Bookings/types'
+import { Booking, BookingsListResponse, BookingStatus, CreateBookingData } from '~components/Bookings/types'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { DateToEpoch } from '~utils/dates'
+
+/**
+ * Function to transform a booking object with custom frontend states
+ * @param booking
+ */
+const toBooking = (booking: Booking): Booking => ({
+  ...booking,
+  bookingStatus:
+    // Custom booking state to avoid accept a booking after start date if it is still pending
+    booking.bookingStatus === BookingStatus.PENDING && booking.startDate < DateToEpoch(new Date())
+      ? BookingStatus.LAPSED
+      : booking.bookingStatus,
+})
+const toBookingsList = (data: BookingsListResponse & PaginationInfo) => ({
+  ...data,
+  bookings: data.bookings.map(toBooking),
+})
 
 export const BookingKeys = {
   bookingsLists: ['bookings'] as const,
@@ -26,11 +44,12 @@ export const useBookingDetail = ({
   options,
 }: {
   id: string
-  options?: Omit<UseQueryOptions<Booking>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Booking>, 'queryKey' | 'queryFn' | 'select'>
 }) =>
   useQuery({
     queryKey: BookingKeys.detail(id),
     queryFn: () => api.bookings.getBooking(id),
+    select: toBooking,
     ...options,
   })
 
@@ -38,9 +57,10 @@ export const useBookingRequests = (
   options?: Omit<UseQueryOptions<Awaited<ReturnType<typeof api.bookings.getIncoming>>, Error>, 'queryKey' | 'queryFn'>
 ) => {
   const { page } = useRoutedPagination()
-  return useQuery({
+  return useQuery<BookingsListResponse & PaginationInfo>({
     queryKey: BookingKeys.requests(page),
     queryFn: () => api.bookings.getIncoming({ page: page }),
+    select: toBookingsList,
     ...options,
   })
 }
@@ -52,6 +72,7 @@ export const useBookingPetitions = (
   return useQuery({
     queryKey: BookingKeys.petitions(page),
     queryFn: () => api.bookings.getOutgoing({ page: page }),
+    select: toBookingsList,
     ...options,
   })
 }

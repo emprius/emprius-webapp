@@ -88,7 +88,8 @@
       "PENDING": "PENDING",
       "PICKED": "PICKED",
       "REJECTED": "REJECTED",
-      "RETURNED": "RETURNED"
+      "RETURNED": "RETURNED",
+      "LAPSED": "LAPSED"
     },
     "success": "Booking successful",
     "tool_info": "Tool Information",
