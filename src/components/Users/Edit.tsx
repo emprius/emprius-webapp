@@ -20,7 +20,7 @@ import React, { useRef, useState } from 'react'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
-import { PasswordInput } from '~components/Layout/Form/PasswordInput'
+import { PasswordInput, usePasswordFieldValidator } from '~components/Layout/Form/PasswordInput'
 import { EditProfileFormData, UserProfile } from '~components/Users/types'
 import { getB64FromFile } from '~src/utils'
 import { AUTH_FORM } from '~utils/constants'
@@ -269,6 +269,7 @@ const PasswordChangeForm: React.FC = () => {
     formState: { errors },
     watch,
   } = useFormContext<EditProfileFormData>()
+  const passwordValidation = usePasswordFieldValidator<EditProfileFormData, 'password'>()
 
   const newPassword = watch('password')
 
@@ -289,6 +290,7 @@ const PasswordChangeForm: React.FC = () => {
       </FormControl>
       <FormControl isInvalid={!!errors.password}>
         <FormLabel>{t('auth.new_password', { defaultValue: 'New password' })}</FormLabel>
+
         <FormHelperText pb={4}>
           {t('auth.password_constraints_helper', {
             defaultValue: 'Password must be {{ length }} characters long',
@@ -298,10 +300,7 @@ const PasswordChangeForm: React.FC = () => {
         <PasswordInput
           id='password'
           {...register('password', {
-            minLength: {
-              value: AUTH_FORM.MIN_PASSWORD_LENGTH,
-              message: t('auth.password_too_short'),
-            },
+            ...passwordValidation,
           })}
         />
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>

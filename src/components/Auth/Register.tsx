@@ -19,7 +19,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { IRegisterParams } from '~components/Auth/queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
-import { PasswordInput } from '~components/Layout/Form/PasswordInput'
+import { PasswordInput, usePasswordFieldValidator } from '~components/Layout/Form/PasswordInput'
 import { ROUTES } from '~src/router/routes'
 import { AUTH_FORM } from '~utils/constants'
 import { LatLng } from 'leaflet'
@@ -53,6 +53,7 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
       invitationToken: defaultInvitationToken,
     },
   })
+  const passwordValidation = usePasswordFieldValidator<RegisterFormData, 'password'>()
 
   const password = watch('password')
 
@@ -122,10 +123,7 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
               id='password'
               {...registerField('password', {
                 required: t('validation.required', { field: 'Password' }),
-                minLength: {
-                  value: AUTH_FORM.MIN_PASSWORD_LENGTH,
-                  message: t('auth.password_too_short'),
-                },
+                ...passwordValidation,
               })}
             />
             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
