@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Collapse,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -11,11 +12,12 @@ import {
   Input,
   Stack,
   Switch,
+  useDisclosure,
   useToast,
   VStack,
 } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput } from '~components/Layout/Form/PasswordInput'
@@ -29,6 +31,7 @@ import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useAuth } from '~components/Auth/AuthContext'
 import { INPUT_ACCEPTED_IMAGE_TYPES } from '~utils/images'
 import { icons } from '~theme/icons'
+import { ChevronDownIcon, ChevronUpIcon, FormHelperText } from '@chakra-ui/icons'
 
 export interface EditProfileFormProps {
   initialData: Pick<UserProfile, 'name' | 'location' | 'active' | 'avatarHash' | 'community'>
@@ -39,9 +42,16 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
   const { t } = useTranslation()
   const toast = useToast()
   const { mutateAsync, isError, error, isPending } = useUpdateUserProfile()
+  const { isOpen, onToggle } = useDisclosure()
   const [newAvatar, setNewAvatar] = useState<File | ''>()
   const navigate = useNavigate()
   const onSuccess = () => navigate(-1)
+
+  const methods = useForm<EditProfileFormData>({
+    defaultValues: {
+      ...initialData,
+    },
+  })
 
   const {
     control,
@@ -49,13 +59,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
     handleSubmit,
     formState: { errors, dirtyFields },
     watch,
-  } = useForm<EditProfileFormData>({
-    defaultValues: {
-      ...initialData,
-    },
-  })
-
-  const password = watch('password')
+  } = methods
 
   const onSubmit = async (data: EditProfileFormData) => {
     // Create an object with only the modified fields
@@ -111,91 +115,69 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
     }
   }
 
-  const newPassword = watch('password')
-
   return (
-    <Box as='form' onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={6} align='stretch'>
-        <Flex justifyContent='center' mb={4}>
-          <VStack spacing={4}>
-            <EditableAvatar avatarHash={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
-            <FormControl display='flex' flexDirection='column' alignItems='center' gap={3}>
-              <FormLabel mb='0'>{watch('active') ? t('user.activate') : t('user.deactivate')}</FormLabel>
-              <Switch size={'lg'} {...register('active')} />
-            </FormControl>
-          </VStack>
-        </Flex>
+    <FormProvider {...methods}>
+      <Box as='form' onSubmit={handleSubmit(onSubmit)}>
+        <VStack spacing={6} align='stretch'>
+          <Flex justifyContent='center' mb={4}>
+            <VStack spacing={4}>
+              <EditableAvatar avatarHash={initialData.avatarHash} onAvatarChange={(hash) => setNewAvatar(hash)} />
+              <FormControl display='flex' flexDirection='column' alignItems='center' gap={3}>
+                <FormLabel mb='0'>{watch('active') ? t('user.activate') : t('user.deactivate')}</FormLabel>
+                <Switch size={'lg'} {...register('active')} />
+              </FormControl>
+            </VStack>
+          </Flex>
 
-        <FormControl>
-          <FormLabel>{t('common.email')}</FormLabel>
-          <Input disabled value={user?.email} />
-        </FormControl>
+          <FormControl>
+            <FormLabel>{t('common.email')}</FormLabel>
+            <Input disabled value={user?.email} />
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.name}>
-          <FormLabel>{t('common.name')}</FormLabel>
-          <Input
-            {...register('name', {
-              required: t('common.required'),
-            })}
-          />
-          <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
-        </FormControl>
+          <FormControl isInvalid={!!errors.name}>
+            <FormLabel>{t('common.name')}</FormLabel>
+            <Input
+              {...register('name', {
+                required: t('common.required'),
+              })}
+            />
+            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.actualPassword}>
-          <FormLabel>{t('common.actual_password')}</FormLabel>
-          <PasswordInput
-            id='actualPassword'
-            {...register('actualPassword', {
-              required: newPassword ? t('common.required') : false,
-            })}
-          />
-          <FormErrorMessage>{errors.actualPassword?.message}</FormErrorMessage>
-        </FormControl>
+          <FormControl isInvalid={!!errors.community}>
+            <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
+            <Input id='community' {...register('community')} />
+            <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.password}>
-          <FormLabel>{t('common.password')}</FormLabel>
-          <PasswordInput
-            id='password'
-            {...register('password', {
-              minLength: {
-                value: AUTH_FORM.MIN_PASSWORD_LENGTH,
-                message: t('auth.password_too_short'),
-              },
-            })}
-          />
-          <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-        </FormControl>
+          <LocationPicker name='location' control={control} isRequired={true} />
 
-        <FormControl isInvalid={!!errors.confirmPassword}>
-          <FormLabel>{t('auth.confirm_password')}</FormLabel>
-          <PasswordInput
-            {...register('confirmPassword', {
-              validate: (value) => !password || value === password || t('auth.passwords_do_not_match'),
-            })}
-          />
-          <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
-        </FormControl>
-
-        <FormControl isInvalid={!!errors.community}>
-          <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
-          <Input id='community' {...register('community')} />
-          <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
-        </FormControl>
-
-        <LocationPicker name='location' control={control} isRequired={true} />
-
-        <FormSubmitMessage isError={isError} error={error} />
-
-        <Stack direction='row' spacing={4} justify='flex-end'>
-          <Button onClick={onSuccess} variant='ghost'>
-            {t('common.cancel')}
+          {/* Change password Fields Toggle Button */}
+          <Button
+            onClick={onToggle}
+            variant='ghost'
+            rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            width='100%'
+          >
+            {t('auth.change_password', { defaultValue: 'Change password' })}
           </Button>
-          <Button type='submit' isLoading={isPending} loadingText={t('common.saving')}>
-            {t('common.save')}
-          </Button>
-        </Stack>
-      </VStack>
-    </Box>
+          <Collapse in={isOpen} animateOpacity>
+            <PasswordChangeForm />
+          </Collapse>
+
+          <FormSubmitMessage isError={isError} error={error} />
+
+          <Stack direction='row' spacing={4} justify='flex-end'>
+            <Button onClick={onSuccess} variant='ghost'>
+              {t('common.cancel')}
+            </Button>
+            <Button type='submit' isLoading={isPending} loadingText={t('common.saving')}>
+              {t('common.save')}
+            </Button>
+          </Stack>
+        </VStack>
+      </Box>
+    </FormProvider>
   )
 }
 
@@ -277,5 +259,67 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
         style={{ display: 'none' }}
       />
     </Box>
+  )
+}
+
+const PasswordChangeForm: React.FC = () => {
+  const { t } = useTranslation()
+  const {
+    register,
+    formState: { errors },
+    watch,
+  } = useFormContext<EditProfileFormData>()
+
+  const newPassword = watch('password')
+
+  return (
+    <VStack spacing={6} align='stretch'>
+      <FormControl isInvalid={!!errors.actualPassword}>
+        <FormLabel>{t('common.actual_password')}</FormLabel>
+        <FormHelperText pb={4}>
+          {t('auth.actual_password_helper', { defaultValue: 'Only needed to change password' })}
+        </FormHelperText>
+        <PasswordInput
+          id='actualPassword'
+          {...register('actualPassword', {
+            required: newPassword ? t('common.required') : false,
+          })}
+        />
+        <FormErrorMessage>{errors.actualPassword?.message}</FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={!!errors.password}>
+        <FormLabel>{t('auth.new_password', { defaultValue: 'New password' })}</FormLabel>
+        <FormHelperText pb={4}>
+          {t('auth.password_constraints_helper', {
+            defaultValue: 'Password must be {{ length }} characters long',
+            length: AUTH_FORM.MIN_PASSWORD_LENGTH,
+          })}
+        </FormHelperText>
+        <PasswordInput
+          id='password'
+          {...register('password', {
+            minLength: {
+              value: AUTH_FORM.MIN_PASSWORD_LENGTH,
+              message: t('auth.password_too_short'),
+            },
+          })}
+        />
+        <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={!!errors.confirmPassword}>
+        <FormLabel>{t('auth.confirm_password')}</FormLabel>
+        <FormHelperText pb={4}>
+          {t('auth.password_same_as_previous_helper', {
+            defaultValue: 'Must match new password',
+          })}
+        </FormHelperText>
+        <PasswordInput
+          {...register('confirmPassword', {
+            validate: (value) => !newPassword || value === newPassword || t('auth.passwords_do_not_match'),
+          })}
+        />
+        <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+      </FormControl>
+    </VStack>
   )
 }
