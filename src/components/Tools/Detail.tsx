@@ -56,8 +56,12 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
   })
 
   const showActualUser = tool.actualUserId && tool.actualUserId !== tool.userId
-
   const canBook = useMemo(() => canUserBookTool(tool, user), [tool, user])
+
+  let showExactLocation = user?.id === tool.userId
+  if (showActualUser) {
+    showExactLocation = user?.id === tool.actualUserId
+  }
 
   return (
     <FormProvider {...formMethods}>
@@ -176,10 +180,7 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                     )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
-                        <MapWithMarker
-                          latLng={tool.location}
-                          markerProps={{ showExactLocation: user?.id === tool.userId }}
-                        />
+                        <MapWithMarker latLng={tool.location} markerProps={{ showExactLocation }} />
                       </Box>
                     )}
                   </Stack>

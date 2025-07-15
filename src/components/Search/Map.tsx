@@ -107,8 +107,6 @@ export const Map = ({ tools, center }: SearchMapProps) => {
         </MarkerClusterGroup>
         {/*Circle markers must be outside MarkerClusterGroup to do not be grouped with the other marker*/}
         {Object.entries(groupedTools).map(([key, groupedTools]) => {
-          const isOwner = groupedTools.some((tool) => tool.userId === user?.id)
-          if (isOwner) return null
           const loc = key.split('-').map(Number) as LatLngExpression
           return <EmpriusCircle key={`${key}circle`} center={loc} />
         })}
