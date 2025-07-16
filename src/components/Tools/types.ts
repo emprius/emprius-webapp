@@ -9,7 +9,7 @@ export interface DateRange {
 
 export type Tool = {
   userId: string
-  userActive: string
+  userActive: boolean
   id: number
   title: string
   description?: string

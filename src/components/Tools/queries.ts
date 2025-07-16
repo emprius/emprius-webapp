@@ -45,6 +45,7 @@ export const useTool = (
       rating: 0,
       reservedDates: null,
       isAvailable: false,
+      userActive: false,
     }
     return { ...query, data: notFoundTool }
   }
