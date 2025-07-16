@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { RatingsForm } from './Form'
@@ -26,6 +25,7 @@ import { useSearchParams } from 'react-router-dom'
 import { BiSolidParty } from 'react-icons/bi'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { Booking } from '~components/Bookings/types'
+import { getStartOfDay } from '~utils/dates'
 
 interface RatingModalProps {
   isOpen: boolean
@@ -66,10 +66,8 @@ export const ReturnAlertDialog = ({
   const cancelRef = useRef<HTMLButtonElement>(null)
   const { t } = useTranslation()
 
-  const expectedDay = new Date(endDate * 1000)
-  expectedDay.setHours(0, 0, 0, 0)
-  const currentDay = new Date()
-  currentDay.setHours(0, 0, 0, 0)
+  const expectedDay = getStartOfDay(endDate)
+  const currentDay = getStartOfDay()
 
   const isLate = currentDay > expectedDay
   const isEarly = currentDay < expectedDay
@@ -126,13 +124,10 @@ export const PickedAlertDialog = ({
   endDate: number
   isLoading: boolean
 }) => {
-  const cancelRef = useRef<HTMLButtonElement>(null)
   const { t } = useTranslation()
 
-  const expectedDay = new Date(endDate * 1000)
-  expectedDay.setHours(0, 0, 0, 0)
-  const currentDay = new Date()
-  currentDay.setHours(0, 0, 0, 0)
+  const expectedDay = getStartOfDay(endDate)
+  const currentDay = getStartOfDay()
 
   const isLate = currentDay > expectedDay
   const isEarly = currentDay < expectedDay

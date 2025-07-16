@@ -17,8 +17,7 @@ export const getDaysBetweenDates = (start: DateInput, end: DateInput): number =>
 
   const oneDayMs = 1000 * 60 * 60 * 24 // Milliseconds in a day
   const diffMs = Math.abs(endDate.getTime() - startDate.getTime()) // Absolute difference in milliseconds
-  const fullDays = Math.floor(diffMs / oneDayMs) // Convert to full days
-  return fullDays
+  return Math.floor(diffMs / oneDayMs) // Convert to full days
 }
 
 export const convertToDate = (input: DateInput): Date => {
@@ -37,12 +36,15 @@ export const DateToEpoch = (date: DateInput) => Math.floor(new Date(date).getTim
 
 export const isDateReserved = (date: Date, reservedDates: DateRange[]) => {
   return reservedDates.some((range) => {
-    const fromDate = new Date(range.from * 1000)
-    const toDate = new Date(range.to * 1000)
-    // Set dates time to 00:00:00 to avoid timezone issues
-    fromDate.setHours(0, 0, 0, 0)
-    toDate.setHours(0, 0, 0, 0)
+    const fromDate = getStartOfDay(range.from)
+    const toDate = getStartOfDay(range.to)
 
     return date >= fromDate && date <= toDate
   })
+}
+
+export const getStartOfDay = (date?: DateInput) => {
+  const targetDate: Date = date ? convertToDate(date) : new Date()
+  targetDate.setHours(0, 0, 0, 0)
+  return targetDate
 }

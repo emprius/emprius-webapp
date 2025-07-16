@@ -3,7 +3,7 @@ import React from 'react'
 import Calendar, { CalendarProps } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { DateRange } from '~components/Tools/types'
-import { isDateReserved } from '~utils/dates'
+import { getStartOfDay, isDateReserved } from '~utils/dates'
 
 export type StyledCalendarProps = {
   // Core functionality
@@ -44,15 +44,13 @@ export const StyledCalendar = ({
       if (isDateReserved(date, reservedDates)) {
         // Check if it's the first date in a reserved range
         const isFirstReservedDate = reservedDates.some((range) => {
-          const fromDate = new Date(range.from * 1000)
-          fromDate.setHours(0, 0, 0, 0)
+          const fromDate = getStartOfDay(range.from)
           return date.getTime() === fromDate.getTime()
         })
 
         // Check if it's the last date in a reserved range
         const isLastReservedDate = reservedDates.some((range) => {
-          const toDate = new Date(range.to * 1000)
-          toDate.setHours(0, 0, 0, 0)
+          const toDate = getStartOfDay(range.to)
           return date.getTime() === toDate.getTime()
         })
 
@@ -103,8 +101,7 @@ export const StyledCalendar = ({
   }
 
   const tileDisabled = ({ date, view }: { date: Date; view: string }) => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+    const today = getStartOfDay()
 
     // For year view (showing months)
     if (view === 'year') {

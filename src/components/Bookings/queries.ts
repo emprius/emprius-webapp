@@ -13,7 +13,7 @@ import { RatingsKeys } from '~components/Ratings/queries'
 import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsProvider'
 import { Booking, BookingsListResponse, BookingStatus, CreateBookingData } from '~components/Bookings/types'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
-import { DateToEpoch } from '~utils/dates'
+import { DateToEpoch, getStartOfDay } from '~utils/dates'
 
 /**
  * Function to transform a booking object with custom frontend states
@@ -23,7 +23,7 @@ const toBooking = (booking: Booking): Booking => ({
   ...booking,
   bookingStatus:
     // Custom booking state to avoid accept a booking after start date if it is still pending
-    booking.bookingStatus === BookingStatus.PENDING && booking.startDate < DateToEpoch(new Date())
+    booking.bookingStatus === BookingStatus.PENDING && booking.startDate < DateToEpoch(getStartOfDay())
       ? BookingStatus.LAPSED
       : booking.bookingStatus,
 })
