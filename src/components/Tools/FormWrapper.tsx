@@ -25,6 +25,16 @@ export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: Can
   }
 
   switch (canBook.why) {
+    case 'isAlreadyHeld':
+      return (
+        <CannotBookInfoCard
+          title={t('bookings.tool_already_held', { defaultValue: 'You are already holding this tool' })}
+          description={t('bookings.tool_already_held_desc', {
+            defaultValue:
+              'You are the actual holder of this tool! Other users will send booking requests to you if they need the tool',
+          })}
+        />
+      )
     case 'selfUserNotActive':
       return (
         <CannotBookInfoCard
@@ -113,12 +123,12 @@ const CannotBookInfoCard = ({
 
 type CannotBookCase =
   | 'isOwner'
-  | 'isActualUser'
   | 'isNotInCommunity'
   | 'isTooFarAway'
   | 'isNomadicBooked'
   | 'userNotActive'
   | 'selfUserNotActive'
+  | 'isAlreadyHeld'
   | null
 
 type CanBook = { canBook: boolean; why: CannotBookCase }
@@ -126,6 +136,11 @@ type CanBook = { canBook: boolean; why: CannotBookCase }
 export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook => {
   const isOwner = tool.userId === user.id
   const isActualUser = tool.actualUserId === user.id
+
+  // User is already holding the tool
+  if (tool.isNomadic && isActualUser) {
+    return { canBook: false, why: 'isAlreadyHeld' }
+  }
 
   // Self user not active
   if (!user.active) {
@@ -140,11 +155,6 @@ export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook =>
   // Tool is not nomadic and user is the owner
   if (!tool.isNomadic && isOwner) {
     return { canBook: false, why: 'isOwner' }
-  }
-
-  // Tool is nomadic and user is the actual user
-  if (tool.isNomadic && isActualUser) {
-    return { canBook: false, why: 'isActualUser' }
   }
 
   // Tool is nomadic, has no actual user, and user is the owner
