@@ -1,4 +1,15 @@
-import { FiGlobe, FiMenu, FiMessageCircle, FiPlus, FiSearch, FiStar, FiTool, FiUser, FiUsers } from 'react-icons/fi'
+import {
+  FiGlobe,
+  FiMenu,
+  FiMessageCircle,
+  FiPlus,
+  FiSearch,
+  FiShare2,
+  FiStar,
+  FiTool,
+  FiUser,
+  FiUsers,
+} from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
 import { FaHeartbeat, FaCalendar, FaRoute } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
@@ -26,4 +37,5 @@ export const icons = {
   edit: EditIcon,
   communities: RiUserCommunityFill,
   globe: FiGlobe,
+  share: FiShare2,
 }
