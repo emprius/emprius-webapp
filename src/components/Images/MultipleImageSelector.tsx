@@ -228,7 +228,6 @@ export const MultipleImageSelector = forwardRef<HTMLInputElement, ImageUploaderP
           <Input
             type='file'
             accept={INPUT_ACCEPTED_IMAGE_TYPES}
-            capture='environment'
             multiple
             name={name}
             onChange={handleFileChange}

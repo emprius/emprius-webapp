@@ -253,7 +253,6 @@ const EditableAvatar: React.FC<EditableAvatarProps> = ({ avatarHash, username, s
       <input
         type='file'
         accept={INPUT_ACCEPTED_IMAGE_TYPES}
-        capture='environment'
         ref={inputRef}
         onChange={handleImageChange}
         style={{ display: 'none' }}
