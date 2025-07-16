@@ -4,6 +4,7 @@ import { useUserProfile } from '~components/Users/queries'
 import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '~src/router/routes'
 import api from '~src/services/api'
+import { useAuth } from '~components/Auth/AuthContext'
 
 export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
@@ -32,8 +33,13 @@ export type LinkedAvatarProps = {
 } & Pick<AvatarProps, 'size' | 'props'>
 
 export const UserAvatar = ({ id, size = '2xl', linkProfile, props }: LinkedAvatarProps) => {
-  const { data } = useUserProfile(id)
-  if (linkProfile && data) {
+  const { user } = useAuth()
+  const isCurrentUser = user?.id === id
+  const { data: userData } = useUserProfile(id, { enabled: !isCurrentUser })
+
+  const data = isCurrentUser ? user : userData
+
+  if (linkProfile) {
     return (
       <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', id)} minW={avatarSizeToPixels[size]}>
         <Avatar username={data?.name} avatarHash={data?.avatarHash} size={size} {...props} />
