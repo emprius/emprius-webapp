@@ -15,8 +15,9 @@ import {
   Text,
   HStack,
   VStack,
+  TableContainer,
 } from '@chakra-ui/react'
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
+import { CopyIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { Invite } from '~components/Users/types'
 import { useRequestMoreCodes } from '~components/Users/queries'
@@ -137,89 +138,93 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
   }
 
   return (
-    <>
-      <Table variant='simple' display={{ base: 'inherit', sm: 'none' }}>
-        <Tbody>
-          {codes?.map(({ code, createdOn }, index) => (
-            <Tr key={index}>
-              <Td>
-                <HStack spacing={2}>
-                  <Text>{code}</Text>
+    <TableContainer>
+      <Box display={{ base: 'inherit', md: 'none' }} w={'full'}>
+        <Table variant='simple'>
+          <Tbody>
+            {codes?.map(({ code, createdOn }, index) => (
+              <Tr key={index}>
+                <Td>
+                  <HStack spacing={2}>
+                    <Text>{code}</Text>
+                    <IconButton
+                      aria-label='Copy text'
+                      icon={<CopyIcon />}
+                      size='sm'
+                      onClick={() => handleCopy(code)}
+                      variant='ghost'
+                    />
+                  </HStack>
+                  <Text color={'lightText'} fontSize={'sm'}>
+                    {t('invite_codes.date_formatted', {
+                      date: createdOn,
+                      format: datef,
+                      defaultValue: '{{ date, format }}',
+                    })}
+                  </Text>
+                </Td>
+                <Td>
+                  <IconButton
+                    aria-label={t('invite_codes.invite_link', { defaultValue: 'Invite' })}
+                    icon={icons.share({})}
+                    colorScheme='blue'
+                    size='sm'
+                    onClick={() => handleShare(code)}
+                    disabled={isSharing}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
+      <Box display={{ base: 'none', md: 'inherit' }} w={'full'}>
+        <Table variant='simple'>
+          <Thead>
+            <Tr>
+              <Th>{t('invite_codes.code', { defaultValue: 'Invite code' })}</Th>
+              <Th>{t('invite_codes.created_on', { defaultValue: 'Created on' })}</Th>
+              <Th>{t('invite_codes.share_link', { defaultValue: 'Invite link' })}</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {codes?.map(({ code, createdOn }, index) => (
+              <Tr key={index}>
+                <Td>
+                  {code}
                   <IconButton
                     aria-label='Copy text'
                     icon={<CopyIcon />}
                     size='sm'
+                    ml={2}
                     onClick={() => handleCopy(code)}
                     variant='ghost'
                   />
-                </HStack>
-                <Text color={'lightText'} fontSize={'sm'}>
+                </Td>
+                <Td>
                   {t('invite_codes.date_formatted', {
                     date: createdOn,
                     format: datef,
                     defaultValue: '{{ date, format }}',
                   })}
-                </Text>
-              </Td>
-              <Td>
-                <IconButton
-                  aria-label={t('invite_codes.invite_link', { defaultValue: 'Invite' })}
-                  icon={icons.share({})}
-                  colorScheme='blue'
-                  size='sm'
-                  onClick={() => handleShare(code)}
-                  disabled={isSharing}
-                />
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-      <Table variant='simple' display={{ base: 'none', sm: 'inherit' }}>
-        <Thead>
-          <Tr>
-            <Th>{t('invite_codes.code', { defaultValue: 'Invite code' })}</Th>
-            <Th>{t('invite_codes.created_on', { defaultValue: 'Created on' })}</Th>
-            <Th>{t('invite_codes.share_link', { defaultValue: 'Invite link' })}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {codes?.map(({ code, createdOn }, index) => (
-            <Tr key={index}>
-              <Td>
-                {code}
-                <IconButton
-                  aria-label='Copy text'
-                  icon={<CopyIcon />}
-                  size='sm'
-                  ml={2}
-                  onClick={() => handleCopy(code)}
-                  variant='ghost'
-                />
-              </Td>
-              <Td>
-                {t('invite_codes.date_formatted', {
-                  date: createdOn,
-                  format: datef,
-                  defaultValue: '{{ date, format }}',
-                })}
-              </Td>
-              <Td>
-                <Button
-                  leftIcon={icons.share({})}
-                  colorScheme='blue'
-                  size='sm'
-                  onClick={() => handleShare(code)}
-                  disabled={isSharing}
-                >
-                  {t('invite_codes.invite_link', { defaultValue: 'Invite' })}
-                </Button>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </>
+                </Td>
+                <Td>
+                  <Button
+                    leftIcon={icons.share({})}
+                    colorScheme='blue'
+                    size='sm'
+                    onClick={() => handleShare(code)}
+                    disabled={isSharing}
+                  >
+                    {t('invite_codes.invite_link', { defaultValue: 'Invite' })}
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
+    </TableContainer>
   )
 }
 
