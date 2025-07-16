@@ -1,10 +1,10 @@
 import react from '@vitejs/plugin-react'
-import {defineConfig, loadEnv} from 'vite'
-import {createHtmlPlugin} from 'vite-plugin-html'
+import { defineConfig, loadEnv } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import svgr from 'vite-plugin-svgr'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import {execSync} from 'child_process'
-import {VitePWA, VitePWAOptions} from 'vite-plugin-pwa'
+import { execSync } from 'child_process'
+import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 const viteconfig = ({ mode }) => {
@@ -23,7 +23,7 @@ const viteconfig = ({ mode }) => {
 
   const title = process.env.APP_TITLE || 'Emprius App'
 
-  let apiUrl = process.env.API_URL || 'https://app-api.emprius.cat'
+  let apiUrl = process.env.API_URL || 'http://localhost:3333'
   if (apiUrl.endsWith('/')) {
     apiUrl = apiUrl.slice(0, -1)
   }
@@ -72,20 +72,20 @@ const pwaManifest: Partial<VitePWAOptions> = {
         src: 'assets/pwa/manifest-icon-192.maskable.png',
         sizes: '192x192',
         type: 'image/png',
-        purpose: 'any maskable'
+        purpose: 'any maskable',
       },
       {
         src: 'assets/pwa/manifest-icon-512.maskable.png',
         sizes: '512x512',
         type: 'image/png',
-        purpose: 'any maskable'
+        purpose: 'any maskable',
       },
       {
         src: 'assets/pwa/apple-icon-180.png',
         sizes: '180x180',
         type: 'image/png',
-        purpose: 'any'
-      }
+        purpose: 'any',
+      },
     ],
   },
   workbox: {
