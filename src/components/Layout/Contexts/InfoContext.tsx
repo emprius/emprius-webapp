@@ -1,7 +1,8 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import api from '~src/services/api'
 import { useAuth } from '~components/Auth/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 export interface InfoData {
   users: number
@@ -19,6 +20,14 @@ export interface Transport {
   id: number
   name: string
 }
+
+// i18next-extract-mark-ns:categories
+// t('categories.other', { defaultValue: 'Other' })
+// t('categories.transport', { defaultValue: 'Transport' })
+// t('categories.construction', { defaultValue: 'Construction' })
+// t('categories.agriculture', { defaultValue: 'Agriculture' })
+// t('categories.communication', { defaultValue: 'Communication' })
+// t('categories.livestock', { defaultValue: 'Livestock' })
 
 const UseInfoKey = ['info']
 
@@ -57,9 +66,19 @@ interface InfoProviderProps {
 export const InfoProvider = ({ children }: InfoProviderProps) => {
   const { isAuthenticated } = useAuth()
   const { data, isLoading, isError } = useInfo({ enabled: isAuthenticated })
+  const { t } = useTranslation()
+
+  const categoriesTranslated = useMemo(
+    () =>
+      data?.categories.map((category) => ({
+        ...category,
+        name: t(`categories.${category.name}`, { defaultValue: category.name }),
+      })) || [],
+    [data?.categories, t]
+  )
 
   const value: InfoContextType = {
-    categories: data?.categories || [],
+    categories: categoriesTranslated,
     transports: data?.transports || [],
     users: data?.users || 0,
     tools: data?.tools || 0,
