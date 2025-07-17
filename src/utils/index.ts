@@ -14,11 +14,19 @@ export const getB64FromFile = (file: File): Promise<string> => {
   })
 }
 
+const isLatLngLike = (obj: any): obj is { lat: number; lng: number } =>
+  obj && typeof obj.lat === 'number' && typeof obj.lng === 'number'
+
 /**
  * From an emprius location return
  * @param loc
  */
-export const toLatLng = (loc: EmpriusLocation): LatLng => new LatLng(loc.latitude / 1e6, loc.longitude / 1e6)
+export const toLatLng = (loc: EmpriusLocation | LatLng): LatLng => {
+  if (isLatLngLike(loc)) {
+    return loc
+  }
+  return new LatLng(loc.latitude / 1e6, loc.longitude / 1e6)
+}
 export const toEmpriusLocation = (loc: LatLng): EmpriusLocation => ({
   latitude: Math.round(loc.lat * 1e6),
   longitude: Math.round(loc.lng * 1e6),
