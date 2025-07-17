@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   Box,
   Button,
@@ -50,6 +50,10 @@ export const CommunityDetail: React.FC = () => {
   }
 
   const isOwner = community.ownerId === user?.id
+  const isMember = useMemo(
+    () => user?.communities?.some(({ id }) => id === community?.id),
+    [user?.communities, community?.id]
+  )
 
   const handleDelete = async () => {
     try {
@@ -125,7 +129,7 @@ export const CommunityDetail: React.FC = () => {
           </Heading>
 
           <Stack direction='row'>
-            {isOwner ? (
+            {isOwner && (
               <Button
                 leftIcon={<FiTrash2 />}
                 colorScheme='red'
@@ -136,7 +140,8 @@ export const CommunityDetail: React.FC = () => {
               >
                 {t('communities.delete')}
               </Button>
-            ) : (
+            )}
+            {!isOwner && isMember && (
               <Button colorScheme='red' variant='outline' size='sm' onClick={handleLeave} isLoading={isLeaving}>
                 {t('communities.leave')}
               </Button>

@@ -19,7 +19,7 @@ export const CommunitiesList = () => {
     <SearchAndPagination>
       <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} w='full' mb={4}>
         <DebouncedSearchBar
-          placeholder={t('tools.filter_tools', { defaultValue: 'Filter by tool name or description' })}
+          placeholder={t('communities.filter_communities', { defaultValue: 'Filter by community name' })}
         />
       </HStack>
       <CommunitiesListPaginated />
