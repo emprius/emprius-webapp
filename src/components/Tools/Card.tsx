@@ -9,12 +9,15 @@ import { Tool, ToolDTO } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { ToolImageAvailability } from './shared/ToolImage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
+import { useTool } from '~components/Tools/queries'
 
 interface ToolCardProps {
   tool: ToolDTO
 }
 
-export const ToolCard = ({ tool }: ToolCardProps) => {
+export const ToolCard = ({ tool: toolData }: ToolCardProps) => {
+  const { data: tool } = useTool(toolData.id.toString(), { initialData: toolData, enabled: false }) // Used to invalidate queries when is a list
+
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { user } = useAuth()
