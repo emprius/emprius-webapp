@@ -27,6 +27,7 @@ import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
 import logo from '/assets/logos/logo.png'
+import DonateButton from '~components/Layout/DonateButton'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -65,20 +66,7 @@ export const Navbar = () => {
             <ContextSearchBarForm />
           </Flex>
         )}
-        <Button
-          ml={4}
-          as={RouterLink}
-          to={'https://emprius.cat/collabora/'}
-          leftIcon={icons.donate({})}
-          variant={'cta'}
-          sx={{
-            '& .chakra-button__icon': {
-              marginEnd: { base: '0', md: '0.5rem' },
-            },
-          }}
-        >
-          <Text display={{ base: 'none', md: 'block' }}>{t('donate', { defaultValue: 'Donate' })}</Text>
-        </Button>
+        <DonateButton display={{ base: 'none', sm: 'inherit' }} />
       </Stack>
 
       <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>

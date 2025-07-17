@@ -7,6 +7,7 @@ import { LanguageSwitcher } from '~components/Navbar/LanguageSwitcher'
 import { ROUTES } from '~src/router/routes'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 import { useTranslation } from 'react-i18next'
+import DonateButton from '~components/Layout/DonateButton'
 
 export const Footer = () => {
   const { t } = useTranslation()
@@ -43,6 +44,7 @@ export const Footer = () => {
 
           {/* Second line: Links, copyright and github */}
           <Stack direction={{ base: 'column', sm: 'row' }} spacing={6} align='center'>
+            <DonateButton display={{ base: 'inherit', sm: 'none' }} />
             <Stack direction='row' spacing={6} align='center'>
               <Link as={RouterLink} to={ROUTES.HOME} color={textColor} _hover={{ color: 'primary.500' }}>
                 {t('nav.home')}
