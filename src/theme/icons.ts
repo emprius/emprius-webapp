@@ -16,6 +16,7 @@ import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { EditIcon } from '@chakra-ui/icons'
 import { RiUserCommunityFill } from 'react-icons/ri'
 import { SlUser } from 'react-icons/sl'
+import { IoMdHome } from 'react-icons/io'
 
 export const icons = {
   user: FiUser,
@@ -38,4 +39,5 @@ export const icons = {
   communities: RiUserCommunityFill,
   globe: FiGlobe,
   share: FiShare2,
+  userHome: IoMdHome,
 }

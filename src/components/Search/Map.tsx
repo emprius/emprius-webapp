@@ -17,11 +17,14 @@ import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
 import { Avatar } from '~components/Images/Avatar'
 import { EmpriusCircle, EmpriusMarker } from '~components/Layout/Map/Map'
+import { icons } from '~theme/icons'
 
 const HomeIcon = L.divIcon({
   className: 'custom-home-marker',
   html: ReactDOMServer.renderToString(
-    <IoMdHome style={{ color: '#0967D2', fontSize: '52px', filter: 'drop-shadow(3px 3px 4px #0967D2)' }} />
+    icons.userHome({
+      style: { color: '#0967D2', fontSize: '52px', filter: 'drop-shadow(3px 3px 4px #0967D2)' },
+    })
   ),
   iconSize: [35, 35],
   iconAnchor: [17, 35],
