@@ -52,13 +52,14 @@ interface BookingDetailsProps {
 // Component for displaying contact information and comments
 const BookingComments = ({ booking }: { booking: Booking }) => {
   const textColor = useColorModeValue('gray.600', 'gray.200')
+  const { t } = useTranslation()
 
   return (
     <Card variant='bookingDetail'>
       <CardHeader>
         <HStack spacing={2}>
           <Icon as={icons.messageBubble} />
-          <Text fontWeight='medium'>Contact & Comments</Text>
+          <Text fontWeight='medium'>{t('bookings.contact')}</Text>
         </HStack>
       </CardHeader>
       <CardBody color={textColor}>
@@ -83,18 +84,16 @@ export const BookingComment = ({
 }: {
   comments: string
   textProps?: TextProps
-} & StackProps) => {
-  return (
-    <Stack direction='row' align='flex-start' spacing={3} {...props}>
-      <Box mt={1}>
-        <Icon as={icons.messageBubble} color='primary.400' boxSize={5} />
-      </Box>
-      <Text fontSize='md' lineHeight='tall' {...textProps}>
-        {comments}
-      </Text>
-    </Stack>
-  )
-}
+} & StackProps) => (
+  <Stack direction='row' align='flex-start' spacing={3} {...props}>
+    <Box mt={1}>
+      <Icon as={icons.messageBubble} color='primary.400' boxSize={5} />
+    </Box>
+    <Text fontSize='md' lineHeight='tall' {...textProps}>
+      {comments}
+    </Text>
+  </Stack>
+)
 
 // Component for displaying user information
 const UserInfo = ({ booking }: { booking: Booking }) => {
@@ -347,19 +346,19 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={6}>
           {/* Left Column */}
           <Stack spacing={6}>
-            <BookingDateInfo booking={booking} />
             <BookingComments booking={booking} />
-
-            {/* Add Ratings section */}
-            {(booking.bookingStatus === BookingStatus.RETURNED || booking.bookingStatus === BookingStatus.PICKED) && (
-              <BookingRatings booking={booking} />
-            )}
+            <BookingDateInfo booking={booking} />
           </Stack>
 
           {/* Right Column */}
           <Stack spacing={6}>
             <ToolInfo tool={tool} booking={booking} isRequest={isRequest} />
             <UserInfo booking={booking} />
+
+            {/* Add Ratings section */}
+            {(booking.bookingStatus === BookingStatus.RETURNED || booking.bookingStatus === BookingStatus.PICKED) && (
+              <BookingRatings booking={booking} />
+            )}
           </Stack>
         </SimpleGrid>
       </Container>
