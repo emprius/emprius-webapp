@@ -13,21 +13,23 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react'
-import { Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
 
 interface MaybeFreeProps {
-  control: any
-  setValue: (name: keyof ToolFormData, value: any) => void
-  watch: (name: keyof ToolFormData) => any
-  errors: any
   estimatedDailyCost: number
   cost: number
 }
 
-export const MaybeFree: React.FC<MaybeFreeProps> = ({ control, setValue, watch, errors, estimatedDailyCost, cost }) => {
+export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }) => {
   const { t } = useTranslation()
   const [isFree, setIsFree] = useState(false)
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<ToolFormData>()
 
   useEffect(() => {
     // Check initial value and set switch state

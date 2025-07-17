@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { EmpriusMarker } from '~components/Layout/Map/Map'
+import { FormHelperText } from '@chakra-ui/icons'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
 
@@ -15,6 +16,8 @@ interface LocationPickerProps<T extends FieldValues> {
   control: Control<T>
   isRequired?: boolean
   rules?: Record<string, any>
+  helperText?: string
+  canEdit?: boolean
 }
 
 // Component to handle map clicks and movement
@@ -52,6 +55,8 @@ export const LocationPicker = <T extends FieldValues>({
   control,
   isRequired = false,
   rules,
+  helperText,
+  canEdit = true,
 }: LocationPickerProps<T>) => {
   const { t } = useTranslation()
 
@@ -64,27 +69,26 @@ export const LocationPicker = <T extends FieldValues>({
         ...rules,
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        const [position, setPosition] = useState<LatLng | null>(value ? value : null)
-
         const handleLocationSelect = (latLng: LatLng) => {
-          setPosition(latLng)
+          if (!canEdit) return
           onChange(latLng)
         }
 
         return (
           <FormControl isRequired={isRequired} isInvalid={!!error}>
             <FormLabel>{t('common.location')}</FormLabel>
+            {helperText && <FormHelperText mb={4}>{helperText}</FormHelperText>}
             <div className='map-container'>
               <MapContainer
-                center={position || MAP_DEFAULTS.CENTER}
+                center={value || MAP_DEFAULTS.CENTER}
                 zoom={MAP_DEFAULTS.ZOOM}
                 scrollWheelZoom={true}
                 minZoom={MAP_DEFAULTS.MIN_ZOOM}
                 maxZoom={MAP_DEFAULTS.MAX_ZOOM}
               >
                 <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
-                <MapController onLocationSelect={handleLocationSelect} position={position} />
-                {position && <EmpriusMarker position={position} />}
+                <MapController onLocationSelect={handleLocationSelect} position={value} />
+                {value && <EmpriusMarker position={value} />}
               </MapContainer>
             </div>
             <FormErrorMessage>{error?.message}</FormErrorMessage>

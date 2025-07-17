@@ -4,25 +4,21 @@ import { useCommunityDetail, useSearchUserCommunities } from '~components/Commun
 import { chakraComponents, Select } from 'chakra-react-select'
 import { FormControl, FormErrorMessage, FormLabel, HStack, Icon, Stack, Switch, Text } from '@chakra-ui/react'
 import { Avatar } from '~components/Images/Avatar'
-import { Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
 import { icons } from '~theme/icons'
 
 interface CommunitiesSelectorProps {
-  control: any
-  setValue: (name: keyof ToolFormData, value: any) => void
-  watch: (name: keyof ToolFormData) => any
-  errors: any
   hasCommunities: boolean
 }
 
-export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({
-  control,
-  setValue,
-  watch,
-  errors,
-  hasCommunities,
-}) => {
+export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ hasCommunities }) => {
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<ToolFormData>()
   const { t } = useTranslation()
   const [shareGlobally, setShareGlobally] = useState(!hasCommunities)
   const [searchTerm, setSearchTerm] = useState('')
