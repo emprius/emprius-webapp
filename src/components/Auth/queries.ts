@@ -51,7 +51,7 @@ export const useCurrentUser = (
     select: (data): OwnUserProfile => ({
       ...data,
       location: toLatLng(data?.location),
-      inviteCodes: data.inviteCodes.map(
+      inviteCodes: data?.inviteCodes?.map(
         (invite): Invite => ({
           ...invite,
           createdOn: convertToDate(invite.createdOn),
