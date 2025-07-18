@@ -83,7 +83,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
   const methods = useForm<ToolFormData>({
     defaultValues: {
       ...initialData,
-      isAvailable: initialData?.isAvailable || true,
+      isAvailable: initialData?.isAvailable ?? true,
     },
   })
 

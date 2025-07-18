@@ -107,9 +107,15 @@ export const useUpdateTool = (
   return useMutation({
     mutationFn: (tool) =>
       tools.update({ ...tool, ...(tool.location && { location: toEmpriusLocation(tool.location) }) }),
-    onSuccess: (data, params) => {
+    onSuccess: (_, params) => {
+      const { id, ...restParams } = params
+      // Set query data so not need to await the refetch
+      queryClient.setQueryData<ToolDetail>(ToolsKeys.tool(id), (old) => ({
+        ...old,
+        ...restParams,
+      }))
       queryClient.invalidateQueries({ queryKey: ToolsKeys.toolsOwner })
-      queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(params.id.toString()) })
+      queryClient.invalidateQueries({ queryKey: ToolsKeys.tool(id) })
     },
     ...options,
   })
