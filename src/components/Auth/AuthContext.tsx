@@ -53,7 +53,7 @@ const useAuthProvider = () => {
     localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.EXPIRITY)
     setBearer(null)
-    queryClient.removeQueries()
+    queryClient.clear()
   }, [queryClient])
 
   // Listen for unauthorized events
