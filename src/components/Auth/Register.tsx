@@ -23,6 +23,7 @@ import { PasswordInput, usePasswordFieldValidator } from '~components/Layout/For
 import { ROUTES } from '~src/router/routes'
 import { AUTH_FORM } from '~utils/constants'
 import { LatLng } from 'leaflet'
+import { FormHelperText } from '@chakra-ui/icons'
 
 export type RegisterFormData = {
   confirmPassword: string
@@ -151,9 +152,14 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
             <FormErrorMessage>{errors.invitationToken && errors.invitationToken.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.community}>
+          <FormControl isInvalid={!!errors.community} isRequired>
             <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
-            <Input id='community' {...registerField('community')} />
+            <FormHelperText mb={2}>
+              {t('auth.community_helper_text', {
+                defaultValue: 'The community project you belongs to: housing project, cooperative, etc... ',
+              })}
+            </FormHelperText>
+            <Input id='community' {...registerField('community', { required: t('common.required') })} />
             <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
           </FormControl>
 

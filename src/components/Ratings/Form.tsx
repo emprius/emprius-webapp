@@ -96,6 +96,7 @@ const RatingCardHeader = ({ booking }: { booking: Booking }) => {
           fontSize='sm'
           borderWidth={0}
           mt={4}
+          alignItems={'center'}
         />
       </Flex>
     </Flex>

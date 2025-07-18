@@ -1,5 +1,6 @@
 import {
   FiGlobe,
+  FiHome,
   FiMenu,
   FiMessageCircle,
   FiPlus,
@@ -40,4 +41,5 @@ export const icons = {
   globe: FiGlobe,
   share: FiShare2,
   userHome: IoMdHome,
+  userCommunity: FiHome,
 }

@@ -134,7 +134,7 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
             <Input disabled value={user?.email} />
           </FormControl>
 
-          <FormControl isInvalid={!!errors.name}>
+          <FormControl isRequired isInvalid={!!errors.name}>
             <FormLabel>{t('common.name')}</FormLabel>
             <Input
               {...register('name', {
@@ -144,9 +144,14 @@ export const EditUser: React.FC<EditProfileFormProps> = ({ initialData }) => {
             <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.community}>
+          <FormControl isRequired isInvalid={!!errors.community}>
             <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
-            <Input id='community' {...register('community')} />
+            <FormHelperText mb={2}>
+              {t('auth.community_helper_text', {
+                defaultValue: 'The community project you belongs to: housing project, cooperative, etc... ',
+              })}
+            </FormHelperText>
+            <Input id='community' {...register('community', { required: t('common.required') })} />
             <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
           </FormControl>
 

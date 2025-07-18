@@ -86,6 +86,7 @@ export const ToolHistory: React.FC<ToolHistoryProps> = ({ toolId }) => {
                     gap={1}
                     bgColor={'transparent'}
                     placeholderData={{ name: entry.userName }}
+                    alignItems={'center'}
                   />
                 </HStack>
                 <HStack>

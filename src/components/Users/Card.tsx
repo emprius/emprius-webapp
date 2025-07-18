@@ -1,9 +1,11 @@
 import {
   Badge,
   BadgeProps,
+  Box,
   Flex,
   FlexProps,
   HStack,
+  Icon,
   Skeleton,
   SkeletonCircle,
   Stack,
@@ -23,6 +25,7 @@ import { useUserProfile } from './queries'
 import { ApiError, UnauthorizedError } from '~src/services/api'
 import { useTranslation } from 'react-i18next'
 import { icons } from '~theme/icons'
+import { FiHome } from 'react-icons/fi'
 
 type UserMiniCardProps = {
   userId: string
@@ -103,12 +106,12 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       borderRadius='lg'
       as={RouterLink}
       to={!userNotFound ? ROUTES.USERS.DETAIL.replace(':id', userId) : ''}
+      alignItems={'start'}
       {...flexProps}
     >
       {showAvatar && !userNotFound && <Avatar username={user?.name} avatarHash={user?.avatarHash} size={avatarSize} />}
       {showAvatar && userNotFound && <Avatar size={avatarSize} avatarHash={user?.avatarHash} />}
-
-      <Stack direction={direction} spacing={1}>
+      <Stack direction={direction} spacing={1} wrap={'wrap'}>
         <HStack>
           <Text fontWeight='bold' wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
             {user?.name}
@@ -119,8 +122,14 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
             </Badge>
           )}
         </HStack>
+        {user?.community && (
+          <Stack direction='row' align='center' spacing={1} color='lightText'>
+            <Icon as={icons.userCommunity} boxSize={3} />
+            <Text>{user.community}</Text>
+          </Stack>
+        )}
         {showRating && !userNotFound && (
-          <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='sm' {...ratingProps} />
+          <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='xs' {...ratingProps} />
         )}
         {userNotFound && (
           <Text color='lighterText' fontSize={'sm'}>

@@ -5,7 +5,8 @@
   "auth": {
     "actual_password_helper": "Només necessari per canviar la contrasenya",
     "change_password": "Canviar contrasenya",
-    "community": "Projecte comunitari",
+    "community": "Comunitat / Projecte",
+    "community_helper_text": "El projecte comunitari al qual pertanys: projecte d'habitatge, cooperativa, etc.",
     "confirm_password": "Confirmar Contrasenya",
     "email": "Correu electrònic",
     "have_account": "Ja tens un compte?",

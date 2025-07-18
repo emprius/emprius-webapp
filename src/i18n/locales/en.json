@@ -5,7 +5,8 @@
   "auth": {
     "actual_password_helper": "Only needed to change password",
     "change_password": "Change password",
-    "community": "Community project",
+    "community": "Community / Project",
+    "community_helper_text": "The community project you belongs to: housing project, cooperative, etc... ",
     "confirm_password": "Confirm Password",
     "email": "Email",
     "have_account": "Already have an account?",

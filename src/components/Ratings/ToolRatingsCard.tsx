@@ -92,6 +92,7 @@ const RatingCard = ({ rating }: { rating: UnifiedRating }) => {
             p={0}
             ratingProps={{ showCount: false }}
             bgColor={'transparent'}
+            alignItems={'center'}
           />
           <Skeleton isLoaded={!isLoading}>
             <Link as={RouterLink} to={ROUTES.BOOKINGS.DETAIL.replace(':id', booking?.id)}>

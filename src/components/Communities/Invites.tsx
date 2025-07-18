@@ -144,6 +144,7 @@ const Inviter = ({ inviterId }: { inviterId: string }) => {
               p={0}
               gap={2}
               direction={'row'}
+              alignItems={'center'}
               fontSize={'sm'}
               avatarSize={'2xs'}
               justify={'start'}

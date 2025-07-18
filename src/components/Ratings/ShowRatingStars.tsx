@@ -10,9 +10,10 @@ interface DisplayRatingProps {
   ratingCount?: number
 }
 
-type sizes = 'sm' | 'md' | 'lg'
+type sizes = 'xs' | 'sm' | 'md' | 'lg'
 
 const sizes = {
+  xs: { fontSize: '0.75rem', spacing: 0.25 },
   sm: { fontSize: '1rem', spacing: 0.5 },
   md: { fontSize: '1.5rem', spacing: 1 },
   lg: { fontSize: '2rem', spacing: 2 },
@@ -29,7 +30,7 @@ export const ShowRatingStars = ({ rating, size = 'md', showCount = true, ratingC
         ))}
       </HStack>
       {showCount && (
-        <Text fontSize={size === 'sm' ? 'sm' : 'md'} color='lightText'>
+        <Text fontSize={size} color='lightText'>
           {ratingCount !== undefined && `(${ratingCount})`}
         </Text>
       )}

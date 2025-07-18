@@ -99,6 +99,7 @@ export const UserRatingCard = ({ rating, actualUser }: UnifiedRatingCardProps) =
                 p={0}
                 gap={1}
                 bgColor={'transparent'}
+                alignItems={'center'}
               />
             </HStack>
             <Skeleton isLoaded={!isLoadingBooking} maxW={'250px'}>

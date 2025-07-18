@@ -93,7 +93,7 @@ export const UserProfile = (user: UserProfileType) => {
                 </Stack>
                 {user.community && (
                   <Stack direction='row' align='center' spacing={2} color='lightText'>
-                    <FiHome />
+                    <Icon as={icons.userCommunity} />
                     <Text>{user.community}</Text>
                   </Stack>
                 )}
