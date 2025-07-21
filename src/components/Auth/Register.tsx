@@ -21,7 +21,6 @@ import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { LocationPicker } from '~components/Layout/Map/LocationPicker'
 import { PasswordInput, usePasswordFieldValidator } from '~components/Layout/Form/PasswordInput'
 import { ROUTES } from '~src/router/routes'
-import { AUTH_FORM } from '~utils/constants'
 import { LatLng } from 'leaflet'
 import { FormHelperText } from '@chakra-ui/icons'
 
@@ -155,8 +154,8 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
           <FormControl isInvalid={!!errors.community} isRequired>
             <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
             <FormHelperText mb={2}>
-              {t('auth.community_helper_text', {
-                defaultValue: 'The community project you belongs to: housing project, cooperative, etc... ',
+              {t('auth.house_or_project_helper_text', {
+                defaultValue: 'The project you belongs to: housing project, cooperative, etc... ',
               })}
             </FormHelperText>
             <Input id='community' {...registerField('community', { required: t('common.required') })} />

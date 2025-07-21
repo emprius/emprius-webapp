@@ -5,8 +5,8 @@
   "auth": {
     "actual_password_helper": "Solo necesario para cambiar la contraseña",
     "change_password": "Cambiar contraseña",
-    "community": "Comunidad / Proyecto",
-    "community_helper_text": "El proyecto comunitario al que perteneces: proyecto de vivienda, cooperativa, etc.",
+    "house_or_project":"Casa / Proyecto",
+    "house_or_project_helper_text": "El proyecto al que perteneces: proyecto de vivienda, cooperativa, etc.",
     "confirm_password": "Confirmar Contraseña",
     "email": "Correo electrónico",
     "have_account": "¿Ya tienes una cuenta?",
