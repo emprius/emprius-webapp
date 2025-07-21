@@ -8,6 +8,7 @@ export type UserPreview = {
   ratingCount: number
   active: boolean
   rating: number
+  karma: number
 }
 
 export type UserProfile = UserPreview & {

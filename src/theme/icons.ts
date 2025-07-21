@@ -12,7 +12,7 @@ import {
   FiUsers,
 } from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
-import { FaHeartbeat, FaCalendar, FaRoute } from 'react-icons/fa'
+import { FaHeartbeat, FaCalendar, FaRoute, FaBalanceScale } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { EditIcon } from '@chakra-ui/icons'
 import { RiUserCommunityFill } from 'react-icons/ri'
@@ -42,4 +42,5 @@ export const icons = {
   share: FiShare2,
   userHome: IoMdHome,
   userCommunity: FiHome,
+  karma: FaBalanceScale,
 }

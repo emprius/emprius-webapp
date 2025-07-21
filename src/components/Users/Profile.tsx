@@ -1,8 +1,21 @@
-import { Badge, Box, Button, Divider, Flex, Heading, Icon, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Stack,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { BiWallet } from 'react-icons/bi'
-import { FiHome, FiMail } from 'react-icons/fi'
+import { FiMail } from 'react-icons/fi'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Avatar } from '~components/Images/Avatar'
@@ -106,21 +119,36 @@ export const UserProfile = (user: UserProfileType) => {
             justify={{ base: 'end', md: 'center' }}
             w={{ base: 'full', md: 'auto' }}
           >
-            <Stack
-              direction='row'
-              align='center'
-              spacing={2}
-              bg='blue.50'
-              _dark={{ bg: 'blue.900' }}
-              p={2}
-              borderRadius='md'
-              mb={2}
-            >
-              <BiWallet size={20} />
-              <Text fontWeight='bold'>
-                {user.tokens} {t('common.token_symbol')}
-              </Text>
-            </Stack>
+            <Popover>
+              <PopoverTrigger>
+                <Stack
+                  direction='row'
+                  align='center'
+                  spacing={2}
+                  bg='blue.50'
+                  _dark={{ bg: 'blue.900' }}
+                  p={2}
+                  borderRadius='md'
+                  mb={2}
+                  title={t('profile.karma_desc')}
+                >
+                  <Icon as={icons.karma} boxSize={5} color='blue.500' />
+                  <Text fontWeight='bold'>
+                    {user.karma} {t('profile.karma_balance', { defaultValue: 'Karma' })}
+                  </Text>
+                  <Icon boxSize={'3'} alignSelf={'start'} />
+                </Stack>
+              </PopoverTrigger>
+              <PopoverContent bg='gray.700' color={'white'} maxW={'300px'} py={2} px={3}>
+                <Box w={'full'} textAlign={'center'}>
+                  {t('profile.karma_desc', {
+                    defaultValue:
+                      'Karma points shows the balance between loans and petitions. You can earn karma by accepting loans or petitions from other users, and you can spend it by requesting loans or petitions from others.',
+                  })}
+                </Box>
+              </PopoverContent>
+            </Popover>
+
             {isCurrentUser && (
               <Button
                 aria-label={t('common.edit')}

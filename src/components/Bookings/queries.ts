@@ -14,6 +14,7 @@ import { PendingActionsKeys } from '~components/Layout/Contexts/PendingActionsPr
 import { Booking, BookingsListResponse, BookingStatus, CreateBookingData } from '~components/Bookings/types'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
 import { DateToEpoch, getStartOfDay } from '~utils/dates'
+import { UserKeys } from '~components/Users/queries'
 
 /**
  * Function to transform a booking object with custom frontend states
@@ -91,6 +92,7 @@ export const useAcceptBooking = (booking: Booking, options?: BookingActionOption
     mutationFn: (bookingId: string) => api.bookings.update(bookingId, { status: 'ACCEPTED' }),
     onSuccess: (res, bookingId) => {
       invalidateQueries(client, booking.toolId, bookingId)
+      client.invalidateQueries({ queryKey: UserKeys.userId(booking.toUserId) || UserKeys.userId(booking.fromUserId) })
     },
     ...options,
   })
