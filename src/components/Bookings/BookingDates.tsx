@@ -33,11 +33,11 @@ export const BookingDates = ({ booking }: BookingDatesProps) => {
 // Custom component for dynamic booking title based on timing
 export const BookingStatusTitle = ({
   booking,
-  isRequest,
+  isLoan,
   ...props
 }: {
   booking: Booking
-  isRequest: boolean
+  isLoan: boolean
 } & StackProps) => {
   const { t } = useTranslation()
   const now = new Date().getTime() / 1000 // Current time in seconds
@@ -46,22 +46,29 @@ export const BookingStatusTitle = ({
 
   // Determine booking timing status
   const title = useMemo(() => {
-    let text = isRequest ? t('bookings.tool_request_title') : t('bookings.tool_petition_title')
     if (booking.bookingStatus === BookingStatus.RETURNED) {
-      text = isRequest ? t(`bookings.tool_request_past_title`) : t(`bookings.tool_petition_past_title`)
+      return isLoan ? t(`bookings.tool_loan_past_title`) : t(`bookings.tool_petition_past_title`)
+    } else if (booking.bookingStatus === BookingStatus.LAPSED) {
+      return t(`bookings.tool_lapsed_title`, { defaultValue: 'This booking was lapsed' })
+    } else if (booking.bookingStatus === BookingStatus.PICKED) {
+      return isLoan
+        ? t(`bookings.tool_picked_loan_title`, { defaultValue: 'New holder has picked up the tool' })
+        : t(`bookings.tool_picked_petition_title`, { defaultValue: 'You picked up the tool' })
+    } else if (!isLoan && booking.bookingStatus === BookingStatus.PENDING) {
+      return t(`bookings.tool_pending_title`, { defaultValue: 'Awaiting holder to accept request' })
     } else if (booking.bookingStatus === BookingStatus.REJECTED || booking.bookingStatus === BookingStatus.CANCELLED) {
-      text = isRequest ? t(`bookings.tool_request_cancelled_title`) : t(`bookings.tool_petition_cancelled_title`)
+      return isLoan ? t(`bookings.tool_loan_cancelled_title`) : t(`bookings.tool_petition_cancelled_title`)
     } else if (now < startDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
-      text = isRequest ? t('bookings.tool_request_future_title') : t('bookings.tool_petition_future_title')
+      return isLoan ? t('bookings.tool_loan_future_title') : t('bookings.tool_petition_future_title')
     } else if (now >= startDate && now <= endDate && booking.bookingStatus === BookingStatus.ACCEPTED) {
-      text = isRequest ? t(`bookings.tool_request_present_title`) : t(`bookings.tool_petition_present_title`)
+      return isLoan ? t(`bookings.tool_loan_present_title`) : t(`bookings.tool_petition_present_title`)
     }
-    return text
+    return isLoan ? t('bookings.tool_loan_title') : t('bookings.tool_petition_title')
   }, [booking, now])
 
   return (
     <HStack color='lighterText' fontSize={{ base: 'xl', md: '2xl' }} {...props}>
-      <Icon as={isRequest ? icons.outbox : icons.inbox} />
+      <Icon as={isLoan ? icons.outbox : icons.inbox} />
       <Text>{title}</Text>
     </HStack>
   )

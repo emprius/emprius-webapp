@@ -298,7 +298,7 @@ const ActionsWrapper = ({ booking, userId }: { booking: Booking; userId: string 
   return (
     <>
       <Flex justify='flex-start' gap={4}>
-        <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'request'} />
+        <ActionButtons booking={booking} type={booking.fromUserId === userId ? 'petition' : 'loan'} />
       </Flex>
       {!!error && (
         <Stack direction={{ base: 'column', md: 'row' }} alignSelf={'end'}>
@@ -322,7 +322,7 @@ export const BookingDetailsPage = ({ booking, tool, userId }: BookingDetailsProp
         <Box mb={6} p={4} borderColor={borderColor} borderBottom={'1px'} borderBottomColor={borderColor}>
           <Flex justify='space-between' align='center' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
             <Stack spacing={1}>
-              <BookingStatusTitle isRequest={isRequest} booking={booking} fontWeight='bold' />
+              <BookingStatusTitle isLoan={isRequest} booking={booking} fontWeight='bold' />
               <Text fontSize='sm' color='lighterText'>
                 {t('bookings.reference', { id: booking.id })}
               </Text>

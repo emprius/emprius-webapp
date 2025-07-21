@@ -14,7 +14,7 @@ import { Box, SimpleGrid } from '@chakra-ui/react'
 
 export const Requests = () => {
   const query = useBookingRequests()
-  return <BookingList type={'request'} {...query} />
+  return <BookingList type={'loan'} {...query} />
 }
 
 export const Petitions = () => {
@@ -46,7 +46,9 @@ const PaginatedBookingList = ({ data, type, isLoading, error }: BookingListProps
   }
 
   if (!bookings?.length) {
-    return <ElementNotFound icon={icons.ratings} title={t('user.no_bookings')} desc={t('user.no_bookings_desc')} />
+    const title = type === 'loan' ? t('user.no_loans') : t('user.petitions')
+    const subtitle = type === 'loan' ? t('user.no_loans_desc') : t('user.petitions_desc')
+    return <ElementNotFound icon={icons.ratings} title={title} desc={subtitle} />
   }
 
   if (error) {

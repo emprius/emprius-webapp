@@ -15,11 +15,10 @@ import { addDayToDate, getDaysBetweenDates } from '~utils/dates'
 import { BookingComment } from './Details'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { BookingActionsProvider, useBookingActions } from '~components/Bookings/ActionsProvider'
-import { icons } from '~theme/icons'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
 import { Booking, BookingStatus } from '~components/Bookings/types'
 
-export type BookingCardType = 'request' | 'petition'
+export type BookingCardType = 'loan' | 'petition'
 
 interface BookingCardProps {
   booking: Booking
@@ -37,14 +36,14 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
   const { error } = useBookingActions()
   const navigate = useNavigate()
 
-  const isRequest = type === 'request'
-  const userId = isRequest ? booking.fromUserId : booking.toUserId
+  const isLoan = type === 'loan'
+  const userId = isLoan ? booking.fromUserId : booking.toUserId
 
   const cardMinH = '210px'
 
   // Determine if this booking is new
   const isNew = useMemo(
-    () => booking.bookingStatus === BookingStatus.PENDING && type === 'request',
+    () => booking.bookingStatus === BookingStatus.PENDING && type === 'loan',
     [booking.bookingStatus]
   )
 
@@ -101,7 +100,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
               {/* Booking Summary Section */}
               <Stack spacing={1} justify={'space-between'} h={'full'}>
                 <Stack spacing={1}>
-                  <BookingStatusTitle isRequest={isRequest} booking={booking} fontSize='sm' />
+                  <BookingStatusTitle isLoan={isLoan} booking={booking} fontSize='sm' />
                   <Stack
                     mt={{ base: 6, sm: 2 }}
                     direction={'row'}
@@ -127,7 +126,7 @@ const ProvidedBookingCard = ({ booking, type }: BookingCardProps) => {
                           <CostDay tool={tool} />
                         </Flex>
 
-                        {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isRequest} />}
+                        {tool?.cost > 0 && <Earned booking={booking} cost={tool?.cost} isRequest={isLoan} />}
                       </Stack>
                     )}
                     {/*Dates*/}
@@ -207,24 +206,3 @@ export const Earned = ({ booking, cost, isRequest }: { booking: Booking; cost: n
     </Text>
   )
 }
-
-// export const BookingTitle = ({ isRequest, ...props }: { isRequest: boolean } & StackProps) => {
-//   const { t } = useTranslation()
-//   let data = {
-//     icon: icons.inbox,
-//     title: t('bookings.tool_petition_title', { defaultValue: 'You are requesting a Tool' }),
-//   }
-//
-//   if (isRequest) {
-//     data = {
-//       icon: icons.outbox,
-//       title: t('bookings.tool_request_title', { defaultValue: 'Your tool is needed' }),
-//     }
-//   }
-//   return (
-//     <HStack color='lighterText' fontSize='sm' {...props}>
-//       <Icon as={data.icon} />
-//       <Text>{data.title}</Text>
-//     </HStack>
-//   )
-// }

@@ -13,6 +13,7 @@ import { AcceptNomadicAlert, PickedAlertDialog, RatingModal, ReturnAlertDialog }
 import { icons } from '~theme/icons'
 import { useBookingActions } from '~components/Bookings/ActionsProvider'
 import { Booking, BookingStatus } from '~components/Bookings/types'
+import { BookingCardType } from '~components/Bookings/Card'
 
 interface ActionsProps {
   booking: Booking
@@ -21,7 +22,7 @@ interface ActionsProps {
 const PendingRequestActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
-  const { error, onSuccess, onError } = useBookingActions()
+  const { onSuccess, onError } = useBookingActions()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { mutateAsync, isPending: isAcceptPending } = useAcceptBooking(booking, {
@@ -53,7 +54,6 @@ const PendingRequestActions = ({ booking }: ActionsProps) => {
   }
 
   const isPending = isAcceptPending || isDenyPending
-  const isError = !!error
 
   return (
     <>
@@ -154,7 +154,7 @@ const NomadAcceptedBookingActions = ({ booking }: ActionsProps) => {
   const bookingId = booking.id
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { onSuccess, onError, ratingModalDisclosure } = useBookingActions()
+  const { onSuccess, onError } = useBookingActions()
 
   const { mutateAsync, isPending } = usePickedBooking(booking, {
     onError: (error) => onError(error, t('bookings.picked_error', { defaultValue: 'Error marking as picked' })),
@@ -224,7 +224,7 @@ const RateUserBookingActions = ({ booking }: ActionsProps) => {
 }
 
 type ActionButtonsProps = {
-  type: 'request' | 'petition'
+  type: BookingCardType
 } & ActionsProps
 
 export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
@@ -235,11 +235,11 @@ export const ActionButtons = ({ booking, type }: ActionButtonsProps) => {
   if (!booking) return null
 
   let component = null
-  if (booking.bookingStatus === BookingStatus.PENDING && type === 'request') {
+  if (booking.bookingStatus === BookingStatus.PENDING && type === 'loan') {
     component = <PendingRequestActions booking={booking} />
   } else if (booking.bookingStatus === BookingStatus.PENDING && type === 'petition') {
     component = <PendingPetitionActions booking={booking} />
-  } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'request') {
+  } else if (booking.bookingStatus === BookingStatus.ACCEPTED && type === 'loan') {
     if (booking?.isNomadic) {
       component = <NomadAcceptedBookingActions booking={booking} />
     } else {
