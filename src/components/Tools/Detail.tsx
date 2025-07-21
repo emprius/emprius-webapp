@@ -36,6 +36,7 @@ import { MdSocialDistance } from 'react-icons/md'
 import { CommunityCardLittle } from '~components/Communities/Card'
 import { BookingFormWrapper, canUserBookTool } from '~components/Tools/FormWrapper'
 import NomadicBadge from '~components/Tools/shared/NomadicBadge'
+import { IoCalculatorSharp } from 'react-icons/io5'
 
 export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
   const { t } = useTranslation()
@@ -110,9 +111,13 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                       {!!tool.toolValuation && (
                         <Stack direction='row' align='center'>
                           <FiDollarSign size={20} />
-                          <Text>
-                            {t('tools.estimated_value')}: {tool.toolValuation}
-                          </Text>
+                          <Text>{t('tools.estimated_value', { value: tool.toolValuation })}</Text>
+                        </Stack>
+                      )}
+                      {!!tool.estimatedDailyCost && (
+                        <Stack direction='row' align='center'>
+                          <IoCalculatorSharp size={20} />
+                          <Text>{t('tools.estimated_daily_cost', { value: tool.estimatedDailyCost })}</Text>
                         </Stack>
                       )}
 

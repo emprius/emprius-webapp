@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  Alert,
+  AlertIcon,
+  Collapse,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -11,10 +14,10 @@ import {
   NumberInputStepper,
   Stack,
   Switch,
-  Text,
 } from '@chakra-ui/react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ToolFormData } from '~components/Tools/Form'
+import { FormHelperText } from '@chakra-ui/icons'
 
 interface MaybeFreeProps {
   estimatedDailyCost: number
@@ -31,6 +34,8 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }
     formState: { errors },
   } = useFormContext<ToolFormData>()
 
+  const isNomadic = watch('isNomadic')
+
   useEffect(() => {
     // Check initial value and set switch state
     const value = watch('toolValuation')
@@ -39,11 +44,18 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }
     }
   }, [])
 
+  // If is nomadic, disable the switch and delete the cost
+  useEffect(() => {
+    if (isNomadic) {
+      setIsFree(true)
+      setValue('cost', 0)
+    }
+  }, [isNomadic, setValue])
+
   const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked
     setIsFree(checked)
     if (checked) {
-      setValue('toolValuation', 0)
       setValue('cost', 0)
     }
   }
@@ -51,61 +63,36 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }
   return (
     <Stack spacing={2}>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
-        <FormControl display='flex' flexDirection={'column'} alignItems='start' width='auto' gap={1}>
+        <FormControl width='auto'>
           <FormLabel htmlFor='isFree' mr={3}>
             {t('tools.is_free')}
           </FormLabel>
-          <Text fontSize='sm' color='lighterText'>
+          <FormHelperText>
             {t('tools.tool_is_free_description', {
               defaultValue: 'No cost associated for loan the tool',
             })}
-          </Text>
-          <Switch mt={4} id='isFree' isChecked={isFree} onChange={handleSwitchChange} size={'lg'} />
-        </FormControl>
-        {/*<Stack>*/}
-        <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.toolValuation} isRequired={!isFree}>
-          <FormLabel>{t('tools.estimated_value', { defaultValue: 'Estimated Value' })}</FormLabel>
-          <Text fontSize='sm' color='lighterText'>
-            {t('tools.tool_estimated_value_description', {
-              defaultValue:
-                'Set the estimated value of your tool. If the tool is not free, this value will be used to calculate the cost per day.',
-            })}
-          </Text>
-          <Controller
-            name='toolValuation'
-            control={control}
-            rules={{
-              validate: (value) => {
-                if (!isFree && (!value || value <= 0)) {
-                  return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
-                }
-                return true
-              },
-            }}
-            render={({ field }) => (
-              <NumberInput mt={2} min={0} precision={0} isDisabled={isFree} {...field}>
-                <NumberInputField placeholder={t('tools.enter_estimated_value')} />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            )}
+          </FormHelperText>
+          <Switch
+            mt={4}
+            id='isFree'
+            isChecked={isFree}
+            onChange={handleSwitchChange}
+            size={'lg'}
+            disabled={isNomadic}
           />
-          <FormErrorMessage>{errors.toolValuation?.message}</FormErrorMessage>
         </FormControl>
-      </Stack>
-      {estimatedDailyCost && (
+
         <FormControl flex={1} isDisabled={isFree} isInvalid={!!errors.cost}>
           <FormLabel>{t('tools.price_per_day', { defaultValue: 'Price per day' })}</FormLabel>
-          <Text fontSize='sm' color='lighterText'>
-            {t('tools.price_per_day_description', {
-              defaultValue:
-                'You can set a custom daily price for your tool, but it must not exceed the estimated daily cost  ' +
-                "({{estimatedDailyCost }} {{, tokenSymbol }}), which is based on the tool's value.",
-              estimatedDailyCost: estimatedDailyCost,
-            })}
-          </Text>
+          <FormHelperText>
+            {estimatedDailyCost
+              ? t('tools.price_per_day_description', {
+                  defaultValue:
+                    '{{estimatedDailyCost }} {{, tokenSymbol }} is the suggested daily cost based on tool estimated value',
+                  estimatedDailyCost: estimatedDailyCost,
+                })
+              : t('tools.price_per_day_description_no_value', { defaultValue: 'Set the cost for your tool' })}
+          </FormHelperText>
           <Controller
             name='cost'
             control={control}
@@ -114,12 +101,6 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }
               validate: (value) => {
                 if (!isFree && (!value || value <= 0)) {
                   return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
-                }
-                if (!isFree && Number(value) > estimatedDailyCost) {
-                  return t('tools.value_must_be_less_than', {
-                    defaultValue: 'Value must be less than tool estimated value {{ cost }} {{, tokenSymbol }}',
-                    cost: estimatedDailyCost,
-                  })
                 }
                 return true
               },
@@ -136,7 +117,45 @@ export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }
           />
           <FormErrorMessage>{errors.cost?.message}</FormErrorMessage>
         </FormControl>
-      )}
+      </Stack>
+      <FormControl flex={1} isInvalid={!!errors.toolValuation} isRequired={!isFree}>
+        <FormLabel>{t('tools.tool_estimated_value', { defaultValue: 'Tool Estimated Value' })}</FormLabel>
+        <FormHelperText>
+          {t('tools.tool_estimated_value_description', {
+            defaultValue: 'Set the estimated value of your tool.',
+          })}
+        </FormHelperText>
+        <Controller
+          name='toolValuation'
+          control={control}
+          rules={{
+            validate: (value) => {
+              if (!isFree && (!value || value <= 0)) {
+                return t('tools.value_must_be_greater_than_zero', { defaultValue: 'Value must be greater than 0' })
+              }
+              return true
+            },
+          }}
+          render={({ field }) => (
+            <NumberInput mt={2} min={0} precision={0} {...field}>
+              <NumberInputField placeholder={t('tools.enter_estimated_value')} />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          )}
+        />
+        <FormErrorMessage>{errors.toolValuation?.message}</FormErrorMessage>
+      </FormControl>
+      <Collapse in={isNomadic} animateOpacity>
+        <Alert status='info'>
+          <AlertIcon />
+          {t('tools.nomadic_cost_info', {
+            defaultValue: 'Nomadic tools cannot have a cost associated with them.',
+          })}
+        </Alert>
+      </Collapse>
     </Stack>
   )
 }
