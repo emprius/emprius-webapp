@@ -7,10 +7,10 @@ import { useForm } from 'react-hook-form'
 
 const NotificationSettings = ({ notificationPreferences }: { notificationPreferences?: NotificationPreferences }) => {
   const { t } = useTranslation()
-  const { mutateAsync, isError, error, isPending } = useNotificationPreferences()
+  const { mutateAsync, isPending } = useNotificationPreferences()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const { control, handleSubmit, watch, reset, register } = useForm<NotificationPreferences>({
+  const { handleSubmit, register } = useForm<NotificationPreferences>({
     defaultValues: { ...notificationPreferences },
   })
 
@@ -51,6 +51,13 @@ const NotificationSettings = ({ notificationPreferences }: { notificationPrefere
                 desc = t('profile.notifications.incoming_requests_desc', {
                   defaultValue: 'Some user requested a tool you own or a nomadic tool on your guard',
                 })
+                break
+              case 'tool_holder_changed':
+                title = t('profile.notifications.tool_holder_changed', { defaultValue: 'Nomadic tools changes' })
+                desc = t('profile.notifications.tool_holder_changed_desc', {
+                  defaultValue: 'Changes on the nomadic tools bookings, for example, when a tool holder changes',
+                })
+                break
             }
 
             return (

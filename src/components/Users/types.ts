@@ -36,7 +36,7 @@ export type Invite = {
 
 type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
 
-export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted'
+export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted' | 'tool_holder_changed'
 export type NotificationPreferences = Map<NotificationPreferenceType, boolean>
 
 export type OwnUserProfile = UserProfile & {
