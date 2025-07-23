@@ -10,6 +10,17 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { BookingForm } from '~components/Bookings/Form'
 import { convertToDate } from '~utils/dates'
 
+type CannotBookCase =
+  | 'isOwner'
+  | 'isNotInCommunity'
+  | 'isTooFarAway'
+  | 'userNotActive'
+  | 'selfUserNotActive'
+  | 'isAlreadyHeld'
+  | null
+
+type CanBook = { canBook: boolean; why: CannotBookCase }
+
 export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: CanBook }) => {
   const { t } = useTranslation()
   const { isAuthenticated } = useAuth()
@@ -74,15 +85,6 @@ export const BookingFormWrapper = ({ tool, canBook }: { tool: Tool; canBook: Can
           })}
         />
       )
-    case 'isNomadicBooked':
-      return (
-        <CannotBookInfoCard
-          title={t('bookings.nomadic_tool_booked', { defaultValue: 'This nomadic tool is actually booked' })}
-          description={t('bookings.nomadic_tool_booked_description', {
-            defaultValue: "Booking won't be available until the actual user finishes the booking",
-          })}
-        />
-      )
   }
 
   if (!canBook.canBook) {
@@ -120,18 +122,6 @@ const CannotBookInfoCard = ({
     </Box>
   )
 }
-
-type CannotBookCase =
-  | 'isOwner'
-  | 'isNotInCommunity'
-  | 'isTooFarAway'
-  | 'isNomadicBooked'
-  | 'userNotActive'
-  | 'selfUserNotActive'
-  | 'isAlreadyHeld'
-  | null
-
-type CanBook = { canBook: boolean; why: CannotBookCase }
 
 export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook => {
   const isOwner = tool.userId === user.id
@@ -174,16 +164,6 @@ export const canUserBookTool = (tool: ToolDetail, user: UserProfile): CanBook =>
   // Tool is too far away
   if (tool?.maxDistance && tool?.maxDistance < calculateDistance(user.location, tool.location)) {
     return { canBook: false, why: 'isTooFarAway' }
-  }
-
-  // is nomadic and is booked
-  if (tool.isNomadic && tool.reservedDates?.length > 0) {
-    const now = new Date()
-
-    const isBooked = tool.reservedDates.some((date) => convertToDate(date.to) >= now)
-    if (isBooked) {
-      return { canBook: false, why: 'isNomadicBooked' }
-    }
   }
 
   // All checks passed → can book
