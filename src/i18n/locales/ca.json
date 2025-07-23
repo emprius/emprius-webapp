@@ -65,8 +65,6 @@
     "my_petitions": "Peticions",
     "nomadic_owner": "Posseïdor",
     "nomadic_owner_desc": "Persona que té l'eina nòmada",
-    "nomadic_tool_booked": "Aquesta eina nòmada està actualment reservada",
-    "nomadic_tool_booked_description": "La reserva no estarà disponible fins que l'usuari actual finalitzi la reserva",
     "not_community_member_description": "Aquesta eina pertany a una comunitat i no en ets membre.",
     "not_found": "Reserva no trobada",
     "not_found_desc": "La reserva que estàs buscant no s'ha pogut trobar.",
@@ -333,7 +331,9 @@
       "incoming_requests": "Nova sol·licitud entrant",
       "incoming_requests_desc": "Algun usuari ha sol·licitat una eina que posseeixes o una eina nòmada sota la teva custòdia",
       "notification_preferences": "Preferències de Notificació",
-      "notification_preferences_desc": "Activa o desactiva les notificacions per correu electrònic per a diversos esdeveniments."
+      "notification_preferences_desc": "Activa o desactiva les notificacions per correu electrònic per a diversos esdeveniments.",
+      "tool_holder_changed": "Nomadic tools changes",
+      "tool_holder_changed_desc": "Changes on the nomadic tools bookings, for example, when a tool holder changes"
     }
   },
   "pwa": {
@@ -404,7 +404,8 @@
     "create": "Crear eina",
     "create_error": "Error al crear l'eina",
     "create_success": "Eina creada amb èxit",
-    "current_holder": "Posseïdor Actual",
+    "current_holder": "Custòdi Actual",
+    "currently_holding": "Custodiant",
     "delete": "Eliminar eina",
     "delete_confirmation_message": "Estàs segur que vols eliminar aquesta eina? Aquesta acció no es pot desfer.",
     "delete_confirmation_title": "Eliminar eina",
@@ -427,6 +428,8 @@
     "images": "Imatges",
     "is_available": "Disponible per préstec",
     "is_free": "Eina gratuïta",
+    "is_holder": "Custòdi",
+    "isGranted": "Cedida",
     "lent_from_to": "la va fer servir des del <b>{{startDate, format}}</b> fins al <b>{{endDate, format}}</b>",
     "login_to_book": "Si us plau, inicia sessió per demanar aquesta eina",
     "make_available_confirmation_message": "Estàs segur que vols fer aquesta eina disponible per préstec?",

@@ -65,8 +65,6 @@
     "my_petitions": "Requests",
     "nomadic_owner": "Holder",
     "nomadic_owner_desc": "Person who is holding the nomadic tool",
-    "nomadic_tool_booked": "This nomadic tool is actually booked",
-    "nomadic_tool_booked_description": "Booking won't be available until the actual user finishes the booking",
     "not_community_member_description": "This tool belongs into a community and your are not member of it",
     "not_found": "Booking Not Found",
     "not_found_desc": "The booking you are looking for could not be found.",
@@ -329,7 +327,9 @@
       "incoming_requests": "New incoming request",
       "incoming_requests_desc": "Some user requested a tool you own or a nomadic tool on your guard",
       "notification_preferences": "Notification Preferences",
-      "notification_preferences_desc": "Activate or deactivate email notifications for various events."
+      "notification_preferences_desc": "Activate or deactivate email notifications for various events.",
+      "tool_holder_changed": "Nomadic tools changes",
+      "tool_holder_changed_desc": "Changes on the nomadic tools bookings, for example, when a tool holder changes"
     }
   },
   "pwa": {
@@ -401,6 +401,7 @@
     "create_error": "Failed to create tool",
     "create_success": "Tool created successfully",
     "current_holder": "Current Holder",
+    "currently_holding": "Holding",
     "delete": "Delete Tool",
     "delete_confirmation_message": "Are you sure you want to delete this tool? This action cannot be undone.",
     "delete_confirmation_title": "Delete Tool",
@@ -424,6 +425,8 @@
     "images_required": "Images Required",
     "is_available": "Available for loan",
     "is_free": "Free tool",
+    "is_holder": "Is holder",
+    "isGranted": "Granted",
     "lent_from_to": "used it from <b>{{startDate, format}}</b> to <b>{{endDate, format}}</b>",
     "login_to_book": "Please login to borrow this tool",
     "make_available_confirmation_message": "Are you sure you want to make this tool available for loan?",

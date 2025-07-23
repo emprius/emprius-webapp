@@ -1,11 +1,10 @@
 import { Box, Center, Divider, Flex, HStack, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useMatch } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { CostDay } from '~components/Tools/shared/CostDay'
 import { AvailabilityToggle, EditToolButton } from '~components/Tools/shared/OwnerToolButtons'
-import { Tool, ToolDTO } from '~components/Tools/types'
+import { ToolDTO } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import { ToolImageAvailability } from './shared/ToolImage'
 import ToolTitle from '~components/Tools/shared/ToolTitle'
@@ -21,7 +20,17 @@ export const ToolCard = ({ tool: toolData }: ToolCardProps) => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { user } = useAuth()
-  const isOwner = user?.id === tool.userId
+  const match = useMatch(ROUTES.USERS.TABS.TOOLS)
+
+  let currentlyHolding = tool?.actualUserId === user?.id && tool?.userId !== user?.id
+  let isGranted = tool?.userId === user?.id && tool?.actualUserId && tool?.actualUserId !== user?.id
+  let isHolder = false
+  // If is user tools page, check if the tool is held by the user
+  if (match) {
+    const pageUserId = match?.params?.id
+    isHolder = tool?.actualUserId && pageUserId === tool?.actualUserId && pageUserId !== tool?.userId
+    isGranted = tool?.actualUserId && tool?.userId !== tool?.actualUserId && !isHolder
+  }
 
   return (
     <Flex
@@ -48,6 +57,9 @@ export const ToolCard = ({ tool: toolData }: ToolCardProps) => {
             isAvailable={tool?.isAvailable}
             isLoading={!tool}
             alt={tool?.title}
+            currentlyHolding={currentlyHolding}
+            isHolder={isHolder}
+            isGranted={isGranted}
           />
         </Box>
 
@@ -71,7 +83,7 @@ export const ToolCard = ({ tool: toolData }: ToolCardProps) => {
           </Stack>
         </Stack>
       </Link>
-      {isOwner && (
+      {user?.id === tool.userId && (
         <HStack justify={'space-between'} borderTop={'1px solid'} borderColor={'gray.200'}>
           <Flex align={'center'} justify={'center'} flex={1} py={1}>
             <EditToolButton toolId={tool.id} />
