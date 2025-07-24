@@ -1,7 +1,7 @@
 import { Box, Text, VStack } from '@chakra-ui/react'
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster'
 import '@changey/react-leaflet-markercluster/dist/styles.min.css'
-import L, { LatLng, LatLngExpression } from 'leaflet'
+import L, { latLng, LatLng, LatLngExpression } from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
@@ -9,9 +9,7 @@ import React, { useMemo } from 'react'
 import { useAuth } from '~components/Auth/AuthContext'
 import ReactDOMServer from 'react-dom/server'
 import { useTranslation } from 'react-i18next'
-import { IoMdHome } from 'react-icons/io'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import { EmpriusLocation } from '~components/Layout/Map/types'
+import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
 import { Tool, ToolDetail } from '~components/Tools/types'
 import { MAP_DEFAULTS } from '~utils/constants'
 import { ToolTooltip } from './ToolTooltip'
@@ -97,23 +95,72 @@ export const Map = ({ tools, center }: SearchMapProps) => {
           </Popup>
         </Marker>
         <MarkerClusterGroup chunkedLoading showCoverageOnHover={false} maxClusterRadius={50} spiderfyOnMaxZoom={true}>
-          {Object.entries(groupedTools).map(([key, groupedTools]) => {
-            const loc = key.split('-').map(Number) as LatLngExpression
-            return (
-              <EmpriusMarker key={key} position={loc} count={groupedTools.length}>
-                <Popup>
-                  <ToolTooltip tools={groupedTools} />
-                </Popup>
-              </EmpriusMarker>
-            )
+          {Object.entries(groupedTools).map(([key, toolGroup]) => {
+            const loc = latLng(key.split('-').map(Number) as LatLngExpression)
+            return <RegularAndNomadicMarker key={key} loc={loc} toolGroup={toolGroup} />
           })}
         </MarkerClusterGroup>
         {/*Circle markers must be outside MarkerClusterGroup to do not be grouped with the other marker*/}
-        {Object.entries(groupedTools).map(([key, groupedTools]) => {
+        {Object.entries(groupedTools).map(([key, _]) => {
           const loc = key.split('-').map(Number) as LatLngExpression
           return <EmpriusCircle key={`${key}circle`} center={loc} />
         })}
       </MapContainer>
     </Box>
+  )
+}
+
+const RegularAndNomadicMarker = ({ toolGroup, loc }: { toolGroup: Tool[]; loc: LatLng }) => {
+  const [nomadic, regular] = useMemo(
+    () =>
+      toolGroup.reduce<[Tool[], Tool[]]>(
+        ([nomadic, regular], item) => {
+          if (item.isNomadic) {
+            nomadic.push(item)
+          } else {
+            regular.push(item)
+          }
+          return [nomadic, regular]
+        },
+        [[], []]
+      ),
+    [toolGroup]
+  )
+
+  const getDeltaLngDeg = (latlng: LatLng, km: number) => {
+    const earthRadius = 6371 // Earth radius in km
+    const deltaLng = km / earthRadius / Math.cos((latlng.lat * Math.PI) / 180)
+    return deltaLng * (180 / Math.PI)
+  }
+
+  let nomadicLoc = loc
+  let regularLoc = loc
+  const bothTypes = nomadic.length && regular.length
+  if (bothTypes) {
+    const deltaLngDeg = getDeltaLngDeg(loc, 0.2)
+    const south = 0.0008
+    nomadicLoc = L.latLng(loc.lat - south, loc.lng - deltaLngDeg)
+    regularLoc = L.latLng(loc.lat - south, loc.lng + deltaLngDeg)
+  }
+
+  const key = `${loc.lng}-${loc.lng}`
+  return (
+    <>
+      {nomadic.length && (
+        <EmpriusMarker key={`${key}-1`} position={nomadicLoc} count={nomadic.length} isNomadic>
+          <Popup>
+            <ToolTooltip tools={nomadic} />
+          </Popup>
+        </EmpriusMarker>
+      )}
+      {regular.length && (
+        <EmpriusMarker key={`${key}-2`} position={regularLoc} count={regular.length}>
+          <Popup>
+            <ToolTooltip tools={regular} />
+          </Popup>
+        </EmpriusMarker>
+      )}
+      {bothTypes && <Polyline positions={[nomadicLoc, loc, regularLoc]} weight={2} color={'#FF8724'} />}
+    </>
   )
 }

@@ -185,7 +185,10 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                     )}
                     {tool.location && (
                       <Box mt={4} height='200px' borderRadius='lg' overflow='hidden'>
-                        <MapWithMarker latLng={tool.location} markerProps={{ showExactLocation }} />
+                        <MapWithMarker
+                          latLng={tool.location}
+                          markerProps={{ showExactLocation, isNomadic: tool.isNomadic }}
+                        />
                       </Box>
                     )}
                   </Stack>

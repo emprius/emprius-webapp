@@ -32,7 +32,11 @@ const EditToolLocation = () => {
   let isAtHomeText = t('tools.tool_at_home_btn', {
     defaultValue: 'Set user position as tool location',
   })
-  if (isAtHome) {
+  if (isNomadic) {
+    isAtHomeText = t('tools.nomadic_tools_cannot_change', {
+      defaultValue: 'Nomadic tools cannot change their location',
+    })
+  } else if (isAtHome) {
     isAtHomeText = t('tools.tool_is_at_home_btn', {
       defaultValue: 'Tool is already at your location',
     })
@@ -46,18 +50,19 @@ const EditToolLocation = () => {
         isRequired={true}
         helperText={helperText}
         canEdit={!isNomadic}
+        markerProps={{
+          isNomadic,
+        }}
       />
-      {!isNomadic && (
-        <Button
-          leftIcon={icons.userHome({})}
-          disabled={isAtHome}
-          onClick={() => {
-            setValue('location', userLocation)
-          }}
-        >
-          {isAtHomeText}
-        </Button>
-      )}
+      <Button
+        leftIcon={icons.userHome({})}
+        disabled={isAtHome}
+        onClick={() => {
+          setValue('location', userLocation)
+        }}
+      >
+        {isAtHomeText}
+      </Button>
     </VStack>
   )
 }

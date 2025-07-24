@@ -1,12 +1,12 @@
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import L, { LatLng } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MAP_DEFAULTS } from '~utils/constants'
-import { EmpriusMarker } from '~components/Layout/Map/Map'
+import { EmpriusMarker, EmpriusMarkerProps } from '~components/Layout/Map/Map'
 import { FormHelperText } from '@chakra-ui/icons'
 
 L.Marker.prototype.options.icon = MAP_DEFAULTS.MARKER
@@ -18,6 +18,7 @@ interface LocationPickerProps<T extends FieldValues> {
   rules?: Record<string, any>
   helperText?: string
   canEdit?: boolean
+  markerProps?: Omit<EmpriusMarkerProps, 'position'>
 }
 
 // Component to handle map clicks and movement
@@ -57,6 +58,7 @@ export const LocationPicker = <T extends FieldValues>({
   rules,
   helperText,
   canEdit = true,
+  markerProps,
 }: LocationPickerProps<T>) => {
   const { t } = useTranslation()
 
@@ -88,7 +90,7 @@ export const LocationPicker = <T extends FieldValues>({
               >
                 <TileLayer attribution={MAP_DEFAULTS.TILE_LAYER.ATTRIBUTION} url={MAP_DEFAULTS.TILE_LAYER.URL} />
                 <MapController onLocationSelect={handleLocationSelect} position={value} />
-                {value && <EmpriusMarker position={value} />}
+                {value && <EmpriusMarker position={value} {...markerProps} />}
               </MapContainer>
             </div>
             <FormErrorMessage>{error?.message}</FormErrorMessage>

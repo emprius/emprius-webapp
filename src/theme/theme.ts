@@ -62,12 +62,12 @@ const theme = extendTheme({
         borderRadius: '50% 50% 0',
         transform: 'rotate(45deg)',
       },
-      '.custom-marker::after': {
+      '.custom-marker-regular::after': {
+        backgroundColor: 'rgba(0, 0, 0, .2)',
         content: '""',
         position: 'absolute',
         width: '50%',
         height: '50%',
-        backgroundColor: 'rgba(0, 0, 0, .1)',
         top: '25%',
         left: '25%',
         borderRadius: '50%',
@@ -88,6 +88,7 @@ const theme = extendTheme({
         fontWeight: 'bold',
         border: '2px solid white',
         boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+        zIndex: 1000,
       },
       // Marker cluster styles
       '.marker-cluster-small': {

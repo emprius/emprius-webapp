@@ -12,12 +12,13 @@ import {
   FiUsers,
 } from 'react-icons/fi'
 import { PiHandArrowDownBold, PiHandHeartBold } from 'react-icons/pi'
-import { FaHeartbeat, FaCalendar, FaRoute, FaBalanceScale } from 'react-icons/fa'
+import { FaHeartbeat, FaCalendar, FaBalanceScale } from 'react-icons/fa'
 import { ImBoxAdd, ImBoxRemove } from 'react-icons/im'
 import { EditIcon } from '@chakra-ui/icons'
 import { RiUserCommunityFill } from 'react-icons/ri'
 import { SlUser } from 'react-icons/sl'
 import { IoMdHome } from 'react-icons/io'
+import { RxColorWheel } from 'react-icons/rx'
 
 export const icons = {
   user: FiUser,
@@ -35,7 +36,7 @@ export const icons = {
   outbox: ImBoxRemove,
   inbox: ImBoxAdd,
   calendar: FaCalendar,
-  nomadic: FaRoute,
+  nomadic: RxColorWheel,
   edit: EditIcon,
   communities: RiUserCommunityFill,
   globe: FiGlobe,
