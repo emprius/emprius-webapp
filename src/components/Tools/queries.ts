@@ -8,11 +8,27 @@ import { ToolHistoryEntry, ToolHistoryResponse } from '~components/Users/types'
 import { convertToDate } from '~utils/dates'
 import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
 import { useRoutedPagination } from '~components/Layout/Pagination/PaginationProvider'
+import { SearchAndPaginationApiParams } from '~components/Layout/Search/SearchAndPagination'
+
+export type ToolsListParams = { ownTools?: boolean; heldTools?: boolean } & SearchAndPaginationApiParams
 
 export const ToolsKeys = {
   toolsOwner: ['tools', 'owner'], // Used to invalidate queries
-  toolsList: (page?: number, term?: string): QueryKey => ['tools', 'owner', page, term],
-  userTools: (userId: string, page?: number, term?: string): QueryKey => ['tools', 'user', userId, page, term],
+  toolsList: ({ page, term, ownTools, heldTools }: ToolsListParams): QueryKey => [
+    'tools',
+    'owner',
+    page,
+    term,
+    { ownTools, heldTools },
+  ],
+  userTools: (userId: string, { page, term, ownTools, heldTools }: ToolsListParams): QueryKey => [
+    'tools',
+    'user',
+    userId,
+    page,
+    term,
+    { ownTools, heldTools },
+  ],
   tool: (id: string): QueryKey => ['tool', id],
   toolRatings: (id: string, page: number): QueryKey => ['tool', id, 'rating', page],
   toolHistory: (id: string): QueryKey => ['tool', id, 'history'],
@@ -53,13 +69,13 @@ export const useTool = (
   return query
 }
 
-export const useTools = () => {
+export const useTools = (heldTools?: boolean) => {
   const { debouncedSearch: term } = useDebouncedSearch()
   const { page } = useRoutedPagination()
 
   return useQuery({
-    queryKey: ToolsKeys.toolsList(page, term),
-    queryFn: () => api.tools.getUserTools({ page, term }),
+    queryKey: ToolsKeys.toolsList({ page, term, heldTools }),
+    queryFn: () => api.tools.getUserTools({ page, term, heldTools }),
   })
 }
 
@@ -70,7 +86,7 @@ export const useUserTools = (
   const { debouncedSearch: term } = useDebouncedSearch()
   const { page } = useRoutedPagination()
   return useQuery({
-    queryKey: ToolsKeys.userTools(userId, page, term),
+    queryKey: ToolsKeys.userTools(userId, { page, term }),
     queryFn: () => api.tools.getUserToolsById(userId, { term, page }),
     enabled: !!userId,
     ...options,

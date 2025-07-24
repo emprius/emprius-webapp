@@ -24,6 +24,7 @@ import {
 } from '~components/Communities/types'
 import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 import { SearchAndPaginationApiParams } from '~components/Layout/Search/SearchAndPagination'
+import { ToolsListParams } from '~components/Tools/queries'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -117,9 +118,9 @@ export const auth = {
 
 // Tools endpoints
 export const tools = {
-  getUserTools: (params: SearchAndPaginationApiParams) =>
+  getUserTools: (params: ToolsListParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools`, { params })),
-  getUserToolsById: (userId: string, params: SearchAndPaginationApiParams) =>
+  getUserToolsById: (userId: string, params: ToolsListParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>(`/tools/user/${userId}`, { params })),
   searchTools: (params: SearchParams) =>
     apiRequest(api.get<PaginatedApiResponse<ToolsListResponse>>('/tools/search', { params })),
