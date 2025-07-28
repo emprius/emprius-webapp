@@ -30,7 +30,7 @@ const NotificationSettings = ({ notificationPreferences }: { notificationPrefere
           {t('profile.notifications.notification_preferences', { defaultValue: 'Notification Preferences' })}
         </Heading>
         <Text color='lightText' mb={4}>
-          {t('profile..notifications.notification_preferences_desc', {
+          {t('profile.notifications.notification_preferences_desc', {
             defaultValue: 'Activate or deactivate email notifications for various events.',
           })}
         </Text>

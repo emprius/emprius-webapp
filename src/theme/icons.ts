@@ -8,6 +8,7 @@ import {
   FiShare2,
   FiStar,
   FiTool,
+  FiTrash2,
   FiUser,
   FiUsers,
 } from 'react-icons/fi'
@@ -44,4 +45,5 @@ export const icons = {
   userHome: IoMdHome,
   userCommunity: FiHome,
   karma: FaBalanceScale,
+  delete: FiTrash2,
 }

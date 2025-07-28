@@ -3,6 +3,11 @@ import { EditProfileFormData, NotificationPreferences, UserProfile, UserProfileD
 import api, { users } from '~src/services/api'
 import { toEmpriusLocation, toLatLng } from '~src/utils'
 
+export const userFromUserDTO = (data: UserProfileDTO): UserProfile => ({
+  ...data,
+  ...(data?.location && { location: toLatLng(data.location) }),
+})
+
 export const UserKeys = {
   currentUser: ['user', 'current'],
   userId: (userId: string) => ['user', userId],
@@ -18,6 +23,11 @@ export const useUpdateUserProfile = () => {
     },
     mutationKey: ['updateProfile'],
     onSuccess: async (data) => {
+      // todo(kon): backend is not sending location properly
+      // client.setQueryData<EditProfileFormData>(UserKeys.currentUser, (old) => ({
+      //   ...old,
+      //   ...userFromUserDTO(data),
+      // }))
       await client.invalidateQueries({ queryKey: UserKeys.currentUser })
       await client.invalidateQueries({ queryKey: UserKeys.userId(data.id) })
       return data
@@ -33,10 +43,7 @@ export const useUserProfile = (
   useQuery({
     queryKey: UserKeys.userId(userId),
     queryFn: () => api.users.getById(userId),
-    select: (data): UserProfile => ({
-      ...data,
-      ...(data.location && { location: toLatLng(data.location) }),
-    }),
+    select: (data): UserProfile => userFromUserDTO(data),
     ...options,
   })
 

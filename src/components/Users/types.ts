@@ -23,6 +23,7 @@ export type UserProfile = UserPreview & {
     id: string
     role: 'owner' | 'user'
   }[]
+  additionalContacts?: AdditionalContacts
 }
 
 export type UserProfileDTO = Omit<UserProfile, 'location' | 'inviteCodes'> & {
@@ -35,6 +36,8 @@ export type Invite = {
 }
 
 type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
+
+export type AdditionalContacts = Record<string, string>
 
 export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted' | 'tool_holder_changed'
 export type NotificationPreferences = Map<NotificationPreferenceType, boolean>
@@ -59,6 +62,7 @@ export type EditProfileFormData = {
   avatar?: string // b64 string
   community?: string
   bio?: string
+  additionalContacts?: AdditionalContacts
 }
 
 export type EditProfileFormDataDTO = Omit<UserProfileDTO, 'location'> & {

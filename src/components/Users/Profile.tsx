@@ -25,6 +25,7 @@ import { BioEditor } from '~components/Users/BioEditor'
 import { UserProfile as UserProfileType } from '~components/Users/types'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+import { AdditionalContactMethods } from '~components/Users/AdditionalContactMethods'
 
 export const UserProfile = (user: UserProfileType) => {
   const { t } = useTranslation()
@@ -165,7 +166,9 @@ export const UserProfile = (user: UserProfileType) => {
 
         <BioEditor user={user} isCurrentUser={isCurrentUser} />
         <Divider />
-
+        {(isCurrentUser || user.additionalContacts) && (
+          <AdditionalContactMethods isCurrentUser={isCurrentUser} additionalContacts={user.additionalContacts} />
+        )}
         {user.location && (
           <Box mt={4} height='200px' width='100%' borderRadius='md' overflow='hidden'>
             <MapWithMarker latLng={user.location} markerProps={{ showExactLocation: !id }} />

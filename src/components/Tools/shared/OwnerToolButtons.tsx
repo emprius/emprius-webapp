@@ -21,6 +21,7 @@ import { useDeleteTool, useUpdateTool } from '~components/Tools/queries'
 import { Tool, UpdateToolParams } from '~components/Tools/types'
 import { ROUTES } from '~src/router/routes'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
+import { icons } from '~theme/icons'
 
 type ToolButtonProps = { toolId: number } & Omit<IconButtonProps, 'aria-label'>
 
@@ -142,7 +143,7 @@ export const DeleteToolButton = ({ toolId, ...props }: { toolId: number } & Butt
   return (
     <>
       <Button
-        leftIcon={<FiTrash2 />}
+        leftIcon={icons.delete({})}
         aria-label={t('tools.delete')}
         size='md'
         colorScheme='red'

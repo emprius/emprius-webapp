@@ -17,12 +17,12 @@ import {
   VStack,
   TableContainer,
 } from '@chakra-ui/react'
-import { CopyIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { Invite } from '~components/Users/types'
 import { useRequestMoreCodes } from '~components/Users/queries'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
+import { CopyButton } from '~components/Layout/CopyButton'
 
 const InviteCodes = ({ codes }: { codes: Invite[] }) => {
   const { t } = useTranslation()
@@ -82,27 +82,6 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
   const [isSharing, setIsSharing] = useState(false)
   const toast = useToast()
 
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast({
-        title: 'Copied to clipboard!',
-        description: 'The content has been copied to your clipboard.',
-        status: 'info',
-        duration: 2000,
-        isClosable: true,
-      })
-    } catch (error) {
-      console.error('Failed to copy:', error)
-      toast({
-        title: 'Failed to copy',
-        description: 'Could not access clipboard. Please copy manually.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
-    }
-  }
 
   const handleShare = async (invite: string) => {
     setIsSharing(true)
@@ -121,7 +100,14 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
           isClosable: true,
         })
       } else {
-        await handleCopy(inviteUrl)
+        await navigator.clipboard.writeText(inviteUrl)
+        toast({
+          title: 'Copied to clipboard!',
+          description: 'The invite link has been copied to your clipboard.',
+          status: 'info',
+          duration: 2000,
+          isClosable: true,
+        })
       }
     } catch (error) {
       console.error('Failed to copy:', error)
@@ -147,11 +133,10 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
                 <Td>
                   <HStack spacing={2}>
                     <Text>{code}</Text>
-                    <IconButton
+                    <CopyButton
+                      text={code}
                       aria-label='Copy text'
-                      icon={<CopyIcon />}
                       size='sm'
-                      onClick={() => handleCopy(code)}
                       variant='ghost'
                     />
                   </HStack>
@@ -192,12 +177,11 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
               <Tr key={index}>
                 <Td>
                   {code}
-                  <IconButton
+                  <CopyButton
+                    text={code}
                     aria-label='Copy text'
-                    icon={<CopyIcon />}
                     size='sm'
                     ml={2}
-                    onClick={() => handleCopy(code)}
                     variant='ghost'
                   />
                 </Td>

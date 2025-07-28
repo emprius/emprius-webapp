@@ -131,7 +131,7 @@ export const CommunityDetail: React.FC = () => {
           <Stack direction='row'>
             {isOwner && (
               <Button
-                leftIcon={<FiTrash2 />}
+                leftIcon={icons.delete({})}
                 colorScheme='red'
                 variant='outline'
                 size='sm'
