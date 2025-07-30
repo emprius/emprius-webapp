@@ -32,6 +32,27 @@ const viteconfig = ({ mode }) => {
     base,
     build: {
       outDir,
+      // Optimize chunk splitting for better caching
+      // rollupOptions: {
+      //   output: {
+      //     // Create separate chunks for vendor libraries
+      //     manualChunks: {
+      //       vendor: ['react', 'react-dom', 'react-router-dom'],
+      //       ui: ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
+      //       utils: ['axios', '@tanstack/react-query', 'i18next', 'react-i18next'],
+      //     },
+      //     // Ensure consistent chunk naming
+      //     chunkFileNames: 'assets/[name]-[hash].js',
+      //     entryFileNames: 'assets/[name]-[hash].js',
+      //     assetFileNames: 'assets/[name]-[hash].[ext]',
+      //   },
+      // },
+      // // Generate source maps for better debugging
+      // sourcemap: mode === 'development',
+      // // Optimize for production
+      // minify: mode === 'production' ? 'esbuild' : false,
+      // // Set reasonable chunk size limits
+      // chunkSizeWarningLimit: 1000,
     },
     define: {
       'import.meta.env.ENVIRONMENT': JSON.stringify(environment),
@@ -62,6 +83,9 @@ const viteconfig = ({ mode }) => {
 
 const pwaManifest: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
+  // devOptions: {
+  //   enabled: false, // Disable in development to avoid conflicts
+  // },
   manifest: {
     name: 'Emprius',
     short_name: 'Emprius',
@@ -89,6 +113,15 @@ const pwaManifest: Partial<VitePWAOptions> = {
     ],
   },
   workbox: {
+    // // Clean up old caches
+    // cleanupOutdatedCaches: true,
+    // // Skip waiting and claim clients immediately
+    // skipWaiting: true,
+    // clientsClaim: true,
+    // // Include all static assets in precache
+    // globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+    // // Exclude source maps and other dev files
+    // globIgnores: ['**/node_modules/**/*', '**/*.map'],
     runtimeCaching: [
       {
         urlPattern: /^https:\/\/app-api\.emprius\.cat\/.*/i,
@@ -102,6 +135,7 @@ const pwaManifest: Partial<VitePWAOptions> = {
           cacheableResponse: {
             statuses: [0, 200],
           },
+          networkTimeoutSeconds: 10,
         },
       },
       {
@@ -115,6 +149,30 @@ const pwaManifest: Partial<VitePWAOptions> = {
           },
         },
       },
+      // Cache JS chunks with StaleWhileRevalidate for better performance
+      // {
+      //   urlPattern: /\.js$/,
+      //   handler: 'StaleWhileRevalidate',
+      //   options: {
+      //     cacheName: 'js-cache',
+      //     expiration: {
+      //       maxEntries: 100,
+      //       maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+      //     },
+      //   },
+      // },
+      // // Cache CSS files
+      // {
+      //   urlPattern: /\.css$/,
+      //   handler: 'StaleWhileRevalidate',
+      //   options: {
+      //     cacheName: 'css-cache',
+      //     expiration: {
+      //       maxEntries: 50,
+      //       maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+      //     },
+      //   },
+      // },
     ],
   },
 }

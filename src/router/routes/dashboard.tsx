@@ -6,6 +6,7 @@ import { TitlePageLayout } from '~src/pages/TitlePageLayout'
 import { ProtectedRoute } from '~src/router/ProtectedRoute'
 import { ROUTES } from '~src/router/routes/index'
 import { SuspenseLoader } from '~src/router/SuspenseLoader'
+import { lazyWithRetryNamed } from '~utils/lazyWithRetry'
 
 const SearchPage = lazy(() => import('~src/pages/search/view').then((m) => ({ default: m.View })))
 const Profile = lazy(() => import('~src/pages/profile/view').then((m) => ({ default: m.View })))
@@ -19,9 +20,25 @@ const UsersListPage = lazy(() => import('~src/pages/users/list').then((m) => ({ 
 const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ default: m.List })))
 
 // Communities pages
-const CommunityDetailPage = lazy(() => import('~src/pages/communities/detail').then((m) => ({ default: m.Detail })))
-const CommunityNewPage = lazy(() => import('~src/pages/communities/new').then((m) => ({ default: m.New })))
-const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then((m) => ({ default: m.Edit })))
+// const CommunityDetailPage = lazy(() => import('~src/pages/communities/detail').then((m) => ({ default: m.Detail })))
+// const CommunityNewPage = lazy(() => import('~src/pages/communities/new').then((m) => ({ default: m.New })))
+// const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then((m) => ({ default: m.Edit })))
+
+// const SearchPage = lazyWithRetryNamed(() => import('~src/pages/search/view'), 'View')
+// const Profile = lazyWithRetryNamed(() => import('~src/pages/profile/view'), 'View')
+// const EditProfile = lazyWithRetryNamed(() => import('~src/pages/profile/edit'), 'Edit')
+// const ToolAddPage = lazyWithRetryNamed(() => import('~src/pages/tools/add'), 'Add')
+// const ToolEditPage = lazyWithRetryNamed(() => import('~src/pages/tools/edit'), 'Edit')
+// const BookingsPage = lazyWithRetryNamed(() => import('~src/pages/bookings/list'), 'List')
+// const BookingDetailPage = lazyWithRetryNamed(() => import('~src/pages/bookings/detail'), 'Detail')
+// const UserRatingsPage = lazyWithRetryNamed(() => import('~src/pages/ratings/view'), 'View')
+// const UsersListPage = lazyWithRetryNamed(() => import('~src/pages/users/list'), 'List')
+// const ToolsListPage = lazyWithRetryNamed(() => import('~src/pages/tools/list'), 'List')
+
+// Communities pages
+const CommunityDetailPage = lazyWithRetryNamed(() => import('~src/pages/communities/detail'), 'Detail')
+const CommunityNewPage = lazyWithRetryNamed(() => import('~src/pages/communities/new'), 'New')
+const CommunityEditPage = lazyWithRetryNamed(() => import('~src/pages/communities/edit'), 'Edit')
 
 const RatingElements = [
   {
@@ -128,7 +145,7 @@ const DashboardForms = [
 ]
 
 // Import the new view component
-const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').then((m) => ({ default: m.View })))
+const CommunitiesViewPage = lazyWithRetryNamed(() => import('~src/pages/communities/view'), 'View')
 
 const CommunityElements = [
   {
