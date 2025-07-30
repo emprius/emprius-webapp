@@ -3,7 +3,6 @@ import { NavigationDependingProviders } from '~src/Providers'
 import { useAuthRoutes } from '~src/router/routes/auth'
 import { useDashboardRoutes } from '~src/router/routes/dashboard'
 import { useRootRoutes } from '~src/router/routes/root'
-import { ChunkErrorBoundary } from '~src/router/ChunkErrorBoundary'
 
 export const AppRoutes = () => {
   const auth = useAuthRoutes()
@@ -17,11 +16,9 @@ export const AppRoutes = () => {
     [
       {
         element: (
-          // <ChunkErrorBoundary>
           <NavigationDependingProviders>
             <Outlet />
           </NavigationDependingProviders>
-          // </ChunkErrorBoundary>
         ),
         children: [root, dashboard, auth],
       },

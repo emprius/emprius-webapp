@@ -6,8 +6,6 @@ import './index.css'
 import { Providers } from './Providers'
 
 import { registerServiceWorker } from './registerSW'
-// Initialize chunk error handler
-// import './utils/chunkErrorHandler'
 
 // Register service worker
 registerServiceWorker()
