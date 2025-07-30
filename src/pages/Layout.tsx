@@ -8,7 +8,6 @@ import { PWABanner } from '~components/Layout/Banners/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
 import { BottomNav } from '~components/Layout/BottomNav'
-import { ErrorBoundary } from '~src/pages/ErrorBoundary'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 
 export const Layout = () => {
@@ -23,10 +22,8 @@ export const Layout = () => {
       <OfflineBanner />
       <Navbar />
       <Box flex={1}>
-        <ErrorBoundary>
-          <Outlet />
-          {isAuthenticated && !isDashboardLayout && <BottomNav />}
-        </ErrorBoundary>
+        <Outlet />
+        {isAuthenticated && !isDashboardLayout && <BottomNav />}
       </Box>
       <Footer />
     </Box>

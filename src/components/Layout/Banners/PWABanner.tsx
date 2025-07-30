@@ -16,9 +16,9 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { HiOutlineRocketLaunch } from 'react-icons/hi2'
 import { MdOutlineIosShare } from 'react-icons/md'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { icons } from '~theme/icons'
 
 export const PWABanner = () => {
   const { t } = useTranslation()
@@ -147,7 +147,7 @@ export const PWABanner = () => {
       >
         <Flex justify='center' align='center' maxW='container.xl' mx='auto' gap={4} direction={'column'}>
           <Flex align='center' gap={2}>
-            <Icon as={HiOutlineRocketLaunch} boxSize={8} />
+            <Icon as={icons.updateAvailable} boxSize={8} />
             <Text>{title}</Text>
           </Flex>
           <Flex gap={2}>

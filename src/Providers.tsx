@@ -9,12 +9,16 @@ import { SearchProvider } from '~components/Search/SearchContext'
 import theme from '~theme/theme'
 import { AppRoutes } from './router/router'
 import queryClient from './services/queryClient'
+import { ErrorBoundaries } from '~src/pages/ErrorBoundary'
 
 export const Providers = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <AppProviders />
+        {/* Top level error boundaries to catch errors in the whole app */}
+        <ErrorBoundaries>
+          <AppProviders />
+        </ErrorBoundaries>
       </ChakraProvider>
     </QueryClientProvider>
   )

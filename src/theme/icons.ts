@@ -20,6 +20,7 @@ import { RiUserCommunityFill } from 'react-icons/ri'
 import { SlUser } from 'react-icons/sl'
 import { IoMdHome } from 'react-icons/io'
 import { RxColorWheel } from 'react-icons/rx'
+import { HiOutlineRocketLaunch } from 'react-icons/hi2'
 
 export const icons = {
   user: FiUser,
@@ -46,4 +47,5 @@ export const icons = {
   userCommunity: FiHome,
   karma: FaBalanceScale,
   delete: FiTrash2,
+  updateAvailable: HiOutlineRocketLaunch,
 }

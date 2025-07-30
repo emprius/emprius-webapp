@@ -1,6 +1,7 @@
 import { Spinner, Square, SquareProps, Text } from '@chakra-ui/react'
 import { ReactNode, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ErrorBoundaries } from '~src/pages/ErrorBoundary'
 
 export const Loading = ({ ...rest }: SquareProps) => {
   const { t } = useTranslation()
@@ -14,5 +15,8 @@ export const Loading = ({ ...rest }: SquareProps) => {
 }
 
 export const SuspenseLoader = ({ children }: { children: ReactNode }) => (
-  <Suspense fallback={<Loading />}>{children}</Suspense>
+  <ErrorBoundaries>
+    {/* view level error boundary*/}
+    <Suspense fallback={<Loading />}>{children}</Suspense>
+  </ErrorBoundaries>
 )

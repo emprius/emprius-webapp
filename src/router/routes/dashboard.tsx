@@ -22,6 +22,7 @@ const ToolsListPage = lazy(() => import('~src/pages/tools/list').then((m) => ({ 
 const CommunityDetailPage = lazy(() => import('~src/pages/communities/detail').then((m) => ({ default: m.Detail })))
 const CommunityNewPage = lazy(() => import('~src/pages/communities/new').then((m) => ({ default: m.New })))
 const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then((m) => ({ default: m.Edit })))
+const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').then((m) => ({ default: m.View })))
 
 const RatingElements = [
   {
@@ -126,9 +127,6 @@ const DashboardForms = [
     ],
   },
 ]
-
-// Import the new view component
-const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').then((m) => ({ default: m.View })))
 
 const CommunityElements = [
   {
