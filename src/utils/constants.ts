@@ -62,8 +62,8 @@ export const ASSETS = {
   AVATAR_FALLBACK: avatarFallback,
 } as const
 
-// MS intervall to update the PWA
-export const UPDATE_PWA_INTERVAL = 1000 * 60 * 30 // 30 minutes
+// MS interval to update the PWA - more frequent checks to catch updates quickly
+export const UPDATE_PWA_INTERVAL = 1000 * 60 * 2 // 2 minutes
 
 export const TOOL_MAX_DATE_BOOKING = 12 // months from now that a tool can be booked
 

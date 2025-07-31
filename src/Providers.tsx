@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react'
 import { AuthProvider } from '~components/Auth/AuthContext'
 import { InfoProvider } from '~components/Layout/Contexts/InfoContext'
 import { PendingActionsProvider } from '~components/Layout/Contexts/PendingActionsProvider'
+import { PWAUpdateProvider } from '~components/Layout/Contexts/PWAUpdateProvider'
 import { TitleProvider } from '~components/Layout/Contexts/TitleContext'
 import { SearchProvider } from '~components/Search/SearchContext'
 import theme from '~theme/theme'
@@ -25,15 +26,17 @@ export const Providers = () => {
 }
 
 const AppProviders = () => (
-  <AuthProvider>
-    <InfoProvider>
-      <PendingActionsProvider>
-        <SearchProvider>
-          <AppRoutes />
-        </SearchProvider>
-      </PendingActionsProvider>
-    </InfoProvider>
-  </AuthProvider>
+  <PWAUpdateProvider>
+    <AuthProvider>
+      <InfoProvider>
+        <PendingActionsProvider>
+          <SearchProvider>
+            <AppRoutes />
+          </SearchProvider>
+        </PendingActionsProvider>
+      </InfoProvider>
+    </AuthProvider>
+  </PWAUpdateProvider>
 )
 
 /**

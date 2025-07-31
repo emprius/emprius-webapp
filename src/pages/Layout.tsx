@@ -9,6 +9,7 @@ import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
 import { BottomNav } from '~components/Layout/BottomNav'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
+import { PWAUpdateBanner } from '~components/Layout/Banners/PWAUpdateBanner'
 
 export const Layout = () => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
@@ -20,6 +21,7 @@ export const Layout = () => {
       <ScrollToTop />
       <PWABanner />
       <OfflineBanner />
+      <PWAUpdateBanner />
       <Navbar />
       <Box flex={1}>
         <Outlet />

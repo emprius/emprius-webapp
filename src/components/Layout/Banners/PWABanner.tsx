@@ -115,8 +115,9 @@ export const PWABanner = () => {
     (!isInstallable && !isIOS && !isFirefox) ||
     (!deferredPrompt && !isIOS && !isFirefox) ||
     localStorage.getItem('pwaBannerDismissed')
-  )
+  ) {
     return null
+  }
 
   let title = t('pwa.installMessage')
   if (isIOS) {
@@ -129,7 +130,9 @@ export const PWABanner = () => {
     <>
       <Box
         bgGradient='linear(to-r, blue.600, purple.600)'
-        p={4}
+        pt={3}
+        pb={3}
+        px={4}
         color='white'
         boxShadow='md'
         position='relative'
@@ -145,7 +148,14 @@ export const PWABanner = () => {
         }}
         zIndex={900}
       >
-        <Flex justify='center' align='center' maxW='container.xl' mx='auto' gap={4} direction={'column'}>
+        <Flex
+          justify='space-between'
+          align='center'
+          maxW='container.xl'
+          mx='auto'
+          gap={2}
+          direction={{ base: 'column', md: 'row' }}
+        >
           <Flex align='center' gap={2}>
             <Icon as={icons.updateAvailable} boxSize={8} />
             <Text>{title}</Text>
