@@ -152,7 +152,7 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
           </FormControl>
 
           <FormControl isInvalid={!!errors.community} isRequired>
-            <FormLabel htmlFor='community'>{t('auth.community')}</FormLabel>
+            <FormLabel htmlFor='community'>{t('auth.house_project', { defaultValue: 'Project' })}</FormLabel>
             <FormHelperText mb={2}>
               {t('auth.house_or_project_helper_text', {
                 defaultValue: 'The project you belongs to: housing project, cooperative, etc... ',

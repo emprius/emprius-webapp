@@ -5,12 +5,12 @@
   "auth": {
     "actual_password_helper": "Only needed to change password",
     "change_password": "Change password",
-    "community": "",
     "confirm_password": "Confirm Password",
     "email": "Email",
     "have_account": "Already have an account?",
     "house_or_project": "House / Project",
     "house_or_project_helper_text": "The project you belongs to: housing project, cooperative, etc... ",
+    "house_project": "Project",
     "invitation_token": "Invitation Token",
     "login": "Login",
     "login_error": "Login failed",
@@ -134,18 +134,25 @@
     "other": "Other",
     "transport": "Transport"
   },
+  "chunk_error_desc": "The page cannot be loaded due to an update. Please reload the page.",
+  "chunk_error_title": "An update is available",
   "common": {
     "actual_password": "Current Password",
     "additional_options": "Additional Options",
     "back_to_home": "Back to Home",
     "cancel": "Cancel",
     "characters": "characters",
+    "clipboard_error": "Could not access clipboard. Please copy manually.",
     "close": "Close",
     "confirm": "Confirm",
+    "copied_description": "The content has been copied to your clipboard.",
+    "copied_to_clipboard": "Copied to clipboard!",
+    "copy_text": "Copy text",
     "delete": "Delete",
     "edit": "Edit",
     "email": "Email",
     "error": "Error",
+    "failed_to_copy": "Failed to copy",
     "image_upload_error": "Image Upload Error",
     "image_upload_error_description": "There was an error uploading your image. Please try again with a different image or format.",
     "loading": "Loading...",
@@ -154,6 +161,7 @@
     "name": "Name",
     "owner": "Owner",
     "ratings": "Ratings",
+    "reload_page": "Reload Page",
     "required": "This field is required",
     "save": "Save",
     "saving": "Saving...",
@@ -161,7 +169,8 @@
     "success": "Success",
     "toggle_theme": "Toggle theme",
     "token_symbol": "{{, tokenSymbol}}",
-    "tools": "Tools"
+    "tools": "Tools",
+    "update": "Update"
   },
   "communities": {
     "accept": "Accept",
@@ -222,6 +231,7 @@
   "donate": "Donate",
   "error": {
     "cannot_reach_server": "We're unable to reach our servers at the moment. This could be due to maintenance or connectivity issues.",
+    "error_boundary_msg": "We're sorry, but there was an error processing your request.",
     "go_home": "Go to Homepage",
     "loading_page": "Loading page...",
     "page_not_found": "Page Not Found",
@@ -319,6 +329,14 @@
     "total_results_other": "Total {{count}}"
   },
   "profile": {
+    "additional_contact_method_data": "Contact information",
+    "additional_contact_method_title": "Method name",
+    "additional_contact_methods": "Additional Contact Methods",
+    "additional_contact_methods_desc": "Additional contact methods are added to your profile to help other users reach you if you are involved on an accepted booking. You can add any contact method you want, like Telegram, Signal, etc.",
+    "copy_contact_method": "Copy contact method",
+    "delete_contact_method": "Delete contact method",
+    "duplicated_additional_contact_methods": "Duplicated contact method",
+    "duplicated_additional_contact_methods_msg": "A contact with that name already exists.",
     "karma_balance": "Karma",
     "karma_desc": "Karma points shows the balance between loans and petitions. You can earn karma by accepting loans or petitions from other users, and you can spend it by requesting loans or petitions from others.",
     "notifications": {
@@ -344,7 +362,9 @@
     "ios_step1": "1. Tap on",
     "notNowButton": "Not now",
     "step2": "2. Select",
-    "step2_button": "Add to Home Screen"
+    "step2_button": "Add to Home Screen",
+    "update_button": "Update",
+    "update_title": "New version is available, upgrade it as soon as posible or the app may not work as expected!"
   },
   "rating": {
     "already_rated": "Already rated",
@@ -450,6 +470,7 @@
     "nomadic_owner_desc": "Person who is holding the nomadic tool right now",
     "nomadic_picked_by": "Picked up by",
     "nomadic_picked_by_date": "On {{ date, format }}",
+    "nomadic_tools_cannot_change": "Nomadic tools cannot change their location",
     "not_available": "This tool is currently not available",
     "not_found": "Tool not found",
     "not_found_description": "This tool is no longer available",
@@ -462,6 +483,7 @@
     "select_communities": "Select communities",
     "share_globally": "Share globally",
     "share_globally_desc": "Share this tool with everybody",
+    "show_held_tools": "Show held tools",
     "this_tool_is_nomadic": "This tool is nomadic",
     "toggle_availability": "Toggle availability",
     "tool_at_home_btn": "Set user position as tool location",
