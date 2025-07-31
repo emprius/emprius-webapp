@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { delay } from 'framer-motion'
+import { forceRefresh } from '~utils/refresh'
 
 type PWAUpdateContextType = {
   isUpdateAvailable: boolean
@@ -46,6 +48,11 @@ export const PWAUpdateProvider = ({ children }: { children: React.ReactNode }) =
       setIsUpdating(true)
       try {
         await updateSW(true)
+        // Added here to force refresh at least. Sometimes, idk why, this function is not working
+        // Probably it hapend when some kind of cache is previously stored with the SW on the autoupdate mode
+        delay(() => {
+          forceRefresh()
+        }, 3000)
         // The page will reload automatically
       } catch (error) {
         console.error('Failed to update PWA:', error)

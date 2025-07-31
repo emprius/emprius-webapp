@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { icons } from '~theme/icons'
 import { usePWAUpdate } from '~components/Layout/Contexts/PWAUpdateProvider'
@@ -7,6 +7,12 @@ import { usePWAUpdate } from '~components/Layout/Contexts/PWAUpdateProvider'
 export const PWAUpdateBanner = () => {
   const { isUpdateAvailable, isUpdating, triggerUpdate } = usePWAUpdate()
   const { t } = useTranslation()
+
+  const trigger = useCallback(async () => {
+    if (triggerUpdate) {
+      triggerUpdate()
+    }
+  }, [triggerUpdate])
 
   if (!isUpdateAvailable) {
     return null
@@ -51,12 +57,7 @@ export const PWAUpdateBanner = () => {
           </Text>
         </Flex>
         <Flex gap={2}>
-          <Button
-            colorScheme='whiteAlpha'
-            onClick={triggerUpdate}
-            _hover={{ bg: 'whiteAlpha.300' }}
-            isLoading={isUpdating}
-          >
+          <Button colorScheme='whiteAlpha' onClick={trigger} _hover={{ bg: 'whiteAlpha.300' }} isLoading={isUpdating}>
             {t('pwa.update_button', { defaultValue: 'Update' })}
           </Button>
         </Flex>

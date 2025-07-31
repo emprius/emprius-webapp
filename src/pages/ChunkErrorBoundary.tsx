@@ -3,6 +3,7 @@ import { Box, Button, Text, VStack } from '@chakra-ui/react'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { useTranslation } from 'react-i18next'
 import { icons } from '~theme/icons'
+import { forceRefresh } from '~utils/refresh'
 
 interface Props {
   children: ReactNode
@@ -42,19 +43,7 @@ export class ChunkErrorBoundary extends Component<Props, State> {
   }
 
   private forceReload = () => {
-    // Clear caches and reload
-    if ('caches' in window) {
-      caches
-        .keys()
-        .then((names) => {
-          names.forEach((name) => caches.delete(name))
-        })
-        .finally(() => {
-          ;(window as any).location.reload()
-        })
-    } else {
-      ;(window as any).location.reload()
-    }
+    forceRefresh()
   }
 }
 
