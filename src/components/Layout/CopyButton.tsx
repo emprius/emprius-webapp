@@ -17,8 +17,8 @@ export const CopyButton = ({ text, 'aria-label': ariaLabel, ...props }: CopyButt
       await navigator.clipboard.writeText(text)
       toast({
         title: t('common.copied_to_clipboard', { defaultValue: 'Copied to clipboard!' }),
-        description: t('common.copied_description', { 
-          defaultValue: 'The content has been copied to your clipboard.' 
+        description: t('common.copied_description', {
+          defaultValue: 'The content has been copied to your clipboard.',
         }),
         status: 'info',
         duration: 2000,
@@ -28,8 +28,8 @@ export const CopyButton = ({ text, 'aria-label': ariaLabel, ...props }: CopyButt
       console.error('Failed to copy:', error)
       toast({
         title: t('common.failed_to_copy', { defaultValue: 'Failed to copy' }),
-        description: t('common.clipboard_error', { 
-          defaultValue: 'Could not access clipboard. Please copy manually.' 
+        description: t('common.clipboard_error', {
+          defaultValue: 'Could not access clipboard. Please copy manually.',
         }),
         status: 'error',
         duration: 3000,

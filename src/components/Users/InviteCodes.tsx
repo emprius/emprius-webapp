@@ -82,7 +82,6 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
   const [isSharing, setIsSharing] = useState(false)
   const toast = useToast()
 
-
   const handleShare = async (invite: string) => {
     setIsSharing(true)
     try {
@@ -133,12 +132,7 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
                 <Td>
                   <HStack spacing={2}>
                     <Text>{code}</Text>
-                    <CopyButton
-                      text={code}
-                      aria-label='Copy text'
-                      size='sm'
-                      variant='ghost'
-                    />
+                    <CopyButton text={code} aria-label='Copy text' size='sm' variant='ghost' />
                   </HStack>
                   <Text color={'lightText'} fontSize={'sm'}>
                     {t('invite_codes.date_formatted', {
@@ -177,13 +171,7 @@ const InviteCodesTable = ({ codes }: { codes: Invite[] }) => {
               <Tr key={index}>
                 <Td>
                   {code}
-                  <CopyButton
-                    text={code}
-                    aria-label='Copy text'
-                    size='sm'
-                    ml={2}
-                    variant='ghost'
-                  />
+                  <CopyButton text={code} aria-label='Copy text' size='sm' ml={2} variant='ghost' />
                 </Td>
                 <Td>
                   {t('invite_codes.date_formatted', {
