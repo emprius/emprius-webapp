@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { MdOutlineIosShare } from 'react-icons/md'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { icons } from '~theme/icons'
+import { usePWAUpdate } from '~components/Layout/Contexts/PWAUpdateProvider'
 
 export const PWABanner = () => {
   const { t } = useTranslation()
@@ -29,6 +30,7 @@ export const PWABanner = () => {
   const { isOpen, onClose: originalOnClose } = useDisclosure({
     defaultIsOpen: !localStorage.getItem('pwaBannerDismissed'),
   })
+  const { isUpdateAvailable, isUpdating, triggerUpdate } = usePWAUpdate()
 
   const onClose = () => {
     localStorage.setItem('pwaBannerDismissed', 'true')
@@ -116,6 +118,11 @@ export const PWABanner = () => {
     (!deferredPrompt && !isIOS && !isFirefox) ||
     localStorage.getItem('pwaBannerDismissed')
   ) {
+    return null
+  }
+
+  // Don't show if an update is available
+  if (isUpdateAvailable) {
     return null
   }
 
