@@ -4,18 +4,24 @@ import { UPDATE_PWA_INTERVAL } from '~utils/constants'
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     const updateSW = registerSW({
+      immediate: true,
       onNeedRefresh() {
-        updateSW(true)
+        console.log('New app version available, notifying user...')
+        window.dispatchEvent(
+          new CustomEvent('pwa-update-available', {
+            detail: { updateSW },
+          })
+        )
       },
       onOfflineReady() {
-        // Handle offline ready notification through PWAContext toast
         console.log('App ready to work offline')
       },
       onRegisteredSW(swScriptUrl, registration) {
         if (registration) {
+          // Check for updates more frequently
           setInterval(() => {
             registration.update()
-          }, UPDATE_PWA_INTERVAL) // Check for updates every hour
+          }, UPDATE_PWA_INTERVAL)
         }
       },
       onRegisterError(error) {

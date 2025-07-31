@@ -8,8 +8,8 @@ import { PWABanner } from '~components/Layout/Banners/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
 import { BottomNav } from '~components/Layout/BottomNav'
-import { ErrorBoundary } from '~src/pages/ErrorBoundary'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
+import { PWAUpdateBanner } from '~components/Layout/Banners/PWAUpdateBanner'
 
 export const Layout = () => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
@@ -21,12 +21,11 @@ export const Layout = () => {
       <ScrollToTop />
       <PWABanner />
       <OfflineBanner />
+      <PWAUpdateBanner />
       <Navbar />
       <Box flex={1}>
-        <ErrorBoundary>
-          <Outlet />
-          {isAuthenticated && !isDashboardLayout && <BottomNav />}
-        </ErrorBoundary>
+        <Outlet />
+        {isAuthenticated && !isDashboardLayout && <BottomNav />}
       </Box>
       <Footer />
     </Box>

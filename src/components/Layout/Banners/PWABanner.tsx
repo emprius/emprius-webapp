@@ -16,9 +16,10 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { HiOutlineRocketLaunch } from 'react-icons/hi2'
 import { MdOutlineIosShare } from 'react-icons/md'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { icons } from '~theme/icons'
+import { usePWAUpdate } from '~components/Layout/Contexts/PWAUpdateProvider'
 
 export const PWABanner = () => {
   const { t } = useTranslation()
@@ -29,6 +30,7 @@ export const PWABanner = () => {
   const { isOpen, onClose: originalOnClose } = useDisclosure({
     defaultIsOpen: !localStorage.getItem('pwaBannerDismissed'),
   })
+  const { isUpdateAvailable, isUpdating, triggerUpdate } = usePWAUpdate()
 
   const onClose = () => {
     localStorage.setItem('pwaBannerDismissed', 'true')
@@ -115,8 +117,14 @@ export const PWABanner = () => {
     (!isInstallable && !isIOS && !isFirefox) ||
     (!deferredPrompt && !isIOS && !isFirefox) ||
     localStorage.getItem('pwaBannerDismissed')
-  )
+  ) {
     return null
+  }
+
+  // Don't show if an update is available
+  if (isUpdateAvailable) {
+    return null
+  }
 
   let title = t('pwa.installMessage')
   if (isIOS) {
@@ -129,7 +137,9 @@ export const PWABanner = () => {
     <>
       <Box
         bgGradient='linear(to-r, blue.600, purple.600)'
-        p={4}
+        pt={3}
+        pb={3}
+        px={4}
         color='white'
         boxShadow='md'
         position='relative'
@@ -145,9 +155,16 @@ export const PWABanner = () => {
         }}
         zIndex={900}
       >
-        <Flex justify='center' align='center' maxW='container.xl' mx='auto' gap={4} direction={'column'}>
+        <Flex
+          justify='space-between'
+          align='center'
+          maxW='container.xl'
+          mx='auto'
+          gap={2}
+          direction={{ base: 'column', md: 'row' }}
+        >
           <Flex align='center' gap={2}>
-            <Icon as={HiOutlineRocketLaunch} boxSize={8} />
+            <Icon as={icons.updateAvailable} boxSize={8} />
             <Text>{title}</Text>
           </Flex>
           <Flex gap={2}>

@@ -61,12 +61,14 @@ const viteconfig = ({ mode }) => {
 }
 
 const pwaManifest: Partial<VitePWAOptions> = {
-  registerType: 'autoUpdate',
+  registerType: 'prompt',
   manifest: {
     name: 'Emprius',
     short_name: 'Emprius',
     description: 'A platform for sharing tools and resources',
     theme_color: '#319795',
+    start_url: '/',
+    scope: '/',
     icons: [
       {
         src: 'assets/pwa/manifest-icon-192.maskable.png',
