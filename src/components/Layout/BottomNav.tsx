@@ -16,6 +16,8 @@ type MenuItem = {
   additionalPath?: string[]
 }
 
+export const BOTTOM_NAV_HEIGHT = '60px'
+
 export const BottomNav = () => {
   const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
   const { t } = useTranslation()
@@ -50,7 +52,7 @@ export const BottomNav = () => {
       bottom={0}
       left={0}
       right={0}
-      h='60px'
+      h={BOTTOM_NAV_HEIGHT}
       bg={bgColor}
       borderTop='1px'
       borderColor={borderColor}

@@ -37,6 +37,7 @@ const viteconfig = ({ mode }) => {
       'import.meta.env.ENVIRONMENT': JSON.stringify(environment),
       'import.meta.env.title': JSON.stringify(title),
       'import.meta.env.API_URL': JSON.stringify(apiUrl),
+      'import.meta.env.COMMIT': JSON.stringify(commit),
     },
     plugins: [
       tsconfigPaths(),
