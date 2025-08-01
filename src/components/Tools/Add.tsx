@@ -49,6 +49,7 @@ export const AddTool = () => {
     await createTool({
       ...data,
       images: imageHashes,
+      cost: Number(data.cost),
       toolValuation: Number(data.toolValuation) || 0,
       height: Number(data.height),
       weight: Number(data.weight),
