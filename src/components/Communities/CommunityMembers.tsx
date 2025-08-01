@@ -2,11 +2,7 @@ import React from 'react'
 import {
   Button,
   Flex,
-  Heading,
-  Grid,
-  GridItem,
   useDisclosure,
-  Badge,
   IconButton,
   useToast,
   AlertDialog,
@@ -15,9 +11,9 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Box,
   HStack,
   useColorModeValue,
+  Divider,
 } from '@chakra-ui/react'
 import { FiUserPlus, FiUserMinus } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
@@ -137,24 +133,30 @@ const CommunityUsersList = ({ id, community }: { id: string; community: Communit
   return (
     <>
       {usersData.map((member) => (
-        <HStack key={member.id}>
-          <UserCard
-            userId={member.id}
-            placeholderData={member}
-            borderWidth={0}
-            badge={community?.ownerId === member.id && t('communities.admin')}
-          />
-          {isOwner && community?.ownerId !== member.id && (
-            <IconButton
-              aria-label={t('communities.remove_user')}
-              icon={<FiUserMinus />}
-              colorScheme='red'
-              variant='ghost'
-              isLoading={isRemoving && userToRemove?.id === member.id}
-              onClick={() => handleRemoveClick(member.id, member.name)}
+        <>
+          <HStack key={member.id} gap={4}>
+            <UserCard
+              userId={member.id}
+              placeholderData={member}
+              borderWidth={0}
+              badge={community?.ownerId === member.id && t('communities.admin')}
+              flex={1}
             />
-          )}
-        </HStack>
+            {isOwner && community?.ownerId !== member.id && (
+              <Flex display={'flex'} flex={1} justify={'end'}>
+                <IconButton
+                  aria-label={t('communities.remove_user')}
+                  icon={<FiUserMinus />}
+                  colorScheme='red'
+                  variant='outline'
+                  isLoading={isRemoving && userToRemove?.id === member.id}
+                  onClick={() => handleRemoveClick(member.id, member.name)}
+                />
+              </Flex>
+            )}
+          </HStack>
+          <Divider borderColor={useColorModeValue('gray.200', 'gray.700')} my={4} />
+        </>
       ))}
       <RoutedPagination pagination={data.pagination} />
       {/* Remove user confirmation dialog */}
