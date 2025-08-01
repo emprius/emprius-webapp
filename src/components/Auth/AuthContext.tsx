@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { UNAUTHORIZED_EVENT } from '../../services/queryClient'
 import { LoginResponse, useCurrentUser, useLogin, useRegister } from '~components/Auth/queries'
 import { STORAGE_KEYS } from '~utils/constants'
+import { useTranslation } from 'react-i18next'
 
 export const AuthContext = createContext<ReturnType<typeof useAuthProvider> | undefined>(undefined)
 
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 const useAuthProvider = () => {
   const queryClient = useQueryClient()
+  const { i18n } = useTranslation()
   const [bearer, setBearer] = useState<string | null>(localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN))
 
   const login = useLogin({
@@ -72,6 +74,15 @@ const useAuthProvider = () => {
       window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized)
     }
   }, [logout])
+
+  // Set user configured language
+  useEffect(() => {
+    if (!user || !user.lang || !i18n) return
+    const userLang = user?.lang
+    if (userLang && i18n.language !== userLang) {
+      i18n.changeLanguage(userLang)
+    }
+  }, [user, i18n])
 
   const isAuthenticated = useMemo(() => !!bearer, [bearer])
   const isLoading = useMemo(() => !!bearer && isLoadingUser, [bearer, isLoadingUser])

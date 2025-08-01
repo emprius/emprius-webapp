@@ -6,7 +6,11 @@ import React from 'react'
 
 export const LogoutBtn = (props: ButtonProps) => {
   const { t } = useTranslation()
-  const { logout } = useAuth()
+  const { logout, isAuthenticated } = useAuth()
+  if (!isAuthenticated) {
+    return null
+  }
+
   return (
     <Button aria-label={t('common.logout')} leftIcon={<FiLogOut />} onClick={logout} variant='ghost' {...props}>
       {t('nav.logout')}

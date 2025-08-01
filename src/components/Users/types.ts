@@ -42,15 +42,18 @@ export type AdditionalContacts = Record<string, string>
 export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted' | 'tool_holder_changed'
 export type NotificationPreferences = Map<NotificationPreferenceType, boolean>
 
-export type OwnUserProfile = UserProfile & {
+type ProfilePrivateData = {
   inviteCodes?: Invite[]
   notificationPreferences?: NotificationPreferences
+  lang?: string
 }
 
-export type OwnUserProfileDTO = UserProfileDTO & {
-  inviteCodes?: InviteDTO[]
-  notificationPreferences?: NotificationPreferences
-}
+export type OwnUserProfile = UserProfile & ProfilePrivateData
+
+export type OwnUserProfileDTO = UserProfileDTO &
+  Omit<ProfilePrivateData, 'inviteCodes'> & {
+    inviteCodes?: InviteDTO[]
+  }
 
 export type EditProfileFormData = {
   name: string
@@ -63,6 +66,7 @@ export type EditProfileFormData = {
   community?: string
   bio?: string
   additionalContacts?: AdditionalContacts
+  lang?: string
 }
 
 export type EditProfileFormDataDTO = Omit<UserProfileDTO, 'location'> & {

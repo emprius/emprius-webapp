@@ -19,6 +19,7 @@ export type IRegisterParams = {
   password?: string
   community?: string
   location?: EmpriusLocation
+  lang?: string
 }
 
 export interface LoginResponse {

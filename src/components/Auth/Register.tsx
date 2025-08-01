@@ -11,7 +11,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
@@ -27,6 +27,7 @@ import { FormHelperText } from '@chakra-ui/icons'
 export type RegisterFormData = {
   confirmPassword: string
   location: LatLng
+  lang: string
 } & Omit<IRegisterParams, 'location'>
 
 interface RegisterProps {
@@ -34,7 +35,7 @@ interface RegisterProps {
 }
 
 export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const toast = useToast()
   const {
@@ -57,20 +58,23 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
 
   const password = watch('password')
 
-  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
-    await mutateAsync(data)
-      .then(() => navigate(ROUTES.HOME))
-      .catch((error) => {
-        console.error('Registration failed:', error)
-        toast({
-          title: t('auth.register_error'),
-          description: t('auth.try_again'),
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+  const onSubmit: SubmitHandler<RegisterFormData> = useCallback(
+    async (data) => {
+      await mutateAsync({ ...data, lang: i18n.language })
+        .then(() => navigate(ROUTES.HOME))
+        .catch((error) => {
+          console.error('Registration failed:', error)
+          toast({
+            title: t('auth.register_error'),
+            description: t('auth.try_again'),
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
         })
-      })
-  }
+    },
+    [i18n.language]
+  )
 
   return (
     <Stack spacing={8}>

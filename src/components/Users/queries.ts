@@ -23,7 +23,7 @@ export const useUpdateUserProfile = () => {
     },
     mutationKey: ['updateProfile'],
     onSuccess: async (data) => {
-      // todo(kon): backend is not sending location properly
+      // todo(kon): backend is not sending location properly to preupdate the query with response info
       // client.setQueryData<EditProfileFormData>(UserKeys.currentUser, (old) => ({
       //   ...old,
       //   ...userFromUserDTO(data),
