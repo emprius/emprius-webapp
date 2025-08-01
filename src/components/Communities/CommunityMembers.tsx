@@ -141,7 +141,6 @@ const CommunityUsersList = ({ id, community }: { id: string; community: Communit
           <UserCard
             userId={member.id}
             placeholderData={member}
-            maxW={'300px'}
             borderWidth={0}
             badge={community?.ownerId === member.id && t('communities.admin')}
           />

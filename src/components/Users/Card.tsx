@@ -113,21 +113,26 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       {showAvatar && userNotFound && <Avatar size={avatarSize} avatarHash={user?.avatarHash} />}
       <Stack direction={direction} spacing={1} wrap={'wrap'}>
         <HStack>
-          <Text fontWeight='bold' wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
-            {user?.name}
-          </Text>
+          {user?.community && (
+            <Stack direction='row' align='center' spacing={1} fontWeight='bold'>
+              <Icon as={icons.userCommunity} boxSize={3} />
+              <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
+                {user.community}
+              </Text>
+            </Stack>
+          )}
           {badge && (
             <Badge colorScheme='green' {...badgeProps}>
               {badge}
             </Badge>
           )}
         </HStack>
-        {user?.community && (
-          <Stack direction='row' align='center' spacing={1} color='lightText'>
-            <Icon as={icons.userCommunity} boxSize={3} />
-            <Text>{user.community}</Text>
-          </Stack>
-        )}
+        <Stack direction='row' align='center' spacing={1} color='lightText'>
+          <Icon as={icons.user} boxSize={3} />
+          <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
+            {user?.name}
+          </Text>
+        </Stack>
         {showRating && !userNotFound && (
           <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='xs' {...ratingProps} />
         )}
