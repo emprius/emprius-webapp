@@ -341,8 +341,10 @@
     "delete_contact_method": "Eliminar método de contacto",
     "duplicated_additional_contact_methods": "Método de contacto duplicado",
     "duplicated_additional_contact_methods_msg": "Ya existe un contacto con ese nombre.",
+    "invite_people": "Invitar gente",
     "karma_balance": "Karma",
     "karma_desc": "Los puntos de karma muestran el equilibrio entre préstamos y peticiones. Puedes ganar karma aceptando préstamos o peticiones de otros usuarios, y puedes gastarlo solicitando préstamos o peticiones a otros.",
+    "karma_points": "Puntos de karma",
     "notifications": {
       "booking_accepted": "Solicitudes salientes aceptadas",
       "booking_accepted_desc": "Una herramienta que solicitaste a otro usuario ha sido aceptada",

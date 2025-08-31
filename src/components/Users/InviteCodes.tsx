@@ -50,7 +50,7 @@ const InviteCodes = ({ codes }: { codes: Invite[] }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
   return (
-    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
+    <Box id='invite-codes' p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
       <Heading size='md' mb={4}>
         {t('invite_codes.title', { defaultValue: 'Invite codes' })}
       </Heading>

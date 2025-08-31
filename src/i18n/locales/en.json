@@ -117,6 +117,7 @@
     "tool_picked_petition_title": "You picked up the tool",
     "tool_requests": "Loans",
     "total_days_one": "{{count}} days total",
+    "total_days_many": "{{count}} days total",
     "total_days_other": "{{count}} days total",
     "total_earned": "Total Earned: {{amount}} {{,tokenSymbol}}",
     "total_spent": "Total Spent: {{amount}} {{,tokenSymbol}}",
@@ -193,6 +194,7 @@
     "leave": "Leave Community",
     "left": "You have left the community",
     "member_count_one": "{{count}} member",
+    "member_count_many": "{{count}} members",
     "member_count_other": "{{count}} members",
     "members": "Members",
     "name": "Community Name",
@@ -220,6 +222,7 @@
     "title": "Communities",
     "tool_of_communities": "Communities",
     "tools_count_one": "{{ count }} shared tools",
+    "tools_count_many": "{{ count }} shared tools",
     "tools_count_other": "{{ count }} shared tools",
     "updated": "Community updated successfully",
     "user_invited": "User invited successfully",
@@ -326,6 +329,7 @@
   },
   "pagination": {
     "total_results_one": "Total {{count}}",
+    "total_results_many": "Total {{count}}",
     "total_results_other": "Total {{count}}"
   },
   "profile": {
@@ -337,8 +341,10 @@
     "delete_contact_method": "Delete contact method",
     "duplicated_additional_contact_methods": "Duplicated contact method",
     "duplicated_additional_contact_methods_msg": "A contact with that name already exists.",
+    "invite_people": "Invite people",
     "karma_balance": "Karma",
     "karma_desc": "Karma points shows the balance between loans and petitions. You can earn karma by accepting loans or petitions from other users, and you can spend it by requesting loans or petitions from others.",
+    "karma_points": "Karma points",
     "notifications": {
       "booking_accepted": "Outgoing requests accepted",
       "booking_accepted_desc": "A tool you requested to other user is accepted",

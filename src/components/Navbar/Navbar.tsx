@@ -153,13 +153,32 @@ export const Navbar = () => {
             </Box>
 
             {/*Big screens menu*/}
-            <Link
-              as={RouterLink}
-              to={isDashboardLayout ? ROUTES.SEARCH : ROUTES.PROFILE.VIEW}
-              minW={avatarSizeToPixels['sm']}
-            >
-              <UserAvatar size='sm' id={user?.id} />
-            </Link>
+            <Menu>
+              <MenuButton minW={avatarSizeToPixels['sm']}>
+                <UserAvatar size='sm' id={user?.id} />
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<Icon as={icons.user} />}>
+                  <Box>
+                    <Text fontWeight='semibold'>{user?.name}</Text>
+                    {user?.community && (
+                      <Text fontSize='sm' color='gray.500'>
+                        {user.community}
+                      </Text>
+                    )}
+                  </Box>
+                </MenuItem>
+                <MenuItem icon={<Icon as={icons.ratings} />} isDisabled>
+                  <Text>
+                    {user?.karma || 0} {t('profile.karma_points', { defaultValue: 'Karma points' })}
+                  </Text>
+                </MenuItem>
+                <MenuItem as={RouterLink} to={`${ROUTES.PROFILE.VIEW}#invite-codes`} icon={<Icon as={icons.add} />}>
+                  {t('profile.invite_people', { defaultValue: 'Invite people' })}
+                </MenuItem>
+                <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
+              </MenuList>
+            </Menu>
           </>
         )}
         {!isAuthenticated && (

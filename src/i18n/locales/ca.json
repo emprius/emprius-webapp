@@ -341,8 +341,10 @@
     "delete_contact_method": "Eliminar mètode de contacte",
     "duplicated_additional_contact_methods": "Mètode de contacte duplicat",
     "duplicated_additional_contact_methods_msg": "Ja existeix un contacte amb aquest nom.",
+    "invite_people": "Convidar gent",
     "karma_balance": "Karma",
     "karma_desc": "Els punts de karma mostren l'equilibri entre préstecs i peticions. Pots guanyar karma acceptant préstecs o peticions d'altres usuaris, i pots gastar-lo sol·licitant préstecs o peticions a altres.",
+    "karma_points": "Punts de karma",
     "notifications": {
       "booking_accepted": "Sol·licituds sortints acceptades",
       "booking_accepted_desc": "Una eina que vas sol·licitar a un altre usuari ha estat acceptada",
