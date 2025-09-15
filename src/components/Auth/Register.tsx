@@ -162,7 +162,11 @@ export const Register = ({ defaultInvitationToken = '' }: RegisterProps) => {
                 defaultValue: 'The project you belongs to: housing project, cooperative, etc... ',
               })}
             </FormHelperText>
-            <Input id='community' {...registerField('community', { required: t('common.required') })} />
+            <Input
+              id='community'
+              data-testid={'community'}
+              {...registerField('community', { required: t('common.required') })}
+            />
             <FormErrorMessage>{errors.community && errors.community.message}</FormErrorMessage>
           </FormControl>
 

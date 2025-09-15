@@ -37,7 +37,7 @@ test.describe('User Registration', () => {
     await confirmPasswordField.fill(testUser.password)
 
     await page.getByLabel(/invitation token/i).fill(testUser.invitationToken)
-    await page.getByLabel(/community/i).fill(testUser.community)
+    await page.getByTestId(/community/i).fill(testUser.community)
 
     // Set location on the map
     // The map is in an iframe, so we need to click on it
@@ -56,8 +56,8 @@ test.describe('User Registration', () => {
 
     // Verify successful registration - either we're redirected to home page or we see a success message
     try {
-      // Check if we've been redirected to the home page
-      await expect(page).toHaveURL('/', { timeout: 10000 })
+      // Check if we've been redirected to the search page
+      await expect(page).toHaveURL(ROUTES.SEARCH, { timeout: 10000 })
     } catch (error) {
       // If not redirected, check for a success message or other indicator of successful registration
       console.log('Not redirected to home page, checking for success indicators...')
