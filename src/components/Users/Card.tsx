@@ -33,7 +33,11 @@ type UserMiniCardProps = {
   direction?: StackProps['direction']
   placeholderData?: Partial<UserPreview>
   showRating?: boolean
+  showKarma?: boolean
   showAvatar?: boolean
+  showBorder?: boolean
+  userNameFirst?: boolean
+  to?: string
   ratingProps?: Omit<RatingProps, 'rating'>
   badge?: string
   badgeProps?: BadgeProps
@@ -45,7 +49,11 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   direction = 'column',
   placeholderData,
   showRating = true,
+  showKarma = false,
   showAvatar = true,
+  showBorder = true,
+  userNameFirst = false,
+  to,
   ratingProps,
   badge,
   badgeProps,
@@ -65,7 +73,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
         gap={4}
         p={4}
         bg={bgColor}
-        borderWidth={1}
+        borderWidth={showBorder ? 1 : 0}
         borderColor={borderColor}
         borderRadius='lg'
         {...flexProps}
@@ -95,17 +103,27 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
     }
   }
 
+  const title = userNameFirst
+    ? { text: user?.name, icon: icons.user }
+    : { text: user?.community, icon: icons.userCommunity }
+
+  const subtitle = userNameFirst
+    ? { text: user?.community, icon: icons.userCommunity }
+    : { text: user?.name, icon: icons.user }
+
+  const _to = to ?? (!userNotFound ? ROUTES.USERS.DETAIL.replace(':id', userId) : '')
+
   return (
     <Flex
       align='center'
       gap={4}
       p={4}
       bg={bgColor}
-      borderWidth={1}
+      borderWidth={showBorder ? 1 : 0}
       borderColor={borderColor}
       borderRadius='lg'
       as={RouterLink}
-      to={!userNotFound ? ROUTES.USERS.DETAIL.replace(':id', userId) : ''}
+      to={_to}
       alignItems={'start'}
       {...flexProps}
     >
@@ -113,14 +131,12 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
       {showAvatar && userNotFound && <Avatar size={avatarSize} avatarHash={user?.avatarHash} />}
       <Stack direction={direction} spacing={1} wrap={'wrap'}>
         <HStack>
-          {user?.community && (
-            <Stack direction='row' align='center' spacing={1} fontWeight='bold'>
-              <Icon as={icons.userCommunity} boxSize={3} />
-              <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
-                {user.community}
-              </Text>
-            </Stack>
-          )}
+          <Stack direction='row' align='center' spacing={1} fontWeight='bold'>
+            <Icon as={title.icon} boxSize={3} />
+            <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
+              {title.text}
+            </Text>
+          </Stack>
           {badge && (
             <Badge colorScheme='green' {...badgeProps}>
               {badge}
@@ -128,13 +144,21 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
           )}
         </HStack>
         <Stack direction='row' align='center' spacing={1} color='lightText'>
-          <Icon as={icons.user} boxSize={3} />
+          <Icon as={subtitle.icon} boxSize={3} />
           <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
-            {user?.name}
+            {subtitle.text}
           </Text>
         </Stack>
         {showRating && !userNotFound && (
           <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='xs' {...ratingProps} />
+        )}
+        {showKarma && !userNotFound && (
+          <Stack direction='row' align='center' spacing={1} title={t('profile.karma_desc')}>
+            <Icon as={icons.karma} boxSize={3} color='blue.500' />
+            <Text color='blue.500'>
+              {user.karma} {t('profile.karma_points', { defaultValue: 'Karma points' })}
+            </Text>
+          </Stack>
         )}
         {userNotFound && (
           <Text color='lighterText' fontSize={'sm'}>

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Icon,
   Link,
@@ -28,6 +29,7 @@ import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
 import logo from '/assets/logos/logo.png'
 import DonateButton from '~components/Layout/DonateButton'
+import { UserCard } from '~components/Users/Card'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -38,8 +40,6 @@ export const Navbar = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
-
-  const isDashboardLayout = useIsDashboardLayout()
 
   return (
     <Flex
@@ -158,21 +158,16 @@ export const Navbar = () => {
                 <UserAvatar size='sm' id={user?.id} />
               </MenuButton>
               <MenuList>
-                <MenuItem as={RouterLink} to={ROUTES.PROFILE.VIEW} icon={<Icon as={icons.user} />}>
-                  <Box>
-                    <Text fontWeight='semibold'>{user?.name}</Text>
-                    {user?.community && (
-                      <Text fontSize='sm' color='gray.500'>
-                        {user.community}
-                      </Text>
-                    )}
-                  </Box>
-                </MenuItem>
-                <MenuItem icon={<Icon as={icons.ratings} />} isDisabled>
-                  <Text>
-                    {user?.karma || 0} {t('profile.karma_points', { defaultValue: 'Karma points' })}
-                  </Text>
-                </MenuItem>
+                <UserCard
+                  userId={user?.id}
+                  placeholderData={user}
+                  showAvatar={false}
+                  showBorder={false}
+                  showKarma={true}
+                  userNameFirst
+                  to={ROUTES.PROFILE.VIEW}
+                />
+                <Divider />
                 <MenuItem as={RouterLink} to={`${ROUTES.PROFILE.VIEW}#invite-codes`} icon={<Icon as={icons.add} />}>
                   {t('profile.invite_people', { defaultValue: 'Invite people' })}
                 </MenuItem>
