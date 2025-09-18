@@ -38,9 +38,6 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     isFetchingNextPage,
   } = useConversationMessages(conversationWith)
 
-  // Send message mutation
-  const { mutateAsync: sendMessage, isPending: isSending } = useSendMessage()
-
   // Mark conversation as read when entering
   const markAsRead = useMarkConversationAsReadOnEnter(conversationWith)
 
@@ -108,16 +105,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     })
   }
 
-  const handleSendMessage = async (content: string, images?: string[]) => {
-    if (!user?.id) return
-
-    await sendMessage({
-      type: 'private',
-      recipientId: conversationWith,
-      content: content || undefined,
-      images,
-    })
-
+  const onMessageSent = () => {
     scrollToBottomDelayed()
   }
 
@@ -151,6 +139,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
         ref={messagesContainerRef}
         flex={1}
         overflowY='auto'
+        overflowX='hidden'
         p={4}
         pb={20} // Add bottom padding to account for floating input
         position='relative'
@@ -184,6 +173,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
                   content={message.content}
                   showAvatar={false}
                   at={message.createdAt}
+                  images={message.images}
                 />
               )
             })
@@ -192,44 +182,44 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
         </VStack>
       </Box>
 
-      <Box position='sticky' bottom={0} zIndex={9999}>
-        {/* Floating Scroll to Bottom Button */}
-        <AnimatePresence>
-          {showScrollToBottom && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.8 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                position: 'absolute',
-                bottom: '90px',
-                right: '10px',
-                zIndex: 5,
-              }}
-            >
-              <IconButton
-                aria-label={t('messages.scroll_to_bottom', { defaultValue: 'Scroll to bottom' })}
-                icon={<FiArrowDown />}
-                onClick={scrollToBottom}
-                size='md'
-                borderRadius='full'
-                boxShadow='lg'
-                colorScheme={'blue'}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        {/* Message Input */}
-        <MessageInput
-          onSendMessage={handleSendMessage}
-          disabled={isSending}
-          placeholder={t('messages.type_message_to', {
-            defaultValue: 'Type a message...',
-          })}
-        />
+      <Box position='sticky' bottom={0} zIndex={1000}>
+        <Flex direction='column' align='flex-end' gap={2}>
+          {/* Floating Scroll to Bottom Button - will always be above MessageInput */}
+          <AnimatePresence>
+            {showScrollToBottom && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <IconButton
+                  aria-label={t('messages.scroll_to_bottom', { defaultValue: 'Scroll to bottom' })}
+                  icon={<FiArrowDown />}
+                  onClick={scrollToBottom}
+                  size='md'
+                  borderRadius='full'
+                  boxShadow='lg'
+                  colorScheme={'blue'}
+                  mr={2}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Message Input - will always be at the bottom */}
+          <Box w='full'>
+            <MessageInput
+              conversationWith={conversationWith}
+              onMessageSent={onMessageSent}
+              placeholder={t('messages.type_message_to', {
+                defaultValue: 'Type a message...',
+              })}
+            />
+          </Box>
+        </Flex>
       </Box>
     </Flex>
   )
