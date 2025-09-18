@@ -21,7 +21,9 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
   const { user } = useAuth()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
+  const messageInputContainerRef = useRef<HTMLDivElement>(null)
   const [showScrollToBottom, setShowScrollToBottom] = useState(false)
+  const [messageInputHeight, setMessageInputHeight] = useState(90) // Default fallback height
 
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const headerBgColor = useColorModeValue('white', 'gray.800')
@@ -37,9 +39,6 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     hasNextPage,
     isFetchingNextPage,
   } = useConversationMessages(conversationWith)
-
-  // Send message mutation
-  const { mutateAsync: sendMessage, isPending: isSending } = useSendMessage()
 
   // Mark conversation as read when entering
   const markAsRead = useMarkConversationAsReadOnEnter(conversationWith)
@@ -89,6 +88,25 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     }
   }, [handleScroll])
 
+  // Track MessageInput container height for dynamic button positioning
+  useEffect(() => {
+    const element = messageInputContainerRef.current
+    if (!element) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setMessageInputHeight(entry.contentRect.height + 20) // +20px for spacing above input
+      }
+    })
+
+    resizeObserver.observe(element)
+    
+    // Set initial height
+    setMessageInputHeight(element.offsetHeight + 20)
+
+    return () => resizeObserver.disconnect()
+  }, [])
+
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
@@ -108,16 +126,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     })
   }
 
-  const handleSendMessage = async (content: string, images?: string[]) => {
-    if (!user?.id) return
-
-    await sendMessage({
-      type: 'private',
-      recipientId: conversationWith,
-      content: content || undefined,
-      images,
-    })
-
+  const onMessageSent = () => {
     scrollToBottomDelayed()
   }
 
@@ -151,6 +160,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
         ref={messagesContainerRef}
         flex={1}
         overflowY='auto'
+        overflowX='hidden'
         p={4}
         pb={20} // Add bottom padding to account for floating input
         position='relative'
@@ -184,6 +194,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
                   content={message.content}
                   showAvatar={false}
                   at={message.createdAt}
+                  images={message.images}
                 />
               )
             })
@@ -192,40 +203,41 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
         </VStack>
       </Box>
 
-      <Box position='sticky' bottom={0} zIndex={9999}>
-        {/* Floating Scroll to Bottom Button */}
-        <AnimatePresence>
-          {showScrollToBottom && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.8 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                position: 'absolute',
-                bottom: '90px',
-                right: '10px',
-                zIndex: 5,
-              }}
-            >
-              <IconButton
-                aria-label={t('messages.scroll_to_bottom', { defaultValue: 'Scroll to bottom' })}
-                icon={<FiArrowDown />}
-                onClick={scrollToBottom}
-                size='md'
-                borderRadius='full'
-                boxShadow='lg'
-                colorScheme={'blue'}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        {/* Message Input */}
+      {/* Floating Scroll to Bottom Button - positioned fixed over messages */}
+      <AnimatePresence>
+        {showScrollToBottom && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.8 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              position: 'fixed',
+              bottom: `${messageInputHeight}px`,
+              right: '20px',
+              zIndex: 1001,
+            }}
+          >
+            <IconButton
+              aria-label={t('messages.scroll_to_bottom', { defaultValue: 'Scroll to bottom' })}
+              icon={<FiArrowDown />}
+              onClick={scrollToBottom}
+              size='md'
+              borderRadius='full'
+              boxShadow='lg'
+              colorScheme={'blue'}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Message Input Container - sticky at bottom */}
+      <Box ref={messageInputContainerRef} position='sticky' bottom={0} zIndex={1000}>
         <MessageInput
-          onSendMessage={handleSendMessage}
-          disabled={isSending}
+          conversationWith={conversationWith}
+          onMessageSent={onMessageSent}
           placeholder={t('messages.type_message_to', {
             defaultValue: 'Type a message...',
           })}

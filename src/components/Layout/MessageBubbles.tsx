@@ -44,7 +44,7 @@ export const MessageBubbles = ({
 
   return (
     <Flex
-      justify={{ base: isRight ? 'end' : 'start', lg: 'start' }}
+      justify={isRight ? 'end' : 'start'}
       direction={isRight ? 'row-reverse' : 'row'}
       {...flexProps}
     >

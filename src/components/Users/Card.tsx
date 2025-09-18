@@ -156,7 +156,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
           <Stack direction='row' align='center' spacing={1} title={t('profile.karma_desc')}>
             <Icon as={icons.karma} boxSize={3} color='blue.500' />
             <Text color='blue.500'>
-              {user.karma} {t('profile.karma_points', { defaultValue: 'Karma points' })}
+              {user?.karma} {t('profile.karma_points', { defaultValue: 'Karma points' })}
             </Text>
           </Stack>
         )}
