@@ -14,13 +14,8 @@ export const View = () => {
   }
 
   const handleBack = () => {
-    navigate(ROUTES.MESSAGES.CONVERSATIONS)
+    navigate(-1)
   }
 
-  return (
-    <ConversationView 
-      conversationWith={userId} 
-      onBack={handleBack}
-    />
-  )
+  return <ConversationView conversationWith={userId} onBack={handleBack} />
 }
