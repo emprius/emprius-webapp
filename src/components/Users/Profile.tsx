@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  VStack,
 } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -149,7 +150,6 @@ export const UserProfile = (user: UserProfileType) => {
                 </Box>
               </PopoverContent>
             </Popover>
-
             {isCurrentUser && (
               <Button
                 aria-label={t('common.edit')}
@@ -164,8 +164,19 @@ export const UserProfile = (user: UserProfileType) => {
           </Flex>
         </Stack>
 
-        <BioEditor user={user} isCurrentUser={isCurrentUser} />
+        <VStack justify={{ base: 'center', md: 'flex-start' }} align={{ base: 'center', md: 'flex-start' }} gap={4}>
+          <Button
+            aria-label={t('user.send_message', { defaultValue: 'Send message' })}
+            leftIcon={<Icon as={icons.messages} />}
+            size='md'
+            onClick={() => navigate(ROUTES.MESSAGES.CHAT.replace(':userId', user.id))}
+          >
+            {t('user.send_message', { defaultValue: 'Send Message' })}
+          </Button>
+          <BioEditor user={user} isCurrentUser={isCurrentUser} />
+        </VStack>
         <Divider />
+
         {(isCurrentUser || user.additionalContacts) && (
           <AdditionalContactMethods isCurrentUser={isCurrentUser} additionalContacts={user.additionalContacts} />
         )}
