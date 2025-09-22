@@ -21,6 +21,7 @@ import { SlUser } from 'react-icons/sl'
 import { IoMdHome } from 'react-icons/io'
 import { RxColorWheel } from 'react-icons/rx'
 import { HiOutlineRocketLaunch } from 'react-icons/hi2'
+import { TbMessage } from 'react-icons/tb'
 
 export const icons = {
   user: FiUser,
@@ -33,6 +34,7 @@ export const icons = {
   add: FiPlus,
   menu: FiMenu,
   messageBubble: FiMessageCircle,
+  messages: TbMessage,
   search: FiSearch,
   donate: FaHeartbeat,
   outbox: ImBoxRemove,
