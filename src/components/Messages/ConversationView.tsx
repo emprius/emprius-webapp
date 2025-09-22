@@ -10,6 +10,7 @@ import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { UserCard } from '~components/Users/Card'
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
+import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 
 export interface ConversationViewProps {
   conversationWith: string // User ID for private conversations
@@ -100,7 +101,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     })
 
     resizeObserver.observe(element)
-    
+
     // Set initial height
     setMessageInputHeight(element.offsetHeight + 20)
 
@@ -169,10 +170,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
           {/* Loading indicator at top when fetching more */}
           {isFetchingNextPage && (
             <Center py={2}>
-              <Spinner size='sm' />
-              <Text ml={2} fontSize='sm' color='gray.500'>
-                {t('messages.loading_more', { defaultValue: 'Loading more...' })}
-              </Text>
+              <LoadMoreButton fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />
             </Center>
           )}
 

@@ -10,6 +10,7 @@ import { ConversationResponse } from './types'
 import { convertToDate } from '~utils/dates'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ROUTES } from '~src/router/routes'
+import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 
 export interface ConversationsListProps {
   onConversationSelect?: (conversationWith: string) => void
@@ -25,9 +26,9 @@ export const ConversationsList = ({ onConversationSelect }: ConversationsListPro
     error,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
+    isFetchingNextPage: aa,
   } = useConversations('private')
-
+  const isFetchingNextPage = true
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -77,15 +78,7 @@ export const ConversationsList = ({ onConversationSelect }: ConversationsListPro
       {/* Load More Conversations Button */}
       {hasNextPage && (
         <Center py={4}>
-          <Button
-            onClick={() => fetchNextPage()}
-            isLoading={isFetchingNextPage}
-            loadingText={t('messages.loading_more', { defaultValue: 'Loading more...' })}
-            variant='ghost'
-            size='sm'
-          >
-            {t('messages.load_more_conversations', { defaultValue: 'Load More Conversations' })}
-          </Button>
+          <LoadMoreButton fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />
         </Center>
       )}
     </VStack>
