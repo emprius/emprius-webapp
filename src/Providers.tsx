@@ -7,6 +7,7 @@ import { PendingActionsProvider } from '~components/Layout/Contexts/PendingActio
 import { PWAUpdateProvider } from '~components/Layout/Contexts/PWAUpdateProvider'
 import { TitleProvider } from '~components/Layout/Contexts/TitleContext'
 import { SearchProvider } from '~components/Search/SearchContext'
+import { UnreadMessagesProvider } from '~components/Messages/UnreadMessagesProvider'
 import theme from '~theme/theme'
 import { AppRoutes } from './router/router'
 import queryClient from './services/queryClient'
@@ -30,9 +31,11 @@ const AppProviders = () => (
     <AuthProvider>
       <InfoProvider>
         <PendingActionsProvider>
-          <SearchProvider>
-            <AppRoutes />
-          </SearchProvider>
+          <UnreadMessagesProvider>
+            <SearchProvider>
+              <AppRoutes />
+            </SearchProvider>
+          </UnreadMessagesProvider>
         </PendingActionsProvider>
       </InfoProvider>
     </AuthProvider>
