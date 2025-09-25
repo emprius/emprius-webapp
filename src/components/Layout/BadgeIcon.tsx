@@ -10,7 +10,7 @@ interface BadgeCounterProps extends BoxProps {
 
 interface BadgeIconProps extends BadgeCounterProps {
   icon: IconType
-  'aria-label': string
+  'aria-label'?: string
   iconProps?: IconProps
 }
 

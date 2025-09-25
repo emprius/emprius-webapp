@@ -1,10 +1,11 @@
 import { Box, Flex, Icon, IconButton, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom'
+import { Link as RouterLink, Outlet, useLocation, matchPath } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter, BadgeIcon } from '~components/Layout/BadgeIcon'
+import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
 
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
@@ -16,6 +17,7 @@ const SideNav = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
+  const { privateCount } = useUnreadMessages()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   const menuItems: SidenavMenuItemProps[] = useMemo(
@@ -39,16 +41,29 @@ const SideNav = () => {
         additionalPath: [ROUTES.RATINGS.PENDING, ROUTES.RATINGS.HISTORY],
       },
       {
+        icon: icons.messages,
+        label: t('messages.title', { defaultValue: 'Messages' }),
+        path: ROUTES.MESSAGES.CONVERSATIONS,
+        count: privateCount,
+        additionalPath: [ROUTES.MESSAGES.CHAT],
+      },
+      {
         icon: icons.communities,
         label: t('communities.title'),
         // Show invites tab if there are pending invites
         path: pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST,
         count: pendingInvitesCount,
-        additionalPath: [ROUTES.COMMUNITIES.INVITES, ROUTES.COMMUNITIES.LIST],
+        additionalPath: [
+          ROUTES.COMMUNITIES.INVITES,
+          ROUTES.COMMUNITIES.LIST,
+          ROUTES.COMMUNITIES.DETAIL,
+          ROUTES.COMMUNITIES.TABS.TOOLS,
+          ROUTES.COMMUNITIES.NEW,
+        ],
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, privateCount]
   )
 
   return (
@@ -100,10 +115,27 @@ const SideNavMenuItem = (item: SidenavMenuItemProps) => {
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
   const hoverBg = useColorModeValue('primary.100', 'primary.800')
 
-  const isSelected = useMemo(
-    () => location.pathname === item.path || item?.additionalPath?.some((path) => path === location.pathname),
-    [location, item]
-  )
+  const isSelected = useMemo(() => {
+    // Exact match for main path
+    if (location.pathname === item.path) return true
+
+    // Check additional paths with support for dynamic routes
+    return (
+      item?.additionalPath?.some((path) => {
+        // First try exact match for static routes
+        if (path === location.pathname) return true
+
+        // Then try dynamic matching for routes with parameters
+        const match = matchPath(
+          {
+            path: path,
+          },
+          location.pathname
+        )
+        return !!match
+      }) || false
+    )
+  }, [location, item])
 
   if (item.isCollapsed) {
     return (
