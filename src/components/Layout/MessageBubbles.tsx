@@ -14,7 +14,7 @@ import {
 import { UserAvatar } from '~components/Images/Avatar'
 import { convertToDate, DateInput } from '~utils/dates'
 import { PropsWithChildren, ReactNode } from 'react'
-import { ServerImage } from '~components/Images/ServerImage'
+import { ImagesGrid } from '~components/Images/ImagesGrid'
 
 export type MessageBubbleProps = {
   isAuthor?: boolean
@@ -43,11 +43,7 @@ export const MessageBubbles = ({
   const datef = t('rating.datef_full')
 
   return (
-    <Flex
-      justify={isRight ? 'end' : 'start'}
-      direction={isRight ? 'row-reverse' : 'row'}
-      {...flexProps}
-    >
+    <Flex justify={isRight ? 'end' : 'start'} direction={isRight ? 'row-reverse' : 'row'} {...flexProps}>
       {showAvatar && <UserAvatar id={id} size='sm' linkProfile />}
       <Bubble isAuthor={isAuthor} isRight={isRight}>
         {topComponent && (
@@ -89,19 +85,6 @@ export const MessageBubbles = ({
         </VStack>
       </Bubble>
     </Flex>
-  )
-}
-
-const ImagesGrid = ({ images }: { images: string[] }) => {
-  if (!images) return
-  return (
-    <HStack wrap={'wrap'} spacing={4}>
-      {images.map((image, index) => (
-        <Box key={image} position='relative' w={'50px'} h={'50px'}>
-          <ServerImage imageId={image} objectFit='cover' w='100%' h='100%' borderRadius='md' thumbnail modal />
-        </Box>
-      ))}
-    </HStack>
   )
 }
 

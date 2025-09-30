@@ -14,6 +14,7 @@ import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
+import { ImagesGrid } from '~components/Images/ImagesGrid'
 
 export const ConversationsList = () => {
   const { t } = useTranslation()
@@ -268,27 +269,41 @@ const ConversationListItem = ({ message, otherParticipant, unreadCount = 0, onCl
             </Flex>
           </Flex>
 
-          <HStack justify='space-between'>
-            <Text fontSize='sm' color='gray.600' noOfLines={1} fontWeight={unreadCount > 0 ? 'medium' : 'normal'}>
-              {message.senderId === user?.id && (
-                <Text as='span' color='lighterText'>
-                  {t('messages.you', { defaultValue: 'You: ' })}
-                </Text>
+          <HStack spacing={2} w='full' align='center'>
+            <HStack spacing={2} w='full' align='center' justify={'space-between'}>
+              <Text
+                minW={0}
+                fontSize='sm'
+                color='gray.600'
+                noOfLines={1}
+                fontWeight={unreadCount > 0 ? 'medium' : 'normal'}
+              >
+                {message.senderId === user?.id && (
+                  <Text as='span' color='lighterText'>
+                    {t('messages.you', { defaultValue: 'You: ' })}
+                  </Text>
+                )}
+                {message.content || (
+                  <Text as='span' fontStyle='italic'>
+                    {t('messages.no_content', { defaultValue: 'No content' })}
+                  </Text>
+                )}
+              </Text>
+              {message?.images && (
+                <Box minW={0} overflow='hidden' alignItems={'end'} alignSelf={'end'}>
+                  <ImagesGrid
+                    images={message.images}
+                    imageSize='25px'
+                    spacing={1}
+                    wrap={'nowrap'}
+                    overflow={'hidden'}
+                  />
+                </Box>
               )}
-              {message.content || (
-                <Text as='span' fontStyle='italic'>
-                  {message.images?.length
-                    ? t('messages.sent_images', {
-                        defaultValue: 'Sent {{count}} image(s)',
-                        count: message.images.length,
-                      })
-                    : t('messages.no_content', { defaultValue: 'No content' })}
-                </Text>
-              )}
-            </Text>
+            </HStack>
 
             {unreadCount > 0 && (
-              <Badge colorScheme='blue' borderRadius='full' px={2}>
+              <Badge colorScheme='red' borderRadius='full' px={2} flexShrink={0}>
                 {unreadCount}
               </Badge>
             )}
