@@ -146,6 +146,15 @@ const theme = extendTheme({
     }),
   },
   components: {
+    Badge: {
+      variants: {
+        badgeCounter: (props: any) => ({
+          bg: 'red.500',
+          color: 'white',
+          _hover: { bg: 'red.600' },
+        }),
+      },
+    },
     Button,
     Card,
     Checkbox,

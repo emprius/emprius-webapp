@@ -1,4 +1,4 @@
-import { Box, BoxProps, IconProps } from '@chakra-ui/react'
+import { Badge, Box, BoxProps, IconProps } from '@chakra-ui/react'
 import React from 'react'
 import { IconType } from 'react-icons'
 
@@ -27,7 +27,8 @@ export const BadgeCounter = ({ children, count, badgeProps, emptyBadge, ...props
     <Box position='relative' {...props}>
       {children}
       {(count > 0 || emptyBadge) && (
-        <Box
+        <Badge
+          variant={'badgeCounter'}
           position='absolute'
           top='-8px'
           right='-16px'
@@ -36,14 +37,12 @@ export const BadgeCounter = ({ children, count, badgeProps, emptyBadge, ...props
           fontSize='xs'
           fontWeight='bold'
           lineHeight='none'
-          color='white'
           transform='scale(0.8)'
-          bg='red.500'
           borderRadius='full'
           {...badgeProps}
         >
           {count}
-        </Box>
+        </Badge>
       )}
     </Box>
   )

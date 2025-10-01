@@ -303,7 +303,7 @@ const ConversationListItem = ({ message, otherParticipant, unreadCount = 0, onCl
             </HStack>
 
             {unreadCount > 0 && (
-              <Badge colorScheme='red' borderRadius='full' px={2} flexShrink={0}>
+              <Badge variant={'badgeCounter'} borderRadius='full' px={2} flexShrink={0}>
                 {unreadCount}
               </Badge>
             )}
