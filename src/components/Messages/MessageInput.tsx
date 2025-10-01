@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
   Box,
   Flex,
@@ -96,12 +96,19 @@ const MessageInputForm = ({
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const { clearImages } = useImagePreview()
+  const inputRef = useRef<HTMLInputElement>(null)
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
     reset,
+    setFocus,
   } = useFormContext<MessageForm>()
+
+  // Focus input on mount
+  useEffect(() => {
+    setFocus('content')
+  }, [])
 
   const {
     mutateAsync: uploadImages,
@@ -130,6 +137,9 @@ const MessageInputForm = ({
     clearImages()
     reset()
     onMessageSent()
+    setTimeout(() => {
+      setFocus('content')
+    }, 0)
   }
 
   const isSending = isPending || uploadImagesIsPending
@@ -154,6 +164,10 @@ const MessageInputForm = ({
             {...register('content', {
               validate,
             })}
+            ref={(e) => {
+              register('content').ref(e)
+              inputRef.current = e
+            }}
           />
 
           <IconButton
