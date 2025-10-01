@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { UserAvatar } from '~components/Images/Avatar'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
-import { useConversations, useSearchMessagesInfinite } from './queries'
-import { ConversationResponse, MessageResponse } from './types'
+import { useConversations, useSearchMessages } from './queries'
+import { MessageResponse } from './types'
 import { convertToDate } from '~utils/dates'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ROUTES } from '~src/router/routes'
@@ -147,7 +147,7 @@ const SearchResultsLayout = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useSearchMessagesInfinite(searchTerm, 'private')
+  } = useSearchMessages(searchTerm, 'private')
 
   if (isLoading) {
     return <LoadingSpinner />

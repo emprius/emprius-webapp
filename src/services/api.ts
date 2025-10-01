@@ -25,6 +25,18 @@ import {
 import { PaginationApiParams } from '~components/Layout/Pagination/Pagination'
 import { SearchAndPaginationApiParams } from '~components/Layout/Search/SearchAndPagination'
 import { ToolsListParams } from '~components/Tools/queries'
+import {
+  SendMessageRequest,
+  MessageResponse,
+  UnreadMessageSummary,
+  MarkMessagesReadRequest,
+  MarkConversationReadRequest,
+  PaginatedMessagesResponse,
+  PaginatedConversationsResponse,
+  GetMessagesParams,
+  GetConversationsParams,
+  SearchMessagesParams,
+} from '~components/Messages/types'
 
 // Exception to throw when an API return 401
 export class UnauthorizedError extends Error {
@@ -212,6 +224,22 @@ export const communities = {
     apiRequest(api.put<ApiResponse<CommunityInvitesResponse>>(`/communities/invites/${id}`, { status: status })),
 }
 
+// Messages endpoints
+export const messages = {
+  sendMessage: (data: SendMessageRequest) => apiRequest(api.post<ApiResponse<MessageResponse>>('/messages', data)),
+  getMessages: (params: GetMessagesParams) =>
+    apiRequest(api.get<PaginatedApiResponse<PaginatedMessagesResponse>>('/messages', { params })),
+  getConversations: (params: GetConversationsParams) =>
+    apiRequest(api.get<PaginatedApiResponse<PaginatedConversationsResponse>>('/conversations', { params })),
+  markMessagesAsRead: (data: MarkMessagesReadRequest) =>
+    apiRequest(api.post<ApiResponse<{ success: boolean; markedCount: number }>>('/messages/read', data)),
+  markConversationAsRead: (data: MarkConversationReadRequest) =>
+    apiRequest(api.post<ApiResponse<{ success: boolean }>>('/messages/read/conversation', data)),
+  getUnreadCounts: () => apiRequest(api.get<ApiResponse<UnreadMessageSummary>>('/messages/unread')),
+  searchMessages: (params: SearchMessagesParams) =>
+    apiRequest(api.get<PaginatedApiResponse<PaginatedMessagesResponse>>('/messages/search', { params })),
+}
+
 // Info endpoints
 export const info = {
   getInfo: () => apiRequest(api.get<ApiResponse<InfoData>>('/info')),
@@ -225,4 +253,5 @@ export default {
   images,
   info,
   communities,
+  messages,
 }
