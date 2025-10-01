@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ConversationView } from '~components/Messages/ConversationView'
+import { ChatView } from '~components/Messages/ChatView'
 import { ROUTES } from '~src/router/routes'
 import { useCustomPageTitle } from '~components/Layout/Contexts/TitleContext'
 import { useUserProfile } from '~components/Users/queries'
@@ -22,5 +22,5 @@ export const View = () => {
     navigate(-1)
   }
 
-  return <ConversationView conversationWith={userId} onBack={handleBack} />
+  return <ChatView chatWith={userId} onBack={handleBack} />
 }

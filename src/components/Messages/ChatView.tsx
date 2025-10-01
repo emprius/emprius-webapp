@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { FiArrowLeft, FiArrowDown } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageInput } from './MessageInput'
-import { useConversationMessages, useSendMessage, useMarkConversationAsReadOnEnter } from './queries'
+import { useChatMessages, useMarkChatAsReadOnEnter } from './queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -12,12 +12,12 @@ import { UserCard } from '~components/Users/Card'
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
 import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 
-export interface ConversationViewProps {
-  conversationWith: string // User ID for private conversations
+interface ChatViewProps {
+  chatWith: string // User ID for private conversations
   onBack?: () => void
 }
 
-export const ConversationView = ({ conversationWith, onBack }: ConversationViewProps) => {
+export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -39,10 +39,10 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useConversationMessages(conversationWith)
+  } = useChatMessages(chatWith)
 
   // Mark conversation as read when entering
-  const markAsRead = useMarkConversationAsReadOnEnter(conversationWith)
+  const markAsRead = useMarkChatAsReadOnEnter(chatWith)
 
   // Mark as read when component mounts
   useEffect(() => {
@@ -138,9 +138,9 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
   if (error) {
     return (
       <ElementNotFound
-        title={t('messages.error.load_failed', { defaultValue: 'Failed to load conversation' })}
+        title={t('messages.error.load_failed', { defaultValue: 'Failed to load chat' })}
         desc={t('messages.error.load_failed_desc', {
-          defaultValue: 'There was an error loading the conversation. Please try again.',
+          defaultValue: 'There was an error loading the chat. Please try again.',
         })}
       />
     )
@@ -149,12 +149,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
   return (
     <Flex direction='column' h='100vh' bg={bgColor} position='relative'>
       {/* Header */}
-      <ConversationHeader
-        conversationWith={conversationWith}
-        onBack={onBack}
-        bgColor={headerBgColor}
-        borderColor={borderColor}
-      />
+      <ChatHeader chatWith={chatWith} onBack={onBack} bgColor={headerBgColor} borderColor={borderColor} />
 
       {/* Messages Area */}
       <Box
@@ -234,7 +229,7 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
       {/* Message Input Container - sticky at bottom */}
       <Box ref={messageInputContainerRef} position='sticky' bottom={0} zIndex={1000}>
         <MessageInput
-          conversationWith={conversationWith}
+          chatWith={chatWith}
           onMessageSent={onMessageSent}
           placeholder={t('messages.type_message_to', {
             defaultValue: 'Type a message...',
@@ -245,14 +240,14 @@ export const ConversationView = ({ conversationWith, onBack }: ConversationViewP
   )
 }
 
-interface ConversationHeaderProps {
-  conversationWith: string
+interface ChatHeaderProps {
+  chatWith: string
   onBack?: () => void
   bgColor: string
   borderColor: string
 }
 
-const ConversationHeader = ({ conversationWith, onBack, bgColor, borderColor }: ConversationHeaderProps) => {
+const ChatHeader = ({ chatWith, onBack, bgColor, borderColor }: ChatHeaderProps) => {
   const { t } = useTranslation()
 
   return (
@@ -267,7 +262,7 @@ const ConversationHeader = ({ conversationWith, onBack, bgColor, borderColor }: 
       )}
 
       <UserCard
-        userId={conversationWith}
+        userId={chatWith}
         showBorder={false}
         showRating={false}
         direction={'row'}

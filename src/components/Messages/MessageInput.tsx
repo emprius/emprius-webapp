@@ -22,7 +22,7 @@ import { UseFormRegisterReturn } from 'react-hook-form/dist/types/form'
 export interface MessageInputProps {
   onMessageSent: () => void
   placeholder?: string
-  conversationWith: string // User ID for private conversations
+  chatWith: string // User ID for private conversations
   maxImages?: number
 }
 
@@ -31,7 +31,7 @@ export type MessageForm = {
   images: FileList
 }
 
-export const MessageInput = ({ onMessageSent, placeholder, conversationWith, maxImages = 10 }: MessageInputProps) => {
+export const MessageInput = ({ onMessageSent, placeholder, chatWith, maxImages = 10 }: MessageInputProps) => {
   const { t } = useTranslation()
 
   const methods = useForm<MessageForm>({
@@ -72,7 +72,7 @@ export const MessageInput = ({ onMessageSent, placeholder, conversationWith, max
         <MessageInputForm
           onMessageSent={onMessageSent}
           placeholder={placeholder}
-          conversationWith={conversationWith}
+          chatWith={chatWith}
           maxImages={maxImages}
           validate={validate}
           imagesProps={imagesRegister}
@@ -85,7 +85,7 @@ export const MessageInput = ({ onMessageSent, placeholder, conversationWith, max
 const MessageInputForm = ({
   onMessageSent,
   placeholder,
-  conversationWith,
+  chatWith,
   validate,
   imagesProps,
 }: MessageInputProps & {
@@ -123,7 +123,7 @@ const MessageInputForm = ({
 
     await sendMessage({
       type: 'private',
-      recipientId: conversationWith,
+      recipientId: chatWith,
       content: trimmedMessage || undefined,
       images: imageHashes,
     })

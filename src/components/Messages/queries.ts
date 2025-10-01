@@ -15,7 +15,7 @@ import { useCallback } from 'react'
 import { CONVERSATIONS_REFETCH_INTERVAL } from '~utils/constants'
 
 // Helper function to generate conversation key for private messages
-export const generateConversationKey = (userId1: string, userId2: string): string => {
+export const generateChatKey = (userId1: string, userId2: string): string => {
   const sortedIds = [userId1, userId2].sort()
   return `private:${sortedIds[0]}:${sortedIds[1]}`
 }
@@ -28,7 +28,7 @@ export const MessageKeys = {
 
   // Specific message queries
   messages: (params: GetMessagesParams) => ['messages', 'list', params] as const,
-  conversation: (userId: string, page?: number) => ['messages', 'conversation', userId, page] as const,
+  chat: (userId: string, page?: number) => ['messages', 'chat', userId, page] as const,
   search: (params: SearchMessagesParams) => ['messages', 'search', params] as const,
 
   // Conversation queries
@@ -36,10 +36,10 @@ export const MessageKeys = {
 }
 
 // Get messages for a specific private conversation (infinite query)
-export const useConversationMessages = (conversationWith: string) => {
+export const useChatMessages = (conversationWith: string) => {
   const { user } = useAuth()
   return useInfiniteQuery({
-    queryKey: MessageKeys.conversation(generateConversationKey(conversationWith, user.id)),
+    queryKey: MessageKeys.chat(generateChatKey(conversationWith, user.id)),
     queryFn: ({ pageParam = 0 }) => {
       const params: GetMessagesParams = {
         type: 'private',
@@ -121,7 +121,7 @@ export const useSendMessage = () => {
   return useMutation({
     mutationFn: (data: SendMessageRequest) => messages.sendMessage(data),
     onSuccess: (newMessage, variables) => {
-      const queryKey = MessageKeys.conversation(generateConversationKey(newMessage.recipientId, newMessage.senderId))
+      const queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId))
       queryClient.invalidateQueries({
         queryKey,
       })
@@ -163,7 +163,7 @@ export const useMarkMessagesAsRead = () => {
 }
 
 // Mark entire conversation as read
-export const useMarkConversationAsRead = () => {
+export const useMarkChatAsRead = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -172,19 +172,19 @@ export const useMarkConversationAsRead = () => {
       variables.conversationKey
       queryClient.invalidateQueries({ queryKey: MessageKeys.unreadCounts })
       queryClient.invalidateQueries({ queryKey: MessageKeys.conversations })
-      queryClient.invalidateQueries({ queryKey: MessageKeys.conversation(variables.conversationKey) })
+      queryClient.invalidateQueries({ queryKey: MessageKeys.chat(variables.conversationKey) })
     },
   })
 }
 
 // Custom hook to mark conversation as read when user enters it
-export const useMarkConversationAsReadOnEnter = (otherUserId: string) => {
+export const useMarkChatAsReadOnEnter = (otherUserId: string) => {
   const { user } = useAuth()
-  const markAsRead = useMarkConversationAsRead()
+  const markAsRead = useMarkChatAsRead()
 
   return useCallback(() => {
     if (user?.id && otherUserId) {
-      const conversationKey = generateConversationKey(user.id, otherUserId)
+      const conversationKey = generateChatKey(user.id, otherUserId)
       markAsRead.mutate({ conversationKey })
     }
   }, [otherUserId])
