@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { FiArrowLeft, FiArrowDown } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageInput } from './MessageInput'
-import { useChatMessages, useMarkChatAsReadOnEnter } from './queries'
+import { useChatMessages, useMarkMessagesAsRead, generateChatKey } from './queries'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
@@ -41,16 +41,25 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
     isFetchingNextPage,
   } = useChatMessages(chatWith)
 
-  // Mark conversation as read when entering
-  const markAsRead = useMarkChatAsReadOnEnter(chatWith)
-
-  // Mark as read when component mounts
-  useEffect(() => {
-    markAsRead()
-  }, [markAsRead])
+  // Mark messages as read mutation
+  const markMessagesAsRead = useMarkMessagesAsRead()
 
   // Flatten and reverse messages from all pages to show latest at bottom
   const messages = messagesData?.pages?.flatMap((page) => page.messages).reverse() || []
+
+  // Mark other user's unread messages as read when component mounts or messages change
+  useEffect(() => {
+    if (!messages || messages.length === 0 || !user?.id) return
+
+    // Filter unread messages from the other user (not sent by current user)
+    const unreadOtherMessages = messages.filter((m) => !m.isRead && m.senderId !== user.id)
+
+    if (unreadOtherMessages.length > 0 && !markMessagesAsRead.isPending) {
+      const messageIds = unreadOtherMessages.map((m) => m.id)
+      const conversationKey = generateChatKey(user.id, chatWith)
+      markMessagesAsRead.mutate({ messageIds, conversationKey })
+    }
+  }, [messages, user?.id, chatWith, markMessagesAsRead])
 
   // Scroll to bottom immediately when component first loads with messages
   useEffect(() => {
@@ -188,6 +197,7 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
                   showAvatar={false}
                   at={message.createdAt}
                   images={message.images}
+                  isRead={message.isRead}
                 />
               )
             })

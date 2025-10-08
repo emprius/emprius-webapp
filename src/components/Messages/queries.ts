@@ -12,7 +12,8 @@ import {
   SendMessageRequest,
 } from './types'
 import { useCallback } from 'react'
-import { CONVERSATIONS_REFETCH_INTERVAL } from '~utils/constants'
+import { CHAT_REFETCH_INTERVAL, CONVERSATIONS_REFETCH_INTERVAL } from '~utils/constants'
+import type { DefinedInitialDataInfiniteOptions } from '@tanstack/react-query/src/infiniteQueryOptions'
 
 // Helper function to generate conversation key for private messages
 export const generateChatKey = (userId1: string, userId2: string): string => {
@@ -36,7 +37,17 @@ export const MessageKeys = {
 }
 
 // Get messages for a specific private conversation (infinite query)
-export const useChatMessages = (conversationWith: string) => {
+export const useChatMessages = (
+  conversationWith: string,
+  options: Omit<
+    DefinedInitialDataInfiniteOptions<
+      PaginatedMessagesResponse & PaginationInfo,
+      Error,
+      InfiniteData<PaginatedMessagesResponse & PaginationInfo, unknown>
+    >,
+    'queryFn' | 'queryKey' | 'getNextPageParam' | 'enabled' | 'initialPageParam'
+  > = { initialData: undefined }
+) => {
   const { user } = useAuth()
   return useInfiniteQuery({
     queryKey: MessageKeys.chat(generateChatKey(conversationWith, user.id)),
@@ -44,7 +55,7 @@ export const useChatMessages = (conversationWith: string) => {
       const params: GetMessagesParams = {
         type: 'private',
         conversationWith,
-        page: pageParam,
+        page: pageParam as number,
         pageSize: 10,
       }
       return messages.getMessages(params)
@@ -54,8 +65,9 @@ export const useChatMessages = (conversationWith: string) => {
       return current < pages - 1 ? current + 1 : undefined
     },
     enabled: !!conversationWith,
-    refetchInterval: CONVERSATIONS_REFETCH_INTERVAL,
+    refetchInterval: CHAT_REFETCH_INTERVAL,
     initialPageParam: 0,
+    ...options,
   })
 }
 
@@ -148,16 +160,35 @@ export const useMarkMessagesAsRead = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: MarkMessagesReadRequest) => messages.markMessagesAsRead(data),
-    onSuccess: () => {
+    mutationFn: (data: MarkMessagesReadRequest & { conversationKey: string }) =>
+      messages.markMessagesAsRead({ messageIds: data.messageIds }),
+    onSuccess: (_, variables) => {
+      const { messageIds, conversationKey } = variables
+
+      // Update the chat messages cache directly instead of invalidating
+      // Needed to do not await the server response, to avoid resending the mutation.
+      queryClient.setQueryData<InfiniteData<PaginatedMessagesResponse & PaginationInfo>>(
+        MessageKeys.chat(conversationKey),
+        (old) => {
+          if (!old) return old
+          // Update messages in all pages to mark them as read
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              messages: page.messages.map((message) =>
+                messageIds.includes(message.id) ? { ...message, isRead: true } : message
+              ),
+            })),
+          }
+        }
+      )
+
       // Invalidate unread counts
       queryClient.invalidateQueries({ queryKey: MessageKeys.unreadCounts })
 
       // Invalidate conversations to update unread counts
       queryClient.invalidateQueries({ queryKey: MessageKeys.conversations })
-
-      // Invalidate all message queries to update read status
-      queryClient.invalidateQueries({ queryKey: MessageKeys.all })
     },
   })
 }

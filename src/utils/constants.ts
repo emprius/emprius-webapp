@@ -66,6 +66,7 @@ export const ASSETS = {
 export const UPDATE_PWA_INTERVAL = 1000 * 60 * 2 // 2 minutes
 
 export const CONVERSATIONS_REFETCH_INTERVAL = 30000 // 30 seconds
+export const CHAT_REFETCH_INTERVAL = 10000 // In chat refetch interval
 
 export const TOOL_MAX_DATE_BOOKING = 12 // months from now that a tool can be booked
 

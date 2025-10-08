@@ -4,6 +4,7 @@ import {
   Flex,
   FlexProps,
   HStack,
+  Icon,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -11,6 +12,7 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
+import { LuCheckCheck } from 'react-icons/lu'
 import { UserAvatar } from '~components/Images/Avatar'
 import { convertToDate, DateInput } from '~utils/dates'
 import { PropsWithChildren, ReactNode } from 'react'
@@ -24,6 +26,7 @@ export type MessageBubbleProps = {
   at?: DateInput
   images?: string[]
   showAvatar?: boolean
+  isRead?: boolean
 } & FlexProps
 
 export const MessageBubbles = ({
@@ -35,11 +38,13 @@ export const MessageBubbles = ({
   at,
   isRight = false,
   showAvatar = false,
+  isRead,
   ...flexProps
 }: MessageBubbleProps) => {
   const { t } = useTranslation()
   const textColor = useColorModeValue(isAuthor ? 'gray.700' : 'gray.800', isAuthor ? 'gray.200' : 'gray.100')
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
+  const readTickColor = isRead ? 'blue.500' : 'gray.400'
   const datef = t('rating.datef_full')
 
   return (
@@ -66,21 +71,24 @@ export const MessageBubbles = ({
           )}
           {images && <ImagesGrid images={images} />}
           {at && (
-            <Popover>
-              <PopoverTrigger>
-                <Text fontSize='xs' color={dateColor} alignSelf={isRight ? 'start' : 'end'} cursor='pointer'>
-                  {t('rating.rating_date', { date: convertToDate(at) })}
-                </Text>
-              </PopoverTrigger>
-              <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
-                <Box w={'full'} textAlign={'center'}>
-                  {t('rating.date_formatted', {
-                    date: convertToDate(at),
-                    format: datef,
-                  })}
-                </Box>
-              </PopoverContent>
-            </Popover>
+            <HStack spacing={1} alignSelf={isRight ? 'start' : 'end'}>
+              <Popover>
+                <PopoverTrigger>
+                  <Text fontSize='xs' color={dateColor} cursor='pointer'>
+                    {t('rating.rating_date', { date: convertToDate(at) })}
+                  </Text>
+                </PopoverTrigger>
+                <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
+                  <Box w={'full'} textAlign={'center'}>
+                    {t('rating.date_formatted', {
+                      date: convertToDate(at),
+                      format: datef,
+                    })}
+                  </Box>
+                </PopoverContent>
+              </Popover>
+              {isAuthor && isRead != undefined && <Icon as={LuCheckCheck} color={readTickColor} boxSize={4} />}
+            </HStack>
           )}
         </VStack>
       </Bubble>
