@@ -134,7 +134,7 @@ export const Navbar = () => {
                   <BadgeIcon
                     icon={icons.messages}
                     aria-label={t('messages.title')}
-                    count={pendingRatingsCount}
+                    count={privateCount}
                     color={iconColor}
                     iconProps={{ boxSize: 5 }}
                   />

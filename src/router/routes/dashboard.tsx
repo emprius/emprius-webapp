@@ -25,7 +25,9 @@ const CommunityEditPage = lazy(() => import('~src/pages/communities/edit').then(
 const CommunitiesViewPage = lazy(() => import('~src/pages/communities/view').then((m) => ({ default: m.View })))
 
 // Messages pages
-const MessagesConversationsPage = lazy(() => import('~src/pages/messages/conversations').then((m) => ({ default: m.View })))
+const MessagesConversationsPage = lazy(() =>
+  import('~src/pages/messages/conversations').then((m) => ({ default: m.View }))
+)
 const MessagesChatPage = lazy(() => import('~src/pages/messages/chat').then((m) => ({ default: m.View })))
 
 const RatingElements = [

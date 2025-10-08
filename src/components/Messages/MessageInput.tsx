@@ -160,6 +160,7 @@ const MessageInputForm = ({
 
           <Input
             placeholder={placeholder || t('messages.type_message', { defaultValue: 'Type a message...' })}
+            autoComplete={'off'}
             disabled={isSending}
             {...register('content', {
               validate,
