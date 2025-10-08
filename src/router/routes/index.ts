@@ -40,6 +40,10 @@ export const ROUTES = {
     NEW: '/communities/new',
     INVITES: '/communities/invites',
   },
+  MESSAGES: {
+    CONVERSATIONS: '/messages',
+    CHAT: '/messages/:userId',
+  },
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',

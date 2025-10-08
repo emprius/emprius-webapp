@@ -30,14 +30,27 @@ export const ImageModal: React.FC<ImageModalProps> = ({
       <ModalOverlay />
       <ModalContent bg='transparent' boxShadow='none' position='relative'>
         <ModalCloseButton color='white' />
-        <ModalBody p={0}>
-          <ServerImage imageId={imageId} objectFit='contain' width='100%' height='90vh' modal={false} />
-
+        <ModalBody onClick={onClose} p={4} display='flex' alignItems='center' justifyContent='center' minH='90vh'>
+          <ServerImage
+            imageId={imageId}
+            objectFit='contain'
+            maxW='90vw'
+            maxH='80vh'
+            w='auto'
+            h='auto'
+            modal={false}
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          />
           {hasMultipleImages && onPrevious && (
             <IconButton
               aria-label='Previous image'
               icon={<FiChevronLeft size={30} />}
-              onClick={onPrevious}
+              onClick={(e) => {
+                e.stopPropagation()
+                onPrevious()
+              }}
               position='absolute'
               left={4}
               top='50%'
@@ -55,7 +68,10 @@ export const ImageModal: React.FC<ImageModalProps> = ({
             <IconButton
               aria-label='Next image'
               icon={<FiChevronRight size={30} />}
-              onClick={onNext}
+              onClick={(e) => {
+                e.stopPropagation()
+                onNext()
+              }}
               position='absolute'
               right={4}
               top='50%'

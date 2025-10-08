@@ -44,6 +44,7 @@ export const useUserProfile = (
     queryKey: UserKeys.userId(userId),
     queryFn: () => api.users.getById(userId),
     select: (data): UserProfile => userFromUserDTO(data),
+    enabled: userId != undefined,
     ...options,
   })
 

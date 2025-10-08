@@ -30,16 +30,20 @@ import { LogoutBtn } from '~components/Layout/LogoutBtn'
 import logo from '/assets/logos/logo.png'
 import DonateButton from '~components/Layout/DonateButton'
 import { UserCard } from '~components/Users/Card'
+import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
 
 export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
   const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
+  const { privateCount } = useUnreadMessages()
   const location = useLocation()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
+
+  const hamburgerMenuHasCount = privateCount > 0 || pendingRatingsCount > 0
 
   return (
     <Flex
@@ -73,46 +77,72 @@ export const Navbar = () => {
         {isAuthenticated && (
           <>
             <Stack direction='row' align='center' spacing={4} display={{ base: 'none', md: 'flex' }}>
-              <Link
-                as={RouterLink}
-                to={ROUTES.BOOKINGS.REQUESTS}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
-              >
-                <BadgeIcon
-                  icon={icons.loan}
-                  aria-label={t('nav.my_bookings')}
-                  count={pendingRequestsCount}
-                  color={iconColor}
-                  iconProps={{ boxSize: 5 }}
-                />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.my_bookings')}
-                </Text>
-              </Link>
-              <Link
-                as={RouterLink}
-                to={pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY}
-                display='flex'
-                alignItems='center'
-                p={2}
-                borderRadius='md'
-                _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
-              >
-                <BadgeIcon
-                  icon={icons.ratings}
-                  aria-label={t('nav.ratings')}
-                  count={pendingRatingsCount}
-                  color={iconColor}
-                  iconProps={{ boxSize: 5 }}
-                />
-                <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
-                  {t('nav.ratings')}
-                </Text>
-              </Link>
+              {pendingRequestsCount > 0 && (
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.BOOKINGS.REQUESTS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
+                >
+                  <BadgeIcon
+                    icon={icons.loan}
+                    aria-label={t('nav.my_bookings')}
+                    count={pendingRequestsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.my_bookings')}
+                  </Text>
+                </Link>
+              )}
+              {pendingRatingsCount > 0 && (
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.RATINGS.PENDING}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
+                >
+                  <BadgeIcon
+                    icon={icons.ratings}
+                    aria-label={t('nav.ratings')}
+                    count={pendingRatingsCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('nav.ratings')}
+                  </Text>
+                </Link>
+              )}
+              {privateCount && (
+                <Link
+                  as={RouterLink}
+                  to={ROUTES.MESSAGES.CONVERSATIONS}
+                  display='flex'
+                  alignItems='center'
+                  p={2}
+                  borderRadius='md'
+                  _hover={{ bg: 'gray.100', _dark: { bg: 'primary.400' } }}
+                >
+                  <BadgeIcon
+                    icon={icons.messages}
+                    aria-label={t('messages.title')}
+                    count={privateCount}
+                    color={iconColor}
+                    iconProps={{ boxSize: 5 }}
+                  />
+                  <Text ml={2} display={{ base: 'none', xl: 'block' }} color={iconColor}>
+                    {t('messages.title')}
+                  </Text>
+                </Link>
+              )}
               <Button as={RouterLink} to={ROUTES.TOOLS.NEW} leftIcon={icons.add({})}>
                 <Text>{t('tools.add_tool')}</Text>
               </Button>
@@ -122,11 +152,38 @@ export const Navbar = () => {
             <Box display={{ base: 'block', md: 'none' }}>
               <Menu>
                 <MenuButton>
-                  <Icon boxSize={6} as={icons.menu} mt={1} />
+                  {hamburgerMenuHasCount ? (
+                    <BadgeIcon
+                      icon={icons.menu}
+                      iconProps={{ boxSize: 6 }}
+                      mt={1}
+                      badgeProps={{
+                        right: -1,
+                        top: -1,
+                      }}
+                      emptyBadge
+                    />
+                  ) : (
+                    <Icon boxSize={6} as={icons.menu} mt={1} />
+                  )}
                 </MenuButton>
                 <MenuList>
-                  <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
-                    {t('nav.settings')}
+                  <MenuItem
+                    as={RouterLink}
+                    to={pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY}
+                    icon={icons.ratings({})}
+                  >
+                    <BadgeCounter
+                      aria-label={t('nav.ratings')}
+                      count={pendingRatingsCount}
+                      w={'min-content'}
+                      badgeProps={{
+                        right: -5,
+                        top: -1,
+                      }}
+                    >
+                      {t('nav.ratings')}
+                    </BadgeCounter>
                   </MenuItem>
                   <MenuItem
                     as={RouterLink}
@@ -146,6 +203,9 @@ export const Navbar = () => {
                   </MenuItem>
                   <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
                     {t('user.list_title')}
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
+                    {t('nav.settings')}
                   </MenuItem>
                   <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
                 </MenuList>

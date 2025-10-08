@@ -49,6 +49,8 @@ const getDefaultTitle = (pathname: string, t: TFunction): string => {
       return `${t('pages.communities.invites')} | ${baseTitle}`
     case ROUTES.ABOUT:
       return `${t('pages.about')} | ${baseTitle}`
+    case ROUTES.MESSAGES.CONVERSATIONS:
+      return `${t('pages.conversations', { defaultValue: 'Messages' })} | ${baseTitle}`
     default:
       // Handle dynamic routes using matchPath
       if (matchPath(ROUTES.TOOLS.DETAIL, pathname)) {

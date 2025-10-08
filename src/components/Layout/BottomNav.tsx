@@ -7,6 +7,7 @@ import { BadgeIcon } from '~components/Layout/BadgeIcon'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { IconType } from 'react-icons'
+import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
 
 type MenuItem = {
   icon: IconType
@@ -25,6 +26,8 @@ export const BottomNav = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const location = useLocation()
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
+  const { privateCount } = useUnreadMessages()
+
   const menuItems = useMemo<MenuItem[]>(
     () => [
       { icon: icons.search, path: ROUTES.SEARCH },
@@ -37,13 +40,14 @@ export const BottomNav = () => {
         additionalPath: [ROUTES.BOOKINGS.PETITIONS], // This menu item can be selected on two different paths
       },
       {
-        icon: icons.ratings,
-        path: pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY,
-        count: pendingRatingsCount,
-        additionalPath: [ROUTES.RATINGS.HISTORY, ROUTES.RATINGS.PENDING],
+        icon: icons.messages,
+        label: t('messages.title', { defaultValue: 'Messages' }),
+        path: ROUTES.MESSAGES.CONVERSATIONS,
+        count: privateCount,
+        additionalPath: [ROUTES.MESSAGES.CHAT],
       },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, privateCount]
   )
 
   return (
@@ -66,6 +70,7 @@ export const BottomNav = () => {
           location.pathname === item.path || item?.additionalPath?.some((path) => path === location.pathname)
             ? selectedColor
             : 'inherit'
+
         return (
           <Box key={index} as={RouterLink} to={item.path} p={3}>
             <BadgeIcon
