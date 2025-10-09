@@ -139,7 +139,9 @@
   "chunk_error_title": "An update is available",
   "common": {
     "actual_password": "Current Password",
+    "add_images": "Add Images",
     "additional_options": "Additional Options",
+    "back": "Back",
     "back_to_home": "Back to Home",
     "cancel": "Cancel",
     "characters": "characters",
@@ -156,7 +158,9 @@
     "failed_to_copy": "Failed to copy",
     "image_upload_error": "Image Upload Error",
     "image_upload_error_description": "There was an error uploading your image. Please try again with a different image or format.",
+    "load_more_conversations": "Load More",
     "loading": "Loading...",
+    "loading_more": "Loading more...",
     "location": "Location",
     "logout": "Logout",
     "name": "Name",
@@ -277,6 +281,30 @@
   "map": {
     "you_are_here": "You are here"
   },
+  "messages": {
+    "conversations": "Messages",
+    "error": {
+      "load_conversations_failed": "Failed to load conversations",
+      "load_conversations_failed_desc": "There was an error loading your conversations. Please try again.",
+      "load_failed": "Failed to load chat",
+      "load_failed_desc": "There was an error loading the chat. Please try again.",
+      "too_many_images": "Too many images. Maximum {{max}} images allowed."
+    },
+    "find_users": "Find Users",
+    "no_content": "No content",
+    "no_conversations": "No conversations yet",
+    "no_conversations_desc": "Start a conversation by messaging someone from the users list.",
+    "no_messages": "No messages yet. Start the conversation!",
+    "no_search_results": "No messages found",
+    "no_search_results_desc": "Try adjusting your search terms to find what you're looking for.",
+    "scroll_to_bottom": "Scroll to bottom",
+    "search_messages": "Search messages...",
+    "send": "Send",
+    "title": "Messages",
+    "type_message": "Type a message...",
+    "type_message_to": "Type a message...",
+    "you": "You: "
+  },
   "nav": {
     "about": "About",
     "home": "Home",
@@ -307,6 +335,7 @@
       "list": "Communities",
       "new": "New Community"
     },
+    "conversations": "Messages",
     "profile": {
       "edit": "Edit Profile",
       "view": "Profile"
@@ -530,6 +559,7 @@
     "petitions": "No petitions found",
     "petitions_desc": "You don't have any petitions yet. Browse available tools to make your first booking.",
     "profile_updated": "Profile updated successfully",
+    "send_message": "Send Message",
     "update_failed": "Failed to update profile",
     "user_not_found": "User not found",
     "user_not_found_desc": "The user you're looking for doesn't exist or has been removed."

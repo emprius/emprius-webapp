@@ -139,7 +139,9 @@
   "chunk_error_title": "Hi ha una actualització disponible",
   "common": {
     "actual_password": "Contrasenya actual",
+    "add_images": "Afegir Imatges",
     "additional_options": "Opcions addicionals",
+    "back": "Enrere",
     "back_to_home": "Tornar a l'inici",
     "cancel": "Cancel·lar",
     "characters": "caràcters",
@@ -156,7 +158,9 @@
     "failed_to_copy": "Error al copiar",
     "image_upload_error": "Error de pujada d'imatge",
     "image_upload_error_description": "Hi ha hagut un error al pujar la teva imatge. Si us plau, prova-ho de nou amb una imatge o format diferent.",
+    "load_more_conversations": "Carregar Més",
     "loading": "Carregant...",
+    "loading_more": "Carregant més...",
     "location": "Ubicació",
     "logout": "Tancar sessió",
     "name": "Nom",
@@ -277,6 +281,30 @@
   "map": {
     "you_are_here": "Ets aquí"
   },
+  "messages": {
+    "conversations": "Missatges",
+    "error": {
+      "load_conversations_failed": "Error al carregar les converses",
+      "load_conversations_failed_desc": "Hi ha hagut un error en carregar les teves converses. Si us plau, torna-ho a provar.",
+      "load_failed": "Error al carregar el xat",
+      "load_failed_desc": "Hi ha hagut un error en carregar el xat. Si us plau, torna-ho a provar.",
+      "too_many_images": "Massa imatges. Màxim {{max}} imatges permeses."
+    },
+    "find_users": "Cercar Usuaris",
+    "no_content": "Sense contingut",
+    "no_conversations": "Encara no hi ha converses",
+    "no_conversations_desc": "Inicia una conversa enviant un missatge a algú de la llista d'usuaris.",
+    "no_messages": "Encara no hi ha missatges. Inicia la conversa!",
+    "no_search_results": "No s'han trobat missatges",
+    "no_search_results_desc": "Prova ajustant els teus termes de cerca per trobar el que busques.",
+    "scroll_to_bottom": "Desplaçar al final",
+    "search_messages": "Cercar missatges...",
+    "send": "Enviar",
+    "title": "Missatges",
+    "type_message": "Escriu un missatge...",
+    "type_message_to": "Escriu un missatge...",
+    "you": "Tu: "
+  },
   "nav": {
     "about": "Sobre",
     "home": "Inici",
@@ -307,6 +335,7 @@
       "list": "Comunitats",
       "new": "Nova comunitat"
     },
+    "conversations": "Missatges",
     "profile": {
       "edit": "Editar perfil",
       "view": "Perfil"
@@ -530,6 +559,7 @@
     "petitions": "No s'han trobat sol·licituds",
     "petitions_desc": "Encara no tens cap sol·licitud. Navega per les eines disponibles per fer la teva primera reserva.",
     "profile_updated": "Perfil actualitzat amb èxit",
+    "send_message": "Enviar Missatge",
     "update_failed": "Error al actualitzar el perfil",
     "user_not_found": "Usuari no trobat",
     "user_not_found_desc": "L'usuari que busques no existeix o ha estat eliminat."

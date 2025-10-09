@@ -139,7 +139,9 @@
   "chunk_error_title": "Hay una actualización disponible",
   "common": {
     "actual_password": "Contraseña actual",
+    "add_images": "Añadir Imágenes",
     "additional_options": "Opciones adicionales",
+    "back": "Atrás",
     "back_to_home": "Volver al inicio",
     "cancel": "Cancelar",
     "characters": "caracteres",
@@ -156,7 +158,9 @@
     "failed_to_copy": "Error al copiar",
     "image_upload_error": "Error de subida de imagen",
     "image_upload_error_description": "Ha habido un error al subir tu imagen. Por favor, inténtalo de nuevo con una imagen o formato diferente.",
+    "load_more_conversations": "Cargar Más",
     "loading": "Cargando...",
+    "loading_more": "Cargando más...",
     "location": "Ubicación",
     "logout": "Cerrar sesión",
     "name": "Nombre",
@@ -277,6 +281,30 @@
   "map": {
     "you_are_here": "Estás aquí"
   },
+  "messages": {
+    "conversations": "Mensajes",
+    "error": {
+      "load_conversations_failed": "Error al cargar conversaciones",
+      "load_conversations_failed_desc": "Hubo un error al cargar tus conversaciones. Por favor, inténtalo de nuevo.",
+      "load_failed": "Error al cargar el chat",
+      "load_failed_desc": "Hubo un error al cargar el chat. Por favor, inténtalo de nuevo.",
+      "too_many_images": "Demasiadas imágenes. Máximo {{max}} imágenes permitidas."
+    },
+    "find_users": "Buscar Usuarios",
+    "no_content": "Sin contenido",
+    "no_conversations": "No hay conversaciones todavía",
+    "no_conversations_desc": "Inicia una conversación enviando un mensaje a alguien de la lista de usuarios.",
+    "no_messages": "No hay mensajes todavía. ¡Inicia la conversación!",
+    "no_search_results": "No se encontraron mensajes",
+    "no_search_results_desc": "Prueba ajustando tus términos de búsqueda para encontrar lo que buscas.",
+    "scroll_to_bottom": "Desplazar al final",
+    "search_messages": "Buscar mensajes...",
+    "send": "Enviar",
+    "title": "Mensajes",
+    "type_message": "Escribe un mensaje...",
+    "type_message_to": "Escribe un mensaje...",
+    "you": "Tú: "
+  },
   "nav": {
     "about": "Acerca de",
     "home": "Inicio",
@@ -307,6 +335,7 @@
       "list": "Comunidades",
       "new": "Nueva comunidad"
     },
+    "conversations": "Mensajes",
     "profile": {
       "edit": "Editar perfil",
       "view": "Perfil"
@@ -530,6 +559,7 @@
     "petitions": "No hay peticiones",
     "petitions_desc": "Aún no tienes ninguna petición. Explora las herramientas disponibles para hacer tu primera reserva.",
     "profile_updated": "Perfil actualizado con éxito",
+    "send_message": "Enviar Mensaje",
     "update_failed": "Error al actualizar el perfil",
     "user_not_found": "Usuario no encontrado",
     "user_not_found_desc": "El usuario que buscas no existe o ha sido eliminado."
