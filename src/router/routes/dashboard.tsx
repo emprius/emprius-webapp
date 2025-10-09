@@ -152,6 +152,14 @@ const CommunityElements = [
     ),
   },
   {
+    path: ROUTES.COMMUNITIES.TABS.CHAT,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
     element: <TitlePageLayout />,
     children: [
       {

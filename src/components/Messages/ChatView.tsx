@@ -11,13 +11,16 @@ import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { UserCard } from '~components/Users/Card'
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
 import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
+import { ChatType } from '~components/Messages/types'
+import { CommunityCardLittle } from '~components/Communities/Card'
 
 interface ChatViewProps {
   chatWith: string // User ID for private conversations
   onBack?: () => void
+  type?: ChatType
 }
 
-export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
+export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -39,7 +42,7 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useChatMessages(chatWith)
+  } = useChatMessages(chatWith, type)
 
   // Mark messages as read mutation
   const markMessagesAsRead = useMarkMessagesAsRead()
@@ -56,7 +59,7 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
 
     if (unreadOtherMessages.length > 0 && !markMessagesAsRead.isPending) {
       const messageIds = unreadOtherMessages.map((m) => m.id)
-      const conversationKey = generateChatKey(user.id, chatWith)
+      const conversationKey = generateChatKey(user.id, chatWith, type)
       markMessagesAsRead.mutate({ messageIds, conversationKey })
     }
   }, [messages, user?.id, chatWith, markMessagesAsRead])
@@ -158,7 +161,7 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
   return (
     <Flex direction='column' h='100vh' bg={bgColor} position='relative'>
       {/* Header */}
-      <ChatHeader chatWith={chatWith} onBack={onBack} bgColor={headerBgColor} borderColor={borderColor} />
+      <ChatHeader chatWith={chatWith} onBack={onBack} bgColor={headerBgColor} borderColor={borderColor} type={type} />
 
       {/* Messages Area */}
       <Box
@@ -239,6 +242,7 @@ export const ChatView = ({ chatWith, onBack }: ChatViewProps) => {
       {/* Message Input Container - sticky at bottom */}
       <Box ref={messageInputContainerRef} position='sticky' bottom={0} zIndex={1000}>
         <MessageInput
+          type={type}
           chatWith={chatWith}
           onMessageSent={onMessageSent}
           placeholder={t('messages.type_message_to', {
@@ -255,9 +259,10 @@ interface ChatHeaderProps {
   onBack?: () => void
   bgColor: string
   borderColor: string
+  type: ChatType
 }
 
-const ChatHeader = ({ chatWith, onBack, bgColor, borderColor }: ChatHeaderProps) => {
+const ChatHeader = ({ chatWith, onBack, bgColor, borderColor, type }: ChatHeaderProps) => {
   const { t } = useTranslation()
 
   return (
@@ -271,16 +276,20 @@ const ChatHeader = ({ chatWith, onBack, bgColor, borderColor }: ChatHeaderProps)
         />
       )}
 
-      <UserCard
-        userId={chatWith}
-        showBorder={false}
-        showRating={false}
-        direction={'row'}
-        avatarSize={'sm'}
-        align={'center'}
-        justify={'center'}
-        alignItems={'center'}
-      />
+      {type === 'community' && <CommunityCardLittle id={chatWith} direction={'row'} avatarSize={'md'} />}
+
+      {type === 'private' && (
+        <UserCard
+          userId={chatWith}
+          showBorder={false}
+          showRating={false}
+          direction={'row'}
+          avatarSize={'sm'}
+          align={'center'}
+          justify={'center'}
+          alignItems={'center'}
+        />
+      )}
     </Flex>
   )
 }

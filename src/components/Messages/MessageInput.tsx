@@ -18,20 +18,29 @@ import { useUploadImages } from '~components/Images/queries'
 import FormSubmitMessage from '~components/Layout/Form/FormSubmitMessage'
 import { useSendMessage } from '~components/Messages/queries'
 import { UseFormRegisterReturn } from 'react-hook-form/dist/types/form'
+import { ChatType, SendMessageRequest } from '~components/Messages/types'
 
 export interface MessageInputProps {
   onMessageSent: () => void
   placeholder?: string
   chatWith: string // User ID for private conversations
   maxImages?: number
+  type?: ChatType
 }
 
 export type MessageForm = {
   content: string
   images: FileList
+  type: ChatType
 }
 
-export const MessageInput = ({ onMessageSent, placeholder, chatWith, maxImages = 10 }: MessageInputProps) => {
+export const MessageInput = ({
+  onMessageSent,
+  placeholder,
+  chatWith,
+  maxImages = 10,
+  type = 'private',
+}: MessageInputProps) => {
   const { t } = useTranslation()
 
   const methods = useForm<MessageForm>({
@@ -39,6 +48,7 @@ export const MessageInput = ({ onMessageSent, placeholder, chatWith, maxImages =
     defaultValues: {
       content: '',
       images: undefined,
+      type,
     },
   })
 
@@ -129,8 +139,9 @@ const MessageInputForm = ({
     const trimmedMessage = data.content?.trim() || ''
 
     await sendMessage({
-      type: 'private',
-      recipientId: chatWith,
+      type: data.type,
+      recipientId: data.type === 'private' ? chatWith : '',
+      communityId: data.type === 'community' ? chatWith : '',
       content: trimmedMessage || undefined,
       images: imageHashes,
     })

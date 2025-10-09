@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { CommunityDetail } from '~components/Communities/Detail'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
@@ -13,14 +13,23 @@ import { RoutedTabs, TabConfig } from '~components/Layout/RoutedTabs'
 import { ROUTES } from '~src/router/routes'
 import { CommunityMembers } from '~components/Communities/CommunityMembers'
 import { CommunitySharedTools } from '~components/Communities/CommunitySharedTools'
+import { useAuth } from '~components/Auth/AuthContext'
+import { ChatView } from '~components/Messages/ChatView'
 
 export const Detail = () => {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
+  const { user } = useAuth()
   const { data: community, isLoading, isError } = useCommunityDetail(id!)
   useCustomPageTitle(community?.name)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  // Check if current user is a member of this community
+  const isMember = useMemo(() => {
+    if (!user?.communities || !id) return false
+    return user.communities.some((c) => c.id === id)
+  }, [user?.communities, id])
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -46,6 +55,12 @@ export const Detail = () => {
       path: ROUTES.COMMUNITIES.TABS.TOOLS.replace(':id', id!),
       label: t('communities.shared_tools'),
       content: <CommunitySharedTools />,
+    },
+    {
+      path: ROUTES.COMMUNITIES.TABS.CHAT.replace(':id', id!),
+      label: t('messages.title', { defaultValue: 'Messages' }),
+      content: <ChatView chatWith={id!} type={'community'} />,
+      hidden: !isMember, // Only show to members
     },
   ]
 

@@ -1,8 +1,8 @@
 // Message types based on the API documentation
-export type MessageType = 'private' | 'community' | 'general'
+export type ChatType = 'private' | 'community' | 'general'
 
 export interface SendMessageRequest {
-  type: MessageType
+  type: ChatType
   recipientId?: string // Required for private messages
   communityId?: string // Required for community messages
   content?: string // Required if no images
@@ -12,7 +12,7 @@ export interface SendMessageRequest {
 
 export interface MessageResponse {
   id: string
-  type: MessageType
+  type: ChatType
   senderId: string
   senderName: string
   senderAvatarHash?: string
@@ -35,7 +35,7 @@ export interface ConversationParticipant {
 
 export interface ConversationResponse {
   id: string
-  type: MessageType
+  type: ChatType
   participants: ConversationParticipant[]
   communityId?: string // For community conversations
   lastMessage?: MessageResponse
@@ -71,7 +71,7 @@ export interface PaginatedConversationsResponse {
 export interface GetMessagesParams {
   page?: number
   pageSize?: number
-  type?: MessageType
+  type?: ChatType
   conversationWith?: string // User ID for private conversations
   communityId?: string // Community ID for community messages
   unreadOnly?: boolean
@@ -81,13 +81,13 @@ export interface GetMessagesParams {
 export interface GetConversationsParams {
   page?: number
   pageSize?: number
-  type?: MessageType | 'all'
+  type?: ChatType | 'all'
 }
 
 // Query parameters for searching messages
 export interface SearchMessagesParams {
   q: string // Search query
-  type?: MessageType
+  type?: ChatType
   page?: number
   pageSize?: number
 }
