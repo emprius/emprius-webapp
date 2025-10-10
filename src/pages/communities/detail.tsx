@@ -63,7 +63,7 @@ export const Detail = () => {
       label: t('messages.title', { defaultValue: 'Messages' }),
       content: <ChatView chatWith={id!} type={'community'} />,
       hidden: !isMember, // Only show to members
-      count: unreadCounts?.communities[id!] || 0,
+      count: unreadCounts?.communities?.[id!] || 0,
     },
   ]
 

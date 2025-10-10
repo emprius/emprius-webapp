@@ -26,8 +26,6 @@ export class ChunkErrorBoundary extends Component<Props, State> {
 
   static getDerivedStateFromError(error: Error): Partial<State> {
     const isChunkError = isChunkLoadError(error)
-    console.log('isChunkError', isChunkError)
-
     return {
       hasError: isChunkError,
       error,

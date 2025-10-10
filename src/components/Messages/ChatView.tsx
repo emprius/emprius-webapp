@@ -13,6 +13,7 @@ import { MessageBubbles } from '~components/Layout/MessageBubbles'
 import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 import { ChatType } from '~components/Messages/types'
 import { CommunityCardLittle } from '~components/Communities/Card'
+import ChatMessageBubble from '~components/Messages/ChatMessageBubble'
 
 interface ChatViewProps {
   chatWith: string // User ID for private conversations
@@ -173,7 +174,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
         pb={20} // Add bottom padding to account for floating input
         position='relative'
       >
-        <VStack spacing={4} align='stretch' minH='full' justifyContent='flex-end'>
+        <VStack align='stretch' minH='full' justifyContent='flex-end' spacing={0}>
           {/* Loading indicator at top when fetching more */}
           {isFetchingNextPage && (
             <Center py={2}>
@@ -188,22 +189,9 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
               </Text>
             </Center>
           ) : (
-            messages.map((message, index) => {
-              // const showAvatar = index === 0 || messages[index - 1]?.senderId !== message.senderId
-              const isAuthor = message.senderId === user?.id
-              return (
-                <MessageBubbles
-                  key={message.id}
-                  isAuthor={isAuthor}
-                  isRight={isAuthor}
-                  content={message.content}
-                  showAvatar={false}
-                  at={message.createdAt}
-                  images={message.images}
-                  isRead={message.isRead}
-                />
-              )
-            })
+            messages.map((message, index) => (
+              <ChatMessageBubble type={type} message={message} index={index} messages={messages} />
+            ))
           )}
           <div ref={messagesEndRef} />
         </VStack>

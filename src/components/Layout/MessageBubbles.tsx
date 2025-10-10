@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
   Box,
+  BoxProps,
   Flex,
   FlexProps,
   HStack,
@@ -21,12 +22,15 @@ import { ImagesGrid } from '~components/Images/ImagesGrid'
 export type MessageBubbleProps = {
   isAuthor?: boolean
   isRight?: boolean
+  isDown?: boolean // Set avatar and comic tail to bottom alignment
   content?: string
   topComponent?: ReactNode
   at?: DateInput
   images?: string[]
   showAvatar?: boolean
   isRead?: boolean
+  hideComicTail?: boolean
+  bubbleProps?: BoxProps
 } & FlexProps
 
 export const MessageBubbles = ({
@@ -37,8 +41,11 @@ export const MessageBubbles = ({
   images,
   at,
   isRight = false,
+  isDown = false,
   showAvatar = false,
   isRead,
+  hideComicTail,
+  bubbleProps,
   ...flexProps
 }: MessageBubbleProps) => {
   const { t } = useTranslation()
@@ -49,13 +56,13 @@ export const MessageBubbles = ({
 
   return (
     <Flex justify={isRight ? 'end' : 'start'} direction={isRight ? 'row-reverse' : 'row'} {...flexProps}>
-      {showAvatar && <UserAvatar id={id} size='sm' linkProfile />}
-      <Bubble isAuthor={isAuthor} isRight={isRight}>
-        {topComponent && (
-          <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
-            {topComponent}
-          </HStack>
-        )}
+      {showAvatar && (
+        <Box alignSelf={isDown && 'end'}>
+          <UserAvatar id={id} size='sm' linkProfile />
+        </Box>
+      )}
+      <Bubble isAuthor={isAuthor} isRight={isRight} isDown={isDown} hideComicTail={hideComicTail} {...bubbleProps}>
+        {topComponent && topComponent}
         <VStack spacing={0} w={'full'}>
           {content && (
             <Text
@@ -99,9 +106,25 @@ export const MessageBubbles = ({
 const Bubble = ({
   children,
   isRight,
+  isDown,
   isAuthor,
-}: Pick<MessageBubbleProps, 'isAuthor' | 'isRight'> & PropsWithChildren) => {
+  hideComicTail,
+  ...props
+}: Pick<MessageBubbleProps, 'isAuthor' | 'isRight' | 'isDown' | 'hideComicTail'> & BoxProps & PropsWithChildren) => {
   const bubbleColor = useColorModeValue(isAuthor ? 'gray.100' : 'blue.50', isAuthor ? 'gray.700' : 'blue.800')
+
+  let before = {
+    content: "''",
+    position: 'absolute',
+    top: !isDown && '1em',
+    bottom: isDown && '0.3em',
+    left: isRight ? 'auto' : '-0.4em',
+    right: isRight ? '-0.4em' : 'auto',
+    width: '1.5em',
+    height: '1.5em',
+    bg: bubbleColor,
+    clipPath: isRight ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
+  }
   return (
     <Box>
       <Box
@@ -111,18 +134,9 @@ const Bubble = ({
         color='white'
         borderRadius='1em'
         position='relative'
-        _before={{
-          content: "''",
-          position: 'absolute',
-          top: '1em',
-          left: isRight ? 'auto' : '-0.4em',
-          right: isRight ? '-0.4em' : 'auto',
-          width: '1.5em',
-          height: '1.5em',
-          bg: bubbleColor,
-          clipPath: isRight ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
-        }}
+        _before={!hideComicTail && before}
         alignSelf={isRight ? 'flex-start' : 'flex-end'}
+        {...props}
       >
         {children}
       </Box>
