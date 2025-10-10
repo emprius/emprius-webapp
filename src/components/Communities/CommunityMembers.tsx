@@ -80,6 +80,7 @@ const CommunityUsersList = ({ id, community }: { id: string; community: Communit
   const { mutateAsync: removeUser, isPending: isRemoving } = useRemoveCommunityUser()
   const { user } = useAuth()
   const isOwner = community?.ownerId === user?.id
+  const dividerColor = useColorModeValue('gray.200', 'gray.700')
 
   // State for remove user confirmation dialog
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = React.useState(false)
@@ -133,7 +134,7 @@ const CommunityUsersList = ({ id, community }: { id: string; community: Communit
   return (
     <>
       {usersData.map((member) => (
-        <>
+        <span key={member.id}>
           <HStack key={member.id} gap={4}>
             <UserCard
               userId={member.id}
@@ -155,8 +156,8 @@ const CommunityUsersList = ({ id, community }: { id: string; community: Communit
               </Flex>
             )}
           </HStack>
-          <Divider borderColor={useColorModeValue('gray.200', 'gray.700')} my={4} />
-        </>
+          <Divider borderColor={dividerColor} my={4} />
+        </span>
       ))}
       <RoutedPagination pagination={data.pagination} />
       {/* Remove user confirmation dialog */}
