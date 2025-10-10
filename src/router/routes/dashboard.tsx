@@ -220,6 +220,14 @@ const MessageElements = [
       </SuspenseLoader>
     ),
   },
+  {
+    path: ROUTES.MESSAGES.COMMUNITY_CHAT,
+    element: (
+      <SuspenseLoader>
+        <MessagesChatPage />
+      </SuspenseLoader>
+    ),
+  },
 ]
 
 const DashboardRoutesElements = [

@@ -1,5 +1,7 @@
 // Message types based on the API documentation
 export type ChatType = 'private' | 'community' | 'general'
+// Conversations types
+export type ConversationsListTypes = ChatType | 'all'
 
 export interface SendMessageRequest {
   type: ChatType
@@ -33,16 +35,30 @@ export interface ConversationParticipant {
   active: boolean
 }
 
-export interface ConversationResponse {
+export type ConversationResponse = PrivateConversation | CommunityConversation
+
+export type BaseConversation = {
   id: string
-  type: ChatType
-  participants: ConversationParticipant[]
-  communityId?: string // For community conversations
   lastMessage?: MessageResponse
   unreadCount: number
   messageCount: number
   lastMessageTime: string // ISO date string
 }
+
+export type PrivateConversation = {
+  type: 'private'
+  participants: ConversationParticipant[]
+} & BaseConversation
+
+export type CommunityConversation = {
+  type: 'community'
+  communityId?: string
+  community: {
+    id: string
+    name: string
+    image?: string
+  }
+} & BaseConversation
 
 export interface UnreadMessageSummary {
   total: number
@@ -81,7 +97,7 @@ export interface GetMessagesParams {
 export interface GetConversationsParams {
   page?: number
   pageSize?: number
-  type?: ChatType | 'all'
+  type?: ConversationsListTypes
 }
 
 // Query parameters for searching messages

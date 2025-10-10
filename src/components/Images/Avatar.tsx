@@ -30,23 +30,27 @@ export type AvatarProps = {
 export type LinkedAvatarProps = {
   id: string
   linkProfile?: boolean
-} & Pick<AvatarProps, 'size' | 'props'>
+  avatarHash?: string
+  name?: string
+} & Pick<AvatarProps, 'size' | 'props' | 'isSquare'>
 
-export const UserAvatar = ({ id, size = '2xl', linkProfile, props }: LinkedAvatarProps) => {
+export const UserAvatar = ({ id, size = '2xl', linkProfile, avatarHash, name, props, ...rest }: LinkedAvatarProps) => {
   const { user } = useAuth()
   const isCurrentUser = user?.id === id
-  const { data: userData } = useUserProfile(id, { enabled: !isCurrentUser })
+  const { data: userData } = useUserProfile(id, { enabled: !isCurrentUser && !avatarHash })
 
   const data = isCurrentUser ? user : userData
+  const hash = avatarHash || data?.avatarHash
+  const n = name || data?.name
 
   if (linkProfile) {
     return (
       <Link as={RouterLink} to={ROUTES.USERS.DETAIL.replace(':id', id)} minW={avatarSizeToPixels[size]}>
-        <Avatar username={data?.name} avatarHash={data?.avatarHash} size={size} {...props} />
+        <Avatar username={n} avatarHash={hash} size={size} {...props} {...rest} />
       </Link>
     )
   }
-  return <Avatar username={data?.name} avatarHash={data?.avatarHash} size={size} />
+  return <Avatar username={n} avatarHash={hash} size={size} {...props} {...rest} />
 }
 
 export const Avatar: React.FC<AvatarProps> = ({ avatarHash, username, size = '2xl', isSquare = false, props }) => {

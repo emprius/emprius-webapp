@@ -44,6 +44,7 @@ export const ROUTES = {
   MESSAGES: {
     CONVERSATIONS: '/messages',
     CHAT: '/messages/:userId',
+    COMMUNITY_CHAT: '/messages/community/:id',
   },
   AUTH: {
     LOGIN: '/login',

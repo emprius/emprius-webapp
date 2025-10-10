@@ -1,49 +1,59 @@
-import React from 'react'
-import { Box, Flex, VStack, Text, Badge, useColorModeValue, Center, Button, HStack } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { Button, ButtonGroup, Center, HStack, useColorModeValue, VStack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { UserAvatar } from '~components/Images/Avatar'
 import { ElementNotFound } from '~components/Layout/ElementNotFound'
 import { LoadingSpinner } from '~components/Layout/LoadingSpinner'
 import { useConversations, useSearchMessages } from './queries'
-import { MessageResponse } from './types'
-import { convertToDate } from '~utils/dates'
+import { ChatType, ConversationsListTypes } from './types'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ROUTES } from '~src/router/routes'
 import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 import { SearchAndPagination } from '~components/Layout/Search/SearchAndPagination'
 import { DebouncedSearchBar } from '~components/Layout/Search/DebouncedSearchBar'
 import { useDebouncedSearch } from '~components/Layout/Search/DebouncedSearchContext'
-import { ImagesGrid } from '~components/Images/ImagesGrid'
+import { ConversationListItem } from '~components/Messages/ConversationListItem'
 
 export const ConversationsList = () => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const [selectedType, setSelectedType] = useState<ConversationsListTypes>('all')
 
   return (
     <SearchAndPagination>
-      <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} w='full' mb={4}>
-        <DebouncedSearchBar placeholder={t('messages.search_messages', { defaultValue: 'Search messages...' })} />
-      </HStack>
-      <ConversationsListContent />
+      <VStack spacing={4} w='full' mb={4}>
+        <HStack bg={bgColor} borderColor={borderColor} borderRadius='2xl' flex={1} w='full'>
+          <DebouncedSearchBar placeholder={t('messages.search_messages', { defaultValue: 'Search messages...' })} />
+        </HStack>
+        <ChatTypeSelector selectedType={selectedType} setSelectedType={setSelectedType} />
+      </VStack>
+      <ConversationsListContent selectedType={selectedType} />
     </SearchAndPagination>
   )
 }
 
-const ConversationsListContent = () => {
+interface ConversationsListContentProps {
+  selectedType: ConversationsListTypes
+}
+
+const ConversationsListContent = ({ selectedType }: ConversationsListContentProps) => {
   const { debouncedSearch } = useDebouncedSearch()
 
   const hasSearchTerm = !!debouncedSearch && debouncedSearch.length > 0
 
   if (hasSearchTerm) {
-    return <SearchResultsLayout />
+    return <SearchResultsLayout selectedType={selectedType} />
   }
 
-  return <ConversationsLayout />
+  return <ConversationsLayout selectedType={selectedType} />
 }
 
-const ConversationsLayout = () => {
+interface ConversationsLayoutProps {
+  selectedType: ConversationsListTypes
+}
+
+const ConversationsLayout = ({ selectedType }: ConversationsLayoutProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -55,7 +65,7 @@ const ConversationsLayout = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useConversations('private')
+  } = useConversations(selectedType)
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -104,24 +114,32 @@ const ConversationsLayout = () => {
           return null
         }
 
-        // Find the other participant
+        // Handle community conversations
+        if (conversation.type === 'community') {
+          return (
+            <ConversationListItem
+              key={conversation.id}
+              message={conversation.lastMessage}
+              otherParticipant={{ avatarHash: conversation.community.image, ...conversation.community }}
+              unreadCount={conversation.unreadCount}
+              conversationType='community'
+            />
+          )
+        }
+
+        // Handle private conversations
         const participant = conversation.participants?.find((p) => p.id !== user?.id)
         if (!participant) {
           return null
-        }
-
-        const otherParticipant = {
-          id: participant.id,
-          name: participant.name,
-          avatarHash: participant.avatarHash,
         }
 
         return (
           <ConversationListItem
             key={conversation.id}
             message={conversation.lastMessage}
-            otherParticipant={otherParticipant}
+            otherParticipant={participant}
             unreadCount={conversation.unreadCount}
+            conversationType='private'
           />
         )
       })}
@@ -135,10 +153,17 @@ const ConversationsLayout = () => {
   )
 }
 
-const SearchResultsLayout = () => {
+interface SearchResultsLayoutProps {
+  selectedType: ChatType | 'all'
+}
+
+const SearchResultsLayout = ({ selectedType }: SearchResultsLayoutProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { searchTerm } = useDebouncedSearch()
+
+  // Map 'all' to undefined for the search API (searches across all types when type is not specified)
+  const searchType = selectedType === 'all' ? undefined : selectedType
 
   const {
     data: searchData,
@@ -147,7 +172,7 @@ const SearchResultsLayout = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useSearchMessages(searchTerm, 'private')
+  } = useSearchMessages(searchTerm, searchType)
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -212,104 +237,25 @@ const SearchResultsLayout = () => {
   )
 }
 
-interface ConversationListItemProps {
-  message: MessageResponse
-  otherParticipant: {
-    id: string
-    name: string
-  }
-  unreadCount?: number
-  onClick?: (conversationWith: string) => void
-}
-
-const ConversationListItem = ({ message, otherParticipant, unreadCount = 0, onClick }: ConversationListItemProps) => {
+const ChatTypeSelector = ({
+  selectedType,
+  setSelectedType,
+}: {
+  selectedType: ConversationsListTypes
+  setSelectedType: (type: ConversationsListTypes) => void
+}) => {
   const { t } = useTranslation()
-  const { user } = useAuth()
-  const navigate = useNavigate()
-
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const hoverBgColor = useColorModeValue('gray.50', 'gray.700')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
-
-  const messageTime = convertToDate(message.createdAt)
-
-  const handleClick = () => {
-    if (onClick) {
-      onClick(otherParticipant.id)
-    } else {
-      navigate(ROUTES.MESSAGES.CHAT.replace(':userId', otherParticipant.id))
-    }
-  }
-
   return (
-    <Box
-      p={4}
-      bg={bgColor}
-      borderBottom='1px'
-      borderColor={borderColor}
-      cursor='pointer'
-      _hover={{ bg: hoverBgColor }}
-      onClick={handleClick}
-    >
-      <Flex align='center' gap={3}>
-        <UserAvatar id={otherParticipant.id} size='md' linkProfile={false} />
-
-        <Box flex={1} minW={0}>
-          <Flex justify='space-between' align='start' mb={1}>
-            <Text fontWeight='semibold' fontSize='md' noOfLines={1}>
-              {otherParticipant.name}
-            </Text>
-
-            <Flex align='center' gap={2}>
-              {messageTime && (
-                <Text fontSize='xs' color='gray.500'>
-                  {t('rating.rating_date', { date: convertToDate(messageTime) })}
-                </Text>
-              )}
-            </Flex>
-          </Flex>
-
-          <HStack spacing={2} w='full' align='center'>
-            <HStack spacing={2} w='full' align='center' justify={'space-between'}>
-              <Text
-                minW={0}
-                fontSize='sm'
-                color='gray.600'
-                noOfLines={1}
-                fontWeight={unreadCount > 0 ? 'medium' : 'normal'}
-              >
-                {message.senderId === user?.id && (
-                  <Text as='span' color='lighterText'>
-                    {t('messages.you', { defaultValue: 'You: ' })}
-                  </Text>
-                )}
-                {message.content || (
-                  <Text as='span' fontStyle='italic'>
-                    {t('messages.no_content', { defaultValue: 'No content' })}
-                  </Text>
-                )}
-              </Text>
-              {message?.images && (
-                <Box minW={0} overflow='hidden' alignItems={'end'} alignSelf={'end'}>
-                  <ImagesGrid
-                    images={message.images}
-                    imageSize='25px'
-                    spacing={1}
-                    wrap={'nowrap'}
-                    overflow={'hidden'}
-                  />
-                </Box>
-              )}
-            </HStack>
-
-            {unreadCount > 0 && (
-              <Badge variant={'badgeCounter'} borderRadius='full' px={2} flexShrink={0}>
-                {unreadCount}
-              </Badge>
-            )}
-          </HStack>
-        </Box>
-      </Flex>
-    </Box>
+    <ButtonGroup size='sm' variant='ghost'>
+      <Button onClick={() => setSelectedType('all')} variant={selectedType === 'all' ? 'solid' : 'outline'}>
+        {t('messages.filter.all', { defaultValue: 'All' })}
+      </Button>
+      <Button onClick={() => setSelectedType('private')} variant={selectedType === 'private' ? 'solid' : 'outline'}>
+        {t('messages.filter.private', { defaultValue: 'Private' })}
+      </Button>
+      <Button onClick={() => setSelectedType('community')} variant={selectedType === 'community' ? 'solid' : 'outline'}>
+        {t('messages.filter.community', { defaultValue: 'Community' })}
+      </Button>
+    </ButtonGroup>
   )
 }

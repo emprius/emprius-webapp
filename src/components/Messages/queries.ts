@@ -10,6 +10,7 @@ import {
   PaginatedMessagesResponse,
   SearchMessagesParams,
   SendMessageRequest,
+  ConversationsListTypes,
 } from './types'
 import { useCallback } from 'react'
 import { CHAT_REFETCH_INTERVAL, CONVERSATIONS_REFETCH_INTERVAL } from '~utils/constants'
@@ -73,7 +74,7 @@ export const useChatMessages = (
 }
 
 // Get conversations list (infinite query)
-export const useConversations = (type: ChatType = 'private') => {
+export const useConversations = (type: ConversationsListTypes = 'private') => {
   return useInfiniteQuery({
     queryKey: MessageKeys.conversationsList({ type }),
     queryFn: ({ pageParam = 0 }) => {
