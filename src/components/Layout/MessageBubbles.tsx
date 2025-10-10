@@ -45,7 +45,7 @@ export const MessageBubbles = ({
   const textColor = useColorModeValue(isAuthor ? 'gray.700' : 'gray.800', isAuthor ? 'gray.200' : 'gray.100')
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
   const readTickColor = isRead ? 'blue.500' : 'gray.400'
-  const datef = t('rating.datef_full')
+  const datef = t('messages.datef_popover')
 
   return (
     <Flex justify={isRight ? 'end' : 'start'} direction={isRight ? 'row-reverse' : 'row'} {...flexProps}>
@@ -75,12 +75,12 @@ export const MessageBubbles = ({
               <Popover>
                 <PopoverTrigger>
                   <Text fontSize='xs' color={dateColor} cursor='pointer'>
-                    {t('rating.rating_date', { date: convertToDate(at) })}
+                    {t('messages.date_formatted', { date: convertToDate(at) })}
                   </Text>
                 </PopoverTrigger>
                 <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
                   <Box w={'full'} textAlign={'center'}>
-                    {t('rating.date_formatted', {
+                    {t('messages.date_popover', {
                       date: convertToDate(at),
                       format: datef,
                     })}

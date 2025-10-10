@@ -283,12 +283,20 @@
   },
   "messages": {
     "conversations": "Messages",
+    "date_formatted": "{{ date, relative(past: %time ago; future: in %time) }}",
+    "date_popover": "{{ date, format }}",
+    "datef_popover": "Pp",
     "error": {
       "load_conversations_failed": "Failed to load conversations",
       "load_conversations_failed_desc": "There was an error loading your conversations. Please try again.",
       "load_failed": "Failed to load chat",
       "load_failed_desc": "There was an error loading the chat. Please try again.",
       "too_many_images": "Too many images. Maximum {{max}} images allowed."
+    },
+    "filter": {
+      "all": "All",
+      "community": "Community",
+      "private": "Private"
     },
     "find_users": "Find Users",
     "no_content": "No content",
@@ -416,7 +424,6 @@
     "pending_ratings": "Pending",
     "rate": "Rate",
     "rate_user": "Rate User",
-    "rating_date": "{{ date, relative(past: %time ago; future: in %time) }}",
     "ratings": "Ratings",
     "ratings_history": "Ratings History",
     "submit": "Submit Rating",

@@ -283,12 +283,20 @@
   },
   "messages": {
     "conversations": "Missatges",
+    "date_formatted": "{{ date, relative(past: fa %time; future: en %time) }}",
+    "date_popover": "{{ date, format }}",
+    "datef_popover": "Pp",
     "error": {
       "load_conversations_failed": "Error al carregar les converses",
       "load_conversations_failed_desc": "Hi ha hagut un error en carregar les teves converses. Si us plau, torna-ho a provar.",
       "load_failed": "Error al carregar el xat",
       "load_failed_desc": "Hi ha hagut un error en carregar el xat. Si us plau, torna-ho a provar.",
       "too_many_images": "Massa imatges. Màxim {{max}} imatges permeses."
+    },
+    "filter": {
+      "all": "All",
+      "community": "Community",
+      "private": "Private"
     },
     "find_users": "Cercar Usuaris",
     "no_content": "Sense contingut",
@@ -416,7 +424,6 @@
     "pending_ratings": "Pendents",
     "rate": "Valora",
     "rate_user": "Valorar usuari",
-    "rating_date": "{{ date, relative }}",
     "ratings": "Valoracions",
     "ratings_history": "Historial de valoracions",
     "submit": "Enviar valoració",
