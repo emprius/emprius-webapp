@@ -5,19 +5,19 @@ import { Link as RouterLink, Outlet, useLocation, matchPath } from 'react-router
 import { motion } from 'framer-motion'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { BadgeCounter, BadgeIcon } from '~components/Layout/BadgeIcon'
-import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
 
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { IconType } from 'react-icons'
 import { FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
+import { useUnreadMessageCounts } from '~components/Messages/queries'
 
 const SideNav = () => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
-  const { privateCount } = useUnreadMessages()
+  const { data: unreadCounts } = useUnreadMessageCounts()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   const menuItems: SidenavMenuItemProps[] = useMemo(
@@ -44,8 +44,8 @@ const SideNav = () => {
         icon: icons.messages,
         label: t('messages.title', { defaultValue: 'Messages' }),
         path: ROUTES.MESSAGES.CONVERSATIONS,
-        count: privateCount,
-        additionalPath: [ROUTES.MESSAGES.CHAT],
+        count: unreadCounts?.total,
+        additionalPath: [ROUTES.MESSAGES.CHAT, ROUTES.MESSAGES.COMMUNITY_CHAT],
       },
       {
         icon: icons.communities,
@@ -63,7 +63,7 @@ const SideNav = () => {
       },
       { icon: icons.users, label: t('user.list_title'), path: ROUTES.USERS.LIST },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, privateCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, unreadCounts?.total]
   )
 
   return (

@@ -15,6 +15,7 @@ import { CommunityMembers } from '~components/Communities/CommunityMembers'
 import { CommunitySharedTools } from '~components/Communities/CommunitySharedTools'
 import { useAuth } from '~components/Auth/AuthContext'
 import { ChatView } from '~components/Messages/ChatView'
+import { useUnreadMessageCounts } from '~components/Messages/queries'
 
 export const Detail = () => {
   const { t } = useTranslation()
@@ -24,6 +25,7 @@ export const Detail = () => {
   useCustomPageTitle(community?.name)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const { data: unreadCounts } = useUnreadMessageCounts()
 
   // Check if current user is a member of this community
   const isMember = useMemo(() => {
@@ -61,6 +63,7 @@ export const Detail = () => {
       label: t('messages.title', { defaultValue: 'Messages' }),
       content: <ChatView chatWith={id!} type={'community'} />,
       hidden: !isMember, // Only show to members
+      count: unreadCounts?.communities[id!] || 0,
     },
   ]
 
