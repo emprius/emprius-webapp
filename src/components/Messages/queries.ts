@@ -136,10 +136,7 @@ export const useSendMessage = () => {
   return useMutation({
     mutationFn: (data: SendMessageRequest) => messages.sendMessage(data),
     onSuccess: (newMessage, variables) => {
-      let queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId))
-      if (variables.type == 'community') {
-        queryKey = MessageKeys.chat(generateChatKey(variables.communityId, user.id, variables.type))
-      }
+      let queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId, variables.type))
       queryClient.invalidateQueries({
         queryKey,
       })

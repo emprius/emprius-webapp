@@ -6,7 +6,6 @@ export type ConversationsListTypes = ChatType | 'all'
 export interface SendMessageRequest {
   type: ChatType
   recipientId?: string // Required for private messages
-  communityId?: string // Required for community messages
   content?: string // Required if no images
   images?: string[] // Array of image hashes, max 10
   replyToId?: string // Optional, for threaded replies (future feature)
@@ -20,7 +19,6 @@ export interface MessageResponse {
   senderAvatarHash?: string
   recipientId?: string // For private messages
   recipientName?: string // For private messages
-  communityId?: string // For community messages
   content?: string
   images?: string[]
   createdAt: string // ISO date string
@@ -89,7 +87,6 @@ export interface GetMessagesParams {
   pageSize?: number
   type?: ChatType
   conversationWith?: string // User ID for private conversations
-  communityId?: string // Community ID for community messages
   unreadOnly?: boolean
 }
 

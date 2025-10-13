@@ -140,8 +140,7 @@ const MessageInputForm = ({
 
     await sendMessage({
       type: data.type,
-      recipientId: data.type === 'private' ? chatWith : '',
-      communityId: data.type === 'community' ? chatWith : '',
+      recipientId: chatWith,
       content: trimmedMessage || undefined,
       images: imageHashes,
     })

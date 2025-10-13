@@ -190,7 +190,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
             </Center>
           ) : (
             messages.map((message, index) => (
-              <ChatMessageBubble type={type} message={message} index={index} messages={messages} />
+              <ChatMessageBubble key={message.id} type={type} message={message} index={index} messages={messages} />
             ))
           )}
           <div ref={messagesEndRef} />
