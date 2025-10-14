@@ -117,13 +117,13 @@ const Bubble = ({
     content: "''",
     position: 'absolute',
     top: !isDown && '1em',
-    bottom: isDown && '0.3em',
-    left: isRight ? 'auto' : '-0.4em',
-    right: isRight ? '-0.4em' : 'auto',
+    bottom: isDown && '0.4em',
+    left: isRight ? 'auto' : '-0.35em',
+    right: isRight ? '-0.35em' : 'auto',
     width: '1.5em',
     height: '1.5em',
     bg: bubbleColor,
-    clipPath: isRight ? 'polygon(70% 100%, 100% 0%, 50% 0%)' : 'polygon(30% 100%, 60% 0%, 0% 0%)',
+    clipPath: isRight ? 'polygon(50% 100%, 110% 0%, 40% 0%)' : 'polygon(50% 100%, 60% 0%, -10% 0%)',
   }
   return (
     <Box>
