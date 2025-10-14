@@ -131,12 +131,12 @@ export const useSearchMessages = (searchTerm: string, type: ChatType = 'private'
 // Send a message
 export const useSendMessage = () => {
   const queryClient = useQueryClient()
-  const { user } = useAuth()
 
   return useMutation({
     mutationFn: (data: SendMessageRequest) => messages.sendMessage(data),
     onSuccess: (newMessage, variables) => {
-      let queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId, variables.type))
+      const queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId, variables.type))
+
       queryClient.invalidateQueries({
         queryKey,
       })
