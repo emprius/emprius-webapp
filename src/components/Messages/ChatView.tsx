@@ -13,6 +13,7 @@ import LoadMoreButton from '~components/Layout/Pagination/LoadMoreButton'
 import { ChatType } from '~components/Messages/types'
 import { CommunityCardLittle } from '~components/Communities/Card'
 import ChatMessageBubble from '~components/Messages/ChatMessageBubble'
+import { icons } from '~theme/icons'
 
 interface ChatViewProps {
   chatWith: string // User ID for private conversations
@@ -183,9 +184,11 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
 
           {messages.length === 0 ? (
             <Center py={8} flex={1}>
-              <Text color='gray.500'>
-                {t('messages.no_messages', { defaultValue: 'No messages yet. Start the conversation!' })}
-              </Text>
+              <ElementNotFound
+                icon={icons.messages}
+                title={t('messages.no_messages_yet', { defaultValue: 'No messages yet!' })}
+                desc={t('messages.start_conversation', { defaultValue: ' Start the conversation' })}
+              />
             </Center>
           ) : (
             messages.map((message, index) => (
