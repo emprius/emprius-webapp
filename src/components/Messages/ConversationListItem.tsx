@@ -1,13 +1,14 @@
 import { ChatType, MessageResponse } from '~components/Messages/types'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '~components/Auth/AuthContext'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { Badge, Box, Flex, HStack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { Badge, Box, Flex, HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { convertToDate } from '~utils/dates'
 import { ROUTES } from '~src/router/routes'
 import { UserAvatar } from '~components/Images/Avatar'
 import { ImagesGrid } from '~components/Images/ImagesGrid'
 import React from 'react'
+import { icons } from '~theme/icons'
 
 interface ConversationListItemProps {
   message: MessageResponse
@@ -63,10 +64,12 @@ export const ConversationListItem = ({
 
         <Box flex={1} minW={0}>
           <Flex justify='space-between' align='start' mb={1}>
-            <Text fontWeight='semibold' fontSize='md' noOfLines={1}>
-              {otherParticipant.name}
-            </Text>
-
+            <HStack spacing={1}>
+              {isCommunity && <Icon as={icons.communities} />}
+              <Text fontWeight='semibold' wordBreak='break-word' fontSize='md' noOfLines={1}>
+                {otherParticipant.name}
+              </Text>
+            </HStack>
             <Flex align='center' gap={2}>
               <Text fontSize='xs' color='gray.500'>
                 {t('messages.date_formatted', { date: convertToDate(message.createdAt) })}
