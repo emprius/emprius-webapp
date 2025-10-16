@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
-import { Box, Flex, VStack, Text, IconButton, useColorModeValue, Center } from '@chakra-ui/react'
+import { Box, Flex, VStack, IconButton, useColorModeValue, Center } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FiArrowLeft, FiArrowDown } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -29,6 +29,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
   const messageInputContainerRef = useRef<HTMLDivElement>(null)
   const [showScrollToBottom, setShowScrollToBottom] = useState(false)
   const [messageInputHeight, setMessageInputHeight] = useState(90) // Default fallback height
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const headerBgColor = useColorModeValue('white', 'gray.800')
@@ -65,12 +66,19 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
     }
   }, [messages, user?.id, chatWith, markMessagesAsRead])
 
+  // Reset initial load flag when switching between chats
+  useEffect(() => {
+    setIsInitialLoad(true)
+  }, [chatWith])
+
   // Scroll to bottom immediately when component first loads with messages
   useEffect(() => {
-    if (messages?.length > 0 && messagesContainerRef.current) {
+    if (messages?.length > 0 && messagesContainerRef.current && isInitialLoad) {
       scrollToBottom()
+      // Mark initial load complete after scrolling
+      setIsInitialLoad(false)
     }
-  }, [isSuccess])
+  }, [isSuccess, messages?.length, isInitialLoad])
 
   // Handle scroll to detect when user scrolls near top for loading more messages
   // and to show/hide the scroll to bottom button
@@ -83,6 +91,9 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
     const isScrolledUp = scrollTop + clientHeight < scrollHeight - 100
     setShowScrollToBottom(isScrolledUp && messages.length > 0)
 
+    // Skip loading more messages during initial load
+    if (isInitialLoad) return
+
     // Load more messages when scrolled to top
     if (hasNextPage && !isFetchingNextPage) {
       const scrolledToTop = scrollTop < 100 // Load more when within 100px of top
@@ -91,7 +102,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
         fetchNextPage()
       }
     }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, messages.length])
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, messages.length, isInitialLoad])
 
   // Add scroll listener
   useEffect(() => {
