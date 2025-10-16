@@ -278,6 +278,7 @@ const ChatHeader = ({ chatWith, onBack, bgColor, borderColor, type }: ChatHeader
           align={'center'}
           justify={'center'}
           alignItems={'center'}
+          showLastSeen
         />
       )}
     </Flex>

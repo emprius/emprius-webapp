@@ -557,6 +557,7 @@
     "error_uploading_image": "Error al pujar la imatge",
     "inactive": "Inactiu",
     "last_seen": "Vist per última vegada {{ date, format }}",
+    "last_seen_duration": "Vist {{ date, relative(past: fa %time) }}",
     "list_title": "Membres",
     "member_since": "Membre des de {{ date, format }}",
     "no_loans": "No s'han trobat préstecs",

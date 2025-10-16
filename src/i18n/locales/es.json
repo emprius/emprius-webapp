@@ -557,6 +557,7 @@
     "error_uploading_image": "Error al subir la imagen",
     "inactive": "Inactivo",
     "last_seen": "Visto por última vez {{ date, format }}",
+    "last_seen_duration": "Visto {{ date, relative(past: hace %time) }}",
     "list_title": "Miembros",
     "member_since": "Miembro desde {{ date, format }}",
     "no_loans": "No se encontraron préstamos",
