@@ -24,26 +24,25 @@ import { ContextSearchBarForm } from '~components/Search/SearchBarForm'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { BadgeCounter, BadgeIcon } from '../Layout/BadgeIcon'
-import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 
 import logo from '/assets/logos/logo.png'
 import DonateButton from '~components/Layout/DonateButton'
 import { UserCard } from '~components/Users/Card'
-import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
+import { useUnreadMessageCounts } from '~components/Messages/queries'
 
 export const Navbar = () => {
   const { t } = useTranslation()
   const { isAuthenticated, user } = useAuth()
   const { pendingRatingsCount, pendingRequestsCount, pendingInvitesCount } = usePendingActions()
-  const { privateCount } = useUnreadMessages()
+  const { data: unreadCounts } = useUnreadMessageCounts()
   const location = useLocation()
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
 
-  const hamburgerMenuHasCount = privateCount > 0 || pendingRatingsCount > 0
+  const hamburgerMenuHasCount = unreadCounts?.total > 0 || pendingRatingsCount > 0
 
   return (
     <Flex
@@ -121,7 +120,7 @@ export const Navbar = () => {
                   </Text>
                 </Link>
               )}
-              {privateCount && (
+              {unreadCounts?.total && (
                 <Link
                   as={RouterLink}
                   to={ROUTES.MESSAGES.CONVERSATIONS}
@@ -134,7 +133,7 @@ export const Navbar = () => {
                   <BadgeIcon
                     icon={icons.messages}
                     aria-label={t('messages.title')}
-                    count={privateCount}
+                    count={unreadCounts?.total}
                     color={iconColor}
                     iconProps={{ boxSize: 5 }}
                   />

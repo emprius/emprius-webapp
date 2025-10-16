@@ -6,19 +6,20 @@ import {
   GetMessagesParams,
   MarkConversationReadRequest,
   MarkMessagesReadRequest,
-  MessageType,
+  ChatType,
   PaginatedMessagesResponse,
   SearchMessagesParams,
   SendMessageRequest,
+  ConversationsListTypes,
 } from './types'
 import { useCallback } from 'react'
 import { CHAT_REFETCH_INTERVAL, CONVERSATIONS_REFETCH_INTERVAL } from '~utils/constants'
 import type { DefinedInitialDataInfiniteOptions } from '@tanstack/react-query/src/infiniteQueryOptions'
 
 // Helper function to generate conversation key for private messages
-export const generateChatKey = (userId1: string, userId2: string): string => {
+export const generateChatKey = (userId1: string, userId2: string, type: ChatType = 'private'): string => {
   const sortedIds = [userId1, userId2].sort()
-  return `private:${sortedIds[0]}:${sortedIds[1]}`
+  return `${type}:${sortedIds[0]}:${sortedIds[1]}`
 }
 
 export const MessageKeys = {
@@ -29,7 +30,7 @@ export const MessageKeys = {
 
   // Specific message queries
   messages: (params: GetMessagesParams) => ['messages', 'list', params] as const,
-  chat: (userId: string, page?: number) => ['messages', 'chat', userId, page] as const,
+  chat: (chatId: string, page?: number) => ['messages', 'chat', chatId, page] as const,
   search: (params: SearchMessagesParams) => ['messages', 'search', params] as const,
 
   // Conversation queries
@@ -39,6 +40,7 @@ export const MessageKeys = {
 // Get messages for a specific private conversation (infinite query)
 export const useChatMessages = (
   conversationWith: string,
+  type: ChatType = 'private',
   options: Omit<
     DefinedInitialDataInfiniteOptions<
       PaginatedMessagesResponse & PaginationInfo,
@@ -50,10 +52,10 @@ export const useChatMessages = (
 ) => {
   const { user } = useAuth()
   return useInfiniteQuery({
-    queryKey: MessageKeys.chat(generateChatKey(conversationWith, user.id)),
+    queryKey: MessageKeys.chat(generateChatKey(conversationWith, user.id, type)),
     queryFn: ({ pageParam = 0 }) => {
       const params: GetMessagesParams = {
-        type: 'private',
+        type,
         conversationWith,
         page: pageParam as number,
         pageSize: 10,
@@ -72,7 +74,7 @@ export const useChatMessages = (
 }
 
 // Get conversations list (infinite query)
-export const useConversations = (type: MessageType | 'all' = 'private') => {
+export const useConversations = (type: ConversationsListTypes = 'private') => {
   return useInfiniteQuery({
     queryKey: MessageKeys.conversationsList({ type }),
     queryFn: ({ pageParam = 0 }) => {
@@ -105,7 +107,7 @@ export const useUnreadMessageCounts = () => {
 }
 
 // Search messages with infinite query
-export const useSearchMessages = (searchTerm: string, type: MessageType = 'private') => {
+export const useSearchMessages = (searchTerm: string, type: ChatType = 'private') => {
   return useInfiniteQuery({
     queryKey: MessageKeys.search({ q: searchTerm, type }),
     queryFn: ({ pageParam = 0 }) => {
@@ -133,7 +135,8 @@ export const useSendMessage = () => {
   return useMutation({
     mutationFn: (data: SendMessageRequest) => messages.sendMessage(data),
     onSuccess: (newMessage, variables) => {
-      const queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId))
+      const queryKey = MessageKeys.chat(generateChatKey(newMessage.recipientId, newMessage.senderId, variables.type))
+
       queryClient.invalidateQueries({
         queryKey,
       })

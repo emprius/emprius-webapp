@@ -103,7 +103,7 @@ export const CommunityCardLittle: React.FC<CommunityCardLittleProps> = ({ id, av
     >
       <Avatar username={data.name} avatarHash={data.image} size={avatarSize} isSquare />
       <Stack direction={'column'} spacing={1}>
-        <HStack spacing={2}>
+        <HStack spacing={1}>
           <Icon as={icons.communities} />
           <Text fontWeight='bold' wordBreak='break-word'>
             {data.name}

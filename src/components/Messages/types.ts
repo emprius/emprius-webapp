@@ -1,10 +1,11 @@
 // Message types based on the API documentation
-export type MessageType = 'private' | 'community' | 'general'
+export type ChatType = 'private' | 'community' | 'general'
+// Conversations types
+export type ConversationsListTypes = ChatType | 'all'
 
 export interface SendMessageRequest {
-  type: MessageType
+  type: ChatType
   recipientId?: string // Required for private messages
-  communityId?: string // Required for community messages
   content?: string // Required if no images
   images?: string[] // Array of image hashes, max 10
   replyToId?: string // Optional, for threaded replies (future feature)
@@ -12,13 +13,12 @@ export interface SendMessageRequest {
 
 export interface MessageResponse {
   id: string
-  type: MessageType
+  type: ChatType
   senderId: string
   senderName: string
   senderAvatarHash?: string
   recipientId?: string // For private messages
   recipientName?: string // For private messages
-  communityId?: string // For community messages
   content?: string
   images?: string[]
   createdAt: string // ISO date string
@@ -33,16 +33,30 @@ export interface ConversationParticipant {
   active: boolean
 }
 
-export interface ConversationResponse {
+export type ConversationResponse = PrivateConversation | CommunityConversation
+
+export type BaseConversation = {
   id: string
-  type: MessageType
-  participants: ConversationParticipant[]
-  communityId?: string // For community conversations
   lastMessage?: MessageResponse
   unreadCount: number
   messageCount: number
   lastMessageTime: string // ISO date string
 }
+
+export type PrivateConversation = {
+  type: 'private'
+  participants: ConversationParticipant[]
+} & BaseConversation
+
+export type CommunityConversation = {
+  type: 'community'
+  communityId?: string
+  community: {
+    id: string
+    name: string
+    image?: string
+  }
+} & BaseConversation
 
 export interface UnreadMessageSummary {
   total: number
@@ -71,9 +85,8 @@ export interface PaginatedConversationsResponse {
 export interface GetMessagesParams {
   page?: number
   pageSize?: number
-  type?: MessageType
+  type?: ChatType
   conversationWith?: string // User ID for private conversations
-  communityId?: string // Community ID for community messages
   unreadOnly?: boolean
 }
 
@@ -81,13 +94,13 @@ export interface GetMessagesParams {
 export interface GetConversationsParams {
   page?: number
   pageSize?: number
-  type?: MessageType | 'all'
+  type?: ConversationsListTypes
 }
 
 // Query parameters for searching messages
 export interface SearchMessagesParams {
   q: string // Search query
-  type?: MessageType
+  type?: ChatType
   page?: number
   pageSize?: number
 }

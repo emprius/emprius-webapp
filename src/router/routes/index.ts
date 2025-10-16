@@ -35,6 +35,7 @@ export const ROUTES = {
     TABS: {
       MEMBERS: '/communities/:id/members',
       TOOLS: '/communities/:id/tools',
+      CHAT: '/communities/:id/chat',
     },
     EDIT: '/communities/:id/edit',
     NEW: '/communities/new',
@@ -43,6 +44,7 @@ export const ROUTES = {
   MESSAGES: {
     CONVERSATIONS: '/messages',
     CHAT: '/messages/:userId',
+    COMMUNITY_CHAT: '/messages/community/:id',
   },
   AUTH: {
     LOGIN: '/login',

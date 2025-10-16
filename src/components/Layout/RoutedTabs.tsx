@@ -1,12 +1,14 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { BadgeCounter } from '~components/Layout/BadgeIcon'
 
 export interface TabConfig {
   path: string
   label: React.ReactNode
   content: React.ReactNode
   hidden?: boolean
+  count?: number
 }
 
 interface RoutedTabsProps {
@@ -49,7 +51,18 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
       <Tabs isLazy index={currentTabIndex} onChange={handleTabChange} variant={'outline'}>
         <TabList>
           {visibleTabs.map((tab, index) => (
-            <Tab key={index}>{tab.label}</Tab>
+            <Tab key={index}>
+              {' '}
+              <BadgeCounter
+                count={tab?.count}
+                badgeProps={{
+                  top: '-4px',
+                  right: '-20px',
+                }}
+              >
+                {tab.label}{' '}
+              </BadgeCounter>
+            </Tab>
           ))}
         </TabList>
         <TabPanels>

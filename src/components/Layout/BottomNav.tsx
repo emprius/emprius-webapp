@@ -7,7 +7,7 @@ import { BadgeIcon } from '~components/Layout/BadgeIcon'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { IconType } from 'react-icons'
-import { useUnreadMessages } from '~components/Messages/UnreadMessagesProvider'
+import { useUnreadMessageCounts } from '~components/Messages/queries'
 
 type MenuItem = {
   icon: IconType
@@ -26,7 +26,7 @@ export const BottomNav = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const location = useLocation()
   const selectedColor = useColorModeValue('primary.600', 'primary.200')
-  const { privateCount } = useUnreadMessages()
+  const { data: unreadCounts } = useUnreadMessageCounts()
 
   const menuItems = useMemo<MenuItem[]>(
     () => [
@@ -43,11 +43,11 @@ export const BottomNav = () => {
         icon: icons.messages,
         label: t('messages.title', { defaultValue: 'Messages' }),
         path: ROUTES.MESSAGES.CONVERSATIONS,
-        count: privateCount,
-        additionalPath: [ROUTES.MESSAGES.CHAT],
+        count: unreadCounts?.total,
+        additionalPath: [ROUTES.MESSAGES.CHAT, ROUTES.MESSAGES.COMMUNITY_CHAT],
       },
     ],
-    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, privateCount]
+    [t, pendingRatingsCount, pendingRequestsCount, pendingInvitesCount, unreadCounts?.total]
   )
 
   return (

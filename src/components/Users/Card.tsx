@@ -1,7 +1,6 @@
 import {
   Badge,
   BadgeProps,
-  Box,
   Flex,
   FlexProps,
   HStack,
@@ -13,19 +12,17 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { UseQueryOptions } from '@tanstack/react-query/build/modern'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { UserPreview, UserProfile, UserProfileDTO } from '~components/Users/types'
+import { UserPreview, UserProfile } from '~components/Users/types'
 
 import { ROUTES } from '~src/router/routes'
 import { Avatar, AvatarSize, avatarSizeToPixels } from '../Images/Avatar'
 import { RatingProps, ShowRatingStars } from '../Ratings/ShowRatingStars'
 import { useUserProfile } from './queries'
-import { ApiError, UnauthorizedError } from '~src/services/api'
+import { ApiError } from '~src/services/api'
 import { useTranslation } from 'react-i18next'
 import { icons } from '~theme/icons'
-import { FiHome } from 'react-icons/fi'
 
 type UserMiniCardProps = {
   userId: string
@@ -35,6 +32,7 @@ type UserMiniCardProps = {
   showRating?: boolean
   showKarma?: boolean
   showAvatar?: boolean
+  showLastSeen?: boolean
   showBorder?: boolean
   userNameFirst?: boolean
   to?: string
@@ -51,6 +49,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
   showRating = true,
   showKarma = false,
   showAvatar = true,
+  showLastSeen = false,
   showBorder = true,
   userNameFirst = false,
   to,
@@ -112,6 +111,7 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
     : { text: user?.name, icon: icons.user }
 
   const _to = to ?? (!userNotFound ? ROUTES.USERS.DETAIL.replace(':id', userId) : '')
+  const datefLastSeen = t('user.datefLastSeen', { defaultValue: 'PPp' })
 
   return (
     <Flex
@@ -129,40 +129,50 @@ export const UserCard: React.FC<UserMiniCardProps> = ({
     >
       {showAvatar && !userNotFound && <Avatar username={user?.name} avatarHash={user?.avatarHash} size={avatarSize} />}
       {showAvatar && userNotFound && <Avatar size={avatarSize} avatarHash={user?.avatarHash} />}
-      <Stack direction={direction} spacing={1} wrap={'wrap'}>
-        <HStack>
-          <Stack direction='row' align='center' spacing={1} fontWeight='bold'>
-            <Icon as={title.icon} boxSize={3} />
+      {/*Show last seen always on bottom. Used only on chats, maybe to improve on the future*/}
+      <Stack direction={'column'} spacing={showLastSeen ? 1 : 0} wrap={'wrap'}>
+        <Stack direction={direction} spacing={1} wrap={'wrap'}>
+          <HStack>
+            <Stack direction='row' align='center' spacing={1} fontWeight='bold'>
+              <Icon as={title.icon} boxSize={3} />
+              <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
+                {title.text}
+              </Text>
+            </Stack>
+            {badge && (
+              <Badge colorScheme='green' {...badgeProps}>
+                {badge}
+              </Badge>
+            )}
+          </HStack>
+          <Stack direction='row' align='center' spacing={1} color='lightText'>
+            <Icon as={subtitle.icon} boxSize={3} />
             <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
-              {title.text}
+              {subtitle.text}
             </Text>
           </Stack>
-          {badge && (
-            <Badge colorScheme='green' {...badgeProps}>
-              {badge}
-            </Badge>
+          {showRating && !userNotFound && (
+            <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='xs' {...ratingProps} />
           )}
-        </HStack>
-        <Stack direction='row' align='center' spacing={1} color='lightText'>
-          <Icon as={subtitle.icon} boxSize={3} />
-          <Text wordBreak='break-word' color={userNotFound ? 'lighterText' : 'inherit'}>
-            {subtitle.text}
-          </Text>
-        </Stack>
-        {showRating && !userNotFound && (
-          <ShowRatingStars rating={user?.rating} ratingCount={user?.ratingCount} size='xs' {...ratingProps} />
-        )}
-        {showKarma && !userNotFound && (
-          <Stack direction='row' align='center' spacing={1} title={t('profile.karma_desc')}>
-            <Icon as={icons.karma} boxSize={3} color='blue.500' />
-            <Text color='blue.500'>
-              {user?.karma} {t('profile.karma_points', { defaultValue: 'Karma points' })}
+          {showKarma && !userNotFound && (
+            <Stack direction='row' align='center' spacing={1} title={t('profile.karma_desc')}>
+              <Icon as={icons.karma} boxSize={3} color='blue.500' />
+              <Text color='blue.500'>
+                {user?.karma} {t('profile.karma_points', { defaultValue: 'Karma points' })}
+              </Text>
+            </Stack>
+          )}
+          {userNotFound && (
+            <Text color='lighterText' fontSize={'sm'}>
+              {t('users.not_active', { defaultValue: 'Not active' })}
             </Text>
-          </Stack>
-        )}
-        {userNotFound && (
-          <Text color='lighterText' fontSize={'sm'}>
-            {t('users.not_active', { defaultValue: 'Not active' })}
+          )}
+        </Stack>
+        {showLastSeen && !userNotFound && user?.lastSeen && (
+          <Text fontSize='sm' color='lightText'>
+            {t('user.last_seen_duration', {
+              date: new Date(user.lastSeen),
+            })}
           </Text>
         )}
       </Stack>

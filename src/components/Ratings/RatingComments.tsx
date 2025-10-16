@@ -1,5 +1,5 @@
 import { RatingParty, UnifiedRating } from '~components/Ratings/types'
-import { Box, Flex, FlexProps } from '@chakra-ui/react'
+import { Box, Flex, FlexProps, HStack } from '@chakra-ui/react'
 import React from 'react'
 import { useAuth } from '~components/Auth/AuthContext'
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
@@ -48,7 +48,11 @@ const RatingBubbles = ({
     isRight={isRight}
     at={ratedAt}
     images={images}
-    topComponent={<ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />}
+    topComponent={
+      <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
+        <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
+      </HStack>
+    }
     showAvatar
     mb={4}
     gap={2}

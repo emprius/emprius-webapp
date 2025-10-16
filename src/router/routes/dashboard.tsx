@@ -152,6 +152,14 @@ const CommunityElements = [
     ),
   },
   {
+    path: ROUTES.COMMUNITIES.TABS.CHAT,
+    element: (
+      <SuspenseLoader>
+        <CommunityDetailPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
     element: <TitlePageLayout />,
     children: [
       {
@@ -206,6 +214,14 @@ const MessageElements = [
   },
   {
     path: ROUTES.MESSAGES.CHAT,
+    element: (
+      <SuspenseLoader>
+        <MessagesChatPage />
+      </SuspenseLoader>
+    ),
+  },
+  {
+    path: ROUTES.MESSAGES.COMMUNITY_CHAT,
     element: (
       <SuspenseLoader>
         <MessagesChatPage />
