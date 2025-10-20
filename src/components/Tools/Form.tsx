@@ -262,7 +262,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
             </FormControl>
 
             <FormControl isInvalid={!!errors.maxDistance}>
-              <FormLabel>{t('tools.maxDistance', { defaultValue: 'Max distance (km)' })}</FormLabel>
+              <FormLabel>{t('tools.max_distance_form', { defaultValue: 'Max distance (km)' })}</FormLabel>
               <NumberInput min={1} precision={0}>
                 <NumberInputField
                   {...register('maxDistance', {
@@ -276,7 +276,7 @@ export const ToolForm: React.FC<ToolFormProps> = ({
                 </NumberInputStepper>
               </NumberInput>
               <FormHelperText>
-                {t('tools.maxDistance_desc', {
+                {t('tools.max_distance_form_desc', {
                   defaultValue: 'Maximum loan distance, preventing users from booking if they are too far away',
                 })}
               </FormHelperText>

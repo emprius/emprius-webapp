@@ -137,7 +137,10 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                         <Stack direction='row' align='center'>
                           <MdSocialDistance size={20} />
                           <Text>
-                            {t('tools.max_distance')}: {tool.maxDistance}
+                            {t('tools.max_distance_km', {
+                              defaultValue: 'Max distance: {{ distance }} km',
+                              distance: tool.maxDistance,
+                            })}
                           </Text>
                         </Stack>
                       )}
