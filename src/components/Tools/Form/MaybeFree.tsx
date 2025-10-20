@@ -26,7 +26,7 @@ interface MaybeFreeProps {
 
 export const MaybeFree: React.FC<MaybeFreeProps> = ({ estimatedDailyCost, cost }) => {
   const { t } = useTranslation()
-  const [isFree, setIsFree] = useState(false)
+  const [isFree, setIsFree] = useState(cost === 0)
   const {
     control,
     setValue,

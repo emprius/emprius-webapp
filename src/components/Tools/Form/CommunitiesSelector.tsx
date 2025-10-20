@@ -61,7 +61,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ hasCom
     <Stack spacing={2}>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={8} align='start'>
         <FormControl display='flex' flexDirection={'column'} alignItems='start' width='auto' gap={1}>
-          <FormLabel htmlFor='isFree'>
+          <FormLabel htmlFor='shareGlobally'>
             <HStack>
               <Icon as={icons.globe} />
               <Text>
@@ -76,7 +76,7 @@ export const CommunitiesSelector: React.FC<CommunitiesSelectorProps> = ({ hasCom
               defaultValue: 'Share this tool with everybody',
             })}
           </Text>
-          <Switch mt={4} id='isFree' isChecked={shareGlobally} onChange={handleSwitchChange} size={'lg'} />
+          <Switch mt={4} id='shareGlobally' isChecked={shareGlobally} onChange={handleSwitchChange} size={'lg'} />
         </FormControl>
         <FormControl flex={1} isDisabled={shareGlobally} isInvalid={!!errors.communities} isRequired={!shareGlobally}>
           <FormLabel display={'flex'} alignItems={'center'} gap={2} htmlFor='communities'>
