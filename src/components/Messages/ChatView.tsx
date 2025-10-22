@@ -1,5 +1,17 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
-import { Box, Flex, VStack, IconButton, useColorModeValue, Center } from '@chakra-ui/react'
+import {
+  Avatar as ChakraAvatar,
+  Box,
+  Flex,
+  VStack,
+  IconButton,
+  useColorModeValue,
+  Center,
+  Stack,
+  HStack,
+  Icon,
+  Text,
+} from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { FiArrowLeft, FiArrowDown } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -14,6 +26,7 @@ import { ChatType } from '~components/Messages/types'
 import { CommunityCardLittle } from '~components/Communities/Card'
 import ChatMessageBubble from '~components/Messages/ChatMessageBubble'
 import { icons } from '~theme/icons'
+import { useInfo } from '~components/Layout/Contexts/InfoContext'
 
 interface ChatViewProps {
   chatWith: string // User ID for private conversations
@@ -277,6 +290,8 @@ const ChatHeader = ({ chatWith, onBack, bgColor, borderColor, type }: ChatHeader
         />
       )}
 
+      {type === 'general' && <GeneralChatCard />}
+
       {type === 'community' && <CommunityCardLittle id={chatWith} direction={'row'} avatarSize={'md'} />}
 
       {type === 'private' && (
@@ -292,6 +307,30 @@ const ChatHeader = ({ chatWith, onBack, bgColor, borderColor, type }: ChatHeader
           showLastSeen
         />
       )}
+    </Flex>
+  )
+}
+
+const GeneralChatCard = () => {
+  const { data } = useInfo()
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const { t } = useTranslation()
+
+  const name = t('messages.general', { defaultValue: 'General Chat' })
+  return (
+    <Flex flex={1} align='center' gap={4} p={4} bg={bgColor}>
+      <ChakraAvatar src={'/assets/logos/emprius_logo.png '} name={name} size={'md'} borderRadius={'md'} />{' '}
+      <Stack direction={'column'} spacing={1}>
+        <HStack spacing={1}>
+          <Icon as={icons.communities} />
+          <Text fontWeight='bold' wordBreak='break-word'>
+            {name}
+          </Text>
+        </HStack>
+        <Text fontSize='sm' color='gray.500'>
+          {t('communities.member_count', { defaultValue: '{{ count }} members', count: data?.users })}
+        </Text>
+      </Stack>
     </Flex>
   )
 }

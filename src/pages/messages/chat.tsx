@@ -14,19 +14,21 @@ export const View = () => {
   const navigate = useNavigate()
 
   const isCommunityChat = !!useMatch(ROUTES.MESSAGES.COMMUNITY_CHAT)
+  const isGeneralChat = !!useMatch(ROUTES.MESSAGES.GENERAL_CHAT)
 
-  const { data: userData } = useUserProfile(userId, { enabled: !isCommunityChat })
-  const { data: communityData } = useCommunityDetail(id, { enabled: isCommunityChat })
+  const { data: userData } = useUserProfile(userId, { enabled: !isCommunityChat && !isGeneralChat })
+  const { data: communityData } = useCommunityDetail(id, { enabled: isCommunityChat && !isGeneralChat })
 
   useCustomPageTitle(userData?.name || communityData?.name)
 
   let type: ChatType = 'private'
-
   if (isCommunityChat) {
     type = 'community'
+  } else if (isGeneralChat) {
+    type = 'general'
   }
 
-  if (!userId && !id) {
+  if (!userId && !id && !isGeneralChat) {
     // Redirect to conversations list if no userId provided
     navigate(ROUTES.MESSAGES.CONVERSATIONS, { replace: true })
     return null

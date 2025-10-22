@@ -45,7 +45,7 @@ const SideNav = () => {
         label: t('messages.title', { defaultValue: 'Messages' }),
         path: ROUTES.MESSAGES.CONVERSATIONS,
         count: unreadCounts?.total,
-        additionalPath: [ROUTES.MESSAGES.CHAT, ROUTES.MESSAGES.COMMUNITY_CHAT],
+        additionalPath: [ROUTES.MESSAGES.CHAT, ROUTES.MESSAGES.COMMUNITY_CHAT, ROUTES.MESSAGES.GENERAL_CHAT],
       },
       {
         icon: icons.communities,

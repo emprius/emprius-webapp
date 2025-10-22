@@ -43,6 +43,7 @@ export const icons = {
   nomadic: RxColorWheel,
   edit: EditIcon,
   communities: RiUserCommunityFill,
+  generalChat: FiGlobe,
   globe: FiGlobe,
   share: FiShare2,
   userHome: IoMdHome,
