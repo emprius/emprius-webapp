@@ -27,6 +27,7 @@ import { UserProfile as UserProfileType } from '~components/Users/types'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
 import { AdditionalContactMethods } from '~components/Users/AdditionalContactMethods'
+import { SendMessageButton } from '~components/Layout/SendMessageButton'
 
 export const UserProfile = (user: UserProfileType) => {
   const { t } = useTranslation()
@@ -165,14 +166,7 @@ export const UserProfile = (user: UserProfileType) => {
         </Stack>
 
         <VStack justify={{ base: 'center', md: 'flex-start' }} align={{ base: 'center', md: 'flex-start' }} gap={4}>
-          <Button
-            aria-label={t('user.send_message', { defaultValue: 'Send message' })}
-            leftIcon={<Icon as={icons.messages} />}
-            size='md'
-            onClick={() => navigate(ROUTES.MESSAGES.CHAT.replace(':userId', user.id))}
-          >
-            {t('user.send_message', { defaultValue: 'Send Message' })}
-          </Button>
+          <SendMessageButton userId={user.id} />
           <BioEditor user={user} isCurrentUser={isCurrentUser} />
         </VStack>
         <Divider />

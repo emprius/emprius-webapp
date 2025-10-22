@@ -37,6 +37,7 @@ import { CommunityCardLittle } from '~components/Communities/Card'
 import { BookingFormWrapper, canUserBookTool } from '~components/Tools/FormWrapper'
 import NomadicBadge from '~components/Tools/shared/NomadicBadge'
 import { IoCalculatorSharp } from 'react-icons/io5'
+import { SendMessageButton } from '~components/Layout/SendMessageButton'
 
 export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
   const { t } = useTranslation()
@@ -159,7 +160,10 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                       <Text fontWeight='medium' mb={2} color='primary.500'>
                         {t('common.owner')}
                       </Text>
-                      <UserCard userId={tool.userId} borderWidth={0} p={0} />
+                      <HStack spacing={4} align={'start'}>
+                        <UserCard userId={tool.userId} borderWidth={0} p={0} />
+                        <SendMessageButton userId={tool.userId} variant={'outline'} onlyIcon />
+                      </HStack>
                     </>
                     {showActualUser && (
                       <>
@@ -173,7 +177,10 @@ export const ToolDetail = ({ tool }: { tool: ToolDetailType }) => {
                             )
                           </Text>
                         </Text>
-                        <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
+                        <HStack spacing={4} align={'start'}>
+                          <UserCard userId={tool.actualUserId} borderWidth={0} p={0} />
+                          <SendMessageButton userId={tool.actualUserId} variant={'outline'} onlyIcon />
+                        </HStack>
                       </>
                     )}
                     {tool?.communities && (
