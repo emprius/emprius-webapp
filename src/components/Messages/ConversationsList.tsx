@@ -88,6 +88,17 @@ const ConversationsLayout = ({ selectedType }: ConversationsLayoutProps) => {
 
   const conversations = conversationsData?.pages?.flatMap((page) => page.conversations) || []
 
+  // Placeholder if the general chat is empty yet
+  if (selectedType === 'general' && !conversations.length) {
+    conversations.push({
+      id: 'general',
+      type: 'general',
+      unreadCount: 0,
+      messageCount: 0,
+      lastMessageTime: '',
+    })
+  }
+
   if (!conversations.length) {
     return (
       <Center py={8}>
@@ -109,11 +120,6 @@ const ConversationsLayout = ({ selectedType }: ConversationsLayoutProps) => {
   return (
     <VStack spacing={0} align='stretch'>
       {conversations.map((conversation) => {
-        // Skip conversations without a last message
-        if (!conversation.lastMessage) {
-          return null
-        }
-
         // Handle community conversations
         if (conversation.type === 'community') {
           return (
@@ -123,6 +129,19 @@ const ConversationsLayout = ({ selectedType }: ConversationsLayoutProps) => {
               otherParticipant={{ avatarHash: conversation.community.image, ...conversation.community }}
               unreadCount={conversation.unreadCount}
               conversationType='community'
+            />
+          )
+        }
+
+        // Handle general chat
+        if (conversation.type === 'general') {
+          return (
+            <ConversationListItem
+              key={conversation.id}
+              message={conversation.lastMessage}
+              otherParticipant={{ name: t('messages.general', { defaultValue: 'General Chat' }) }}
+              unreadCount={conversation.unreadCount}
+              conversationType='general'
             />
           )
         }
@@ -255,6 +274,9 @@ const ChatTypeSelector = ({
       </Button>
       <Button onClick={() => setSelectedType('community')} variant={selectedType === 'community' ? 'solid' : 'outline'}>
         {t('messages.filter.community', { defaultValue: 'Community' })}
+      </Button>
+      <Button onClick={() => setSelectedType('general')} variant={selectedType === 'general' ? 'solid' : 'outline'}>
+        {t('messages.filter.general', { defaultValue: 'General' })}
       </Button>
     </ButtonGroup>
   )

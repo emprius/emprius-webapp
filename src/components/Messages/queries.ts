@@ -18,6 +18,9 @@ import type { DefinedInitialDataInfiniteOptions } from '@tanstack/react-query/sr
 
 // Helper function to generate conversation key for private messages
 export const generateChatKey = (userId1: string, userId2: string, type: ChatType = 'private'): string => {
+  if (type === 'general') {
+    return 'general'
+  }
   const sortedIds = [userId1, userId2].sort()
   return `${type}:${sortedIds[0]}:${sortedIds[1]}`
 }
@@ -66,7 +69,7 @@ export const useChatMessages = (
       const { current, pages } = lastPage.pagination
       return current < pages - 1 ? current + 1 : undefined
     },
-    enabled: !!conversationWith,
+    enabled: !!conversationWith || type === 'general',
     refetchInterval: CHAT_REFETCH_INTERVAL,
     initialPageParam: 0,
     ...options,

@@ -33,7 +33,7 @@ export interface ConversationParticipant {
   active: boolean
 }
 
-export type ConversationResponse = PrivateConversation | CommunityConversation
+export type ConversationResponse = PrivateConversation | CommunityConversation | GeneralConversation
 
 export type BaseConversation = {
   id: string
@@ -46,6 +46,10 @@ export type BaseConversation = {
 export type PrivateConversation = {
   type: 'private'
   participants: ConversationParticipant[]
+} & BaseConversation
+
+export type GeneralConversation = {
+  type: 'general'
 } & BaseConversation
 
 export type CommunityConversation = {

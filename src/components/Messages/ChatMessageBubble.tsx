@@ -26,17 +26,19 @@ const ChatMessageBubble = ({
   const prevIsSameSender = prevMessage?.senderId === message.senderId
   const prevIsOtherSender = prevMessage?.senderId !== message.senderId
 
+  const isMultipleUsersRoom = type === 'community' || type === 'general'
+
   // Show avatar only for community messages when it's not from the author
   // and it's the last from that sender in the sequence.
-  const showAvatar = type === 'community' && !isAuthor && (isLast || !nextIsSameSender)
+  const showAvatar = isMultipleUsersRoom && !isAuthor && (isLast || !nextIsSameSender)
 
   // Hide the comic tail when message continues from the same sender.
   const hideComicTail = nextIsSameSender
 
   // Apply left margin only when avatar is shown or message is from the author
-  const showAvatarMargin = type !== 'community' || isAuthor || showAvatar
+  const showAvatarMargin = !isMultipleUsersRoom || isAuthor || showAvatar
 
-  const showUserName = type === 'community' && prevIsOtherSender && !isAuthor
+  const showUserName = isMultipleUsersRoom && prevIsOtherSender && !isAuthor
 
   return (
     <MessageBubbles

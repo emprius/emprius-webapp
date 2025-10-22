@@ -2,7 +2,7 @@ import { ChatType, MessageResponse } from '~components/Messages/types'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Link as RouterLink } from 'react-router-dom'
-import { Badge, Box, Flex, HStack, Icon, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Flex, HStack, Icon, Text, useColorModeValue, Avatar as ChakraAvatar } from '@chakra-ui/react'
 import { convertToDate } from '~utils/dates'
 import { ROUTES } from '~src/router/routes'
 import { UserAvatar } from '~components/Images/Avatar'
@@ -11,10 +11,10 @@ import React from 'react'
 import { icons } from '~theme/icons'
 
 interface ConversationListItemProps {
-  message: MessageResponse
+  message?: MessageResponse
   otherParticipant: {
-    id: string
-    name: string
+    id?: string
+    name?: string
     avatarHash?: string
   }
   unreadCount?: number
@@ -35,10 +35,13 @@ export const ConversationListItem = ({
   const borderColor = useColorModeValue('gray.200', 'gray.600')
 
   const isCommunity = conversationType === 'community'
+  const isGeneral = conversationType === 'general'
 
   let link = ROUTES.MESSAGES.CHAT.replace(':userId', otherParticipant.id)
   if (isCommunity) {
     link = ROUTES.MESSAGES.COMMUNITY_CHAT.replace(':id', otherParticipant.id)
+  } else if (isGeneral) {
+    link = ROUTES.MESSAGES.GENERAL_CHAT
   }
 
   return (
@@ -53,27 +56,41 @@ export const ConversationListItem = ({
       to={link}
     >
       <Flex align='center' gap={3}>
-        <UserAvatar
-          id={otherParticipant.id}
-          size='md'
-          linkProfile={false}
-          avatarHash={otherParticipant.avatarHash}
-          name={otherParticipant.name}
-          isSquare={isCommunity}
-        />
+        {!isGeneral && (
+          <UserAvatar
+            id={otherParticipant.id}
+            size='md'
+            linkProfile={false}
+            avatarHash={otherParticipant.avatarHash}
+            name={otherParticipant.name}
+            isSquare={isCommunity || isGeneral}
+          />
+        )}
+
+        {isGeneral && (
+          <ChakraAvatar
+            src={'/assets/logos/emprius_logo.png '}
+            name={otherParticipant.name}
+            size={'md'}
+            borderRadius={'md'}
+          />
+        )}
 
         <Box flex={1} minW={0}>
           <Flex justify='space-between' align='start' mb={1}>
             <HStack spacing={1}>
               {isCommunity && <Icon as={icons.communities} />}
+              {isGeneral && <Icon as={icons.generalChat} />}
               <Text fontWeight='semibold' wordBreak='break-word' fontSize='md' noOfLines={1}>
                 {otherParticipant.name}
               </Text>
             </HStack>
             <Flex align='center' gap={2}>
-              <Text fontSize='xs' color='gray.500'>
-                {t('messages.date_formatted', { date: convertToDate(message.createdAt) })}
-              </Text>
+              {message?.createdAt && (
+                <Text fontSize='xs' color='gray.500'>
+                  {t('messages.date_formatted', { date: convertToDate(message.createdAt) })}
+                </Text>
+              )}
             </Flex>
           </Flex>
 
@@ -86,12 +103,12 @@ export const ConversationListItem = ({
                 noOfLines={1}
                 fontWeight={unreadCount > 0 ? 'medium' : 'normal'}
               >
-                {message.senderId === user?.id && (
+                {message?.senderId === user?.id && (
                   <Text as='span' color='lighterText'>
                     {t('messages.you', { defaultValue: 'You: ' })}
                   </Text>
                 )}
-                {message.content || (
+                {message?.content || (
                   <Text as='span' fontStyle='italic'>
                     {t('messages.no_content', { defaultValue: 'No content' })}
                   </Text>
