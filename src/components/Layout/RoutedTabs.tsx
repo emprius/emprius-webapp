@@ -52,7 +52,6 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
         <TabList>
           {visibleTabs.map((tab, index) => (
             <Tab key={index}>
-              {' '}
               <BadgeCounter
                 count={tab?.count}
                 badgeProps={{
@@ -60,7 +59,7 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
                   right: '-20px',
                 }}
               >
-                {tab.label}{' '}
+                {tab.label}
               </BadgeCounter>
             </Tab>
           ))}

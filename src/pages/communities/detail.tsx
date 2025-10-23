@@ -25,13 +25,6 @@ export const Detail = () => {
   useCustomPageTitle(community?.name)
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const { data: unreadCounts } = useUnreadMessageCounts()
-
-  // Check if current user is a member of this community
-  const isMember = useMemo(() => {
-    if (!user?.communities || !id) return false
-    return user.communities.some((c) => c.id === id)
-  }, [user?.communities, id])
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -57,13 +50,6 @@ export const Detail = () => {
       path: ROUTES.COMMUNITIES.TABS.TOOLS.replace(':id', id!),
       label: t('communities.shared_tools'),
       content: <CommunitySharedTools />,
-    },
-    {
-      path: ROUTES.COMMUNITIES.TABS.CHAT.replace(':id', id!),
-      label: t('messages.title', { defaultValue: 'Messages' }),
-      content: <ChatView chatWith={id!} type={'community'} />,
-      hidden: !isMember, // Only show to members
-      count: unreadCounts?.communities?.[id!] || 0,
     },
   ]
 

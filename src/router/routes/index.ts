@@ -35,7 +35,6 @@ export const ROUTES = {
     TABS: {
       MEMBERS: '/communities/:id/members',
       TOOLS: '/communities/:id/tools',
-      CHAT: '/communities/:id/chat',
     },
     EDIT: '/communities/:id/edit',
     NEW: '/communities/new',

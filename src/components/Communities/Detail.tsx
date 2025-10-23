@@ -23,6 +23,8 @@ import { icons } from '~theme/icons'
 import { ROUTES } from '~src/router/routes'
 import { ServerImage } from '~components/Images/ServerImage'
 import { useAuth } from '~components/Auth/AuthContext'
+import { useUnreadMessageCounts } from '~components/Messages/queries'
+import { BadgeCounter } from '~components/Layout/BadgeIcon'
 
 export const CommunityDetail: React.FC = () => {
   const { t } = useTranslation()
@@ -38,6 +40,8 @@ export const CommunityDetail: React.FC = () => {
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  const { data: unreadCounts } = useUnreadMessageCounts()
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -141,11 +145,34 @@ export const CommunityDetail: React.FC = () => {
                 {t('communities.delete')}
               </Button>
             )}
-            {!isOwner && isMember && (
-              <Button colorScheme='red' variant='outline' size='sm' onClick={handleLeave} isLoading={isLeaving}>
-                {t('communities.leave')}
-              </Button>
-            )}
+            <VStack justify={'end'} align={'end'}>
+              {!isOwner && isMember && (
+                <Button colorScheme='red' variant='outline' size='sm' onClick={handleLeave} isLoading={isLeaving}>
+                  {t('communities.leave')}
+                </Button>
+              )}
+              {isMember && (
+                <BadgeCounter
+                  count={unreadCounts?.communities?.[id!] || 0}
+                  badgeProps={{
+                    top: '-4px',
+                    right: '-7px',
+                  }}
+                >
+                  <Button
+                    as={RouterLink}
+                    to={ROUTES.MESSAGES.COMMUNITY_CHAT.replace(':id', community.id)}
+                    aria-label={t('messages.title', { defaultValue: 'Messages' })}
+                    // onClick={() => navigate(ROUTES.MESSAGES.CHAT.replace(':userId', userId))}
+                    leftIcon={<Icon as={icons.messages} />}
+                    size='sm'
+                    variant='outline'
+                  >
+                    {t('messages.title', { defaultValue: 'Messages' })}
+                  </Button>{' '}
+                </BadgeCounter>
+              )}
+            </VStack>
           </Stack>
         </Flex>
 
