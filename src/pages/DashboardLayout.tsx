@@ -71,13 +71,19 @@ const SideNav = () => {
       animate={{ width: isCollapsed ? '70px' : '250px' }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       style={{
-        backgroundColor: bgColor,
-        borderRight: `1px solid ${borderColor}`,
         zIndex: 4,
         overflow: 'hidden',
       }}
     >
-      <Flex direction={'column'} px={2} pt={5} h='100%'>
+      <Flex
+        direction={'column'}
+        px={2}
+        pt={5}
+        h='100%'
+        bg={bgColor}
+        borderRight={'1px solid '}
+        borderColor={borderColor}
+      >
         {/* Menu Items */}
         {menuItems.map((item) => (
           <SideNavMenuItem key={item.label} {...item} isCollapsed={isCollapsed} />
