@@ -39,7 +39,14 @@ type InviteDTO = Omit<Invite, 'createdOn'> & { createdOn: string }
 
 export type AdditionalContacts = Record<string, string>
 
-export type NotificationPreferenceType = 'incoming_requests' | 'booking_accepted' | 'tool_holder_changed'
+export type NotificationPreferenceType =
+  | 'incoming_requests'
+  | 'booking_accepted'
+  | 'tool_holder_changed'
+  | 'community_messages'
+  | 'daily_message_digest'
+  | 'general_forum_messages'
+  | 'private_messages'
 export type NotificationPreferences = Map<NotificationPreferenceType, boolean>
 
 type ProfilePrivateData = {
