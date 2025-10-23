@@ -296,9 +296,11 @@
     "filter": {
       "all": "All",
       "community": "Community",
+      "general": "General",
       "private": "Private"
     },
     "find_users": "Find Users",
+    "general": "General Chat",
     "no_content": "No content",
     "no_conversations": "No conversations yet",
     "no_conversations_desc": "Start a conversation by messaging someone from the users list.",
@@ -386,10 +388,20 @@
     "notifications": {
       "booking_accepted": "Outgoing requests accepted",
       "booking_accepted_desc": "A tool you requested to other user is accepted",
+      "community_messages": "Community messages",
+      "community_messages_desc": "Get a notification when you have unread messages on community chats",
+      "daily_message_digest": "Daily message digest",
+      "daily_message_digest_desc": "A digest for all messages of all chats",
+      "general_forum_messages": "General chat",
+      "general_forum_messages_desc": "Get a notification when you have unread messages for the general chat",
       "incoming_requests": "New incoming request",
       "incoming_requests_desc": "Some user requested a tool you own or a nomadic tool on your guard",
       "notification_preferences": "Notification Preferences",
+      "notification_preferences_chat": "Chat Notification Preferences",
+      "notification_preferences_chat_desc": "Specific notification preferences for chats.",
       "notification_preferences_desc": "Activate or deactivate email notifications for various events.",
+      "private_messages": "Private messages",
+      "private_messages_desc": "Get a notification when you have unread messages on private chats",
       "tool_holder_changed": "Nomadic tools changes",
       "tool_holder_changed_desc": "Changes on the nomadic tools bookings, for example, when a tool holder changes"
     }

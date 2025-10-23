@@ -294,11 +294,13 @@
       "too_many_images": "Massa imatges. Màxim {{max}} imatges permeses."
     },
     "filter": {
-      "all": "All",
-      "community": "Community",
-      "private": "Private"
+      "all": "Tots",
+      "community": "Comunitat",
+      "general": "General",
+      "private": "Privats"
     },
     "find_users": "Cercar Usuaris",
+    "general": "Xat General",
     "no_content": "Sense contingut",
     "no_conversations": "Encara no hi ha converses",
     "no_conversations_desc": "Inicia una conversa enviant un missatge a algú de la llista d'usuaris.",
@@ -386,10 +388,20 @@
     "notifications": {
       "booking_accepted": "Sol·licituds sortints acceptades",
       "booking_accepted_desc": "Una eina que vas sol·licitar a un altre usuari ha estat acceptada",
+      "community_messages": "Missatges de comunitat",
+      "community_messages_desc": "Rep una notificació quan tinguis missatges sense llegir a xats de comunitat",
+      "daily_message_digest": "Resum diari de missatges",
+      "daily_message_digest_desc": "Un resum de tots els missatges de tots els xats",
+      "general_forum_messages": "Xat general",
+      "general_forum_messages_desc": "Rep una notificació quan tinguis missatges sense llegir al xat general",
       "incoming_requests": "Nova sol·licitud entrant",
       "incoming_requests_desc": "Algun usuari ha sol·licitat una eina que posseeixes o una eina nòmada sota la teva custòdia",
       "notification_preferences": "Preferències de Notificació",
+      "notification_preferences_chat": "Preferències de Notificació de Xats",
+      "notification_preferences_chat_desc": "Preferències de notificació específiques per a xats",
       "notification_preferences_desc": "Activa o desactiva les notificacions per correu electrònic per a diversos esdeveniments.",
+      "private_messages": "Missatges privats",
+      "private_messages_desc": "Rep una notificació quan tinguis missatges sense llegir a xats privats",
       "tool_holder_changed": "Canvis d'eines nòmades",
       "tool_holder_changed_desc": "Canvis en les reserves d'eines nòmades, per exemple, quan canvia el custodi d'una eina"
     }

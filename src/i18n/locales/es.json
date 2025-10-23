@@ -294,11 +294,13 @@
       "too_many_images": "Demasiadas imágenes. Máximo {{max}} imágenes permitidas."
     },
     "filter": {
-      "all": "All",
-      "community": "Community",
-      "private": "Private"
+      "all": "Todos",
+      "community": "Comunidad",
+      "general": "General",
+      "private": "Privados"
     },
     "find_users": "Buscar Usuarios",
+    "general": "Chat General",
     "no_content": "Sin contenido",
     "no_conversations": "No hay conversaciones todavía",
     "no_conversations_desc": "Inicia una conversación enviando un mensaje a alguien de la lista de usuarios.",
@@ -386,10 +388,20 @@
     "notifications": {
       "booking_accepted": "Solicitudes salientes aceptadas",
       "booking_accepted_desc": "Una herramienta que solicitaste a otro usuario ha sido aceptada",
+      "community_messages": "Mensajes de comunidad",
+      "community_messages_desc": "Recibe una notificación cuando tengas mensajes sin leer en chats de comunidad",
+      "daily_message_digest": "Resumen diario de mensajes",
+      "daily_message_digest_desc": "Un resumen de todos los mensajes de todos los chats",
+      "general_forum_messages": "Chat general",
+      "general_forum_messages_desc": "Recibe una notificación cuando tengas mensajes sin leer en el chat general",
       "incoming_requests": "Nueva solicitud entrante",
       "incoming_requests_desc": "Algún usuario ha solicitado una herramienta que posees o una herramienta nómada bajo tu custodia",
       "notification_preferences": "Preferencias de Notificación",
+      "notification_preferences_chat": "Preferencias de Notificación de Chats",
+      "notification_preferences_chat_desc": "Preferencias de notificación específicas para chats",
       "notification_preferences_desc": "Activa o desactiva las notificaciones por correo electrónico para varios eventos.",
+      "private_messages": "Mensajes privados",
+      "private_messages_desc": "Recibe una notificación cuando tengas mensajes sin leer en chats privados",
       "tool_holder_changed": "Cambios de herramientas nómadas",
       "tool_holder_changed_desc": "Cambios en las reservas de herramientas nómadas, por ejemplo, cuando cambia el custodio de una herramienta"
     }
