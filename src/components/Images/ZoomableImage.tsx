@@ -9,14 +9,27 @@ interface TouchPoint {
 interface ZoomableImageProps extends Omit<ImageProps, 'onTouchStart' | 'onTouchMove' | 'onTouchEnd'> {
   src: string
   alt?: string
+  enableMagnifier?: boolean
+  magnification?: number
+  magnifierSize?: number
 }
 
-export const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, ...imageProps }) => {
+export const ZoomableImage: React.FC<ZoomableImageProps> = ({
+  src,
+  enableMagnifier = true,
+  magnification = 2.5,
+  magnifierSize = 200,
+  ...imageProps
+}) => {
   const [scale, setScale] = useState(1)
   const [translate, setTranslate] = useState({ x: 0, y: 0 })
   const [lastDistance, setLastDistance] = useState<number | null>(null)
   const [lastTouchPoint, setLastTouchPoint] = useState<TouchPoint | null>(null)
+  const [showMagnifier, setShowMagnifier] = useState(false)
+  const [magnifierPos, setMagnifierPos] = useState({ x: 0, y: 0 })
+  const [imagePos, setImagePos] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLImageElement>(null)
 
   // Calculate distance between two touch points
   const getDistance = (touch1: React.Touch, touch2: React.Touch): number => {
@@ -99,37 +112,116 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, ...image
     }
   }
 
+  // Magnifier handlers for desktop
+  const handleMouseEnter = () => {
+    if (enableMagnifier && window.matchMedia('(hover: hover)').matches) {
+      setShowMagnifier(true)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setShowMagnifier(false)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!enableMagnifier || !imageRef.current || !containerRef.current) return
+
+    const container = containerRef.current
+    const image = imageRef.current
+    const rect = container.getBoundingClientRect()
+    const imgRect = image.getBoundingClientRect()
+
+    // Calculate mouse position relative to the actual image (not container)
+    const x = e.clientX - imgRect.left
+    const y = e.clientY - imgRect.top
+
+    // Calculate position for magnifier popup (offset from cursor)
+    const offsetX = 10
+    const offsetY = 10
+    let magX = e.clientX + offsetX
+    let magY = e.clientY + offsetY
+
+    // Keep magnifier within viewport
+    if (magX + magnifierSize > window.innerWidth) {
+      magX = e.clientX - magnifierSize - offsetX
+    }
+    if (magY + magnifierSize > window.innerHeight) {
+      magY = e.clientY - magnifierSize - offsetY
+    }
+
+    setMagnifierPos({ x: magX, y: magY })
+
+    // Calculate the background position for the magnifier
+    // The background should be positioned so the point under the cursor appears centered in magnifier
+    const bgPosX = -x * magnification + magnifierSize / 2
+    const bgPosY = -y * magnification + magnifierSize / 2
+
+    setImagePos({ x: bgPosX, y: bgPosY })
+  }
+
   return (
-    <Box
-      ref={containerRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      sx={{
-        touchAction: 'none',
-        overflow: 'hidden',
-        cursor: scale > 1 ? 'grab' : 'default',
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-        position: 'relative',
-      }}
-      {...(imageProps as any)}
-    >
-      <Image
-        src={src}
-        alt={alt}
+    <>
+      <Box
+        ref={containerRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         sx={{
-          transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
-          transformOrigin: 'center center',
-          transition: 'transform 0.05s ease-out',
-          pointerEvents: 'none',
+          touchAction: 'none',
+          overflow: 'hidden',
+          cursor: scale > 1 ? 'grab' : showMagnifier ? 'crosshair' : 'default',
           userSelect: 'none',
           WebkitUserSelect: 'none',
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          position: 'relative',
         }}
-      />
-    </Box>
+      >
+        <Image
+          ref={imageRef}
+          src={src}
+          sx={{
+            transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
+            transformOrigin: 'center center',
+            transition: 'transform 0.05s ease-out',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+          }}
+          {...imageProps}
+        />
+      </Box>
+
+      {/* Magnifier Loupe - Desktop Only */}
+      {showMagnifier && enableMagnifier && imageRef.current && (
+        <Box
+          position='fixed'
+          left={`${magnifierPos.x}px`}
+          top={`${magnifierPos.y}px`}
+          width={`${magnifierSize}px`}
+          height={`${magnifierSize}px`}
+          border='3px solid white'
+          // borderRadius='50%'
+          boxShadow='0 4px 12px rgba(0, 0, 0, 0.3), inset 0 0 8px rgba(0, 0, 0, 0.1)'
+          overflow='hidden'
+          pointerEvents='none'
+          zIndex={9999}
+          bg='white'
+        >
+          <Box
+            width='100%'
+            height='100%'
+            backgroundImage={`url(${src})`}
+            backgroundRepeat='no-repeat'
+            backgroundSize={`${imageRef.current.width * magnification}px ${imageRef.current.height * magnification}px`}
+            backgroundPosition={`${imagePos.x}px ${imagePos.y}px`}
+            sx={{
+              imageRendering: 'auto',
+            }}
+          />
+        </Box>
+      )}
+    </>
   )
 }

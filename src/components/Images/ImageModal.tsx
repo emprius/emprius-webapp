@@ -2,11 +2,14 @@ import { IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOver
 import { ServerImage } from '~components/Images/ServerImage'
 import React from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import api from '~src/services/api'
+import { ZoomableImage } from '~components/Images/ZoomableImage'
 
 export type ImageModalActions = {
   onPrevious?: () => void
   onNext?: () => void
   hasMultipleImages?: boolean
+  isZoomable?: boolean
 }
 
 type ImageModalProps = {
@@ -22,6 +25,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({
   onPrevious,
   onNext,
   hasMultipleImages = false,
+  isZoomable = true,
 }) => {
   if (!imageId) return null
 
@@ -31,18 +35,30 @@ export const ImageModal: React.FC<ImageModalProps> = ({
       <ModalContent bg='transparent' boxShadow='none' position='relative'>
         <ModalCloseButton color='white' />
         <ModalBody onClick={onClose} p={4} display='flex' alignItems='center' justifyContent='center' minH='90vh'>
-          <ServerImage
-            imageId={imageId}
-            objectFit='contain'
-            maxW='90vw'
-            maxH='80vh'
-            w='auto'
-            h='auto'
-            modal={false}
-            onClick={(e) => {
-              e.stopPropagation()
-            }}
-          />
+          {!isZoomable && (
+            <ServerImage
+              imageId={imageId}
+              objectFit='contain'
+              maxW='90vw'
+              maxH='80vh'
+              w='auto'
+              h='auto'
+              modal={false}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )}
+          {isZoomable && (
+            <ZoomableImage
+              src={api.images.getImage(imageId, false)}
+              objectFit='contain'
+              maxW='90vw'
+              maxH='80vh'
+              w='auto'
+              h='auto'
+            />
+          )}
           {hasMultipleImages && onPrevious && (
             <IconButton
               aria-label='Previous image'
