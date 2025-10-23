@@ -1,0 +1,135 @@
+import { Box, Image, ImageProps } from '@chakra-ui/react'
+import React, { useRef, useState } from 'react'
+
+interface TouchPoint {
+  x: number
+  y: number
+}
+
+interface ZoomableImageProps extends Omit<ImageProps, 'onTouchStart' | 'onTouchMove' | 'onTouchEnd'> {
+  src: string
+  alt?: string
+}
+
+export const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, ...imageProps }) => {
+  const [scale, setScale] = useState(1)
+  const [translate, setTranslate] = useState({ x: 0, y: 0 })
+  const [lastDistance, setLastDistance] = useState<number | null>(null)
+  const [lastTouchPoint, setLastTouchPoint] = useState<TouchPoint | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Calculate distance between two touch points
+  const getDistance = (touch1: React.Touch, touch2: React.Touch): number => {
+    const dx = touch1.clientX - touch2.clientX
+    const dy = touch1.clientY - touch2.clientY
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+
+  // Get the center point between two touches
+  const getCenter = (touch1: Touch, touch2: Touch): TouchPoint => {
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2,
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Two finger pinch - initialize zoom
+      const distance = getDistance(e.touches[0], e.touches[1])
+      setLastDistance(distance)
+    } else if (e.touches.length === 1 && scale > 1) {
+      // Single finger pan (only when zoomed in)
+      setLastTouchPoint({
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      })
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault() // Prevent default scrolling
+
+    if (e.touches.length === 2 && lastDistance !== null) {
+      // Two finger pinch - zoom
+      const distance = getDistance(e.touches[0], e.touches[1])
+      const scaleChange = distance / lastDistance
+
+      // Calculate new scale with limits (0.5x to 5x)
+      const newScale = Math.max(0.5, Math.min(5, scale * scaleChange))
+
+      setScale(newScale)
+      setLastDistance(distance)
+
+      // If zooming out to 1 or less, reset translation
+      if (newScale <= 1) {
+        setTranslate({ x: 0, y: 0 })
+      }
+    } else if (e.touches.length === 1 && lastTouchPoint !== null && scale > 1) {
+      // Single finger pan (only when zoomed in)
+      const touch = e.touches[0]
+      const dx = touch.clientX - lastTouchPoint.x
+      const dy = touch.clientY - lastTouchPoint.y
+
+      // Update translation
+      setTranslate((prev) => ({
+        x: prev.x + dx,
+        y: prev.y + dy,
+      }))
+
+      setLastTouchPoint({
+        x: touch.clientX,
+        y: touch.clientY,
+      })
+    }
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (e.touches.length < 2) {
+      setLastDistance(null)
+    }
+    if (e.touches.length < 1) {
+      setLastTouchPoint(null)
+    }
+
+    // If zoomed out to normal or less, reset everything
+    if (scale <= 1) {
+      setScale(1)
+      setTranslate({ x: 0, y: 0 })
+    }
+  }
+
+  return (
+    <Box
+      ref={containerRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      sx={{
+        touchAction: 'none',
+        overflow: 'hidden',
+        cursor: scale > 1 ? 'grab' : 'default',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        position: 'relative',
+      }}
+      {...(imageProps as any)}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        sx={{
+          transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
+          transformOrigin: 'center center',
+          transition: 'transform 0.05s ease-out',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+        }}
+      />
+    </Box>
+  )
+}
