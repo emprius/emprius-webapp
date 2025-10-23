@@ -80,6 +80,7 @@ const SideNav = () => {
         px={2}
         pt={5}
         h='100%'
+        minH={'91vh'}
         bg={bgColor}
         borderRight={'1px solid '}
         borderColor={borderColor}
@@ -210,12 +211,10 @@ export const DashboardLayout = () => {
   const isDashboardLayout = useIsDashboardLayout()
   return (
     <Flex>
-      <Flex w={'full'} minH={'100vh'}>
-        {isDashboardLayout && <SideNav />}
-        <Box w={'100vw'}>
-          <Outlet />
-        </Box>
-      </Flex>
+      {isDashboardLayout && <SideNav />}
+      <Box w={'100vw'}>
+        <Outlet />
+      </Box>
     </Flex>
   )
 }

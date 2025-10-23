@@ -4,7 +4,7 @@ import { Container, ContainerProps, SimpleGrid, SimpleGridProps } from '@chakra-
  * Container used on some layouts to wrap the content
  */
 export const MainContainer = (props: ContainerProps) => (
-  <Container {...props} maxW='container.xl' py={{ base: 3, md: 6 }} minH={'100vh'} />
+  <Container {...props} maxW='container.xl' py={{ base: 3, md: 6 }} minH={'91vh'} />
 )
 
 /**

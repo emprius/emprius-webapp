@@ -184,7 +184,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
   }
 
   return (
-    <Flex direction='column' h='100vh' bg={bgColor} position='relative'>
+    <Flex direction='column' h='90vh' bg={bgColor} position='relative'>
       {/* Header */}
       <ChatHeader chatWith={chatWith} onBack={onBack} bgColor={headerBgColor} borderColor={borderColor} type={type} />
 
@@ -195,7 +195,7 @@ export const ChatView = ({ chatWith, onBack, type = 'private' }: ChatViewProps) 
         overflowY='auto'
         overflowX='hidden'
         p={4}
-        pb={20} // Add bottom padding to account for floating input
+        pb={4} // Add bottom padding to account for floating input
         position='relative'
       >
         <VStack align='stretch' minH='full' justifyContent='flex-end' spacing={0}>
