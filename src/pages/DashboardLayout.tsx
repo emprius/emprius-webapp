@@ -208,7 +208,7 @@ const SideNavMenuItem = (item: SidenavMenuItemProps) => {
 }
 
 export const DashboardLayout = () => {
-  const isDashboardLayout = useIsDashboardLayout()
+  const isDashboardLayout = useIsDashboardBigLayout()
   return (
     <Flex>
       {isDashboardLayout && <SideNav />}
@@ -219,4 +219,4 @@ export const DashboardLayout = () => {
   )
 }
 
-export const useIsDashboardLayout = () => useBreakpointValue({ base: false, md: true })
+export const useIsDashboardBigLayout = () => useBreakpointValue({ base: false, md: true })

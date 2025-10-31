@@ -8,13 +8,13 @@ import { PWABanner } from '~components/Layout/Banners/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
 import { BottomNav } from '~components/Layout/BottomNav'
-import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
+import { useIsDashboardBigLayout } from '~src/pages/DashboardLayout'
 import { PWAUpdateBanner } from '~components/Layout/Banners/PWAUpdateBanner'
 
 export const Layout = ({ hideFooter = false }: { hideFooter: boolean }) => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const { isAuthenticated } = useAuth()
-  const isDashboardLayout = useIsDashboardLayout()
+  const isDashboardLayout = useIsDashboardBigLayout()
 
   return (
     <Box minH='100vh' px={0} display='flex' flexDirection='column' bg={bgColor}>

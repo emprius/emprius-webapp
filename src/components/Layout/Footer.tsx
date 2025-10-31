@@ -18,12 +18,12 @@ import { ROUTES } from '~src/router/routes'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 import { useTranslation } from 'react-i18next'
 import DonateButton from '~components/Layout/DonateButton'
-import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
+import { useIsDashboardBigLayout } from '~src/pages/DashboardLayout'
 import { BOTTOM_NAV_HEIGHT } from '~components/Layout/BottomNav'
 
 export const Footer = () => {
   const { t } = useTranslation()
-  const isDashboardLayout = useIsDashboardLayout()
+  const isDashboardLayout = useIsDashboardBigLayout()
   const { colorMode, toggleColorMode } = useColorMode()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
