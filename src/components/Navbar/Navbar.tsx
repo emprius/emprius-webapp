@@ -30,6 +30,7 @@ import logo from '/assets/logos/logo.png'
 import DonateButton from '~components/Layout/DonateButton'
 import { UserCard } from '~components/Users/Card'
 import { useUnreadMessageCounts } from '~components/Messages/queries'
+import AvatarMenu from '~components/Navbar/AvatarMenu'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -41,8 +42,6 @@ export const Navbar = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
-
-  const hamburgerMenuHasCount = unreadCounts?.total > 0 || pendingRatingsCount > 0
 
   return (
     <Flex
@@ -147,92 +146,7 @@ export const Navbar = () => {
               </Button>
             </Stack>
 
-            {/*Little screens menu*/}
-            <Box display={{ base: 'block', md: 'none' }}>
-              <Menu>
-                <MenuButton>
-                  {hamburgerMenuHasCount ? (
-                    <BadgeIcon
-                      icon={icons.menu}
-                      iconProps={{ boxSize: 6 }}
-                      mt={1}
-                      badgeProps={{
-                        right: -1,
-                        top: -1,
-                      }}
-                      emptyBadge
-                    />
-                  ) : (
-                    <Icon boxSize={6} as={icons.menu} mt={1} />
-                  )}
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    as={RouterLink}
-                    to={pendingRatingsCount > 0 ? ROUTES.RATINGS.PENDING : ROUTES.RATINGS.HISTORY}
-                    icon={icons.ratings({})}
-                  >
-                    <BadgeCounter
-                      aria-label={t('nav.ratings')}
-                      count={pendingRatingsCount}
-                      w={'min-content'}
-                      badgeProps={{
-                        right: -5,
-                        top: -1,
-                      }}
-                    >
-                      {t('nav.ratings')}
-                    </BadgeCounter>
-                  </MenuItem>
-                  <MenuItem
-                    as={RouterLink}
-                    to={pendingInvitesCount > 0 ? ROUTES.COMMUNITIES.INVITES : ROUTES.COMMUNITIES.LIST}
-                    icon={icons.communities({})}
-                  >
-                    <BadgeCounter
-                      count={pendingInvitesCount}
-                      w={'min-content'}
-                      badgeProps={{
-                        right: -5,
-                        top: -1,
-                      }}
-                    >
-                      {t('communities.title', { defaultValue: 'Communities' })}
-                    </BadgeCounter>
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.USERS.LIST} icon={icons.users({})}>
-                    {t('user.list_title')}
-                  </MenuItem>
-                  <MenuItem as={RouterLink} to={ROUTES.PROFILE.EDIT} icon={<FiSettings />}>
-                    {t('nav.settings')}
-                  </MenuItem>
-                  <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
-                </MenuList>
-              </Menu>
-            </Box>
-
-            {/*Big screens menu*/}
-            <Menu>
-              <MenuButton minW={avatarSizeToPixels['sm']}>
-                <UserAvatar size='sm' id={user?.id} />
-              </MenuButton>
-              <MenuList>
-                <UserCard
-                  userId={user?.id}
-                  placeholderData={user}
-                  showAvatar={false}
-                  showBorder={false}
-                  showKarma={true}
-                  userNameFirst
-                  to={ROUTES.PROFILE.VIEW}
-                />
-                <Divider />
-                <MenuItem as={RouterLink} to={`${ROUTES.PROFILE.VIEW}#invite-codes`} icon={<Icon as={icons.add} />}>
-                  {t('profile.invite_people', { defaultValue: 'Invite people' })}
-                </MenuItem>
-                <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
-              </MenuList>
-            </Menu>
+            <AvatarMenu />
           </>
         )}
         {!isAuthenticated && (
