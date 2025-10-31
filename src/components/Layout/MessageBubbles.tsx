@@ -18,6 +18,7 @@ import { UserAvatar } from '~components/Images/Avatar'
 import { convertToDate, DateInput } from '~utils/dates'
 import { PropsWithChildren, ReactNode } from 'react'
 import { ImagesGrid } from '~components/Images/ImagesGrid'
+import { MessageContent } from '~components/Layout/MessageContent'
 
 export type MessageBubbleProps = {
   isAuthor?: boolean
@@ -73,7 +74,7 @@ export const MessageBubbles = ({
               pl={isRight ? '10px' : 0}
               whiteSpace='pre-wrap'
             >
-              {content}
+              <MessageContent content={content} color={textColor} />
             </Text>
           )}
           {images && <ImagesGrid images={images} />}
