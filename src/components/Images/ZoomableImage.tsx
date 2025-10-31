@@ -171,23 +171,24 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
         onMouseLeave={handleMouseLeave}
         sx={{
           touchAction: 'none',
-          overflow: 'hidden',
+          overflow: scale > 1 ? 'visible' : 'hidden',
           cursor: scale > 1 ? 'grab' : showMagnifier ? 'crosshair' : 'default',
           userSelect: 'none',
           WebkitUserSelect: 'none',
           position: 'relative',
+          transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
+          transformOrigin: 'center center',
+          transition: 'transform 0.05s ease-out',
         }}
       >
         <Image
           ref={imageRef}
           src={src}
           sx={{
-            transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
-            transformOrigin: 'center center',
-            transition: 'transform 0.05s ease-out',
             pointerEvents: 'none',
             userSelect: 'none',
             WebkitUserSelect: 'none',
+            display: 'block',
           }}
           {...imageProps}
         />
