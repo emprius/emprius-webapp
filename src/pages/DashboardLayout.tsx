@@ -11,6 +11,7 @@ import { icons } from '~theme/icons'
 import { IconType } from 'react-icons'
 import { FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { useUnreadMessageCounts } from '~components/Messages/queries'
+import { useIsDashboardLayout } from '~components/Layout/Contexts/DashboardLayoutContext'
 
 const SideNav = () => {
   const { t } = useTranslation()
@@ -208,15 +209,14 @@ const SideNavMenuItem = (item: SidenavMenuItemProps) => {
 }
 
 export const DashboardLayout = () => {
-  const isDashboardLayout = useIsDashboardBigLayout()
+  const { isDashboardBigLayout } = useIsDashboardLayout()
+
   return (
     <Flex>
-      {isDashboardLayout && <SideNav />}
+      {isDashboardBigLayout && <SideNav />}
       <Box w={'100vw'}>
         <Outlet />
       </Box>
     </Flex>
   )
 }
-
-export const useIsDashboardBigLayout = () => useBreakpointValue({ base: false, md: true })

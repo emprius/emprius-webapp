@@ -1,14 +1,4 @@
-import {
-  Box,
-  Container,
-  IconButton,
-  Link,
-  Stack,
-  Text,
-  useColorMode,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react'
+import { Box, Container, IconButton, Link, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { FiGithub, FiMoon, FiSun } from 'react-icons/fi'
 import { Link as RouterLink } from 'react-router-dom'
@@ -18,13 +8,13 @@ import { ROUTES } from '~src/router/routes'
 import { LogoutBtn } from '~components/Layout/LogoutBtn'
 import { useTranslation } from 'react-i18next'
 import DonateButton from '~components/Layout/DonateButton'
-import { useIsDashboardBigLayout } from '~src/pages/DashboardLayout'
 import { BOTTOM_NAV_HEIGHT } from '~components/Layout/BottomNav'
+import { useIsDashboardLayout } from '~components/Layout/Contexts/DashboardLayoutContext'
+import ColorModeSwitcher from '~components/Navbar/ColorModeSwitcher'
 
 export const Footer = () => {
   const { t } = useTranslation()
-  const isDashboardLayout = useIsDashboardBigLayout()
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { isDashboardBigLayout } = useIsDashboardLayout()
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const textColor = useColorModeValue('gray.600', 'gray.400')
@@ -32,7 +22,7 @@ export const Footer = () => {
 
   // Add additional margin to show the footer above the
   let additionalMargin = '0'
-  if (!isDashboardLayout) {
+  if (!isDashboardBigLayout) {
     additionalMargin = BOTTOM_NAV_HEIGHT
   }
 
@@ -53,12 +43,7 @@ export const Footer = () => {
         <Stack spacing={6} align='center'>
           {/* First line: Theme and Language switchers */}
           <Stack direction='row' spacing={4} align='center'>
-            <IconButton
-              aria-label={t('common.toggle_theme')}
-              icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
-              onClick={toggleColorMode}
-              variant='ghost'
-            />
+            <ColorModeSwitcher />
             <LanguageSwitcher />
             <LogoutBtn />
           </Stack>

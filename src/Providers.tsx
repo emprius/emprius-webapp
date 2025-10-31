@@ -11,6 +11,7 @@ import theme from '~theme/theme'
 import { AppRoutes } from './router/router'
 import queryClient from './services/queryClient'
 import { ErrorBoundaries } from '~src/pages/ErrorBoundary'
+import { DashboardLayoutProvider } from '~components/Layout/Contexts/DashboardLayoutContext'
 
 export const Providers = () => {
   return (
@@ -43,5 +44,7 @@ const AppProviders = () => (
  * These providers depend on the navigation, so it should be placed inside the router
  */
 export const NavigationDependingProviders = ({ children }: PropsWithChildren<{}>) => (
-  <TitleProvider>{children}</TitleProvider>
+  <DashboardLayoutProvider>
+    <TitleProvider>{children}</TitleProvider>
+  </DashboardLayoutProvider>
 )

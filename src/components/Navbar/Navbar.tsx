@@ -53,7 +53,6 @@ export const Navbar = () => {
             <ContextSearchBarForm />
           </Flex>
         )}
-        <LanguageSwitcher iconOnly display={{ base: 'none', sm: 'inherit' }} />
         <DonateButton display={{ base: 'none', sm: 'inherit' }} onlyIcon={donateButtonOnlyIcon} />
       </Stack>
 

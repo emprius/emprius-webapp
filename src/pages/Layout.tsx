@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Footer } from '~components/Layout/Footer'
@@ -8,13 +8,18 @@ import { PWABanner } from '~components/Layout/Banners/PWABanner'
 import { ScrollToTop } from '~components/Layout/ScrollToTop'
 import { Navbar } from '~components/Navbar/Navbar'
 import { BottomNav } from '~components/Layout/BottomNav'
-import { useIsDashboardBigLayout } from '~src/pages/DashboardLayout'
 import { PWAUpdateBanner } from '~components/Layout/Banners/PWAUpdateBanner'
+import { useIsDashboardLayout } from '~components/Layout/Contexts/DashboardLayoutContext'
 
 export const Layout = ({ hideFooter = false }: { hideFooter: boolean }) => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const { isAuthenticated } = useAuth()
-  const isDashboardLayout = useIsDashboardBigLayout()
+  const { setIsDashboardLayout, isDashboardBigLayout } = useIsDashboardLayout()
+
+  // Effect to set isDashboardLayout. The only layout without footer is dashboard layout
+  useEffect(() => {
+    setIsDashboardLayout(hideFooter)
+  }, [hideFooter])
 
   return (
     <Box minH='100vh' px={0} display='flex' flexDirection='column' bg={bgColor}>
@@ -25,7 +30,7 @@ export const Layout = ({ hideFooter = false }: { hideFooter: boolean }) => {
       <Navbar />
       <Box flex={1}>
         <Outlet />
-        {isAuthenticated && !isDashboardLayout && <BottomNav />}
+        {isAuthenticated && !isDashboardBigLayout && <BottomNav />}
       </Box>
       {!hideFooter && <Footer />}
     </Box>

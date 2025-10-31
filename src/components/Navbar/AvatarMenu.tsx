@@ -1,4 +1,4 @@
-import { Box, Divider, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import { Box, Divider, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Stack } from '@chakra-ui/react'
 import { BadgeCounter, BadgeIcon } from '~components/Layout/BadgeIcon'
 import { icons } from '~theme/icons'
 import { Link as RouterLink } from 'react-router-dom'
@@ -14,6 +14,7 @@ import { useAuth } from '~components/Auth/AuthContext'
 import { UserCard } from '~components/Users/Card'
 import DonateButton from '~components/Layout/DonateButton'
 import { LanguageSwitcher } from '~components/Navbar/LanguageSwitcher'
+import ColorModeSwitcher from '~components/Navbar/ColorModeSwitcher'
 
 type LittleScreensMenuProps = {}
 
@@ -95,19 +96,16 @@ const AvatarMenu = ({}: LittleScreensMenuProps) => {
         </MenuItem>
         <Divider />
         <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
-
-        <Divider display={{ base: 'block', sm: 'none' }} />
-        <Box
-          display={{ base: 'flex', sm: 'none' }}
-          pt={2}
-          px={3}
-          alignItems={'center'}
-          justifyContent={'start'}
-          gap={3}
-        >
-          <DonateButton onlyIcon={false} ml={0} size={'sm'} />
-          <LanguageSwitcher />
-        </Box>
+        <Divider />
+        <Stack direction='row' spacing={0} align='center' justify={{ base: 'space-between', sm: 'end' }}>
+          <Box display={{ base: 'block', sm: 'none' }} ml={3}>
+            <DonateButton onlyIcon={false} ml={0} size={'sm'} />
+          </Box>
+          <Box>
+            <LanguageSwitcher iconOnly />
+            <ColorModeSwitcher />
+          </Box>
+        </Stack>
       </MenuList>
     </Menu>
   )
