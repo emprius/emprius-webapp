@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next'
 import { avatarSizeToPixels, UserAvatar } from '~components/Images/Avatar'
 import { useAuth } from '~components/Auth/AuthContext'
 import { UserCard } from '~components/Users/Card'
+import DonateButton from '~components/Layout/DonateButton'
+import { LanguageSwitcher } from '~components/Navbar/LanguageSwitcher'
 
 type LittleScreensMenuProps = {}
 
@@ -93,6 +95,19 @@ const AvatarMenu = ({}: LittleScreensMenuProps) => {
         </MenuItem>
         <Divider />
         <LogoutBtn as={MenuItem} borderRadius={0} display={'flex'} justifyContent={'start'} pl={3} />
+
+        <Divider display={{ base: 'block', sm: 'none' }} />
+        <Box
+          display={{ base: 'flex', sm: 'none' }}
+          pt={2}
+          px={3}
+          alignItems={'center'}
+          justifyContent={'start'}
+          gap={3}
+        >
+          <DonateButton onlyIcon={false} ml={0} size={'sm'} />
+          <LanguageSwitcher />
+        </Box>
       </MenuList>
     </Menu>
   )

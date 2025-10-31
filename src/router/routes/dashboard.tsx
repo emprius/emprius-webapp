@@ -274,6 +274,6 @@ const DashboardRoutesElements = [
 ]
 
 export const useDashboardRoutes = () => ({
-  element: <Layout />,
+  element: <Layout hideFooter />,
   children: DashboardRoutesElements,
 })

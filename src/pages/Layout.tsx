@@ -11,7 +11,7 @@ import { BottomNav } from '~components/Layout/BottomNav'
 import { useIsDashboardLayout } from '~src/pages/DashboardLayout'
 import { PWAUpdateBanner } from '~components/Layout/Banners/PWAUpdateBanner'
 
-export const Layout = () => {
+export const Layout = ({ hideFooter = false }: { hideFooter: boolean }) => {
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const { isAuthenticated } = useAuth()
   const isDashboardLayout = useIsDashboardLayout()
@@ -27,7 +27,7 @@ export const Layout = () => {
         <Outlet />
         {isAuthenticated && !isDashboardLayout && <BottomNav />}
       </Box>
-      <Footer />
+      {!hideFooter && <Footer />}
     </Box>
   )
 }

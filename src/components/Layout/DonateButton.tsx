@@ -4,23 +4,18 @@ import { Button, ButtonProps, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-const DonateButton = (props: ButtonProps) => {
+const DonateButton = ({ onlyIcon = false, ...props }: ButtonProps & { onlyIcon?: boolean }) => {
   const { t } = useTranslation()
   return (
     <Button
-      ml={4}
       as={RouterLink}
       to={'https://emprius.cat/collabora/'}
       leftIcon={icons.donate({})}
       variant={'cta'}
-      sx={{
-        '& .chakra-button__icon': {
-          marginEnd: { base: '0', md: '0.5rem' },
-        },
-      }}
+      iconSpacing={onlyIcon ? '0' : '0.5rem'}
       {...props}
     >
-      <Text display={{ base: 'none', md: 'block' }}>{t('donate', { defaultValue: 'Donate' })}</Text>
+      <Text display={onlyIcon ? 'none' : 'block'}>{t('donate', { defaultValue: 'Donate' })}</Text>
     </Button>
   )
 }

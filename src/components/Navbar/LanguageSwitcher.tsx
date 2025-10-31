@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from '@chakra-ui/react'
+import { Button, ButtonProps, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { LanguagesSlice } from '~i18n/languages.mjs'
 import { icons } from '~theme/icons'
 import { useUpdateUserProfile } from '~components/Users/queries'
 import { useAuth } from '~components/Auth/AuthContext'
 
-export const LanguageSwitcher = () => {
+export const LanguageSwitcher = ({ iconOnly = false, ...rest }: { iconOnly?: boolean } & ButtonProps) => {
   const { i18n } = useTranslation()
   const { isAuthenticated } = useAuth()
   const menuBg = useColorModeValue('white', 'gray.800')
@@ -23,8 +23,15 @@ export const LanguageSwitcher = () => {
 
   return (
     <Menu>
-      <MenuButton as={Button} variant='ghost' leftIcon={icons.globe({})} size='sm'>
-        {languages[i18n.language] || 'English'}
+      <MenuButton
+        as={Button}
+        variant='ghost'
+        leftIcon={icons.globe({})}
+        size='sm'
+        iconSpacing={iconOnly ? '0' : '0.5rem'}
+        {...rest}
+      >
+        {!iconOnly && languages[i18n.language]}
       </MenuButton>
       <MenuList bg={menuBg}>
         {Object.entries(languages).map(([code, name]) => (

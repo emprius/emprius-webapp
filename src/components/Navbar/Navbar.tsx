@@ -1,36 +1,19 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Icon,
-  Link,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Stack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Link, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiSettings } from 'react-icons/fi'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useAuth } from '~components/Auth/AuthContext'
-import { avatarSizeToPixels, UserAvatar } from '~components/Images/Avatar'
 import { usePendingActions } from '~components/Layout/Contexts/PendingActionsProvider'
 import { ContextSearchBarForm } from '~components/Search/SearchBarForm'
 import { ROUTES } from '~src/router/routes'
 import { icons } from '~theme/icons'
-import { BadgeCounter, BadgeIcon } from '../Layout/BadgeIcon'
-import { LogoutBtn } from '~components/Layout/LogoutBtn'
+import { BadgeIcon } from '../Layout/BadgeIcon'
 
 import logo from '/assets/logos/logo.png'
 import DonateButton from '~components/Layout/DonateButton'
-import { UserCard } from '~components/Users/Card'
 import { useUnreadMessageCounts } from '~components/Messages/queries'
 import AvatarMenu from '~components/Navbar/AvatarMenu'
+import { LanguageSwitcher } from '~components/Navbar/LanguageSwitcher'
 
 export const Navbar = () => {
   const { t } = useTranslation()
@@ -42,6 +25,8 @@ export const Navbar = () => {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const iconColor = useColorModeValue('primary.500', 'whiteAlpha.900')
+
+  const donateButtonOnlyIcon = useBreakpointValue({ base: true, md: false })
 
   return (
     <Flex
@@ -68,7 +53,8 @@ export const Navbar = () => {
             <ContextSearchBarForm />
           </Flex>
         )}
-        <DonateButton display={{ base: 'none', sm: 'inherit' }} />
+        <LanguageSwitcher iconOnly display={{ base: 'none', sm: 'inherit' }} />
+        <DonateButton display={{ base: 'none', sm: 'inherit' }} onlyIcon={donateButtonOnlyIcon} />
       </Stack>
 
       <Stack direction='row' align='center' spacing={{ base: 2, md: 4 }}>
