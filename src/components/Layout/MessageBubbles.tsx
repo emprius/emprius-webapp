@@ -74,12 +74,12 @@ export const MessageBubbles = ({
               pl={isRight ? '10px' : 0}
               whiteSpace='pre-wrap'
             >
-              <MessageContent content={content} color={textColor} />
+              <MessageContent content={content} />
             </Text>
           )}
           {images && <ImagesGrid images={images} />}
           {at && (
-            <HStack spacing={1} alignSelf={isRight ? 'start' : 'end'}>
+            <HStack spacing={1} alignSelf={'end'}>
               <Popover>
                 <PopoverTrigger>
                   <Text fontSize='xs' color={dateColor} cursor='pointer'>
