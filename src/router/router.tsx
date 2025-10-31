@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration } from 'react-router-dom'
 import { NavigationDependingProviders } from '~src/Providers'
 import { useAuthRoutes } from '~src/router/routes/auth'
 import { useDashboardRoutes } from '~src/router/routes/dashboard'
@@ -17,6 +17,7 @@ export const AppRoutes = () => {
       {
         element: (
           <NavigationDependingProviders>
+            <ScrollRestoration />
             <Outlet />
           </NavigationDependingProviders>
         ),

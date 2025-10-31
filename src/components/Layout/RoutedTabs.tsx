@@ -36,7 +36,7 @@ export const RoutedTabs = ({ tabs, defaultPath }: RoutedTabsProps) => {
   }, [location.pathname, visibleTabs])
 
   const handleTabChange = (index: number) => {
-    navigate(visibleTabs[index].path)
+    navigate(visibleTabs[index].path, { preventScrollReset: true, replace: true })
   }
 
   useEffect(() => {
