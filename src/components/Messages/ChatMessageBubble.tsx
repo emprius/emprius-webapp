@@ -1,9 +1,10 @@
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
-import { Box, Text, useAvatarStyles } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import React from 'react'
 import { ChatType, MessageResponse } from '~components/Messages/types'
 import { useAuth } from '~components/Auth/AuthContext'
 import { randomColor } from '@chakra-ui/theme-tools'
+import { ensureReadableColor } from '~utils/colors'
 
 const ChatMessageBubble = ({
   message,
@@ -67,7 +68,9 @@ const ChatMessageBubble = ({
 }
 
 const BubbleTop = ({ seed }: { seed: string }) => {
-  const color = randomColor({ string: seed })
+  const baseColor = randomColor({ string: seed })
+  const color = ensureReadableColor(baseColor)
+
   return (
     <Box>
       <Text color={color} fontWeight='bold' isTruncated>
