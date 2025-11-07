@@ -4,7 +4,7 @@ import { Link } from '@chakra-ui/react'
 
 export const MessageContent = ({ content }: { content: string }) => {
   const urlWithProtocolRegex = /^[a-zA-Z]+:\/\/.+/
-  const domainRegex = /^[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/
+  const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}(:\d+)?$/
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   const isUrlWithProtocol = (word: string) => urlWithProtocolRegex.test(word)
@@ -32,7 +32,6 @@ export const MessageContent = ({ content }: { content: string }) => {
 
         // Check if it's a URL with protocol
         if (isUrlWithProtocol(word)) {
-          console.log('isUrlWithProtocol', word)
           return (
             <Link key={index} href={word} isExternal>
               {word}
@@ -42,7 +41,6 @@ export const MessageContent = ({ content }: { content: string }) => {
 
         // Check if it's a domain without protocol
         if (isDomain(word)) {
-          console.log('ISDOMAIN', word)
           return (
             <Link key={index} href={`https://${word}`} isExternal>
               {word}
