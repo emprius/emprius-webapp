@@ -73,6 +73,8 @@ export const MessageBubbles = ({
               pr={isRight ? 0 : '10px'}
               pl={isRight ? '10px' : 0}
               whiteSpace='pre-wrap'
+              wordBreak='break-word'
+              overflowWrap='break-word'
             >
               <MessageContent content={content} />
             </Text>
