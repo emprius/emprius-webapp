@@ -3,7 +3,7 @@ import {
   Box,
   Flex,
   IconButton,
-  Input,
+  Textarea,
   useColorModeValue,
   VStack,
   FormControl,
@@ -106,7 +106,7 @@ const MessageInputForm = ({
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const { clearImages } = useImagePreview()
-  const inputRef = useRef<HTMLInputElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const {
     handleSubmit,
     register,
@@ -119,6 +119,22 @@ const MessageInputForm = ({
   useEffect(() => {
     setFocus('content')
   }, [])
+
+  // Auto-resize textarea
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current
+    if (textarea) {
+      textarea.style.height = 'auto'
+      const maxHeight = 120 // ~5 lines
+      const newHeight = Math.min(textarea.scrollHeight, maxHeight)
+      textarea.style.height = `${newHeight}px`
+    }
+  }
+
+  useEffect(() => {
+    console.log('adjustTextareaHeight')
+    adjustTextareaHeight()
+  })
 
   const {
     mutateAsync: uploadImages,
@@ -147,9 +163,21 @@ const MessageInputForm = ({
     clearImages()
     reset()
     onMessageSent()
+    // Reset textarea height after sending
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+    }
     setTimeout(() => {
       setFocus('content')
     }, 0)
+  }
+
+  // Handle Enter key to submit, Shift+Enter for new line
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit(handleSend)()
+    }
   }
 
   const isSending = isPending || uploadImagesIsPending
@@ -158,7 +186,7 @@ const MessageInputForm = ({
   return (
     <Box as={'form'} p={4} bg={bgColor} borderTop='1px' borderColor={borderColor} onSubmit={handleSubmit(handleSend)}>
       <VStack spacing={1}>
-        <Flex w='full' gap={2}>
+        <Flex w='full' gap={2} align={'end'}>
           <ImageSelector
             {...imagesProps}
             variant='ghost'
@@ -168,16 +196,23 @@ const MessageInputForm = ({
             disabled={isSending}
           />
 
-          <Input
+          <Textarea
             placeholder={placeholder || t('messages.type_message', { defaultValue: 'Type a message...' })}
-            autoComplete={'off'}
             disabled={isSending}
+            autoComplete={'off'}
+            resize='none'
+            minH='40px'
+            maxH='120px'
+            overflowY='auto'
+            rows={1}
+            onKeyDown={handleKeyDown}
             {...register('content', {
               validate,
+              onChange: () => adjustTextareaHeight(),
             })}
             ref={(e) => {
               register('content').ref(e)
-              inputRef.current = e
+              textareaRef.current = e
             }}
           />
 
