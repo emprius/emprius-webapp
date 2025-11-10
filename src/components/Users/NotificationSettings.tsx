@@ -42,7 +42,7 @@ const NotificationSettings = ({ notificationPreferences }: { notificationPrefere
   }
 
   return (
-    <Box p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
+    <Box id='notifications' p={6} bg={bgColor} borderRadius='lg' borderWidth={1} borderColor={borderColor} w={'full'}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Heading size='md' mb={4}>
           {t('profile.notifications.notification_preferences', { defaultValue: 'Notification Preferences' })}
