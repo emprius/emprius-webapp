@@ -48,3 +48,7 @@ export const getStartOfDay = (date?: DateInput) => {
   targetDate.setHours(0, 0, 0, 0)
   return targetDate
 }
+
+export const isToday = (date: Date): boolean => {
+  return date.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
+}

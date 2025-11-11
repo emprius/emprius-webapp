@@ -283,8 +283,10 @@
   },
   "messages": {
     "conversations": "Missatges",
-    "date_formatted": "{{ date, relative(past: fa %time; future: en %time) }}",
+    "date_formatted": "{{ date, format }}",
     "date_popover": "{{ date, format }}",
+    "datef_bubble_date_other_day": "d MMM, HH:mm",
+    "datef_bubble_date_today": "HH:mm",
     "datef_popover": "Pp",
     "error": {
       "load_conversations_failed": "Error al carregar les converses",

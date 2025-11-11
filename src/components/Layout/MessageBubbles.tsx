@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { LuCheckCheck } from 'react-icons/lu'
 import { UserAvatar } from '~components/Images/Avatar'
-import { convertToDate, DateInput } from '~utils/dates'
+import { convertToDate, DateInput, isToday } from '~utils/dates'
 import { PropsWithChildren, ReactNode } from 'react'
 import { ImagesGrid } from '~components/Images/ImagesGrid'
 import { MessageContent } from '~components/Layout/MessageContent'
@@ -54,7 +54,10 @@ export const MessageBubbles = ({
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
   const readTickColor = isRead ? 'blue.500' : 'gray.400'
   const datef = t('messages.datef_popover')
-
+  let bubbleDatef = t('messages.datef_bubble_date_today', { defaultValue: 'HH:mm' })
+  if (at && !isToday(convertToDate(at))) {
+    bubbleDatef = t('messages.datef_bubble_date_other_day', { defaultValue: 'd MMM, HH:mm' })
+  }
   return (
     <Flex justify={isRight ? 'end' : 'start'} direction={isRight ? 'row-reverse' : 'row'} {...flexProps}>
       {showAvatar && (
@@ -81,11 +84,11 @@ export const MessageBubbles = ({
           )}
           {images && <ImagesGrid images={images} />}
           {at && (
-            <HStack spacing={1} alignSelf={'end'}>
+            <HStack spacing={2} alignSelf={'end'}>
               <Popover>
                 <PopoverTrigger>
                   <Text fontSize='xs' color={dateColor} cursor='pointer'>
-                    {t('messages.date_formatted', { date: convertToDate(at) })}
+                    {t('messages.date_formatted', { date: convertToDate(at), format: bubbleDatef })}
                   </Text>
                 </PopoverTrigger>
                 <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>
