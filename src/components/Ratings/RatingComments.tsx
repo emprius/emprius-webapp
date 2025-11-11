@@ -4,6 +4,7 @@ import React from 'react'
 import { useAuth } from '~components/Auth/AuthContext'
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
+import { useTranslation } from 'react-i18next'
 
 export const RatingComments = ({ requester, owner }: UnifiedRating) => {
   const { user } = useAuth()
@@ -40,22 +41,27 @@ const RatingBubbles = ({
   ratedAt,
   isRight = false,
   ...flexProps
-}: MessageBubbleProps) => (
-  <MessageBubbles
-    id={id}
-    content={ratingComment || undefined}
-    isAuthor={isAuthor}
-    isRight={isRight}
-    at={ratedAt}
-    images={images}
-    topComponent={
-      <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
-        <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
-      </HStack>
-    }
-    showAvatar
-    mb={4}
-    gap={2}
-    {...flexProps}
-  />
-)
+}: MessageBubbleProps) => {
+  const { t } = useTranslation()
+  const datef = t('messages.datef_bubble_date_other_day', { defaultValue: 'd MMM, HH:mm' })
+  return (
+    <MessageBubbles
+      id={id}
+      content={ratingComment || undefined}
+      isAuthor={isAuthor}
+      isRight={isRight}
+      at={ratedAt}
+      images={images}
+      topComponent={
+        <HStack justify={isRight ? 'end' : 'start'} pr={isRight ? 0 : '20px'} pl={isRight ? 'auto' : 0}>
+          <ShowRatingStars rating={(rating * 100) / 5} size='sm' showCount={false} />
+        </HStack>
+      }
+      bubbleDatef={datef}
+      showAvatar
+      mb={4}
+      gap={2}
+      {...flexProps}
+    />
+  )
+}

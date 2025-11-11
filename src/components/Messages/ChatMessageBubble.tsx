@@ -1,10 +1,12 @@
 import { MessageBubbles } from '~components/Layout/MessageBubbles'
+import { ChatDateSeparator } from '~components/Layout/ChatDateSeparator'
 import { Box, Text } from '@chakra-ui/react'
 import React from 'react'
 import { ChatType, MessageResponse } from '~components/Messages/types'
 import { useAuth } from '~components/Auth/AuthContext'
 import { randomColor } from '@chakra-ui/theme-tools'
 import { ensureReadableColor } from '~utils/colors'
+import { isSameDay } from '~utils/dates'
 
 const ChatMessageBubble = ({
   message,
@@ -41,29 +43,35 @@ const ChatMessageBubble = ({
 
   const showUserName = isMultipleUsersRoom && prevIsOtherSender && !isAuthor
 
+  // Show date separator when it's the first message or when the day changes
+  const shouldShowDateSeparator = index === 0 || !isSameDay(message.createdAt, messages[index - 1].createdAt)
+
   return (
-    <MessageBubbles
-      key={message.id}
-      id={message.senderId}
-      isAuthor={isAuthor}
-      isRight={isAuthor}
-      isDown
-      content={message.content}
-      showAvatar={showAvatar}
-      at={message.createdAt}
-      images={message.images}
-      isRead={message.isRead}
-      hideComicTail={hideComicTail}
-      gap={2}
-      topComponent={showUserName && <BubbleTop seed={message.senderName} />}
-      mt={prevIsSameSender ? 1 : 3}
-      ml={showAvatarMargin ? 0 : 10}
-      bubbleProps={
-        showUserName && {
-          pt: 1,
+    <>
+      {shouldShowDateSeparator && <ChatDateSeparator date={message.createdAt} />}
+      <MessageBubbles
+        key={message.id}
+        id={message.senderId}
+        isAuthor={isAuthor}
+        isRight={isAuthor}
+        isDown
+        content={message.content}
+        showAvatar={showAvatar}
+        at={message.createdAt}
+        images={message.images}
+        isRead={message.isRead}
+        hideComicTail={hideComicTail}
+        gap={2}
+        topComponent={showUserName && <BubbleTop seed={message.senderName} />}
+        mt={prevIsSameSender ? 1 : 3}
+        ml={showAvatarMargin ? 0 : 10}
+        bubbleProps={
+          showUserName && {
+            pt: 1,
+          }
         }
-      }
-    />
+      />
+    </>
   )
 }
 

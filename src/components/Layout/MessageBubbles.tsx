@@ -32,6 +32,7 @@ export type MessageBubbleProps = {
   isRead?: boolean
   hideComicTail?: boolean
   bubbleProps?: BoxProps
+  bubbleDatef?: string
 } & FlexProps
 
 export const MessageBubbles = ({
@@ -47,6 +48,7 @@ export const MessageBubbles = ({
   isRead,
   hideComicTail,
   bubbleProps,
+  bubbleDatef,
   ...flexProps
 }: MessageBubbleProps) => {
   const { t } = useTranslation()
@@ -54,10 +56,8 @@ export const MessageBubbles = ({
   const dateColor = useColorModeValue(isAuthor ? 'gray.400' : 'gray.500', isAuthor ? 'gray.500' : 'gray.400')
   const readTickColor = isRead ? 'blue.500' : 'gray.400'
   const datef = t('messages.datef_popover')
-  let bubbleDatef = t('messages.datef_bubble_date_today', { defaultValue: 'HH:mm' })
-  if (at && !isToday(convertToDate(at))) {
-    bubbleDatef = t('messages.datef_bubble_date_other_day', { defaultValue: 'd MMM, HH:mm' })
-  }
+  let _bubbleDatef = bubbleDatef || t('messages.datef_bubble_date', { defaultValue: 'HH:mm' })
+
   return (
     <Flex justify={isRight ? 'end' : 'start'} direction={isRight ? 'row-reverse' : 'row'} {...flexProps}>
       {showAvatar && (
@@ -88,7 +88,7 @@ export const MessageBubbles = ({
               <Popover>
                 <PopoverTrigger>
                   <Text fontSize='xs' color={dateColor} cursor='pointer'>
-                    {t('messages.date_formatted', { date: convertToDate(at), format: bubbleDatef })}
+                    {t('messages.date_formatted', { date: convertToDate(at), format: _bubbleDatef })}
                   </Text>
                 </PopoverTrigger>
                 <PopoverContent bg='gray.700' color={'white'} maxW={'170px'} py={1}>

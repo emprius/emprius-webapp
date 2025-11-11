@@ -52,3 +52,35 @@ export const getStartOfDay = (date?: DateInput) => {
 export const isToday = (date: Date): boolean => {
   return date.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
 }
+
+/**
+ * Check if two dates are on the same calendar day
+ * @param date1 - Date object, timestamp in milliseconds, or ISO date string
+ * @param date2 - Date object, timestamp in milliseconds, or ISO date string
+ */
+export const isSameDay = (date1: DateInput, date2: DateInput): boolean => {
+  const d1 = convertToDate(date1)
+  const d2 = convertToDate(date2)
+  return d1.toISOString().slice(0, 10) === d2.toISOString().slice(0, 10)
+}
+
+/**
+ * Check if two dates are in the same year
+ * @param date1 - Date object, timestamp in milliseconds, or ISO date string
+ * @param date2 - Date object, timestamp in milliseconds, or ISO date string
+ */
+export const isSameYear = (date1: DateInput, date2: DateInput): boolean => {
+  const d1 = convertToDate(date1)
+  const d2 = convertToDate(date2)
+  return d1.getFullYear() === d2.getFullYear()
+}
+
+/**
+ * Check if a date is yesterday
+ * @param date - Date object, timestamp in milliseconds, or ISO date string
+ */
+export const isYesterday = (date: DateInput): boolean => {
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  return isSameDay(date, yesterday)
+}
