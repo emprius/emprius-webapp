@@ -1,5 +1,5 @@
-import { MessageBubbles } from '~components/Layout/MessageBubbles'
-import { ChatDateSeparator } from '~components/Layout/ChatDateSeparator'
+import { MessageBubbles } from '~components/Layout/MessageBubbles/MessageBubbles'
+import { ChatDateSeparator } from '~components/Layout/MessageBubbles/ChatDateSeparator'
 import { Box, Text } from '@chakra-ui/react'
 import React from 'react'
 import { ChatType, MessageResponse } from '~components/Messages/types'

@@ -2,7 +2,7 @@ import { RatingParty, UnifiedRating } from '~components/Ratings/types'
 import { Box, Flex, FlexProps, HStack } from '@chakra-ui/react'
 import React from 'react'
 import { useAuth } from '~components/Auth/AuthContext'
-import { MessageBubbles } from '~components/Layout/MessageBubbles'
+import { MessageBubbles } from '~components/Layout/MessageBubbles/MessageBubbles'
 import { ShowRatingStars } from '~components/Ratings/ShowRatingStars'
 import { useTranslation } from 'react-i18next'
 

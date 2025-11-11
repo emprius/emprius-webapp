@@ -18,7 +18,7 @@ import { UserAvatar } from '~components/Images/Avatar'
 import { convertToDate, DateInput, isToday } from '~utils/dates'
 import { PropsWithChildren, ReactNode } from 'react'
 import { ImagesGrid } from '~components/Images/ImagesGrid'
-import { MessageContent } from '~components/Layout/MessageContent'
+import { MessageContent } from '~components/Layout/MessageBubbles/MessageContent'
 
 export type MessageBubbleProps = {
   isAuthor?: boolean
