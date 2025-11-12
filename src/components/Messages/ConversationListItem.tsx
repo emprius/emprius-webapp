@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '~components/Auth/AuthContext'
 import { Link as RouterLink } from 'react-router-dom'
 import { Badge, Box, Flex, HStack, Icon, Text, useColorModeValue, Avatar as ChakraAvatar } from '@chakra-ui/react'
-import { convertToDate } from '~utils/dates'
+import { convertToDate, isInPast7Days, isSameYear, isToday } from '~utils/dates'
 import { ROUTES } from '~src/router/routes'
 import { UserAvatar } from '~components/Images/Avatar'
 import { ImagesGrid } from '~components/Images/ImagesGrid'
@@ -42,6 +42,17 @@ export const ConversationListItem = ({
     link = ROUTES.MESSAGES.COMMUNITY_CHAT.replace(':id', otherParticipant.id)
   } else if (isGeneral) {
     link = ROUTES.MESSAGES.GENERAL_CHAT
+  }
+
+  const date = convertToDate(message.createdAt)
+
+  let datef = t('messages.datef_conversation_list_month', { defaultValue: 'dd LLL' }) // Show day and month name
+  if (!isSameYear(date, new Date())) {
+    datef = t('messages.datef_conversation_list_full_year', { defaultValue: 'P' }) // Show dd/mm/yyyy
+  } else if (isInPast7Days(date)) {
+    datef = t('messages.datef_conversation_list_day', { defaultValue: 'iii' }) // Show day of the week
+  } else if (isToday(date)) {
+    datef = t('messages.datef_bubble_date_today') // Show only time
   }
 
   return (
@@ -88,7 +99,7 @@ export const ConversationListItem = ({
             <Flex align='center' gap={2}>
               {message?.createdAt && (
                 <Text fontSize='xs' color='gray.500'>
-                  {t('messages.date_formatted', { date: convertToDate(message.createdAt) })}
+                  {t('messages.date_conversation_list', { date, format: datef })}
                 </Text>
               )}
             </Flex>

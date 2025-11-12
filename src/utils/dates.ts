@@ -84,3 +84,16 @@ export const isYesterday = (date: DateInput): boolean => {
   yesterday.setDate(yesterday.getDate() - 1)
   return isSameDay(date, yesterday)
 }
+
+/**
+ * Check if a date is within the past 7 days (not including today)
+ * @param date - Date object, timestamp in milliseconds, or ISO date string
+ */
+export const isInPast7Days = (date: DateInput): boolean => {
+  const targetDate = convertToDate(date)
+  const today = getStartOfDay()
+  const sevenDaysAgo = getStartOfDay()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+  return targetDate >= sevenDaysAgo && targetDate < today
+}
